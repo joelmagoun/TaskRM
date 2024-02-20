@@ -1,0 +1,28 @@
+/// images path ///
+
+const taskRMLogo = 'assets/images/taskRM.png';
+const topper = 'assets/images/topper.png';
+const usaFlag = 'assets/images/usa_flag.png';
+
+
+/// svg paths ///
+
+const rightArrowIcon = 'assets/svgs/arrow_right.svg';
+
+
+
+/// demo image ///
+
+const dummyImage =
+    'https://img.freepik.com/free-photo/beautiful-mountains-ratchaprapha-dam-khao-sok-national-park-surat-thani-province-thailand_335224-851.jpg';
+const dummyProfileImage =
+    'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';
+const demoCountryFlag =
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Kuwait.svg/1200px-Flag_of_Kuwait.svg.png';
+const demoCity =
+    'https://img.freepik.com/free-photo/public-square-with-empty-road-floor-downtown_1127-3348.jpg?size=626&ext=jpg&ga=GA1.1.304944834.1698226893&semt=ais';
+const categoryDemo =
+    'https://img.freepik.com/free-vector/hand-drawn-mountain-illustration_23-2150407307.jpg?size=626&ext=jpg&ga=GA1.1.304944834.1698226893&semt=ais';
+const demoHotelRoom =
+    'https://images.pexels.com/photos/262048/pexels-photo-262048.jpeg?auto=compress&cs=tinysrgb&w=800';
+
