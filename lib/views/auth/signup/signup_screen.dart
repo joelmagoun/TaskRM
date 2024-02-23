@@ -4,9 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:task_rm/providers/auth_provider.dart';
+import 'package:task_rm/providers/profile_provider.dart';
 import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/color.dart';
+import 'package:task_rm/utils/custom_dialog.dart';
+import 'package:task_rm/utils/custom_snack.dart';
 import 'package:task_rm/utils/typograpgy.dart';
+import 'package:task_rm/views/auth/signup/encryption/encryption_bottom_sheet.dart';
 import 'package:task_rm/widgets/components/buttons/primary_button.dart';
 import 'package:task_rm/widgets/components/inputFields/common_textfield.dart';
 import '../../../utils/spacer.dart';
@@ -35,73 +41,103 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: 295,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(topper), fit: BoxFit.fill)),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Text(
-                'Create Account',
-                style:
-                tTextStyle500.copyWith(fontSize: 24, color: textPrimaryColor),
-              ),
-              primaryVerticalSpace,
-              _profilePicture(),
-              sixteenVerticalSpace,
-              FormBuilder(
-                key: _signUpFormKey,
-                enabled: !isLoading,
-                autovalidateMode: AutovalidateMode.disabled,
-                onChanged: () {
-                  _signUpFormKey.currentState!.save();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: <Widget>[
-                      const CommonTextField( name: 'name', hintText: 'Name'),
-                      sixteenVerticalSpace,
-                      const EmailInputField(
-                        name: 'email',
-                        hintText: 'Email',
-                      ),
-                      sixteenVerticalSpace,
-                      const PasswordInputField(
-                        title: 'Password',
-                        name: 'password',
-                        hintText: 'Password',
-                      ),
-                      sixteenVerticalSpace,
-                      _languageField(),
-                      primaryVerticalSpace,
-                      PrimaryButton(onTap: () {}, buttonTitle: 'Sign up'),
-                      const SizedBox(
-                        height: 36,
-                      ),
-                      Text(
-                        'Already have an account?',
-                        style: tTextStyleRegular.copyWith(fontSize: 14),
-                      ),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Log in',
-                            style: tTextStyle500.copyWith(
-                                fontSize: 16, color: primaryColor),
-                          )),
-                      primaryVerticalSpace
-                    ],
+          child: Consumer2<AuthProvider, ProfileProvider>(
+            builder: (_, _authState, _profileState, child) {
+              return Column(
+                children: [
+                  Container(
+                    height: 295,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(topper), fit: BoxFit.fill)),
                   ),
-                ),
-              ),
-            ],
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  Text(
+                    'Create Account',
+                    style: tTextStyle500.copyWith(
+                        fontSize: 24, color: textPrimaryColor),
+                  ),
+                  primaryVerticalSpace,
+                  _profilePicture(),
+                  sixteenVerticalSpace,
+                  FormBuilder(
+                    key: _signUpFormKey,
+                    enabled: !isLoading,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    onChanged: () {
+                      _signUpFormKey.currentState!.save();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: <Widget>[
+                          const CommonTextField(name: 'name', hintText: 'Name'),
+                          sixteenVerticalSpace,
+                          const EmailInputField(
+                            name: 'email',
+                            hintText: 'Email',
+                          ),
+                          sixteenVerticalSpace,
+                          const PasswordInputField(
+                            title: 'Password',
+                            name: 'password',
+                            hintText: 'Password',
+                          ),
+                          sixteenVerticalSpace,
+                          _languageField(),
+                          primaryVerticalSpace,
+                          PrimaryButton(
+                              onTap: () {
+                                if (_signUpFormKey
+                                            .currentState?.value['email'] !=
+                                        null &&
+                                    _signUpFormKey
+                                            .currentState?.value['password'] !=
+                                        null &&
+                                    _signUpFormKey
+                                            .currentState?.value['name'] !=
+                                        null) {
+                                  CustomDialog.bottomSheet(
+                                      context,
+                                        EncryptionBottomSheet(
+                                          name: _signUpFormKey
+                                              .currentState?.value['name'] ?? '',
+                                          email: _signUpFormKey
+                                              .currentState?.value['email'] ?? '',
+                                          password: _signUpFormKey
+                                              .currentState?.value['password'] ?? '',
+                                          language: _selectedCountry ?? ''));
+                                } else {
+                                  CustomSnack.warningSnack(
+                                      'Please enter all information', context);
+                                }
+                              },
+                              buttonTitle: 'Sign up'),
+                          const SizedBox(
+                            height: 36,
+                          ),
+                          Text(
+                            'Already have an account?',
+                            style: tTextStyleRegular.copyWith(fontSize: 14),
+                          ),
+                          TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Log in',
+                                style: tTextStyle500.copyWith(
+                                    fontSize: 16, color: primaryColor),
+                              )),
+                          primaryVerticalSpace
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -146,9 +182,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _selectedCountryFlag.isEmpty
                       ? Image.asset(usaFlag)
                       : Text(
-                    _selectedCountryFlag,
-                    style: const TextStyle(fontSize: 28),
-                  ),
+                          _selectedCountryFlag,
+                          style: const TextStyle(fontSize: 28),
+                        ),
                   eightHorizontalSpace,
                   Text(
                     _selectedCountry,
@@ -179,29 +215,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
             shape: BoxShape.circle,
           ),
         ),
-        imageUrl.isEmpty ? Container(
-          width: 128,
-          height: 128,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-             border: Border.all(color: assColor, width: 5)
-          ),
-          child: const Icon(Icons.person_outline, color: assColor, size: 50,),
-        ) : Container(
-          width: 128,
-          height: 128,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(image: NetworkImage(imageUrl), fit: BoxFit.cover),
-          ),
-        ),
+        imageUrl.isEmpty
+            ? Container(
+                width: 128,
+                height: 128,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: assColor, width: 5)),
+                child: const Icon(
+                  Icons.person_outline,
+                  color: assColor,
+                  size: 50,
+                ),
+              )
+            : Container(
+                width: 128,
+                height: 128,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: NetworkImage(imageUrl), fit: BoxFit.cover),
+                ),
+              ),
         Positioned(
             top: 90,
             left: 90,
             child: InkWell(
-              onTap: (){
+                onTap: () {
                   _showAlertDialog(context);
-              },
+                },
                 child: SvgPicture.asset(imageUrl.isEmpty ? addIcon : editIcon)))
       ],
     );
@@ -269,12 +311,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: subtitle2,
                 ),
                 onPressed: () {
-                 // Get.back();
+                  // Get.back();
                 },
               ),
             ],
           );
         });
   }
-
 }
