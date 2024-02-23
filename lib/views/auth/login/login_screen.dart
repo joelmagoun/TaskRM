@@ -1,9 +1,12 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/typograpgy.dart';
+import 'package:task_rm/views/auth/signup/signup_screen.dart';
 import 'package:task_rm/widgets/components/buttons/primary_button.dart';
+import '../../../utils/constant/constant.dart';
 import '../../../utils/spacer.dart';
 import '../../../widgets/components/inputFields/email_inputfield.dart';
 import '../../../widgets/components/inputFields/password_inputfield.dart';
@@ -18,6 +21,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _loginFormKey = GlobalKey<FormBuilderState>();
   late bool isLoading = false;
+  late String _selectedCountryFlag = '';
+  late String _selectedCountry = 'English';
+  final TextEditingController _countryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Text(
                 'Log in',
-                style:
-                    tTextStyle500.copyWith(fontSize: 24, color: textPrimaryColor),
+                style: tTextStyle500.copyWith(
+                    fontSize: 24, color: textPrimaryColor),
               ),
               sixteenVerticalSpace,
               FormBuilder(
@@ -88,7 +94,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: tTextStyleRegular.copyWith(fontSize: 14),
                       ),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const SignUpScreen()));
+                          },
                           child: Text(
                             'Sign up',
                             style: tTextStyle500.copyWith(
@@ -117,33 +128,95 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(
           height: 4,
         ),
-        Container(
-          height: 48,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: textFieldFillColor),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Row(
-              children: [
-                Image.asset(usaFlag),
-                eightHorizontalSpace,
-                Text(
-                  'English',
-                  style: tTextStyleRegular.copyWith(
-                      fontSize: 16, color: textPrimaryColor),
-                ),
-                const Spacer(),
-                const Icon(
-                  Icons.keyboard_arrow_down_sharp,
-                  color: Color(0xFF555DAD),
-                )
-              ],
+        InkWell(
+          onTap: () {
+            showCountryPicker(
+              context: context,
+              showPhoneCode: false,
+              onSelect: (Country country) {
+                setState(() {
+                  _selectedCountry = country.name;
+                  _selectedCountryFlag = country.flagEmoji;
+                });
+              },
+            );
+          },
+          child: Container(
+            height: 48,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: textFieldFillColor),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Row(
+                children: [
+                  _selectedCountryFlag.isEmpty
+                      ? Image.asset(usaFlag)
+                      : Text(
+                          _selectedCountryFlag,
+                          style: TextStyle(fontSize: 28),
+                        ),
+                  eightHorizontalSpace,
+                  Text(
+                    _selectedCountry,
+                    style: tTextStyleRegular.copyWith(
+                        fontSize: 16, color: textPrimaryColor),
+                  ),
+                  const Spacer(),
+                  const Icon(
+                    Icons.keyboard_arrow_down_sharp,
+                    color: Color(0xFF555DAD),
+                  )
+                ],
+              ),
             ),
           ),
         )
       ],
+    );
+  }
+
+  TextFormField _countryPicker() {
+    return TextFormField(
+      // initialValue: _selectedCountry,
+      controller: _countryController,
+      decoration: InputDecoration(
+        filled: false,
+        //fillColor: Colors.transparent,
+        contentPadding: const EdgeInsets.all(16),
+        hintText: 'Kuwait',
+        hintStyle: hintTextStyle,
+        prefixIcon: SizedBox(
+            height: 32,
+            width: 32,
+            child: Text(
+              _selectedCountry,
+              style: title1,
+            )),
+        suffixIcon: IconButton(
+            onPressed: () {
+              showCountryPicker(
+                context: context,
+                showPhoneCode: false,
+                // optional. Shows phone code before the country name.
+                onSelect: (Country country) {
+                  setState(() {
+                    _selectedCountry = country.flagEmoji;
+                    _countryController.text = country.name;
+                  });
+
+                  print('selected emoji $_selectedCountry');
+                },
+              );
+            },
+            icon: const Icon(Icons.keyboard_arrow_down_sharp)),
+        focusedBorder: AppConstant.focusOutLineBorder,
+        enabledBorder: AppConstant.enableOutLineBorder,
+        errorBorder: AppConstant.outlineErrorBorder,
+        focusedErrorBorder: AppConstant.outlineErrorBorder,
+        focusColor: primaryColor,
+      ),
     );
   }
 }
