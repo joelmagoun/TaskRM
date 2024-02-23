@@ -31,6 +31,7 @@ class AppWriteConstant {
   static const String profileCollectionId = 'user_profile';
 
 
+
   static const String journalCollectionId = "journal";
   static const String journalImageBucketId = '64ec9cc9d0f052da75d5';
   static const String momentTypeCollectionId = 'moment_type';

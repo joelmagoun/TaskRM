@@ -3,6 +3,13 @@
 const taskRMLogo = 'assets/images/taskRM.png';
 const topper = 'assets/images/topper.png';
 const usaFlag = 'assets/images/usa_flag.png';
+const logo = 'assets/images/logo.png';
+const task = 'assets/images/task.png';
+const feed = 'assets/images/feed.png';
+const goal = 'assets/images/goal.png';
+const journal = 'assets/images/journal.png';
+const moment = 'assets/images/moment.png';
+const review = 'assets/images/review.png';
 
 
 /// svg paths ///
@@ -10,6 +17,13 @@ const usaFlag = 'assets/images/usa_flag.png';
 const rightArrowIcon = 'assets/svgs/arrow_right.svg';
 const editIcon = 'assets/svgs/edit.svg';
 const addIcon = 'assets/svgs/add.svg';
+const notificationIcon = 'assets/svgs/notification.svg';
+const taskIcon = 'assets/svgs/task_icon.svg';
+const feedIcon = 'assets/svgs/feed_icon.svg';
+const goalIcon = 'assets/svgs/goal_icon.svg';
+const journalIcon = 'assets/svgs/journal_icon.svg';
+const momentIcon = 'assets/svgs/moment.svg';
+const reviewIcon = 'assets/svgs/review_icon.svg';
 
 
 
