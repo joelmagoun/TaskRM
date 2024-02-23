@@ -6,7 +6,6 @@ import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/auth/signup/signup_screen.dart';
 import 'package:task_rm/widgets/components/buttons/primary_button.dart';
-import '../../../utils/constant/constant.dart';
 import '../../../utils/spacer.dart';
 import '../../../widgets/components/inputFields/email_inputfield.dart';
 import '../../../widgets/components/inputFields/password_inputfield.dart';
@@ -23,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
   late bool isLoading = false;
   late String _selectedCountryFlag = '';
   late String _selectedCountry = 'English';
-  final TextEditingController _countryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ? Image.asset(usaFlag)
                       : Text(
                           _selectedCountryFlag,
-                          style: TextStyle(fontSize: 28),
+                          style: const TextStyle(fontSize: 28),
                         ),
                   eightHorizontalSpace,
                   Text(
@@ -177,46 +175,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  TextFormField _countryPicker() {
-    return TextFormField(
-      // initialValue: _selectedCountry,
-      controller: _countryController,
-      decoration: InputDecoration(
-        filled: false,
-        //fillColor: Colors.transparent,
-        contentPadding: const EdgeInsets.all(16),
-        hintText: 'Kuwait',
-        hintStyle: hintTextStyle,
-        prefixIcon: SizedBox(
-            height: 32,
-            width: 32,
-            child: Text(
-              _selectedCountry,
-              style: title1,
-            )),
-        suffixIcon: IconButton(
-            onPressed: () {
-              showCountryPicker(
-                context: context,
-                showPhoneCode: false,
-                // optional. Shows phone code before the country name.
-                onSelect: (Country country) {
-                  setState(() {
-                    _selectedCountry = country.flagEmoji;
-                    _countryController.text = country.name;
-                  });
-
-                  print('selected emoji $_selectedCountry');
-                },
-              );
-            },
-            icon: const Icon(Icons.keyboard_arrow_down_sharp)),
-        focusedBorder: AppConstant.focusOutLineBorder,
-        enabledBorder: AppConstant.enableOutLineBorder,
-        errorBorder: AppConstant.outlineErrorBorder,
-        focusedErrorBorder: AppConstant.outlineErrorBorder,
-        focusColor: primaryColor,
-      ),
-    );
-  }
 }

@@ -45,5 +45,19 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- image picker configuration -->
+
+                <key>NSCameraUsageDescription</key>
+            	<string>To take user profile image</string>
+            	<key>NSDocumentsFolderUsageDescription</key>
+            	<string>Allow access to the documents folder to select files.</string>
+            	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+            	<string>Allow access to your location for better user experience</string>
+            	<key>NSMicrophoneUsageDescription</key>
+            	<string>Use to capture audio for image picker plugin</string>
+            	<key>NSPhotoLibraryUsageDescription</key>
+            	<string>To choose user profile image</string>
+
 </dict>
 </plist>

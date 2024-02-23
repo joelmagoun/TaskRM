@@ -6,13 +6,11 @@ import '../../../utils/constant/constant.dart';
 import '../../../utils/typograpgy.dart';
 
 class CommonTextField extends StatelessWidget {
-  final String title;
   final String name;
   final String? hintText;
 
   const CommonTextField(
       {Key? key,
-      required this.title,
       required this.name,
       this.hintText})
       : super(key: key);

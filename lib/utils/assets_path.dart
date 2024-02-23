@@ -8,6 +8,8 @@ const usaFlag = 'assets/images/usa_flag.png';
 /// svg paths ///
 
 const rightArrowIcon = 'assets/svgs/arrow_right.svg';
+const editIcon = 'assets/svgs/edit.svg';
+const addIcon = 'assets/svgs/add.svg';
 
 
 
