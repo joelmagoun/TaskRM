@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:task_rm/providers/auth_provider.dart';
 import 'package:task_rm/providers/profile_provider.dart';
@@ -61,8 +62,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         fontSize: 24, color: textPrimaryColor),
                   ),
                   primaryVerticalSpace,
-                  _profilePicture(),
-                  sixteenVerticalSpace,
+                  // _profilePicture(galleryTap: () async {
+                  //
+                  //  await _authState.pickImage(ImageSource.gallery, context);
+                  //
+                  // },cameraTap: () async {
+                  //   await _authState.pickImage(ImageSource.camera, context);
+                  // }),
+
+                  //sixteenVerticalSpace,
                   FormBuilder(
                     key: _signUpFormKey,
                     enabled: !isLoading,
@@ -102,13 +110,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         null) {
                                   CustomDialog.bottomSheet(
                                       context,
-                                        EncryptionBottomSheet(
-                                          name: _signUpFormKey
-                                              .currentState?.value['name'] ?? '',
-                                          email: _signUpFormKey
-                                              .currentState?.value['email'] ?? '',
-                                          password: _signUpFormKey
-                                              .currentState?.value['password'] ?? '',
+                                      EncryptionBottomSheet(
+                                          name: _signUpFormKey.currentState
+                                                  ?.value['name'] ??
+                                              '',
+                                          email: _signUpFormKey.currentState
+                                                  ?.value['email'] ??
+                                              '',
+                                          password: _signUpFormKey.currentState
+                                                  ?.value['password'] ??
+                                              '',
                                           language: _selectedCountry ?? ''));
                                 } else {
                                   CustomSnack.warningSnack(
@@ -205,7 +216,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _profilePicture() {
+  Widget _profilePicture(
+      {required VoidCallback galleryTap, required VoidCallback cameraTap}) {
     return Stack(
       children: [
         Container(
@@ -242,14 +254,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
             left: 90,
             child: InkWell(
                 onTap: () {
-                  _showAlertDialog(context);
+                  _showAlertDialog(context, galleryTap, cameraTap);
                 },
                 child: SvgPicture.asset(imageUrl.isEmpty ? addIcon : editIcon)))
       ],
     );
   }
 
-  void _showAlertDialog(BuildContext context) {
+  void _showAlertDialog(
+      BuildContext context, VoidCallback galleryTap, VoidCallback cameraTap) {
     showCupertinoDialog(
         context: context,
         builder: (context) {
@@ -264,46 +277,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   'Gallery',
                   style: subtitle2.copyWith(color: black),
                 ),
-                onPressed: () async {
-                  // await _profileState.pickImage(
-                  //     ImageSource.gallery,
-                  //     _profileState
-                  //         .userProfileFormKey.currentState?.value['name'] ??
-                  //         _profileState.name,
-                  //     selectedCountry == '' ? _profileState.country : selectedCountry,
-                  //     _phone.dialCode! ?? '',
-                  //     _phoneNumberController.text ?? '',
-                  //     _profileState
-                  //         .userProfileFormKey.currentState?.value['gender'] ??
-                  //         _profileState.gender,
-                  //     _profileState
-                  //         .userProfileFormKey.currentState?.value['email'] ?? _profileState.userEmail
-                  // );
-                  // Navigator.pop(context);
-                },
+                onPressed: galleryTap,
+                // onPressed: () async {
+                //   // await _profileState.pickImage(
+                //   //     ImageSource.gallery,
+                //   //     _profileState
+                //   //         .userProfileFormKey.currentState?.value['name'] ??
+                //   //         _profileState.name,
+                //   //     selectedCountry == '' ? _profileState.country : selectedCountry,
+                //   //     _phone.dialCode! ?? '',
+                //   //     _phoneNumberController.text ?? '',
+                //   //     _profileState
+                //   //         .userProfileFormKey.currentState?.value['gender'] ??
+                //   //         _profileState.gender,
+                //   //     _profileState
+                //   //         .userProfileFormKey.currentState?.value['email'] ?? _profileState.userEmail
+                //   // );
+                //   // Navigator.pop(context);
+                // },
               ),
               CupertinoDialogAction(
                 child: Text(
                   'Camera',
                   style: subtitle2.copyWith(color: black),
                 ),
-                onPressed: () async {
-                  // await _profileState.pickImage(
-                  //     ImageSource.gallery,
-                  //     _profileState
-                  //         .userProfileFormKey.currentState?.value['name'] ??
-                  //         '',
-                  //     selectedCountry == '' ? _profileState.country : selectedCountry,
-                  //     _phone.dialCode! ?? '',
-                  //     _phoneNumberController.text ?? '',
-                  //     _profileState
-                  //         .userProfileFormKey.currentState?.value['gender'] ??
-                  //         _profileState.gender,
-                  //     _profileState.userProfileFormKey.currentState
-                  //         ?.value['email'] ??
-                  //         '');
-                  // Navigator.pop(context);
-                },
+                onPressed: cameraTap,
+                // onPressed: () async {
+                //   // await _profileState.pickImage(
+                //   //     ImageSource.gallery,
+                //   //     _profileState
+                //   //         .userProfileFormKey.currentState?.value['name'] ??
+                //   //         '',
+                //   //     selectedCountry == '' ? _profileState.country : selectedCountry,
+                //   //     _phone.dialCode! ?? '',
+                //   //     _phoneNumberController.text ?? '',
+                //   //     _profileState
+                //   //         .userProfileFormKey.currentState?.value['gender'] ??
+                //   //         _profileState.gender,
+                //   //     _profileState.userProfileFormKey.currentState
+                //   //         ?.value['email'] ??
+                //   //         '');
+                //   // Navigator.pop(context);
+                // },
               ),
               CupertinoDialogAction(
                 child: Text(
@@ -311,7 +326,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: subtitle2,
                 ),
                 onPressed: () {
-                  // Get.back();
+                 Navigator.pop(context);
                 },
               ),
             ],

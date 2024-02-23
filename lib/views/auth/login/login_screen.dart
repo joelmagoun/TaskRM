@@ -1,6 +1,8 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
+import 'package:task_rm/providers/auth_provider.dart';
 import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/typograpgy.dart';
@@ -31,83 +33,95 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: 295,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(topper), fit: BoxFit.fill)),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Text(
-                'Log in',
-                style: tTextStyle500.copyWith(
-                    fontSize: 24, color: textPrimaryColor),
-              ),
-              sixteenVerticalSpace,
-              FormBuilder(
-                key: _loginFormKey,
-                enabled: !isLoading,
-                autovalidateMode: AutovalidateMode.disabled,
-                onChanged: () {
-                  _loginFormKey.currentState!.save();
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    children: <Widget>[
-                      const EmailInputField(
-                        name: 'email',
-                        hintText: 'Email',
-                      ),
-                      sixteenVerticalSpace,
-                      const PasswordInputField(
-                        title: 'Password',
-                        name: 'password',
-                        hintText: 'Password',
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Forgot password?',
-                              style: tTextStyleRegular.copyWith(
-                                  fontSize: 12, color: textPrimaryColor),
-                            )),
-                      ),
-                      eightVerticalSpace,
-                      _languageField(),
-                      primaryVerticalSpace,
-                      PrimaryButton(onTap: () {}, buttonTitle: 'Log in'),
-                      const SizedBox(
-                        height: 36,
-                      ),
-                      Text(
-                        'Don’t have an account?',
-                        style: tTextStyleRegular.copyWith(fontSize: 14),
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => const SignUpScreen()));
-                          },
-                          child: Text(
-                            'Sign up',
-                            style: tTextStyle500.copyWith(
-                                fontSize: 16, color: primaryColor),
-                          ))
-                    ],
+          child: Consumer<AuthProvider>(
+            builder: (_, _authState, child) {
+              return Column(
+                children: [
+                  Container(
+                    height: 295,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(topper), fit: BoxFit.fill)),
                   ),
-                ),
-              ),
-            ],
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  Text(
+                    'Log in',
+                    style: tTextStyle500.copyWith(
+                        fontSize: 24, color: textPrimaryColor),
+                  ),
+                  sixteenVerticalSpace,
+                  FormBuilder(
+                    key: _loginFormKey,
+                    enabled: !isLoading,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    onChanged: () {
+                      _loginFormKey.currentState!.save();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        children: <Widget>[
+                          const EmailInputField(
+                            name: 'email',
+                            hintText: 'Email',
+                          ),
+                          sixteenVerticalSpace,
+                          const PasswordInputField(
+                            title: 'Password',
+                            name: 'password',
+                            hintText: 'Password',
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  'Forgot password?',
+                                  style: tTextStyleRegular.copyWith(
+                                      fontSize: 12, color: textPrimaryColor),
+                                )),
+                          ),
+                          eightVerticalSpace,
+                          _languageField(),
+                          primaryVerticalSpace,
+                          PrimaryButton(
+                              onTap: () async {
+                                await _authState.login(
+                                    _loginFormKey.currentState?.value['email'],
+                                    _loginFormKey
+                                        .currentState?.value['password'],
+                                    context);
+                              },
+                              buttonTitle: 'Log in', isLoading: _authState.isLogin,),
+                          const SizedBox(
+                            height: 36,
+                          ),
+                          Text(
+                            'Don’t have an account?',
+                            style: tTextStyleRegular.copyWith(fontSize: 14),
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const SignUpScreen()));
+                              },
+                              child: Text(
+                                'Sign up',
+                                style: tTextStyle500.copyWith(
+                                    fontSize: 16, color: primaryColor),
+                              ))
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -174,5 +188,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ],
     );
   }
-
 }

@@ -10,23 +10,19 @@ class AppStorage{
   // }
 
 static Future<String?> getSessionId() async {
-  String? token = await storage.read(key: 'sessionId');
-  return token;
+  String? sessionId = await storage.read(key: 'sessionId');
+  return sessionId;
 }
-//
-// static Future<void> deleteAccessToken() async {
-//   await storage?.delete(key: 'token');
-// }
-//
-// /// user id ///
-// static Future<String?> getUserId() async {
-//   String? userId = await storage?.read(key: 'userId');
-//   return userId;
-// }
-//
-//
-// static Future<void> deleteLocalStorage() async {
-//   await storage?.deleteAll();
-// }
+
+
+static Future<String?> getUserId() async {
+  String? userId = await storage.read(key: 'userId');
+  return userId;
+}
+
+static Future<String?> getImageUrl() async {
+  String? imageUrl = await storage.read(key: 'imageUrl');
+  return imageUrl;
+}
 
 }

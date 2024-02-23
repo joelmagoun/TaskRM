@@ -26,13 +26,13 @@ const List<String> timeframes = [
 class AppWriteConstant {
   static const String projectId = "taskrm-dev";
   static const String endPoint = "https://rest.is/v1";
-
   static const String primaryDBId = "TaskRM-DEV";
+  static const String userImageBucketId = '65d872347bcd376062c8';
+  static const String profileCollectionId = 'user_profile';
+
 
   static const String journalCollectionId = "journal";
-  static const String userImageBucketId = 'user_image';
   static const String journalImageBucketId = '64ec9cc9d0f052da75d5';
-  static const String profileCollectionId = 'user_profile';
   static const String momentTypeCollectionId = 'moment_type';
   static const String momentEventCollectionId = 'moment_events';
   static const String feedCollectionId = 'feed';

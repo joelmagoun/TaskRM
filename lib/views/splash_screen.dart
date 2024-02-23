@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/views/auth/login/login_screen.dart';
+import 'package:task_rm/views/home/home_screen.dart';
 import '../utils/assets_path.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -28,8 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Timer(const Duration(seconds: 2), () {
       if (widget.sessionId != '') {
-        // Navigator.push(context,
-        //     MaterialPageRoute(builder: (_) => const DashboardScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const HomeScreen()));
       } else {
         Navigator.push(
             context, MaterialPageRoute(builder: (_) => const LoginScreen()));

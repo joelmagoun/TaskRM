@@ -12,7 +12,7 @@ import '../utils/custom_snack.dart';
 
 class ProfileProvider extends ChangeNotifier {
   Client client = Client();
-  late Databases db;
+    late Databases db;
   late Storage _appWriteStorage;
   File? image;
   late String imageUrl = '';
@@ -88,7 +88,7 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> saveProfile(String name, String encryption, String jiraApi,
+  Future<void> saveProfile(String name, String encryption, String language,  String jiraApi,
       String jiraUserName, String jiraUrl) async {
 
     final String uid = await storage.read(key: 'userId') ?? '';
@@ -103,6 +103,7 @@ class ProfileProvider extends ChangeNotifier {
             'image_url': image,
             'name': name,
             'encryption_key': encryption,
+            'language': language,
             'jira_key': jiraApi,
             'jira_user_name': jiraUserName,
             'jira_url': jiraUrl,
