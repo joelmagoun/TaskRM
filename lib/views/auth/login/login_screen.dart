@@ -8,6 +8,7 @@ import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/auth/signup/signup_screen.dart';
 import 'package:task_rm/widgets/components/buttons/primary_button.dart';
+import '../../../routes/routes.dart';
 import '../../../utils/spacer.dart';
 import '../../../widgets/components/inputFields/email_inputfield.dart';
 import '../../../widgets/components/inputFields/password_inputfield.dart';
@@ -105,10 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           TextButton(
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => const SignUpScreen()));
+                                Navigator.pushNamed(context, Routes.signUp);
                               },
                               child: Text(
                                 'Sign up',

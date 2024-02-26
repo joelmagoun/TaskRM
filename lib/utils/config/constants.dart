@@ -38,3 +38,11 @@ class AppWriteConstant {
   static const String momentEventCollectionId = 'moment_events';
   static const String feedCollectionId = 'feed';
 }
+
+
+// shape: Border(
+// bottom: BorderSide(
+// color: borderColor,
+// width: 1
+// )
+// ),

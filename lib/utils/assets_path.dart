@@ -24,6 +24,8 @@ const goalIcon = 'assets/svgs/goal_icon.svg';
 const journalIcon = 'assets/svgs/journal_icon.svg';
 const momentIcon = 'assets/svgs/moment.svg';
 const reviewIcon = 'assets/svgs/review_icon.svg';
+const queueIcon = 'assets/svgs/queue.svg';
+const newTaskIcon = 'assets/svgs/new_task.svg';
 
 
 

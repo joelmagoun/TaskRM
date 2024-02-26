@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_rm/routes/routes.dart';
+import 'package:task_rm/views/tasks/today_task_screen.dart';
 import '../views/auth/login/login_screen.dart';
 import '../views/auth/signup/signup_screen.dart';
 import '../views/home/home_screen.dart';
@@ -21,8 +22,8 @@ class AppRouter {
     switch (settings.name) {
       case Routes.home:
         return const HomeScreen();
-      // case Routes.newTask:
-      //   return const NewTaskPage();
+      case Routes.todayTask:
+        return const TodayTaskScreen();
       // case Routes.newGoal:
       //   return const NewGoalPage();
       // case Routes.taskDetails:

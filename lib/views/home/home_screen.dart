@@ -5,7 +5,7 @@ import 'package:task_rm/providers/auth_provider.dart';
 import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
-
+import '../../routes/routes.dart';
 import '../../utils/assets_path.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -38,17 +38,19 @@ class HomeScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      _optionTile(task, taskIcon, 'Tasks'),
+                      _optionTile(task, taskIcon, 'Tasks', (){
+                        Navigator.pushNamed(context, Routes.todayTask);
+                      }),
                       sixteenVerticalSpace,
-                      _optionTile(goal, goalIcon, 'Goals'),
+                      _optionTile(goal, goalIcon, 'Goals', (){}),
                       sixteenVerticalSpace,
-                      _optionTile(moment, momentIcon, 'Moments'),
+                      _optionTile(moment, momentIcon, 'Moments', (){}),
                       sixteenVerticalSpace,
-                      _optionTile(journal, journalIcon, 'Journal'),
+                      _optionTile(journal, journalIcon, 'Journal', (){}),
                       sixteenVerticalSpace,
-                      _optionTile(review, reviewIcon, 'Review'),
+                      _optionTile(review, reviewIcon, 'Review', (){}),
                       sixteenVerticalSpace,
-                      _optionTile(feed, feedIcon, 'Feed'),
+                      _optionTile(feed, feedIcon, 'Feed', (){}),
                     ],
                   ),
                 ),
@@ -60,35 +62,39 @@ class HomeScreen extends StatelessWidget {
     });
   }
 
-  Widget _optionTile(String image, String icon, String title) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          image:
-          DecorationImage(image: AssetImage(image), fit: BoxFit.fill)),
+  Widget _optionTile(String image, String icon, String title, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16), color: black.withOpacity(0.3)),
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: white,
-                child: SvgPicture.asset(icon),
-              ),
-              sixteenHorizontalSpace,
-              Text(
-                title,
-                style: tTextStyle500.copyWith(fontSize: 20, color: white),
-              )
-            ],
+            borderRadius: BorderRadius.circular(16),
+            image:
+            DecorationImage(image: AssetImage(image), fit: BoxFit.fill)),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16), color: black.withOpacity(0.3)),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: white,
+                  child: SvgPicture.asset(icon),
+                ),
+                sixteenHorizontalSpace,
+                Text(
+                  title,
+                  style: tTextStyle500.copyWith(fontSize: 20, color: white),
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
 }

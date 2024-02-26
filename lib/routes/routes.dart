@@ -1,6 +1,6 @@
 class Routes {
   static const String home = "home";
-  static const String tasksList = "tasks_list";
+  static const String todayTask = "today_task";
   static const String todayTasksList = "today_tasks_list";
   static const String existingTasks = "existing_tasks";
   static const String goalsList = "goals_list";
