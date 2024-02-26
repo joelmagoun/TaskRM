@@ -6,6 +6,7 @@ const Color secondaryColor = Color(0xFF2B3499);
 const Color textPrimaryColor = Color(0xFF2A2A2A);
 const textFieldFillColor = Color(0xFFF0F1F8);
 const Color iconColor = Color(0xFF808080);
+const Color textGreyColor = Color(0xFF808080);
 
 
 

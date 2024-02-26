@@ -4,6 +4,7 @@ import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
+import '../../routes/routes.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
 
@@ -39,7 +40,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                _optionTile((){}, queueIcon, 'Select from queue'),
+                _optionTile((){
+                  Navigator.pushNamed(context, Routes.taskQueue);
+                }, queueIcon, 'Select from queue'),
                 _optionTile((){}, newTaskIcon, 'New task'),
               ],),
             ),
