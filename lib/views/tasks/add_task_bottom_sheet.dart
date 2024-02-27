@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:task_rm/utils/assets_path.dart';
+import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/typograpgy.dart';
+import 'package:task_rm/views/tasks/newTask/add_new_task_bottomsheet.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../routes/routes.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
-
   const AddTaskBottomSheet({
     Key? key,
   }) : super(key: key);
@@ -17,7 +18,6 @@ class AddTaskBottomSheet extends StatefulWidget {
 }
 
 class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -40,13 +40,19 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                _optionTile((){
-                  Navigator.pushNamed(context, Routes.taskQueue);
-                }, queueIcon, 'Select from queue'),
-                _optionTile((){}, newTaskIcon, 'New task'),
-              ],),
+                  _optionTile(() {
+                    Navigator.pushNamed(context, Routes.taskQueue);
+                  }, queueIcon, 'Select from queue'),
+                  _optionTile(() {
+                    CustomDialog.bottomSheet(
+                        context, const AddNewTaskBottomSheet());
+                  }, newTaskIcon, 'New task'),
+                ],
+              ),
             ),
-            const SizedBox(height: 32,),
+            const SizedBox(
+              height: 32,
+            ),
           ],
         ),
       ),
@@ -79,14 +85,18 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     );
   }
 
-  Widget _optionTile(VoidCallback onTap, String icon, String title){
+  Widget _optionTile(VoidCallback onTap, String icon, String title) {
     return InkWell(
       onTap: onTap,
-      child: Column(children: [
-        SvgPicture.asset(icon),
-        Text( title, style: tTextStyleRegular.copyWith(fontSize: 16),)
-      ],),
+      child: Column(
+        children: [
+          SvgPicture.asset(icon),
+          Text(
+            title,
+            style: tTextStyleRegular.copyWith(fontSize: 16),
+          )
+        ],
+      ),
     );
   }
-
 }
