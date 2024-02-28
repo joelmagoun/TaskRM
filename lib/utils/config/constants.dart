@@ -29,6 +29,7 @@ class AppWriteConstant {
   static const String primaryDBId = "TaskRM-DEV";
   static const String userImageBucketId = '65d872347bcd376062c8';
   static const String profileCollectionId = 'user_profile';
+  static const String taskCollectionId = 'tasks';
 
 
 
