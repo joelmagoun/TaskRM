@@ -56,10 +56,13 @@ class TaskProvider extends ChangeNotifier {
   /// get task list ///
 
   late bool _isTaskLoading = false;
-  bool get isTaskLoading => _isTaskAdding;
+  bool get isTaskLoading => _isTaskLoading;
 
   late List<Task> _allTaskList = [];
   List<Task> get allTaskList => _allTaskList;
+
+  late List<Task> _todayTaskList = [];
+  List<Task> get todayTaskList => _todayTaskList;
 
   Future<void> getTaskList() async {
     try {
@@ -75,6 +78,12 @@ class TaskProvider extends ChangeNotifier {
           queries: [Query.equal("userID", uid)]);
 
       if (res.documents.isNotEmpty) {
+        
+        _allTaskList.clear();
+        notifyListeners();
+        _todayTaskList.clear();
+        notifyListeners();
+        
         res.documents.forEach((e) {
           _allTaskList.add(Task(
               id: e.$id ?? '',
@@ -91,11 +100,32 @@ class TaskProvider extends ChangeNotifier {
               goal: e.data['goal'] ?? ''
           ));
           notifyListeners();
+
+          if(e.data['timeframe'] == 'Today'){
+            _todayTaskList.add(Task(
+                id: e.$id ?? '',
+                title: e.data['title'] ?? '',
+                type: e.data['type'] ?? '',
+                priority: e.data['priority'] ?? '',
+                timeframe: e.data['timeframe'] ?? '',
+                description: e.data['description'] ?? '',
+                createdAt: DateTime.now(),
+                expectedCompletion: DateTime.now(),
+                isMarkedForToday: false,
+                jiraID: e.data['jiraID'] ?? '',
+                userID: e.data['userID'] ?? '',
+                goal: e.data['goal'] ?? ''
+            ));
+            notifyListeners();
+          }
+
         });
       } else {
-        print('There is no user data');
+       // CustomSnack.warningSnack('No task on your queue', context);
+        print('No task on your queue');
       }
     } catch (e) {
+     // CustomSnack.warningSnack(e.toString(), context);
       print(e.toString());
     }finally{
       _isTaskLoading = false;
@@ -135,7 +165,11 @@ class TaskProvider extends ChangeNotifier {
             'userID': uid,
             'goal': goal,
           }).then((value) {
+            print('task added one ');
+            Navigator.pop(context);
         CustomSnack.successSnack('Task is added successfully!', context);
+            getTaskList();
+            print('task added two ');
       });
       notifyListeners();
 

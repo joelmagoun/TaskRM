@@ -44,6 +44,7 @@ class TaskTile extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width / 1.5,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
@@ -103,7 +104,9 @@ class TaskTile extends StatelessWidget {
             ),
             const Spacer(),
             SvgPicture.asset(checkBox),
-          ],) : Column(
+          ],) :
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,

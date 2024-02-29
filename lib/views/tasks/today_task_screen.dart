@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/auth_provider.dart';
 import 'package:task_rm/providers/task_provider.dart';
+import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/spacer.dart';
@@ -10,7 +10,6 @@ import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/add_task_bottom_sheet.dart';
 import 'package:task_rm/views/tasks/widgets/task_tile.dart';
 import 'package:task_rm/widgets/empty_widget.dart';
-import '../../utils/assets_path.dart';
 
 class TodayTaskScreen extends StatelessWidget {
   const TodayTaskScreen({Key? key}) : super(key: key);
@@ -26,25 +25,48 @@ class TodayTaskScreen extends StatelessWidget {
             'Today’s tasks',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
+          actions: [
+            _taskState.todayTaskList.isNotEmpty
+                ? SvgPicture.asset(filterIcon)
+                : const SizedBox.shrink(),
+            _taskState.todayTaskList.isNotEmpty
+                ? IconButton(
+                    onPressed: () {
+                      CustomDialog.bottomSheet(
+                          context, const AddTaskBottomSheet());
+                    },
+                    icon: const Icon(
+                      Icons.add_circle_rounded,
+                    ),
+                    color: primaryColor,
+                    iconSize: 42,
+                  )
+                : const SizedBox.shrink(),
+          ],
         ),
-        body: _emptyListWidget(context),
-        // body: _taskState.allTaskList.isEmpty
-        //     ? _emptyListWidget(context)
-        //     : ListView.separated(
-        //     itemBuilder: (_, index) {
-        //       var item = _taskState.allTaskList[index];
-        //       return TaskTile(onLongPress: (){},
-        //           title: item.title,
-        //           isTimeTracking: false,
-        //           time: item.timeframe,
-        //           date: '12/01/2024',
-        //           cardColor: cardColor,
-        //           titleColor: titleColor,
-        //           timeDateColor: timeDateColor,
-        //           isSelected: isSelected)
-        //     },
-        //     separatorBuilder: (_, index) => eightVerticalSpace,
-        //     itemCount: _taskState.allTaskList.length),
+        body: _taskState.todayTaskList.isEmpty
+            ? _emptyListWidget(context)
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _taskState.isTaskLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.separated(
+                        itemBuilder: (_, index) {
+                          var item = _taskState.todayTaskList[index];
+                          return TaskTile(
+                              onLongPress: () {},
+                              title: item.title,
+                              isTimeTracking: false,
+                              time: item.timeframe,
+                              date: '12/01/2024',
+                              cardColor: const Color(0xFFF0F1F8),
+                              titleColor: black,
+                              timeDateColor: textGreyColor,
+                              isSelected: false);
+                        },
+                        separatorBuilder: (_, index) => eightVerticalSpace,
+                        itemCount: _taskState.todayTaskList.length),
+              ),
       );
     });
   }

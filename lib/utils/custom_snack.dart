@@ -5,7 +5,9 @@ import 'package:task_rm/utils/typograpgy.dart';
 import 'color.dart';
 
 class CustomSnack {
+
   static void successSnack(String message, BuildContext context) {
+
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: secondaryColor,
         content: Column(
@@ -40,4 +42,5 @@ class CustomSnack {
           ],
         )));
   }
+
 }

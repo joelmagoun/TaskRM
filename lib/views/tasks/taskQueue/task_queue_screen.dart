@@ -78,6 +78,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                               ? const Center(child: CircularProgressIndicator())
                               : ListView.separated(
                                   itemBuilder: (_, index) {
+
                                     var item = _taskState.allTaskList[index];
 
                                     return TaskTile(
