@@ -2,6 +2,7 @@ class Routes {
   static const String home = "home";
   static const String todayTask = "today_task";
   static const String taskQueue = 'task_queue';
+  static const String goals = 'goals_screen';
 
   static const String todayTasksList = "today_tasks_list";
   static const String existingTasks = "existing_tasks";

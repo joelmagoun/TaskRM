@@ -20,7 +20,7 @@ class TaskQueueScreen extends StatefulWidget {
 }
 
 class _TaskQueueScreenState extends State<TaskQueueScreen> {
-  late List<String> _taskQueue = ['kafi'];
+
   late int selectedTask = -1;
   late bool isSelected = false;
 
@@ -51,7 +51,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                   ],
                 ),
           actions: [
-            _taskQueue.isEmpty
+            _taskState.allTaskList.isEmpty
                 ? const SizedBox.shrink()
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -67,6 +67,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
         body: Center(
             child: _taskState.allTaskList.isEmpty
                 ? const EmptyWidget(
+                    icon: taskIcon,
                     title: 'No tasks on your queue',
                     subTitle: 'Go back, then add new tasks')
                 : Column(

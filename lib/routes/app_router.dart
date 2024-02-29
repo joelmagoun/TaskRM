@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_rm/routes/routes.dart';
+import 'package:task_rm/views/goals/goals_screen.dart';
 import 'package:task_rm/views/tasks/taskQueue/task_queue_screen.dart';
 import 'package:task_rm/views/tasks/today_task_screen.dart';
 import '../views/auth/login/login_screen.dart';
@@ -27,6 +28,8 @@ class AppRouter {
         return const TodayTaskScreen();
       case Routes.taskQueue:
         return const TaskQueueScreen();
+      case Routes.goals:
+        return const GoalsScreen();
       // case Routes.newGoal:
       //   return const NewGoalPage();
       // case Routes.taskDetails:

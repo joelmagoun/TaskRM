@@ -42,7 +42,9 @@ class HomeScreen extends StatelessWidget {
                         Navigator.pushNamed(context, Routes.todayTask);
                       }),
                       sixteenVerticalSpace,
-                      _optionTile(goal, goalIcon, 'Goals', (){}),
+                      _optionTile(goal, goalIcon, 'Goals', (){
+                        Navigator.pushNamed(context, Routes.goals);
+                      }),
                       sixteenVerticalSpace,
                       _optionTile(moment, momentIcon, 'Moments', (){}),
                       sixteenVerticalSpace,

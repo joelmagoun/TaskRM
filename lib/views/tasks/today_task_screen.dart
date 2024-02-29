@@ -8,6 +8,7 @@ import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/add_task_bottom_sheet.dart';
+import 'package:task_rm/views/tasks/taskQueue/filter_bottom_sheet.dart';
 import 'package:task_rm/views/tasks/widgets/task_tile.dart';
 import 'package:task_rm/widgets/empty_widget.dart';
 
@@ -27,7 +28,12 @@ class TodayTaskScreen extends StatelessWidget {
           ),
           actions: [
             _taskState.todayTaskList.isNotEmpty
-                ? SvgPicture.asset(filterIcon)
+                ? InkWell(
+                    onTap: () {
+                      CustomDialog.bottomSheet(
+                          context, const FilterBottomSheet());
+                    },
+                    child: SvgPicture.asset(filterIcon))
                 : const SizedBox.shrink(),
             _taskState.todayTaskList.isNotEmpty
                 ? IconButton(
@@ -77,6 +83,7 @@ class TodayTaskScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const EmptyWidget(
+            icon: taskIcon,
             title: 'No tasks for today',
             subTitle:
                 'Add tasks by creating new ones or selecting from the queue.'),

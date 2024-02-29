@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../utils/assets_path.dart';
 import '../utils/color.dart';
 import '../utils/spacer.dart';
 import '../utils/typograpgy.dart';
 
 class EmptyWidget extends StatelessWidget {
+  final String icon;
   final String title;
   final String subTitle;
 
-  const EmptyWidget({Key? key, required this.title, required this.subTitle})
+  const EmptyWidget(
+      {Key? key,
+      required this.icon,
+      required this.title,
+      required this.subTitle})
       : super(key: key);
 
   @override
@@ -19,7 +23,7 @@ class EmptyWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SvgPicture.asset(
-          taskIcon,
+          icon,
           height: 120,
           width: 120,
           color: assColor,
