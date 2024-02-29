@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/new_task_provider.dart';
+import 'package:task_rm/providers/task_provider.dart';
 import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/newTask/select_goal_bottom_sheet.dart';
@@ -38,7 +38,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Consumer<NewTaskProvider>(builder: (_, _taskState, child) {
+          child: Consumer<TaskProvider>(builder: (_, _taskState, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -69,7 +69,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
   }
 
   Widget _header() {
-    final _taskState = Provider.of<NewTaskProvider>(context, listen: false);
+    final _taskState = Provider.of<TaskProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -107,7 +107,10 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: _taskState.isTaskAdding
-                    ? const CircularProgressIndicator()
+                    ? const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    )
                     : Text(
                   'Add',
                   style:
@@ -381,7 +384,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
   }
 
   Widget _goalField() {
-    final _taskState = Provider.of<NewTaskProvider>(context, listen: false);
+    final _taskState = Provider.of<TaskProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

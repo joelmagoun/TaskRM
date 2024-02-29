@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:task_rm/providers/auth_provider.dart';
-import 'package:task_rm/providers/new_task_provider.dart';
+import 'package:task_rm/providers/task_provider.dart';
 import 'package:task_rm/providers/profile_provider.dart';
 import 'package:task_rm/routes/app_router.dart';
 import 'package:task_rm/views/splash_screen.dart';
@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
        // ChangeNotifierProvider(create: (context) => MomentsProvider()),
        //  ChangeNotifierProvider(create: (context) => FeedProvider()),
-           ChangeNotifierProvider(create: (context) => NewTaskProvider()),
+           ChangeNotifierProvider(create: (context) => TaskProvider()),
        //  ChangeNotifierProvider(create: (context) => JiraProvider()),
       ],
       child: MaterialApp(

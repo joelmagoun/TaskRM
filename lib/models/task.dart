@@ -20,6 +20,7 @@ class Task {
   final int? totalMinutesSpent;
   final String jiraID;
   final String userID;
+  final String goal;
 
   Task({
     required this.id,
@@ -37,6 +38,7 @@ class Task {
     this.totalMinutesSpent,
     required this.jiraID,
     required this.userID,
+    required this.goal,
   });
 
   String get getTaskPriorityString => priority.replaceAll("_", " ");
@@ -59,24 +61,25 @@ class Task {
     DateTime? updatedAt,
     String? jiraID,
     String? userID,
+    String? goal,
   }) {
     return Task(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      type: type ?? this.type,
-      priority: priority ?? this.priority,
-      timeframe: timeframe ?? this.timeframe,
-      description: description ?? this.description,
-      createdAt: createdAt ?? this.createdAt,
-      expectedCompletion: expectedCompletion ?? this.expectedCompletion,
-      goalId: goalId ?? this.goalId,
-      isMarkedForToday: isMarkedForToday ?? this.isMarkedForToday,
-      isCompleted: isCompleted ?? this.isCompleted,
-      updatedAt: updatedAt ?? this.updatedAt,
-      totalMinutesSpent: totalMinutesSpent ?? this.totalMinutesSpent,
-      jiraID: jiraID ?? this.jiraID,
-      userID: userID ?? this.userID,
-    );
+        id: id ?? this.id,
+        title: title ?? this.title,
+        type: type ?? this.type,
+        priority: priority ?? this.priority,
+        timeframe: timeframe ?? this.timeframe,
+        description: description ?? this.description,
+        createdAt: createdAt ?? this.createdAt,
+        expectedCompletion: expectedCompletion ?? this.expectedCompletion,
+        goalId: goalId ?? this.goalId,
+        isMarkedForToday: isMarkedForToday ?? this.isMarkedForToday,
+        isCompleted: isCompleted ?? this.isCompleted,
+        updatedAt: updatedAt ?? this.updatedAt,
+        totalMinutesSpent: totalMinutesSpent ?? this.totalMinutesSpent,
+        jiraID: jiraID ?? this.jiraID,
+        userID: userID ?? this.userID,
+        goal: goal ?? this.goal);
   }
 
   Map<String, dynamic> toMap() {
@@ -94,7 +97,8 @@ class Task {
       'isCompleted': isCompleted,
       'totalMinutesSpent': totalMinutesSpent,
       'jiraID': jiraID,
-      'userID': userID
+      'userID': userID,
+      'goal': goal
     };
   }
 
@@ -121,12 +125,13 @@ class Task {
         isCompleted:
             data['isCompleted'] == null ? null : data['isCompleted'] as bool,
         jiraID: data['jiraID'] as String,
-        userID: data['userID'] as String);
+        userID: data['userID'] as String,
+        goal: data['goal'] as String);
   }
 
   @override
   String toString() {
-    return 'Task(id: $id, title: $title, type: $type, priority: $priority, timeframe: $timeframe, description: $description, createdAt: $createdAt, expectedCompletion: $expectedCompletion, goalId: $goalId, isMarkedForToday: $isMarkedForToday, jiraID: $jiraID, userID: $userID)';
+    return 'Task(id: $id, title: $title, type: $type, priority: $priority, timeframe: $timeframe, description: $description, createdAt: $createdAt, expectedCompletion: $expectedCompletion, goalId: $goalId, isMarkedForToday: $isMarkedForToday, jiraID: $jiraID, userID: $userID, goal: $goal)';
   }
 
   @override
@@ -144,7 +149,8 @@ class Task {
         other.goalId == goalId &&
         other.isMarkedForToday == isMarkedForToday &&
         other.jiraID == jiraID &&
-        other.userID == userID;
+        other.userID == userID &&
+        other.goal == goal;
   }
 
   @override
@@ -160,7 +166,8 @@ class Task {
         goalId.hashCode ^
         isMarkedForToday.hashCode ^
         jiraID.hashCode ^
-        userID.hashCode;
+        userID.hashCode ^
+        goal.hashCode;
   }
 
   /// previous code ///
@@ -219,29 +226,29 @@ class Task {
 
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
-      id: map['id'] as String,
-      title: map['title'] as String,
-      type: map['type'] as String,
-      priority: map['priority'] as String,
-      timeframe: map['timeframe'] as String,
-      description: map['description'] as String,
-      totalMinutesSpent: map['totalMinutesSpent'] as int,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      updatedAt: map['updatedAt'] == null
-          ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
-          : DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
-      expectedCompletion: map['expectedCompletion'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(
-              map['expectedCompletion'] as int)
-          : null,
-      goalId: map['goalId'] != null ? map['goalId'] as String : null,
-      isMarkedForToday: map['isMarkedForToday'] as bool,
-      jiraID: map['jiraID'] as String,
-      userID: map['userID'] as String
+        id: map['id'] as String,
+        title: map['title'] as String,
+        type: map['type'] as String,
+        priority: map['priority'] as String,
+        timeframe: map['timeframe'] as String,
+        description: map['description'] as String,
+        totalMinutesSpent: map['totalMinutesSpent'] as int,
+        createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+        updatedAt: map['updatedAt'] == null
+            ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
+            : DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
+        expectedCompletion: map['expectedCompletion'] != null
+            ? DateTime.fromMillisecondsSinceEpoch(
+                map['expectedCompletion'] as int)
+            : null,
+        goalId: map['goalId'] != null ? map['goalId'] as String : null,
+        isMarkedForToday: map['isMarkedForToday'] as bool,
+        jiraID: map['jiraID'] as String,
+        userID: map['userID'] as String,
+        goal: map['goal'] as String
     );
   }
 
   factory Task.fromJson(String source) =>
       Task.fromMap(json.decode(source) as Map<String, dynamic>);
-
 }

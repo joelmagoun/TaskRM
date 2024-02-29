@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/new_task_provider.dart';
+import 'package:task_rm/providers/task_provider.dart';
 import '../../../utils/color.dart';
 import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';
@@ -26,7 +26,7 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(24), topLeft: Radius.circular(24)),
               color: white),
-          child: Consumer<NewTaskProvider>(builder: (_, _taskState, child) {
+          child: Consumer<TaskProvider>(builder: (_, _taskState, child) {
             return SingleChildScrollView(
               child: Column(
                 children: [

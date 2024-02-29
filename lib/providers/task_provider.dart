@@ -2,11 +2,11 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:task_rm/utils/app_storage.dart';
 import 'package:task_rm/utils/custom_snack.dart';
-
+import '../models/task.dart';
 import '../utils/config/constants.dart';
 
-class NewTaskProvider extends ChangeNotifier {
-  NewTaskProvider() {
+class TaskProvider extends ChangeNotifier {
+  TaskProvider() {
     _init();
   }
 
@@ -18,6 +18,7 @@ class NewTaskProvider extends ChangeNotifier {
         .setEndpoint(AppWriteConstant.endPoint)
         .setProject(AppWriteConstant.projectId);
     db = Databases(client);
+    getTaskList();
   }
 
   /// Jira ///
@@ -46,14 +47,66 @@ class NewTaskProvider extends ChangeNotifier {
 
   String get selectedGoal => _selectedGoal;
 
-  getSelectedGoal(String goal, BuildContext context){
+  getSelectedGoal(String goal, BuildContext context) {
     _selectedGoal = goal;
     notifyListeners();
     Navigator.pop(context);
   }
 
+  /// get task list ///
+
+  late bool _isTaskLoading = false;
+  bool get isTaskLoading => _isTaskAdding;
+
+  late List<Task> _allTaskList = [];
+  List<Task> get allTaskList => _allTaskList;
+
+  Future<void> getTaskList() async {
+    try {
+
+      _isTaskLoading = true;
+      notifyListeners();
+
+      final uid = await AppStorage.getUserId();
+
+      final res = await db.listDocuments(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.taskCollectionId,
+          queries: [Query.equal("userID", uid)]);
+
+      if (res.documents.isNotEmpty) {
+        res.documents.forEach((e) {
+          _allTaskList.add(Task(
+              id: e.$id ?? '',
+              title: e.data['title'] ?? '',
+              type: e.data['type'] ?? '',
+              priority: e.data['priority'] ?? '',
+              timeframe: e.data['timeframe'] ?? '',
+              description: e.data['description'] ?? '',
+              createdAt: DateTime.now(),
+              expectedCompletion: DateTime.now(),
+              isMarkedForToday: false,
+              jiraID: e.data['jiraID'] ?? '',
+              userID: e.data['userID'] ?? '',
+              goal: e.data['goal'] ?? ''
+          ));
+          notifyListeners();
+        });
+      } else {
+        print('There is no user data');
+      }
+    } catch (e) {
+      print(e.toString());
+    }finally{
+      _isTaskLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// add task state ///
+
   Future<void> addNewTask(
-     String title,
+      String title,
       String type,
       String priority,
       String timeFrame,
@@ -61,11 +114,10 @@ class NewTaskProvider extends ChangeNotifier {
       String goal,
       BuildContext context) async {
     try {
-
       _isTaskAdding = true;
       notifyListeners();
 
-      final uid = AppStorage.getUserId();
+      final uid = await AppStorage.getUserId();
 
       var res = await db.createDocument(
           databaseId: AppWriteConstant.primaryDBId,
@@ -73,23 +125,17 @@ class NewTaskProvider extends ChangeNotifier {
           documentId: ID.unique(),
           data: {
             'timeframe': timeFrame,
-            'isCompleted': false,
-            'createdAt': DateTime.now(),
             'jiraID': '',
             'title': title,
-            'totalMinutesSpent': 00,
-            'updatedAt': DateTime.now(),
             'type': type,
             'isMarkedForToday': false,
             'goalId': '',
-            'expectedCompletion': DateTime.now(),
             'priority': priority,
             'description': description,
             'userID': uid,
             'goal': goal,
-      }).then((value) {
-        CustomSnack.successSnack('task is posted successfuly', context);
-        print(value.data);
+          }).then((value) {
+        CustomSnack.successSnack('Task is added successfully!', context);
       });
       notifyListeners();
 
@@ -100,8 +146,8 @@ class NewTaskProvider extends ChangeNotifier {
       //   // Navigator.pushNamed(context, Routes.moments);
       // }
     } catch (e) {
-      print(e.toString());
-    }finally{
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
       _isTaskAdding = false;
       notifyListeners();
     }
