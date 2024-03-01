@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:task_rm/providers/auth_provider.dart';
+import 'package:task_rm/providers/goals_provider.dart';
 import 'package:task_rm/providers/task_provider.dart';
 import 'package:task_rm/providers/profile_provider.dart';
 import 'package:task_rm/routes/app_router.dart';
@@ -43,6 +44,7 @@ class _MyAppState extends State<MyApp> {
 
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => GoalProvider()),
         // ChangeNotifierProvider(create: (context) => tasksListProvider),
         // ChangeNotifierProvider(create: (context) => goalsListProvider),
         // ChangeNotifierProvider(

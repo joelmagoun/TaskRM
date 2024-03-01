@@ -30,6 +30,7 @@ class AppWriteConstant {
   static const String userImageBucketId = '65d872347bcd376062c8';
   static const String profileCollectionId = 'user_profile';
   static const String taskCollectionId = 'tasks';
+  static const String goalCollectionId = 'goals';
 
 
 

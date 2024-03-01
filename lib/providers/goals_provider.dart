@@ -6,7 +6,7 @@ import '../models/task.dart';
 import '../utils/config/constants.dart';
 
 class GoalProvider extends ChangeNotifier {
-  TaskProvider() {
+  GoalProvider() {
     _init();
   }
 
@@ -18,42 +18,11 @@ class GoalProvider extends ChangeNotifier {
         .setEndpoint(AppWriteConstant.endPoint)
         .setProject(AppWriteConstant.projectId);
     db = Databases(client);
-    getTaskList();
+    //getTaskList();
   }
 
-  /// Jira ///
-  late bool _isJiraIssueAdded = false;
 
-  bool get isJiraIssueAdded => _isJiraIssueAdded;
-
-  late String _jiraId = '';
-
-  String get jiraId => _jiraId;
-
-  setJiraId(String jiraID, bool value) {
-    _jiraId = jiraID;
-    notifyListeners();
-    _isJiraIssueAdded = value;
-    notifyListeners();
-  }
-
-  /// add new task ///
-
-  late bool _isTaskAdding = false;
-
-  bool get isTaskAdding => _isTaskAdding;
-
-  late String _selectedGoal = 'Select';
-
-  String get selectedGoal => _selectedGoal;
-
-  getSelectedGoal(String goal, BuildContext context) {
-    _selectedGoal = goal;
-    notifyListeners();
-    Navigator.pop(context);
-  }
-
-  /// get task list ///
+  /// get goal list ///
 
   late bool _isTaskLoading = false;
   bool get isTaskLoading => _isTaskLoading;
@@ -133,42 +102,51 @@ class GoalProvider extends ChangeNotifier {
     }
   }
 
+
   /// add task state ///
 
-  Future<void> addNewTask(
+  late bool _isGoalAdding = false;
+
+  bool get isGoalAdding => _isGoalAdding;
+
+  late String _selectedParentGoal = 'Select';
+
+  String get selectedParentGoal => _selectedParentGoal;
+
+  getSelectedParentGoal(String parentGoal, BuildContext context) {
+    _selectedParentGoal = parentGoal;
+    notifyListeners();
+    Navigator.pop(context);
+  }
+
+  Future<void> addNewGoal(
       String title,
-      String type,
-      String priority,
-      String timeFrame,
       String description,
-      String goal,
+      String type,
       BuildContext context) async {
     try {
-      _isTaskAdding = true;
+      _isGoalAdding = true;
       notifyListeners();
 
       final uid = await AppStorage.getUserId();
 
       var res = await db.createDocument(
           databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.taskCollectionId,
+          collectionId: AppWriteConstant.goalCollectionId,
           documentId: ID.unique(),
           data: {
-            'timeframe': timeFrame,
-            'jiraID': '',
+            'createdAt': DateTime.now(),
+            'updatedAt': DateTime.now(),
             'title': title,
-            'type': type,
-            'isMarkedForToday': false,
-            'goalId': '',
-            'priority': priority,
+            'userId': uid,
             'description': description,
-            'userID': uid,
-            'goal': goal,
+            'isCompleted': false,
+            'totalMinutesSpent': 00,
+            'type': type,
           }).then((value) {
-        print('task added one ');
         Navigator.pop(context);
-        CustomSnack.successSnack('Task is added successfully!', context);
-        getTaskList();
+        CustomSnack.successSnack('Goal added successfully.', context);
+       // getTaskList();
         print('task added two ');
       });
       notifyListeners();
@@ -182,8 +160,9 @@ class GoalProvider extends ChangeNotifier {
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
-      _isTaskAdding = false;
+      _isGoalAdding = false;
       notifyListeners();
     }
   }
+
 }

@@ -5,8 +5,10 @@ import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/goals/select_parent_goal_bottomsheet.dart';
 import 'package:task_rm/views/tasks/newTask/select_goal_bottom_sheet.dart';
+import 'package:task_rm/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
+import '../../providers/goals_provider.dart';
 
 class AddNewGoalBottomSheet extends StatefulWidget {
   const AddNewGoalBottomSheet({
@@ -27,17 +29,14 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
     return Material(
       color: Colors.transparent,
       child: Container(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height / 1.2,
+        height: MediaQuery.of(context).size.height / 1.2,
         width: double.infinity,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Consumer<TaskProvider>(builder: (_, _taskState, child) {
+          child: Consumer<GoalProvider>(builder: (_, _goalState, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -51,6 +50,10 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                       _typeField(),
                       _descriptionField(),
                       _goalField(),
+                      PrimaryButton(onTap: () async {
+                        await _goalState.addNewGoal(_titleController.text,
+                            _descriptionController.text, selectedType, context);
+                      }, buttonTitle: 'add'),
                       const SizedBox(
                         height: 48,
                       )
@@ -66,7 +69,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
   }
 
   Widget _header() {
-    final _taskState = Provider.of<TaskProvider>(context, listen: false);
+    final _goalState = Provider.of<GoalProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -84,29 +87,33 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
             'New Goal',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
-          InkWell(
-            onTap: () async {},
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: primaryColor,
-              ),
-              child: Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: _taskState.isTaskAdding
-                    ? const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(),
-                )
-                    : Text(
-                  'Add',
-                  style:
-                  tTextStyleBold.copyWith(color: white, fontSize: 16),
-                ),
-              ),
-            ),
-          )
+          IconButton(onPressed: () async {
+            await _goalState.addNewGoal(_titleController.text,
+                         _descriptionController.text, selectedType, context);
+          }, icon: const Icon(Icons.add))
+          // InkWell(
+          //   onTap: () async {
+          //     await _goalState.addNewGoal(_titleController.text,
+          //         _descriptionController.text, selectedType, context);
+          //   },
+          //   child: Container(
+          //     height: 40,
+          //     width: 64,
+          //     alignment: Alignment.center,
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(8),
+          //       color: primaryColor,
+          //     ),
+          //     child: _goalState.isGoalAdding
+          //         ? const SizedBox(
+          //             height: 16, width: 16, child: CircularProgressIndicator())
+          //         : Text(
+          //             'Add',
+          //             style:
+          //                 tTextStyleBold.copyWith(color: white, fontSize: 16),
+          //           ),
+          //   ),
+          // )
         ],
       ),
     );
@@ -172,9 +179,9 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
               });
             },
             tileBorderColor:
-            selectedType == 'Personal Project' ? borderColor : trans,
+                selectedType == 'Personal Project' ? borderColor : trans,
             circleColor:
-            selectedType == 'Personal Project' ? secondaryColor : trans,
+                selectedType == 'Personal Project' ? secondaryColor : trans,
             title: 'Personal Project'),
         eightVerticalSpace,
         _optionTile(
@@ -209,7 +216,8 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
               filled: true,
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
-              hintText: 'Contribute insights, updates, and ideas crucial for team synergy ...',
+              hintText:
+                  'Contribute insights, updates, and ideas crucial for team synergy ...',
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -226,7 +234,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
   }
 
   Widget _goalField() {
-    final _taskState = Provider.of<TaskProvider>(context, listen: false);
+    final _goalState = Provider.of<GoalProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -240,7 +248,8 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
         eightVerticalSpace,
         InkWell(
           onTap: () {
-            CustomDialog.bottomSheet(context, const SelectParentGoalBottomSheet());
+            CustomDialog.bottomSheet(
+                context, const SelectParentGoalBottomSheet());
           },
           child: Container(
             decoration: BoxDecoration(
@@ -253,12 +262,9 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 1.4,
+                    width: MediaQuery.of(context).size.width / 1.4,
                     child: Text(
-                      _taskState.selectedGoal,
+                      _goalState.selectedParentGoal,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: tTextStyleRegular.copyWith(
@@ -304,10 +310,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
               ),
               eightHorizontalSpace,
               SizedBox(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 1.4,
+                width: MediaQuery.of(context).size.width / 1.4,
                 child: Text(
                   title,
                   maxLines: 2,
