@@ -42,7 +42,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _header(),
+                _header(context),
                 const Divider(),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -68,7 +68,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
     );
   }
 
-  Widget _header() {
+  Widget _header(BuildContext context) {
     final _taskState = Provider.of<TaskProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),

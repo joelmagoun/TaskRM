@@ -122,7 +122,6 @@ class TaskProvider extends ChangeNotifier {
         });
       } else {
        // CustomSnack.warningSnack('No task on your queue', context);
-        print('No task on your queue');
       }
     } catch (e) {
      // CustomSnack.warningSnack(e.toString(), context);
@@ -165,11 +164,9 @@ class TaskProvider extends ChangeNotifier {
             'userID': uid,
             'goal': goal,
           }).then((value) {
-            print('task added one ');
             Navigator.pop(context);
         CustomSnack.successSnack('Task is added successfully!', context);
             getTaskList();
-            print('task added two ');
       });
       notifyListeners();
 

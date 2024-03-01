@@ -92,7 +92,6 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                                       title: item.title,
                                       isTimeTracking: false,
                                       time: item.timeframe,
-                                      date: '13',
                                       cardColor: selectedTask == index
                                           ? secondaryColor
                                           : const Color(0xFFF0F1F8),
@@ -103,6 +102,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                                           : textGreyColor,
                                       isSelected:
                                           selectedTask == index ? true : false,
+                                      createdAt: '',
                                     );
                                   },
                                   separatorBuilder: (_, index) =>

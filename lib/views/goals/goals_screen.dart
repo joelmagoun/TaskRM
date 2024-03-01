@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:task_rm/providers/goals_provider.dart';
 import 'package:task_rm/providers/task_provider.dart';
 import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/color.dart';
@@ -19,9 +20,9 @@ class GoalsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    late List<String> _goalList = [];
+    //late List<String> _goalList = [];
 
-    return Consumer<TaskProvider>(builder: (_, _taskState, child) {
+    return Consumer<GoalProvider>(builder: (_, _goalState, child) {
       return Scaffold(
         appBar: AppBar(
           centerTitle: false,
@@ -31,7 +32,7 @@ class GoalsScreen extends StatelessWidget {
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
-            _goalList.isNotEmpty
+            _goalState.allGoalList.isNotEmpty
                 ? InkWell(
                 onTap: () {
                   CustomDialog.bottomSheet(
@@ -39,11 +40,11 @@ class GoalsScreen extends StatelessWidget {
                 },
                 child: SvgPicture.asset(filterIcon))
                 : const SizedBox.shrink(),
-            _goalList.isNotEmpty
+            _goalState.allGoalList.isNotEmpty
                 ? IconButton(
               onPressed: () {
                 CustomDialog.bottomSheet(
-                    context, const AddTaskBottomSheet());
+                    context, const AddNewGoalBottomSheet());
               },
               icon: const Icon(
                 Icons.add_circle_rounded,
@@ -54,28 +55,29 @@ class GoalsScreen extends StatelessWidget {
                 : const SizedBox.shrink(),
           ],
         ),
-        body: _goalList.isEmpty
+        body: _goalState.allGoalList.isEmpty
             ? _emptyListWidget(context)
             : Padding(
           padding: const EdgeInsets.all(16.0),
-          child: _taskState.isTaskLoading
-              ? const Center(child: CircularProgressIndicator())
+          child: _goalState.isGoalLoading
+              ? const Center(child: CircularProgressIndicator(color: primaryColor,))
               : ListView.separated(
               itemBuilder: (_, index) {
-                var item = _taskState.todayTaskList[index];
+                var item = _goalState.allGoalList[index];
                 return TaskTile(
                     onLongPress: () {},
                     title: item.title,
                     isTimeTracking: false,
-                    time: item.timeframe,
-                    date: '12/01/2024',
+                    time: '1',
                     cardColor: const Color(0xFFF0F1F8),
                     titleColor: black,
                     timeDateColor: textGreyColor,
-                    isSelected: false);
+                    isSelected: false,
+                    createdAt: item.createdAt.toString(),
+                );
               },
               separatorBuilder: (_, index) => eightVerticalSpace,
-              itemCount: _taskState.todayTaskList.length),
+              itemCount: _goalState.allGoalList.length),
         ),
       );
     });

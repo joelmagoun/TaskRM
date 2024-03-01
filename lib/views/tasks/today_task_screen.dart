@@ -64,11 +64,12 @@ class TodayTaskScreen extends StatelessWidget {
                               title: item.title,
                               isTimeTracking: false,
                               time: item.timeframe,
-                              date: '12/01/2024',
                               cardColor: const Color(0xFFF0F1F8),
                               titleColor: black,
                               timeDateColor: textGreyColor,
-                              isSelected: false);
+                              isSelected: false,
+                              createdAt: '',
+                          );
                         },
                         separatorBuilder: (_, index) => eightVerticalSpace,
                         itemCount: _taskState.todayTaskList.length),

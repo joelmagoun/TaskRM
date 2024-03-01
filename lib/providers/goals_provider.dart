@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
+import 'package:task_rm/models/goal.dart';
 import 'package:task_rm/utils/app_storage.dart';
 import 'package:task_rm/utils/custom_snack.dart';
 import '../models/task.dart';
@@ -18,75 +19,47 @@ class GoalProvider extends ChangeNotifier {
         .setEndpoint(AppWriteConstant.endPoint)
         .setProject(AppWriteConstant.projectId);
     db = Databases(client);
-    //getTaskList();
+    getGoalList();
   }
 
 
   /// get goal list ///
 
-  late bool _isTaskLoading = false;
-  bool get isTaskLoading => _isTaskLoading;
+  late bool _isGoalLoading = false;
 
-  late List<Task> _allTaskList = [];
-  List<Task> get allTaskList => _allTaskList;
+  bool get isGoalLoading => _isGoalLoading;
 
-  late List<Task> _todayTaskList = [];
-  List<Task> get todayTaskList => _todayTaskList;
+  late List<Goal> _allGoalList = [];
 
-  Future<void> getTaskList() async {
+  List<Goal> get allGoalList => _allGoalList;
+
+  Future<void> getGoalList() async {
     try {
-
-      _isTaskLoading = true;
+      _isGoalLoading = true;
       notifyListeners();
 
       final uid = await AppStorage.getUserId();
 
       final res = await db.listDocuments(
           databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.taskCollectionId,
-          queries: [Query.equal("userID", uid)]);
+          collectionId: AppWriteConstant.goalCollectionId,
+          queries: [Query.equal("userId", uid)]);
 
       if (res.documents.isNotEmpty) {
 
-        _allTaskList.clear();
-        notifyListeners();
-        _todayTaskList.clear();
+        _allGoalList.clear();
         notifyListeners();
 
         res.documents.forEach((e) {
-          _allTaskList.add(Task(
-              id: e.$id ?? '',
-              title: e.data['title'] ?? '',
-              type: e.data['type'] ?? '',
-              priority: e.data['priority'] ?? '',
-              timeframe: e.data['timeframe'] ?? '',
-              description: e.data['description'] ?? '',
-              createdAt: DateTime.now(),
-              expectedCompletion: DateTime.now(),
-              isMarkedForToday: false,
-              jiraID: e.data['jiraID'] ?? '',
-              userID: e.data['userID'] ?? '',
-              goal: e.data['goal'] ?? ''
-          ));
+          _allGoalList.add(
+              Goal(id: e.$id ?? '',
+                  title: e.data['title'] ?? '',
+                  type: e.data['type'] ?? '',
+                  description: e.data['description'] ?? '',
+                  isCompleted: false,
+                  userId: e.data['userId'] ?? '',
+                  createdAt: DateTime.parse(e.data['createdAt'])));
           notifyListeners();
-
-          if(e.data['timeframe'] == 'Today'){
-            _todayTaskList.add(Task(
-                id: e.$id ?? '',
-                title: e.data['title'] ?? '',
-                type: e.data['type'] ?? '',
-                priority: e.data['priority'] ?? '',
-                timeframe: e.data['timeframe'] ?? '',
-                description: e.data['description'] ?? '',
-                createdAt: DateTime.now(),
-                expectedCompletion: DateTime.now(),
-                isMarkedForToday: false,
-                jiraID: e.data['jiraID'] ?? '',
-                userID: e.data['userID'] ?? '',
-                goal: e.data['goal'] ?? ''
-            ));
-            notifyListeners();
-          }
 
         });
       } else {
@@ -96,8 +69,8 @@ class GoalProvider extends ChangeNotifier {
     } catch (e) {
       // CustomSnack.warningSnack(e.toString(), context);
       print(e.toString());
-    }finally{
-      _isTaskLoading = false;
+    } finally {
+      _isGoalLoading = false;
       notifyListeners();
     }
   }
@@ -119,8 +92,7 @@ class GoalProvider extends ChangeNotifier {
     Navigator.pop(context);
   }
 
-  Future<void> addNewGoal(
-      String title,
+  Future<void> addNewGoal(String title,
       String description,
       String type,
       BuildContext context) async {
@@ -135,28 +107,19 @@ class GoalProvider extends ChangeNotifier {
           collectionId: AppWriteConstant.goalCollectionId,
           documentId: ID.unique(),
           data: {
-            'createdAt': DateTime.now(),
-            'updatedAt': DateTime.now(),
             'title': title,
             'userId': uid,
             'description': description,
-            'isCompleted': false,
-            'totalMinutesSpent': 00,
             'type': type,
+            'parentGoal': _selectedParentGoal,
+            'createdAt': DateTime.now().toString()
           }).then((value) {
         Navigator.pop(context);
         CustomSnack.successSnack('Goal added successfully.', context);
-       // getTaskList();
+        // getTaskList();
         print('task added two ');
       });
       notifyListeners();
-
-      // if (res.data.isNotEmpty) {
-      //   _allFeedList.clear();
-      //   notifyListeners();
-      //   getFeedList();
-      //   // Navigator.pushNamed(context, Routes.moments);
-      // }
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {

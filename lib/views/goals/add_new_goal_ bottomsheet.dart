@@ -40,7 +40,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _header(),
+                _header(context),
                 const Divider(),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -50,10 +50,6 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                       _typeField(),
                       _descriptionField(),
                       _goalField(),
-                      PrimaryButton(onTap: () async {
-                        await _goalState.addNewGoal(_titleController.text,
-                            _descriptionController.text, selectedType, context);
-                      }, buttonTitle: 'add'),
                       const SizedBox(
                         height: 48,
                       )
@@ -68,7 +64,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
     );
   }
 
-  Widget _header() {
+  Widget _header(BuildContext context) {
     final _goalState = Provider.of<GoalProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -87,33 +83,32 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
             'New Goal',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
-          IconButton(onPressed: () async {
-            await _goalState.addNewGoal(_titleController.text,
-                         _descriptionController.text, selectedType, context);
-          }, icon: const Icon(Icons.add))
-          // InkWell(
-          //   onTap: () async {
-          //     await _goalState.addNewGoal(_titleController.text,
-          //         _descriptionController.text, selectedType, context);
-          //   },
-          //   child: Container(
-          //     height: 40,
-          //     width: 64,
-          //     alignment: Alignment.center,
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(8),
-          //       color: primaryColor,
-          //     ),
-          //     child: _goalState.isGoalAdding
-          //         ? const SizedBox(
-          //             height: 16, width: 16, child: CircularProgressIndicator())
-          //         : Text(
-          //             'Add',
-          //             style:
-          //                 tTextStyleBold.copyWith(color: white, fontSize: 16),
-          //           ),
-          //   ),
-          // )
+          InkWell(
+            onTap: () async {
+              await _goalState.addNewGoal(
+                  _titleController.text,
+                  _descriptionController.text,
+                  selectedType,
+                  context);
+            },
+            child: Container(
+              height: 40,
+              width: 64,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: primaryColor,
+              ),
+              child: _goalState.isGoalAdding
+                  ? const SizedBox(
+                      height: 16, width: 16, child: CircularProgressIndicator())
+                  : Text(
+                      'Add',
+                      style:
+                          tTextStyleBold.copyWith(color: white, fontSize: 16),
+                    ),
+            ),
+          )
         ],
       ),
     );
