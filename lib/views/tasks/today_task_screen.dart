@@ -9,7 +9,7 @@ import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/add_task_bottom_sheet.dart';
 import 'package:task_rm/views/tasks/taskQueue/filter_bottom_sheet.dart';
-import 'package:task_rm/views/tasks/widgets/task_tile.dart';
+import 'package:task_rm/widgets/components/task_tile.dart';
 import 'package:task_rm/widgets/empty_widget.dart';
 
 class TodayTaskScreen extends StatelessWidget {
@@ -68,7 +68,7 @@ class TodayTaskScreen extends StatelessWidget {
                               titleColor: black,
                               timeDateColor: textGreyColor,
                               isSelected: false,
-                              createdAt: '',
+                              createdAt: item.createdAt.toString(),
                           );
                         },
                         separatorBuilder: (_, index) => eightVerticalSpace,

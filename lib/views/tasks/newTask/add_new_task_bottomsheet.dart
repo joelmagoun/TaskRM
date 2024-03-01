@@ -99,23 +99,19 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                   context);
             },
             child: Container(
+              height: 40,
+              width: 60,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: primaryColor,
               ),
-              child: Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: _taskState.isTaskAdding
-                    ? const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
-                    )
-                    : Text(
-                  'Add',
-                  style:
-                  tTextStyleBold.copyWith(color: white, fontSize: 16),
-                ),
+              child: _taskState.isTaskAdding
+                  ? const CircularProgressIndicator()
+                  : Text(
+                'Add',
+                style:
+                tTextStyleBold.copyWith(color: white, fontSize: 16),
               ),
             ),
           )

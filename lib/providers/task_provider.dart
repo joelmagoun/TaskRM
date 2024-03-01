@@ -92,7 +92,7 @@ class TaskProvider extends ChangeNotifier {
               priority: e.data['priority'] ?? '',
               timeframe: e.data['timeframe'] ?? '',
               description: e.data['description'] ?? '',
-              createdAt: DateTime.now(),
+              createdAt: DateTime.parse(e.data['createdAt']),
               expectedCompletion: DateTime.now(),
               isMarkedForToday: false,
               jiraID: e.data['jiraID'] ?? '',
@@ -109,7 +109,7 @@ class TaskProvider extends ChangeNotifier {
                 priority: e.data['priority'] ?? '',
                 timeframe: e.data['timeframe'] ?? '',
                 description: e.data['description'] ?? '',
-                createdAt: DateTime.now(),
+                createdAt: DateTime.parse(e.data['createdAt']),
                 expectedCompletion: DateTime.now(),
                 isMarkedForToday: false,
                 jiraID: e.data['jiraID'] ?? '',
@@ -163,6 +163,7 @@ class TaskProvider extends ChangeNotifier {
             'description': description,
             'userID': uid,
             'goal': goal,
+            'createdAt': DateTime.now().toString()
           }).then((value) {
             Navigator.pop(context);
         CustomSnack.successSnack('Task is added successfully!', context);
@@ -183,4 +184,57 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+
+  /// move to today task list ///
+
+  late bool _isMoving = false;
+  bool get isMoving => _isMoving;
+
+  Future<void> moveToTodayTaskList(
+      String taskId,
+      String title,
+      String type,
+      String priority,
+      String description,
+      String goal,
+      String createdAt,
+      BuildContext context) async {
+    try {
+      _isMoving = true;
+      notifyListeners();
+
+      final uid = await AppStorage.getUserId();
+
+      var res = await db.updateDocument(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.taskCollectionId,
+          documentId: taskId,
+          data: {
+            'timeframe': 'Today',
+            'jiraID': '',
+            'title': title,
+            'type': type,
+            'isMarkedForToday': false,
+            'goalId': '',
+            'priority': priority,
+            'description': description,
+            'userID': uid,
+            'goal': goal,
+            'createdAt': createdAt
+          }).then((value) {
+        Navigator.pop(context);
+        CustomSnack.successSnack('Task is moved to today task list successfully!', context);
+        getTaskList();
+      });
+      notifyListeners();
+
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      _isMoving = false;
+      notifyListeners();
+    }
+  }
+
 }

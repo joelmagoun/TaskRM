@@ -116,8 +116,7 @@ class GoalProvider extends ChangeNotifier {
           }).then((value) {
         Navigator.pop(context);
         CustomSnack.successSnack('Goal added successfully.', context);
-        // getTaskList();
-        print('task added two ');
+        getGoalList();
       });
       notifyListeners();
     } catch (e) {

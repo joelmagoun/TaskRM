@@ -8,7 +8,7 @@ import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/taskQueue/filter_bottom_sheet.dart';
-import 'package:task_rm/views/tasks/widgets/task_tile.dart';
+import 'package:task_rm/widgets/components/task_tile.dart';
 import 'package:task_rm/widgets/empty_widget.dart';
 import '../../../utils/assets_path.dart';
 
@@ -20,9 +20,17 @@ class TaskQueueScreen extends StatefulWidget {
 }
 
 class _TaskQueueScreenState extends State<TaskQueueScreen> {
-
   late int selectedTask = -1;
   late bool isSelected = false;
+
+  /// for move to today list ///
+  late String selectedTaskId = '';
+  late String selectedTaskTitle = '';
+  late String selectedTaskType = '';
+  late String selectedTaskPriority = '';
+  late String selectedTaskDescription = '';
+  late String selectedTaskGoal = '';
+  late String selectedTaskCreatedAt = '';
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +87,6 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                               ? const Center(child: CircularProgressIndicator())
                               : ListView.separated(
                                   itemBuilder: (_, index) {
-
                                     var item = _taskState.allTaskList[index];
 
                                     return TaskTile(
@@ -87,6 +94,14 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                                         setState(() {
                                           selectedTask = index;
                                           isSelected = true;
+                                          selectedTaskId = item.id;
+                                          selectedTaskTitle = item.title;
+                                          selectedTaskType = item.type;
+                                          selectedTaskPriority = item.priority;
+                                          selectedTaskDescription =
+                                              item.description;
+                                          selectedTaskGoal = item.goal;
+                                          selectedTaskCreatedAt = item.createdAt.toString();
                                         });
                                       },
                                       title: item.title,
@@ -102,7 +117,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                                           : textGreyColor,
                                       isSelected:
                                           selectedTask == index ? true : false,
-                                      createdAt: '',
+                                      createdAt: item.createdAt.toString(),
                                     );
                                   },
                                   separatorBuilder: (_, index) =>
@@ -110,14 +125,18 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                                   itemCount: _taskState.allTaskList.length),
                         ),
                       ),
-                      isSelected ? _bottomSheet() : const SizedBox.shrink()
+                      isSelected
+                          ? _bottomSheet(context)
+                          : const SizedBox.shrink()
                     ],
                   )),
       );
     });
   }
 
-  Widget _bottomSheet() {
+  Widget _bottomSheet(BuildContext context) {
+    final _taskState = Provider.of<TaskProvider>(context, listen: false);
+
     return Container(
       height: 120,
       width: double.infinity,
@@ -158,7 +177,17 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
             eightHorizontalSpace,
             Expanded(
               child: InkWell(
-                onTap: () {},
+                onTap: () async {
+                  await _taskState.moveToTodayTaskList(
+                      selectedTaskId,
+                      selectedTaskTitle,
+                      selectedTaskType,
+                      selectedTaskPriority,
+                      selectedTaskDescription,
+                      selectedTaskGoal,
+                      selectedTaskCreatedAt,
+                      context);
+                },
                 child: Container(
                   height: 56,
                   alignment: Alignment.center,
@@ -166,10 +195,16 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                     borderRadius: BorderRadius.circular(12),
                     color: primaryColor,
                   ),
-                  child: Text(
-                    'Move to “Today’s tasks”',
-                    style: tTextStyle600.copyWith(fontSize: 16, color: white),
-                  ),
+                  child: _taskState.isMoving
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                          color: white,
+                        ))
+                      : Text(
+                          'Move to “Today’s tasks”',
+                          style: tTextStyle600.copyWith(
+                              fontSize: 16, color: white),
+                        ),
                 ),
               ),
             )
