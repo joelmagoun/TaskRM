@@ -64,6 +64,17 @@ class TaskProvider extends ChangeNotifier {
   late List<Task> _todayTaskList = [];
   List<Task> get todayTaskList => _todayTaskList;
 
+
+  /// for filter  ///
+  late String _selectedFilterType = '';
+  String get selectedFilterType => _selectedFilterType;
+
+  void getFilterType(String workType){
+    _selectedFilterType = workType;
+    notifyListeners();
+  }
+
+
   Future<void> getTaskList() async {
     try {
 
@@ -102,21 +113,43 @@ class TaskProvider extends ChangeNotifier {
           notifyListeners();
 
           if(e.data['timeframe'] == 'Today'){
-            _todayTaskList.add(Task(
-                id: e.$id ?? '',
-                title: e.data['title'] ?? '',
-                type: e.data['type'] ?? '',
-                priority: e.data['priority'] ?? '',
-                timeframe: e.data['timeframe'] ?? '',
-                description: e.data['description'] ?? '',
-                createdAt: DateTime.parse(e.data['createdAt']),
-                expectedCompletion: DateTime.now(),
-                isMarkedForToday: false,
-                jiraID: e.data['jiraID'] ?? '',
-                userID: e.data['userID'] ?? '',
-                goal: e.data['goal'] ?? ''
-            ));
-            notifyListeners();
+
+            if(_selectedFilterType == ''){
+              _todayTaskList.add(Task(
+                  id: e.$id ?? '',
+                  title: e.data['title'] ?? '',
+                  type: e.data['type'] ?? '',
+                  priority: e.data['priority'] ?? '',
+                  timeframe: e.data['timeframe'] ?? '',
+                  description: e.data['description'] ?? '',
+                  createdAt: DateTime.parse(e.data['createdAt']),
+                  expectedCompletion: DateTime.now(),
+                  isMarkedForToday: false,
+                  jiraID: e.data['jiraID'] ?? '',
+                  userID: e.data['userID'] ?? '',
+                  goal: e.data['goal'] ?? ''
+              ));
+              notifyListeners();
+            }else if(_selectedFilterType != ''){
+              if(e.data['type'] == _selectedFilterType){
+                _todayTaskList.add(Task(
+                    id: e.$id ?? '',
+                    title: e.data['title'] ?? '',
+                    type: e.data['type'] ?? '',
+                    priority: e.data['priority'] ?? '',
+                    timeframe: e.data['timeframe'] ?? '',
+                    description: e.data['description'] ?? '',
+                    createdAt: DateTime.parse(e.data['createdAt']),
+                    expectedCompletion: DateTime.now(),
+                    isMarkedForToday: false,
+                    jiraID: e.data['jiraID'] ?? '',
+                    userID: e.data['userID'] ?? '',
+                    goal: e.data['goal'] ?? ''
+                ));
+                notifyListeners();
+              }
+            }
+
           }
 
         });

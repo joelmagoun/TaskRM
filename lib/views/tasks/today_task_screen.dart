@@ -8,13 +8,18 @@ import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/add_task_bottom_sheet.dart';
-import 'package:task_rm/views/tasks/taskQueue/filter_bottom_sheet.dart';
+import 'package:task_rm/views/tasks/newTask/today_filter_bottomsheet.dart';
 import 'package:task_rm/widgets/components/task_tile.dart';
 import 'package:task_rm/widgets/empty_widget.dart';
 
-class TodayTaskScreen extends StatelessWidget {
+class TodayTaskScreen extends StatefulWidget {
   const TodayTaskScreen({Key? key}) : super(key: key);
 
+  @override
+  State<TodayTaskScreen> createState() => _TodayTaskScreenState();
+}
+
+class _TodayTaskScreenState extends State<TodayTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TaskProvider>(builder: (_, _taskState, child) {
@@ -27,11 +32,12 @@ class TodayTaskScreen extends StatelessWidget {
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
-            _taskState.todayTaskList.isNotEmpty
+            _taskState.todayTaskList.isNotEmpty ||
+                    _taskState.selectedFilterType != ''
                 ? InkWell(
                     onTap: () {
                       CustomDialog.bottomSheet(
-                          context, const FilterBottomSheet());
+                          context, const TodayFilterBottomSheet());
                     },
                     child: SvgPicture.asset(filterIcon))
                 : const SizedBox.shrink(),
@@ -54,25 +60,7 @@ class TodayTaskScreen extends StatelessWidget {
             ? _emptyListWidget(context)
             : Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: _taskState.isTaskLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : ListView.separated(
-                        itemBuilder: (_, index) {
-                          var item = _taskState.todayTaskList[index];
-                          return TaskTile(
-                              onLongPress: () {},
-                              title: item.title,
-                              isTimeTracking: false,
-                              time: item.timeframe,
-                              cardColor: const Color(0xFFF0F1F8),
-                              titleColor: black,
-                              timeDateColor: textGreyColor,
-                              isSelected: false,
-                              createdAt: item.createdAt.toString(),
-                          );
-                        },
-                        separatorBuilder: (_, index) => eightVerticalSpace,
-                        itemCount: _taskState.todayTaskList.length),
+                child: _taskList(context),
               ),
       );
     });
@@ -102,4 +90,90 @@ class TodayTaskScreen extends StatelessWidget {
       ],
     );
   }
+
+  Widget _taskList(BuildContext context) {
+
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
+
+    if (taskState.isTaskLoading) {
+      return const Center(
+          child: CircularProgressIndicator(
+            color: primaryColor,
+          ));
+    } else {
+      if (taskState.selectedFilterType == '') {
+        return ListView.separated(
+            itemBuilder: (_, index) {
+              var item = taskState.todayTaskList[index];
+              return TaskTile(
+                onLongPress: () {},
+                title: item.title,
+                isTimeTracking: false,
+                time: item.timeframe,
+                cardColor: const Color(0xFFF0F1F8),
+                titleColor: black,
+                timeDateColor: textGreyColor,
+                isSelected: false,
+                createdAt: item.createdAt.toString(),
+              );
+            },
+            separatorBuilder: (_, index) => eightVerticalSpace,
+            itemCount: taskState.todayTaskList.length);
+      } else {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            eightVerticalSpace,
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: secondaryColor),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      taskState.selectedFilterType,
+                      style: tTextStyleBold.copyWith(color: white, fontSize: 16),
+                    ),
+                    IconButton(
+                        onPressed: () async {
+                          taskState.getFilterType('');
+                          await taskState.getTaskList();
+                        },
+                        icon: const Icon(
+                          Icons.clear,
+                          color: white,
+                        ))
+                  ],
+                ),
+              ),
+            ),
+            sixteenVerticalSpace,
+            Expanded(
+              child: ListView.separated(
+                  itemBuilder: (_, index) {
+                    var item = taskState.todayTaskList[index];
+                    return TaskTile(
+                      onLongPress: () {},
+                      title: item.title,
+                      isTimeTracking: false,
+                      time: item.timeframe,
+                      cardColor: const Color(0xFFF0F1F8),
+                      titleColor: black,
+                      timeDateColor: textGreyColor,
+                      isSelected: false,
+                      createdAt: item.createdAt.toString(),
+                    );
+                  },
+                  separatorBuilder: (_, index) => eightVerticalSpace,
+                  itemCount: taskState.todayTaskList.length),
+            )
+          ],
+        );
+      }
+    }
+  }
+
 }

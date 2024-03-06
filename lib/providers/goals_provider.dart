@@ -51,7 +51,6 @@ class GoalProvider extends ChangeNotifier {
           collectionId: AppWriteConstant.goalCollectionId,
           queries: [
             Query.equal("userId", uid),
-            //Query.equal("type", workType)
           ]);
 
       if (res.documents.isNotEmpty) {
