@@ -7,17 +7,16 @@ import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../providers/goals_provider.dart';
 
-class FilterBottomSheet extends StatefulWidget {
-  const FilterBottomSheet({
+class GoalFilterBottomSheet extends StatefulWidget {
+  const GoalFilterBottomSheet({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<FilterBottomSheet> createState() => _FilterBottomSheetState();
+  State<GoalFilterBottomSheet> createState() => _GoalFilterBottomSheetState();
 }
 
-class _FilterBottomSheetState extends State<FilterBottomSheet> {
-  late String selectedTime = '';
+class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
   late String selectedType = '';
 
   @override
@@ -25,7 +24,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     return Material(
       color: Colors.transparent,
       child: Container(
-        height: MediaQuery.of(context).size.height / 1.2,
+        height: MediaQuery.of(context).size.height / 2,
         width: double.infinity,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -83,91 +82,6 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Timeframe',
-            style: tTextStyle500.copyWith(fontSize: 20, color: black),
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Today';
-              });
-            },
-            title: 'Today',
-            checkBoxColor: selectedTime == 'Today' ? primaryColor : white,
-            boxBorderColor: selectedTime == 'Today' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = '3 days';
-              });
-            },
-            title: '3 days',
-            checkBoxColor: selectedTime == '3 days' ? primaryColor : white,
-            boxBorderColor: selectedTime == '3 days' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Week';
-              });
-            },
-            title: 'Week',
-            checkBoxColor: selectedTime == 'Week' ? primaryColor : white,
-            boxBorderColor: selectedTime == 'Week' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Fortnight';
-              });
-            },
-            title: 'Fortnight',
-            checkBoxColor: selectedTime == 'Fortnight' ? primaryColor : white,
-            boxBorderColor:
-                selectedTime == 'Fortnight' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Month';
-              });
-            },
-            title: 'Month',
-            checkBoxColor: selectedTime == 'Month' ? primaryColor : white,
-            boxBorderColor: selectedTime == 'Month' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = '90 days';
-              });
-            },
-            title: '90 days',
-            checkBoxColor: selectedTime == '90 days' ? primaryColor : white,
-            boxBorderColor: selectedTime == '90 days' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Year';
-              });
-            },
-            title: 'Year',
-            checkBoxColor: selectedTime == 'Year' ? primaryColor : white,
-            boxBorderColor: selectedTime == 'Year' ? trans : secondaryColor,
-          ),
-          const SizedBox(
-            height: 48,
-          ),
-          Text(
             'Type',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
@@ -191,9 +105,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             },
             title: 'Personal Project',
             checkBoxColor:
-                selectedType == 'Personal Project' ? primaryColor : white,
+            selectedType == 'Personal Project' ? primaryColor : white,
             boxBorderColor:
-                selectedType == 'Personal Project' ? trans : secondaryColor,
+            selectedType == 'Personal Project' ? trans : secondaryColor,
           ),
           sixteenVerticalSpace,
           FilterOptionTile(
@@ -210,12 +124,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             height: 48,
           ),
           PrimaryButton(
-            onTap: () {
-              goalState.getGoalList();
+            onTap: () async {
+              goalState.getFilterType(selectedType);
+              await goalState.getGoalList();
               Navigator.pop(context);
             },
             buttonTitle: 'Apply',
-            buttonColor: selectedTime == '' && selectedType == ''
+            buttonColor: selectedType == ''
                 ? primaryLight
                 : primaryColor,
           ),

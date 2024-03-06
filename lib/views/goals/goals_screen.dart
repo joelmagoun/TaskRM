@@ -8,7 +8,7 @@ import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/goals/add_new_goal_%20bottomsheet.dart';
-import 'package:task_rm/views/tasks/taskQueue/filter_bottom_sheet.dart';
+import 'package:task_rm/views/goals/goal_filter_bottomsheet.dart';
 import 'package:task_rm/widgets/components/task_tile.dart';
 import 'package:task_rm/widgets/empty_widget.dart';
 
@@ -17,7 +17,6 @@ class GoalsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Consumer<GoalProvider>(builder: (_, _goalState, child) {
       return Scaffold(
         appBar: AppBar(
@@ -28,14 +27,16 @@ class GoalsScreen extends StatelessWidget {
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
-            _goalState.allGoalList.isNotEmpty
-                ? InkWell(
-                    onTap: () {
-                      CustomDialog.bottomSheet(
-                          context, const FilterBottomSheet());
-                    },
-                    child: SvgPicture.asset(filterIcon))
-                : const SizedBox.shrink(),
+            if (_goalState.allGoalList.isNotEmpty ||
+                _goalState.selectedFilterType != '')
+              InkWell(
+                  onTap: () {
+                    CustomDialog.bottomSheet(
+                        context, const GoalFilterBottomSheet());
+                  },
+                  child: SvgPicture.asset(filterIcon))
+            else
+              const SizedBox.shrink(),
             _goalState.allGoalList.isNotEmpty
                 ? IconButton(
                     onPressed: () {
@@ -49,34 +50,14 @@ class GoalsScreen extends StatelessWidget {
                     iconSize: 42,
                   )
                 : const SizedBox.shrink(),
+            sixteenHorizontalSpace,
           ],
         ),
         body: _goalState.allGoalList.isEmpty
             ? _emptyListWidget(context)
             : Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: _goalState.isGoalLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                        color: primaryColor,
-                      ))
-                    : ListView.separated(
-                        itemBuilder: (_, index) {
-                          var item = _goalState.allGoalList[index];
-                          return TaskTile(
-                            onLongPress: () {},
-                            title: item.title,
-                            isTimeTracking: false,
-                            time: '00',
-                            cardColor: const Color(0xFFF0F1F8),
-                            titleColor: black,
-                            timeDateColor: textGreyColor,
-                            isSelected: false,
-                            createdAt: item.createdAt.toString(),
-                          );
-                        },
-                        separatorBuilder: (_, index) => eightVerticalSpace,
-                        itemCount: _goalState.allGoalList.length),
+                child: _goalList(context),
               ),
       );
     });
@@ -105,5 +86,90 @@ class GoalsScreen extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Widget _goalList(BuildContext context) {
+
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
+
+    if (goalState.isGoalLoading) {
+      return const Center(
+          child: CircularProgressIndicator(
+        color: primaryColor,
+      ));
+    } else {
+      if (goalState.selectedFilterType == '') {
+        return ListView.separated(
+            itemBuilder: (_, index) {
+              var item = goalState.allGoalList[index];
+              return TaskTile(
+                onLongPress: () {},
+                title: item.title,
+                isTimeTracking: false,
+                time: '00',
+                cardColor: const Color(0xFFF0F1F8),
+                titleColor: black,
+                timeDateColor: textGreyColor,
+                isSelected: false,
+                createdAt: item.createdAt.toString(),
+              );
+            },
+            separatorBuilder: (_, index) => eightVerticalSpace,
+            itemCount: goalState.allGoalList.length);
+      } else {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            eightVerticalSpace,
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: secondaryColor),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      goalState.selectedFilterType,
+                      style: tTextStyleBold.copyWith(color: white, fontSize: 16),
+                    ),
+                    IconButton(
+                        onPressed: () async {
+                          goalState.getFilterType('');
+                          await goalState.getGoalList();
+                        },
+                        icon: const Icon(
+                          Icons.clear,
+                          color: white,
+                        ))
+                  ],
+                ),
+              ),
+            ),
+            sixteenVerticalSpace,
+            Expanded(
+              child: ListView.separated(
+                  itemBuilder: (_, index) {
+                    var item = goalState.allGoalList[index];
+                    return TaskTile(
+                      onLongPress: () {},
+                      title: item.title,
+                      isTimeTracking: false,
+                      time: '00',
+                      cardColor: const Color(0xFFF0F1F8),
+                      titleColor: black,
+                      timeDateColor: textGreyColor,
+                      isSelected: false,
+                      createdAt: item.createdAt.toString(),
+                    );
+                  },
+                  separatorBuilder: (_, index) => eightVerticalSpace,
+                  itemCount: goalState.allGoalList.length),
+            )
+          ],
+        );
+      }
+    }
   }
 }

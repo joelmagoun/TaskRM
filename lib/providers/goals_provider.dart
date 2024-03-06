@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:task_rm/models/goal.dart';
 import 'package:task_rm/utils/app_storage.dart';
 import 'package:task_rm/utils/custom_snack.dart';
-import '../models/task.dart';
 import '../utils/config/constants.dart';
 
 class GoalProvider extends ChangeNotifier {
@@ -22,7 +21,6 @@ class GoalProvider extends ChangeNotifier {
     getGoalList();
   }
 
-
   /// get goal list ///
 
   late bool _isGoalLoading = false;
@@ -32,6 +30,14 @@ class GoalProvider extends ChangeNotifier {
   late List<Goal> _allGoalList = [];
 
   List<Goal> get allGoalList => _allGoalList;
+
+  late String _selectedFilterType = '';
+  String get selectedFilterType => _selectedFilterType;
+
+  void getFilterType(String workType){
+    _selectedFilterType = workType;
+    notifyListeners();
+  }
 
   Future<void> getGoalList() async {
     try {
@@ -43,23 +49,41 @@ class GoalProvider extends ChangeNotifier {
       final res = await db.listDocuments(
           databaseId: AppWriteConstant.primaryDBId,
           collectionId: AppWriteConstant.goalCollectionId,
-          queries: [Query.equal("userId", uid)]);
+          queries: [
+            Query.equal("userId", uid),
+            //Query.equal("type", workType)
+          ]);
 
       if (res.documents.isNotEmpty) {
-
         _allGoalList.clear();
         notifyListeners();
 
         res.documents.forEach((e) {
-          _allGoalList.add(
-              Goal(id: e.$id ?? '',
+
+          if(_selectedFilterType == ''){
+            _allGoalList.add(Goal(
+                id: e.$id ?? '',
+                title: e.data['title'] ?? '',
+                type: e.data['type'] ?? '',
+                description: e.data['description'] ?? '',
+                isCompleted: false,
+                userId: e.data['userId'] ?? '',
+                createdAt: DateTime.parse(e.data['createdAt'])));
+            notifyListeners();
+          }else if(_selectedFilterType != ''){
+            if(e.data['type'] == _selectedFilterType){
+              _allGoalList.add(Goal(
+                  id: e.$id ?? '',
                   title: e.data['title'] ?? '',
                   type: e.data['type'] ?? '',
                   description: e.data['description'] ?? '',
                   isCompleted: false,
                   userId: e.data['userId'] ?? '',
                   createdAt: DateTime.parse(e.data['createdAt'])));
-          notifyListeners();
+              notifyListeners();
+            }
+
+          }
 
         });
       } else {
@@ -74,7 +98,6 @@ class GoalProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   /// add task state ///
 
@@ -92,9 +115,7 @@ class GoalProvider extends ChangeNotifier {
     Navigator.pop(context);
   }
 
-  Future<void> addNewGoal(String title,
-      String description,
-      String type,
+  Future<void> addNewGoal(String title, String description, String type,
       BuildContext context) async {
     try {
       _isGoalAdding = true;
@@ -126,5 +147,4 @@ class GoalProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }
