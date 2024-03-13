@@ -6,17 +6,18 @@ import 'package:task_rm/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../providers/goals_provider.dart';
+import '../../../providers/task_provider.dart';
 
-class FilterBottomSheet extends StatefulWidget {
-  const FilterBottomSheet({
+class TaskQueueFilterBottomSheet extends StatefulWidget {
+  const TaskQueueFilterBottomSheet({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<FilterBottomSheet> createState() => _FilterBottomSheetState();
+  State<TaskQueueFilterBottomSheet> createState() => _TaskQueueFilterBottomSheetState();
 }
 
-class _FilterBottomSheetState extends State<FilterBottomSheet> {
+class _TaskQueueFilterBottomSheetState extends State<TaskQueueFilterBottomSheet> {
   late String selectedTime = '';
   late String selectedType = '';
 
@@ -75,7 +76,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   Widget _allInfo() {
 
-    final goalState = Provider.of<GoalProvider>(context, listen: false);
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -210,8 +211,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             height: 48,
           ),
           PrimaryButton(
-            onTap: () {
-              goalState.getGoalList();
+            onTap: () async {
+              taskState.getQueueFilterTimeType(selectedType, selectedTime);
+              await taskState.getAllTaskList();
               Navigator.pop(context);
             },
             buttonTitle: 'Apply',

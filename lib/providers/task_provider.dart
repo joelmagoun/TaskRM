@@ -18,7 +18,8 @@ class TaskProvider extends ChangeNotifier {
         .setEndpoint(AppWriteConstant.endPoint)
         .setProject(AppWriteConstant.projectId);
     db = Databases(client);
-    getTaskList();
+    getTodayTaskList();
+    getAllTaskList();
   }
 
   /// Jira ///
@@ -53,31 +54,28 @@ class TaskProvider extends ChangeNotifier {
     Navigator.pop(context);
   }
 
-  /// get task list ///
+  /// get today task list ///
 
   late bool _isTaskLoading = false;
+
   bool get isTaskLoading => _isTaskLoading;
 
-  late List<Task> _allTaskList = [];
-  List<Task> get allTaskList => _allTaskList;
-
   late List<Task> _todayTaskList = [];
-  List<Task> get todayTaskList => _todayTaskList;
 
+  List<Task> get todayTaskList => _todayTaskList;
 
   /// for filter  ///
   late String _selectedFilterType = '';
+
   String get selectedFilterType => _selectedFilterType;
 
-  void getFilterType(String workType){
+  void getFilterType(String workType) {
     _selectedFilterType = workType;
     notifyListeners();
   }
 
-
-  Future<void> getTaskList() async {
+  Future<void> getTodayTaskList() async {
     try {
-
       _isTaskLoading = true;
       notifyListeners();
 
@@ -89,32 +87,12 @@ class TaskProvider extends ChangeNotifier {
           queries: [Query.equal("userID", uid)]);
 
       if (res.documents.isNotEmpty) {
-        
-        _allTaskList.clear();
-        notifyListeners();
         _todayTaskList.clear();
         notifyListeners();
-        
+
         res.documents.forEach((e) {
-          _allTaskList.add(Task(
-              id: e.$id ?? '',
-              title: e.data['title'] ?? '',
-              type: e.data['type'] ?? '',
-              priority: e.data['priority'] ?? '',
-              timeframe: e.data['timeframe'] ?? '',
-              description: e.data['description'] ?? '',
-              createdAt: DateTime.parse(e.data['createdAt']),
-              expectedCompletion: DateTime.now(),
-              isMarkedForToday: false,
-              jiraID: e.data['jiraID'] ?? '',
-              userID: e.data['userID'] ?? '',
-              goal: e.data['goal'] ?? ''
-          ));
-          notifyListeners();
-
-          if(e.data['timeframe'] == 'Today'){
-
-            if(_selectedFilterType == ''){
+          if (e.data['timeframe'] == 'Today') {
+            if (_selectedFilterType == '') {
               _todayTaskList.add(Task(
                   id: e.$id ?? '',
                   title: e.data['title'] ?? '',
@@ -127,11 +105,10 @@ class TaskProvider extends ChangeNotifier {
                   isMarkedForToday: false,
                   jiraID: e.data['jiraID'] ?? '',
                   userID: e.data['userID'] ?? '',
-                  goal: e.data['goal'] ?? ''
-              ));
+                  goal: e.data['goal'] ?? ''));
               notifyListeners();
-            }else if(_selectedFilterType != ''){
-              if(e.data['type'] == _selectedFilterType){
+            } else if (_selectedFilterType != '') {
+              if (e.data['type'] == _selectedFilterType) {
                 _todayTaskList.add(Task(
                     id: e.$id ?? '',
                     title: e.data['title'] ?? '',
@@ -144,23 +121,113 @@ class TaskProvider extends ChangeNotifier {
                     isMarkedForToday: false,
                     jiraID: e.data['jiraID'] ?? '',
                     userID: e.data['userID'] ?? '',
-                    goal: e.data['goal'] ?? ''
-                ));
+                    goal: e.data['goal'] ?? ''));
                 notifyListeners();
               }
             }
-
           }
-
         });
       } else {
-       // CustomSnack.warningSnack('No task on your queue', context);
+        // CustomSnack.warningSnack('No task on your queue', context);
       }
     } catch (e) {
-     // CustomSnack.warningSnack(e.toString(), context);
+      // CustomSnack.warningSnack(e.toString(), context);
       print(e.toString());
-    }finally{
+    } finally {
       _isTaskLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// all task list ///
+
+  late bool _isAllTaskLoading = false;
+
+  bool get isAllTaskLoading => _isAllTaskLoading;
+
+  late List<Task> _allTaskList = [];
+
+  List<Task> get allTaskList => _allTaskList;
+
+  late String _selectedQueueTimeFrame = '';
+
+  String get selectedQueueTimeFrame => _selectedQueueTimeFrame;
+  late String _selectedQueueType = '';
+
+  String get selectedQueueType => _selectedQueueType;
+
+  void getQueueFilterTimeType(String workType, String timeFrame) {
+    _selectedQueueType = workType;
+    notifyListeners();
+    _selectedQueueTimeFrame = timeFrame;
+    notifyListeners();
+  }
+
+  Future<void> getAllTaskList() async {
+    try {
+      _isAllTaskLoading = true;
+      notifyListeners();
+
+      final uid = await AppStorage.getUserId();
+
+      final res = await db.listDocuments(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.taskCollectionId,
+          queries: [Query.equal("userID", uid)]);
+
+      if (res.documents.isNotEmpty) {
+        _allTaskList.clear();
+        notifyListeners();
+
+        res.documents.forEach((e) {
+          if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
+            _allTaskList.add(Task(
+                id: e.$id ?? '',
+                title: e.data['title'] ?? '',
+                type: e.data['type'] ?? '',
+                priority: e.data['priority'] ?? '',
+                timeframe: e.data['timeframe'] ?? '',
+                description: e.data['description'] ?? '',
+                createdAt: DateTime.parse(e.data['createdAt']),
+                expectedCompletion: DateTime.now(),
+                isMarkedForToday: false,
+                jiraID: e.data['jiraID'] ?? '',
+                userID: e.data['userID'] ?? '',
+                goal: e.data['goal'] ?? ''));
+            notifyListeners();
+
+          } else if (_selectedQueueTimeFrame != ''
+              || _selectedQueueType != ''
+          ) {
+            if (
+             e.data['type'] == _selectedQueueType &&
+                e.data['timeframe'] == _selectedQueueTimeFrame) {
+
+              _allTaskList.add(Task(
+                  id: e.$id ?? '',
+                  title: e.data['title'] ?? '',
+                  type: e.data['type'] ?? '',
+                  priority: e.data['priority'] ?? '',
+                  timeframe: e.data['timeframe'] ?? '',
+                  description: e.data['description'] ?? '',
+                  createdAt: DateTime.parse(e.data['createdAt']),
+                  expectedCompletion: DateTime.now(),
+                  isMarkedForToday: false,
+                  jiraID: e.data['jiraID'] ?? '',
+                  userID: e.data['userID'] ?? '',
+                  goal: e.data['goal'] ?? ''));
+              notifyListeners();
+            }
+          }
+        });
+      } else {
+        // CustomSnack.warningSnack('No task on your queue', context);
+      }
+    } catch (e) {
+      // CustomSnack.warningSnack(e.toString(), context);
+
+    } finally {
+      _isAllTaskLoading = false;
       notifyListeners();
     }
   }
@@ -198,9 +265,10 @@ class TaskProvider extends ChangeNotifier {
             'goal': goal,
             'createdAt': DateTime.now().toString()
           }).then((value) {
-            Navigator.pop(context);
+        Navigator.pop(context);
         CustomSnack.successSnack('Task is added successfully!', context);
-            getTaskList();
+        getTodayTaskList();
+        getAllTaskList();
       });
       notifyListeners();
 
@@ -218,10 +286,10 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
-
   /// move to today task list ///
 
   late bool _isMoving = false;
+
   bool get isMoving => _isMoving;
 
   Future<void> moveToTodayTaskList(
@@ -257,11 +325,12 @@ class TaskProvider extends ChangeNotifier {
             'createdAt': createdAt
           }).then((value) {
         Navigator.pop(context);
-        CustomSnack.successSnack('Task is moved to today task list successfully!', context);
-        getTaskList();
+        CustomSnack.successSnack(
+            'Task is moved to today task list successfully!', context);
+        getTodayTaskList();
+        getAllTaskList();
       });
       notifyListeners();
-
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -269,5 +338,4 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

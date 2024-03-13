@@ -140,7 +140,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                     IconButton(
                         onPressed: () async {
                           taskState.getFilterType('');
-                          await taskState.getTaskList();
+                          await taskState.getTodayTaskList();
                         },
                         icon: const Icon(
                           Icons.clear,

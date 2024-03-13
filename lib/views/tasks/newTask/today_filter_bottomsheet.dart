@@ -127,7 +127,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
           PrimaryButton(
             onTap: () async {
               taskState.getFilterType(selectedType);
-              await taskState.getTaskList();
+              await taskState.getTodayTaskList();
               Navigator.pop(context);
             },
             buttonTitle: 'Apply',
