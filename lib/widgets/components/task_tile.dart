@@ -6,6 +6,8 @@ import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../routes/routes.dart';
+
 class TaskTile extends StatefulWidget {
   final VoidCallback onLongPress;
   final String title;
@@ -52,6 +54,9 @@ class _TaskTileState extends State<TaskTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: widget.onLongPress,
+      onTap: (){
+        Navigator.pushNamed(context, Routes.taskDetails);
+      },
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16), color: widget.cardColor
@@ -83,7 +88,7 @@ class _TaskTileState extends State<TaskTile> {
                                     Text(
                                       'Time tracking',
                                       style: tTextStyleRegular.copyWith(
-                                          fontSize: 14, color: textGreyColor),
+                                          fontSize: 14, color: iconColor),
                                     )
                                   ],
                                 )
@@ -146,7 +151,7 @@ class _TaskTileState extends State<TaskTile> {
                               Text(
                                 'Time tracking',
                                 style: tTextStyleRegular.copyWith(
-                                    fontSize: 14, color: textGreyColor),
+                                    fontSize: 14, color: iconColor),
                               )
                             ],
                           )

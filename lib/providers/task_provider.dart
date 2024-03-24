@@ -180,29 +180,8 @@ class TaskProvider extends ChangeNotifier {
         notifyListeners();
 
         res.documents.forEach((e) {
-          if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
-            _allTaskList.add(Task(
-                id: e.$id ?? '',
-                title: e.data['title'] ?? '',
-                type: e.data['type'] ?? '',
-                priority: e.data['priority'] ?? '',
-                timeframe: e.data['timeframe'] ?? '',
-                description: e.data['description'] ?? '',
-                createdAt: DateTime.parse(e.data['createdAt']),
-                expectedCompletion: DateTime.now(),
-                isMarkedForToday: false,
-                jiraID: e.data['jiraID'] ?? '',
-                userID: e.data['userID'] ?? '',
-                goal: e.data['goal'] ?? ''));
-            notifyListeners();
-
-          } else if (_selectedQueueTimeFrame != ''
-              || _selectedQueueType != ''
-          ) {
-            if (
-             e.data['type'] == _selectedQueueType &&
-                e.data['timeframe'] == _selectedQueueTimeFrame) {
-
+          if(e.data['timeframe'] != 'Today'){
+            if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
               _allTaskList.add(Task(
                   id: e.$id ?? '',
                   title: e.data['title'] ?? '',
@@ -217,6 +196,29 @@ class TaskProvider extends ChangeNotifier {
                   userID: e.data['userID'] ?? '',
                   goal: e.data['goal'] ?? ''));
               notifyListeners();
+
+            } else if (_selectedQueueTimeFrame != ''
+                || _selectedQueueType != ''
+            ) {
+              if (
+              e.data['type'] == _selectedQueueType &&
+                  e.data['timeframe'] == _selectedQueueTimeFrame) {
+
+                _allTaskList.add(Task(
+                    id: e.$id ?? '',
+                    title: e.data['title'] ?? '',
+                    type: e.data['type'] ?? '',
+                    priority: e.data['priority'] ?? '',
+                    timeframe: e.data['timeframe'] ?? '',
+                    description: e.data['description'] ?? '',
+                    createdAt: DateTime.parse(e.data['createdAt']),
+                    expectedCompletion: DateTime.now(),
+                    isMarkedForToday: false,
+                    jiraID: e.data['jiraID'] ?? '',
+                    userID: e.data['userID'] ?? '',
+                    goal: e.data['goal'] ?? ''));
+                notifyListeners();
+              }
             }
           }
         });
@@ -338,4 +340,5 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 }

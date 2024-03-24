@@ -112,7 +112,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                 time: item.timeframe,
                 cardColor: const Color(0xFFF0F1F8),
                 titleColor: black,
-                timeDateColor: textGreyColor,
+                timeDateColor: iconColor,
                 isSelected: false,
                 createdAt: item.createdAt.toString(),
               );
@@ -162,7 +162,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                       time: item.timeframe,
                       cardColor: const Color(0xFFF0F1F8),
                       titleColor: black,
-                      timeDateColor: textGreyColor,
+                      timeDateColor: iconColor,
                       isSelected: false,
                       createdAt: item.createdAt.toString(),
                     );

@@ -11,14 +11,14 @@ import 'package:task_rm/widgets/components/task_tile.dart';
 import 'package:task_rm/widgets/empty_widget.dart';
 import '../../../utils/assets_path.dart';
 
-class TaskQueueScreen extends StatefulWidget {
-  const TaskQueueScreen({Key? key}) : super(key: key);
+class TaskDetailsScreen extends StatefulWidget {
+  const TaskDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  State<TaskQueueScreen> createState() => _TaskQueueScreenState();
+  State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
 }
 
-class _TaskQueueScreenState extends State<TaskQueueScreen> {
+class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   late int selectedTask = -1;
   late bool isSelected = false;
 
@@ -40,18 +40,13 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
           child: AppBar(
             centerTitle: false,
             shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
-            title: _taskState.allTaskList.isEmpty
-                ? Text(
-              'Task queue',
-              style: tTextStyle500.copyWith(fontSize: 20, color: black),
-            )
-                : Column(
+            title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Task queue',
+                  'Task',
                   style:
-                  tTextStyle500.copyWith(fontSize: 20, color: black),
+                  tTextStyleRegular.copyWith(fontSize: 16, color: black),
                 ),
                 Text(
                   'Long press a task to move it to today’s list',
