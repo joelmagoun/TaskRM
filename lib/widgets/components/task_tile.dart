@@ -5,7 +5,6 @@ import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:timeago/timeago.dart' as timeago;
-
 import '../../routes/routes.dart';
 
 class TaskTile extends StatefulWidget {

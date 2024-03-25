@@ -3,12 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:task_rm/providers/task_provider.dart';
 import 'package:task_rm/utils/color.dart';
-import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
-import 'package:task_rm/views/tasks/taskQueue/task_queue_filter_bottom_sheet.dart';
-import 'package:task_rm/widgets/components/task_tile.dart';
-import 'package:task_rm/widgets/empty_widget.dart';
 import '../../../utils/assets_path.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
@@ -36,7 +32,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     return Consumer<TaskProvider>(builder: (_, _taskState, child) {
       return Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(65.0),
+          preferredSize: const Size.fromHeight(60.0),
           child: AppBar(
             centerTitle: false,
             shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
@@ -45,206 +41,37 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
               children: [
                 Text(
                   'Task',
-                  style:
-                  tTextStyleRegular.copyWith(fontSize: 16, color: black),
+                  style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
                 ),
                 Text(
-                  'Long press a task to move it to today’s list',
+                  'Task title',
                   maxLines: 2,
                   style: tTextStyleRegular.copyWith(fontSize: 14),
                 ),
               ],
             ),
-            actions: [
-              _taskState.allTaskList.isNotEmpty ||
-                  _taskState.selectedQueueType != '' ||
-                  _taskState.selectedQueueTimeFrame != ''
-                  ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: InkWell(
-                    onTap: () {
-                      CustomDialog.bottomSheet(
-                          context, const TaskQueueFilterBottomSheet());
-                    },
-                    child: SvgPicture.asset(filterIcon)),
-              ) : const SizedBox.shrink()
+            actions: [SvgPicture.asset(menuIcon), sixteenHorizontalSpace],
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              _infoTile(typeIcon, 'Type', 'type content'),
+              primaryVerticalSpace,
+              _infoTile(priorityIcon, 'Priority', 'priority content'),
+              primaryVerticalSpace,
+              _infoTile(timeFrameIcon, 'Timeframe', 'timeFrame content'),
+              primaryVerticalSpace,
+              _infoTile(descriptionIcon, 'Description', 'description content'),
+              primaryVerticalSpace,
+              _infoTile(goalIcon, 'Goal', 'goal content'),
+              primaryVerticalSpace,
             ],
           ),
         ),
-        body: Center(
-            child: _taskState.allTaskList.isEmpty
-                ? const EmptyWidget(
-                icon: taskIcon,
-                title: 'No tasks on your queue',
-                subTitle: 'Go back, then add new tasks')
-                : _allTaskListWidget(context)),
       );
     });
-  }
-
-  Widget _allTaskListWidget(BuildContext context) {
-    final taskState = Provider.of<TaskProvider>(context, listen: false);
-
-    if (taskState.isAllTaskLoading) {
-      return const Center(
-          child: CircularProgressIndicator(
-            color: primaryColor,
-          ));
-    } else {
-      if (taskState.selectedQueueTimeFrame == '' ||
-          taskState.selectedQueueType == '') {
-        return Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.separated(
-                    itemBuilder: (_, index) {
-                      var item = taskState.allTaskList[index];
-
-                      return TaskTile(
-                        onLongPress: () {
-                          setState(() {
-                            selectedTask = index;
-                            isSelected = true;
-                            selectedTaskId = item.id;
-                            selectedTaskTitle = item.title;
-                            selectedTaskType = item.type;
-                            selectedTaskPriority = item.priority;
-                            selectedTaskDescription = item.description;
-                            selectedTaskGoal = item.goal;
-                            selectedTaskCreatedAt = item.createdAt.toString();
-                          });
-                        },
-                        title: item.title,
-                        isTimeTracking: false,
-                        time: item.timeframe,
-                        cardColor: selectedTask == index
-                            ? secondaryColor
-                            : const Color(0xFFF0F1F8),
-                        titleColor: selectedTask == index ? white : black,
-                        timeDateColor: selectedTask == index
-                            ? const Color(0xFFBFC2E0)
-                            : iconColor,
-                        isSelected: selectedTask == index ? true : false,
-                        createdAt: item.createdAt.toString(),
-                      );
-                    },
-                    separatorBuilder: (_, index) => eightVerticalSpace,
-                    itemCount: taskState.allTaskList.length),
-              ),
-            ),
-            isSelected ? _bottomSheet(context) : const SizedBox.shrink()
-          ],
-        );
-      } else {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: secondaryColor),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            taskState.selectedQueueTimeFrame,
-                            style: tTextStyleBold.copyWith(
-                                color: white, fontSize: 16),
-                          ),
-                          IconButton(
-                              onPressed: () async {
-                                taskState.getQueueFilterTimeType('', '');
-                                await taskState.getAllTaskList();
-                              },
-                              icon: const Icon(
-                                Icons.clear,
-                                color: white,
-                              ))
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: secondaryColor),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            taskState.selectedQueueType,
-                            style: tTextStyleBold.copyWith(
-                                color: white, fontSize: 16),
-                          ),
-                          IconButton(
-                              onPressed: () async {
-                                taskState.getQueueFilterTimeType('', '');
-                                await taskState.getAllTaskList();
-                              },
-                              icon: const Icon(
-                                Icons.clear,
-                                color: white,
-                              ))
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.separated(
-                    itemBuilder: (_, index) {
-                      var item = taskState.allTaskList[index];
-
-                      return TaskTile(
-                        onLongPress: () {
-                          setState(() {
-                            selectedTask = index;
-                            isSelected = true;
-                            selectedTaskId = item.id;
-                            selectedTaskTitle = item.title;
-                            selectedTaskType = item.type;
-                            selectedTaskPriority = item.priority;
-                            selectedTaskDescription = item.description;
-                            selectedTaskGoal = item.goal;
-                            selectedTaskCreatedAt = item.createdAt.toString();
-                          });
-                        },
-                        title: item.title,
-                        isTimeTracking: false,
-                        time: item.timeframe,
-                        cardColor: selectedTask == index
-                            ? secondaryColor
-                            : const Color(0xFFF0F1F8),
-                        titleColor: selectedTask == index ? white : black,
-                        timeDateColor: selectedTask == index
-                            ? const Color(0xFFBFC2E0)
-                            : iconColor,
-                        isSelected: selectedTask == index ? true : false,
-                        createdAt: item.createdAt.toString(),
-                      );
-                    },
-                    separatorBuilder: (_, index) => eightVerticalSpace,
-                    itemCount: taskState.allTaskList.length),
-              ),
-            ),
-            isSelected ? _bottomSheet(context) : const SizedBox.shrink()
-          ],
-        );
-      }
-    }
   }
 
   Widget _bottomSheet(BuildContext context) {
@@ -310,20 +137,61 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   ),
                   child: _taskState.isMoving
                       ? const Center(
-                      child: CircularProgressIndicator(
-                        color: white,
-                      ))
+                          child: CircularProgressIndicator(
+                          color: white,
+                        ))
                       : Text(
-                    'Move to “Today’s tasks”',
-                    style: tTextStyle600.copyWith(
-                        fontSize: 16, color: white),
-                  ),
+                          'Move to “Today’s tasks”',
+                          style: tTextStyle600.copyWith(
+                              fontSize: 16, color: white),
+                        ),
                 ),
               ),
             )
           ],
         ),
       ),
+    );
+  }
+
+  Widget _infoTile(String icon, String title, String content) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SvgPicture.asset(icon),
+            const SizedBox(
+              width: 4,
+            ),
+            Text(
+              title,
+              style: tTextStyle500.copyWith(
+                  fontSize: 14, color: const Color(0xFFAAAAAA)),
+            )
+          ],
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SvgPicture.asset(
+              icon,
+              color: trans,
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Text(
+              content,
+              style: tTextStyleRegular.copyWith(
+                  fontSize: 16, color: textColorBold),
+            )
+          ],
+        ),
+      ],
     );
   }
 }
