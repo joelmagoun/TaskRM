@@ -22,7 +22,7 @@ class TodayTaskScreen extends StatefulWidget {
 class _TodayTaskScreenState extends State<TodayTaskScreen> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskProvider>(builder: (_, _taskState, child) {
+    return Consumer<TaskProvider>(builder: (_, taskState, child) {
       return Scaffold(
         appBar: AppBar(
           centerTitle: false,
@@ -32,8 +32,8 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
-            _taskState.todayTaskList.isNotEmpty ||
-                    _taskState.selectedFilterType != ''
+            taskState.todayTaskList.isNotEmpty ||
+                    taskState.selectedFilterType != ''
                 ? InkWell(
                     onTap: () {
                       CustomDialog.bottomSheet(
@@ -41,7 +41,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                     },
                     child: SvgPicture.asset(filterIcon))
                 : const SizedBox.shrink(),
-            _taskState.todayTaskList.isNotEmpty
+            taskState.todayTaskList.isNotEmpty
                 ? IconButton(
                     onPressed: () {
                       CustomDialog.bottomSheet(
@@ -54,11 +54,14 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                     iconSize: 42,
                   )
                 : const SizedBox.shrink(),
+            sixteenHorizontalSpace,
           ],
         ),
-        body: _taskState.todayTaskList.isEmpty
-            ? _emptyListWidget(context)
-            : Padding(
+        body:
+        // taskState.todayTaskList.isEmpty
+        //     ? _emptyListWidget(context)
+        //     :
+        Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: _taskList(context),
               ),
@@ -96,83 +99,131 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
     final taskState = Provider.of<TaskProvider>(context, listen: false);
 
     if (taskState.isTaskLoading) {
+
       return const Center(
           child: CircularProgressIndicator(
             color: primaryColor,
           ));
+
     } else {
-      if (taskState.selectedFilterType == '') {
-        return ListView.separated(
-            itemBuilder: (_, index) {
-              var item = taskState.todayTaskList[index];
-              return TaskTile(
-                onLongPress: () {},
-                title: item.title,
-                isTimeTracking: false,
-                time: item.timeframe,
-                cardColor: const Color(0xFFF0F1F8),
-                titleColor: black,
-                timeDateColor: iconColor,
-                isSelected: false,
-                createdAt: item.createdAt.toString(),
-              );
-            },
-            separatorBuilder: (_, index) => eightVerticalSpace,
-            itemCount: taskState.todayTaskList.length);
-      } else {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            eightVerticalSpace,
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: secondaryColor),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      taskState.selectedFilterType,
-                      style: tTextStyleBold.copyWith(color: white, fontSize: 16),
-                    ),
-                    IconButton(
-                        onPressed: () async {
-                          taskState.getFilterType('');
-                          await taskState.getTodayTaskList();
-                        },
-                        icon: const Icon(
-                          Icons.clear,
-                          color: white,
-                        ))
-                  ],
-                ),
-              ),
-            ),
-            sixteenVerticalSpace,
-            Expanded(
-              child: ListView.separated(
-                  itemBuilder: (_, index) {
-                    var item = taskState.todayTaskList[index];
-                    return TaskTile(
-                      onLongPress: () {},
-                      title: item.title,
-                      isTimeTracking: false,
-                      time: item.timeframe,
-                      cardColor: const Color(0xFFF0F1F8),
-                      titleColor: black,
-                      timeDateColor: iconColor,
-                      isSelected: false,
-                      createdAt: item.createdAt.toString(),
-                    );
-                  },
-                  separatorBuilder: (_, index) => eightVerticalSpace,
-                  itemCount: taskState.todayTaskList.length),
-            )
-          ],
-        );
-      }
+
+     if(taskState.todayTaskList.isEmpty){
+
+       if(taskState.selectedFilterType == ''){
+         return _emptyListWidget(context);
+       }else{
+         return Column(
+           crossAxisAlignment: CrossAxisAlignment.start,
+           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+           children: [
+             Container(
+               decoration: BoxDecoration(
+                   borderRadius: BorderRadius.circular(100),
+                   color: secondaryColor),
+               child: Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                 child: Row(
+                   mainAxisSize: MainAxisSize.min,
+                   children: [
+                     Text(
+                       taskState.selectedFilterType,
+                       style: tTextStyleBold.copyWith(color: white, fontSize: 16),
+                     ),
+                     IconButton(
+                         onPressed: () async {
+                           taskState.getFilterType('');
+                           await taskState.getTodayTaskList();
+                         },
+                         icon: const Icon(
+                           Icons.clear,
+                           color: white,
+                         ))
+                   ],
+                 ),
+               ),
+             ),
+             _emptyListWidget(context), const SizedBox(height: 10, width: 10,),
+           ],
+         );
+       }
+
+     }else{
+
+       if (taskState.selectedFilterType == '') {
+         return ListView.separated(
+             itemBuilder: (_, index) {
+               var item = taskState.todayTaskList[index];
+               return TaskTile(
+                 onLongPress: () {},
+                 title: item.title,
+                 isTimeTracking: false,
+                 time: item.timeframe,
+                 cardColor: const Color(0xFFF0F1F8),
+                 titleColor: black,
+                 timeDateColor: iconColor,
+                 isSelected: false,
+                 createdAt: item.createdAt.toString(),
+               );
+             },
+             separatorBuilder: (_, index) => eightVerticalSpace,
+             itemCount: taskState.todayTaskList.length);
+       } else {
+         return Column(
+           crossAxisAlignment: CrossAxisAlignment.start,
+           children: [
+             eightVerticalSpace,
+             Container(
+               decoration: BoxDecoration(
+                   borderRadius: BorderRadius.circular(100),
+                   color: secondaryColor),
+               child: Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                 child: Row(
+                   mainAxisSize: MainAxisSize.min,
+                   children: [
+                     Text(
+                       taskState.selectedFilterType,
+                       style: tTextStyleBold.copyWith(color: white, fontSize: 16),
+                     ),
+                     IconButton(
+                         onPressed: () async {
+                           taskState.getFilterType('');
+                           await taskState.getTodayTaskList();
+                         },
+                         icon: const Icon(
+                           Icons.clear,
+                           color: white,
+                         ))
+                   ],
+                 ),
+               ),
+             ),
+             sixteenVerticalSpace,
+             Expanded(
+               child: ListView.separated(
+                   itemBuilder: (_, index) {
+                     var item = taskState.todayTaskList[index];
+                     return TaskTile(
+                       onLongPress: () {},
+                       title: item.title,
+                       isTimeTracking: false,
+                       time: item.timeframe,
+                       cardColor: const Color(0xFFF0F1F8),
+                       titleColor: black,
+                       timeDateColor: iconColor,
+                       isSelected: false,
+                       createdAt: item.createdAt.toString(),
+                     );
+                   },
+                   separatorBuilder: (_, index) => eightVerticalSpace,
+                   itemCount: taskState.todayTaskList.length),
+             )
+           ],
+         );
+       }
+
+     }
+
     }
   }
 
