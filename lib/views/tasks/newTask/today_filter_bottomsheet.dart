@@ -7,7 +7,6 @@ import 'package:task_rm/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 
-
 class TodayFilterBottomSheet extends StatefulWidget {
   const TodayFilterBottomSheet({
     Key? key,
@@ -18,7 +17,8 @@ class TodayFilterBottomSheet extends StatefulWidget {
 }
 
 class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
-  late String selectedType = '';
+
+  final List<String> _typeList = ['Work', 'Personal Project', 'Self'];
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +32,18 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              eightVerticalSpace,
-              _header(),
-              eightVerticalSpace,
-              const Divider(),
-              _allInfo()
-            ],
-          ),
+          child: Consumer<TaskProvider>(builder: (_, taskState, child) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                eightVerticalSpace,
+                _header(),
+                eightVerticalSpace,
+                const Divider(),
+                _allInfo()
+              ],
+            );
+          }),
         ),
       ),
     );
@@ -74,7 +76,6 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
   }
 
   Widget _allInfo() {
-
     final taskState = Provider.of<TaskProvider>(context, listen: false);
 
     return Padding(
@@ -86,59 +87,35 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
             'Type',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedType = 'Work';
-              });
-            },
-            title: 'Work',
-            checkBoxColor: selectedType == 'Work' ? primaryColor : white,
-            boxBorderColor: selectedType == 'Work' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedType = 'Personal Project';
-              });
-            },
-            title: 'Personal Project',
-            checkBoxColor:
-            selectedType == 'Personal Project' ? primaryColor : white,
-            boxBorderColor:
-            selectedType == 'Personal Project' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedType = 'Self';
-              });
-            },
-            title: 'Self',
-            checkBoxColor: selectedType == 'Self' ? primaryColor : white,
-            boxBorderColor: selectedType == 'Self' ? trans : secondaryColor,
-          ),
-          const SizedBox(
-            height: 48,
-          ),
+          ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (_, index) {
+                var type = _typeList[index];
+                return FilterOptionTile(
+                    onTap: () {
+                      taskState.getFilterType(type);
+                    },
+                    title: type,
+                    checkBoxColor: taskState.selectedFilterType == type
+                        ? primaryColor
+                        : white,
+                    boxBorderColor: taskState.selectedFilterType == type
+                        ? trans
+                        : secondaryColor);
+              },
+              separatorBuilder: (_, index) => sixteenVerticalSpace,
+              itemCount: _typeList.length),
           PrimaryButton(
             onTap: () async {
-              taskState.getFilterType(selectedType);
               await taskState.getTodayTaskList();
               Navigator.pop(context);
             },
             buttonTitle: 'Apply',
-            buttonColor: selectedType == ''
-                ? primaryLight
-                : primaryColor,
+            buttonColor: taskState.selectedFilterType == '' ? primaryLight : primaryColor,
           ),
           primaryVerticalSpace
         ],
       ),
     );
   }
-
 }

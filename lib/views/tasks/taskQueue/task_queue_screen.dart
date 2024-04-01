@@ -42,47 +42,50 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
             shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
             title: _taskState.allTaskList.isEmpty
                 ? Text(
-              'Task queue',
-              style: tTextStyle500.copyWith(fontSize: 20, color: black),
-            )
+                    'Task queue',
+                    style: tTextStyle500.copyWith(fontSize: 20, color: black),
+                  )
                 : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Task queue',
-                  style:
-                  tTextStyle500.copyWith(fontSize: 20, color: black),
-                ),
-                Text(
-                  'Long press a task to move it to today’s list',
-                  maxLines: 2,
-                  style: tTextStyleRegular.copyWith(fontSize: 14),
-                ),
-              ],
-            ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Task queue',
+                        style:
+                            tTextStyle500.copyWith(fontSize: 20, color: black),
+                      ),
+                      Text(
+                        'Long press a task to move it to today’s list',
+                        maxLines: 2,
+                        style: tTextStyleRegular.copyWith(fontSize: 14),
+                      ),
+                    ],
+                  ),
             actions: [
               _taskState.allTaskList.isNotEmpty ||
-                  _taskState.selectedQueueType != '' ||
-                  _taskState.selectedQueueTimeFrame != ''
+                      _taskState.selectedQueueType != '' ||
+                      _taskState.selectedQueueTimeFrame != ''
                   ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: InkWell(
-                    onTap: () {
-                      CustomDialog.bottomSheet(
-                          context, const TaskQueueFilterBottomSheet());
-                    },
-                    child: SvgPicture.asset(filterIcon)),
-              ) : const SizedBox.shrink()
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: InkWell(
+                          onTap: () {
+                            CustomDialog.bottomSheet(
+                                context, const TaskQueueFilterBottomSheet());
+                          },
+                          child: SvgPicture.asset(filterIcon)),
+                    )
+                  : const SizedBox.shrink()
             ],
           ),
         ),
-        body: Center(
-            child: _taskState.allTaskList.isEmpty
-                ? const EmptyWidget(
-                icon: taskIcon,
-                title: 'No tasks on your queue',
-                subTitle: 'Go back, then add new tasks')
-                : _allTaskListWidget(context)),
+        body: _allTaskListWidget(context),
+        // Center(
+        //     child: _taskState.allTaskList.isEmpty
+        //         ? const EmptyWidget(
+        //         icon: taskIcon,
+        //         title: 'No tasks on your queue',
+        //         subTitle: 'Go back, then add new tasks')
+        //         :
+        //     _allTaskListWidget(context)),
       );
     });
   }
@@ -91,164 +94,263 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
     final taskState = Provider.of<TaskProvider>(context, listen: false);
 
     if (taskState.isAllTaskLoading) {
+
       return const Center(
           child: CircularProgressIndicator(
-            color: primaryColor,
-          ));
+        color: primaryColor,
+      ));
+
     } else {
-      if (taskState.selectedQueueTimeFrame == '' ||
-          taskState.selectedQueueType == '') {
-        return Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.separated(
-                    itemBuilder: (_, index) {
-                      var item = taskState.allTaskList[index];
 
-                      return TaskTile(
-                        onLongPress: () {
-                          setState(() {
-                            selectedTask = index;
-                            isSelected = true;
-                            selectedTaskId = item.id;
-                            selectedTaskTitle = item.title;
-                            selectedTaskType = item.type;
-                            selectedTaskPriority = item.priority;
-                            selectedTaskDescription = item.description;
-                            selectedTaskGoal = item.goal;
-                            selectedTaskCreatedAt = item.createdAt.toString();
-                          });
-                        },
-                        title: item.title,
-                        isTimeTracking: false,
-                        time: item.timeframe,
-                        cardColor: selectedTask == index
-                            ? secondaryColor
-                            : const Color(0xFFF0F1F8),
-                        titleColor: selectedTask == index ? white : black,
-                        timeDateColor: selectedTask == index
-                            ? const Color(0xFFBFC2E0)
-                            : iconColor,
-                        isSelected: selectedTask == index ? true : false,
-                        createdAt: item.createdAt.toString(),
-                      );
-                    },
-                    separatorBuilder: (_, index) => eightVerticalSpace,
-                    itemCount: taskState.allTaskList.length),
+
+      if (taskState.allTaskList.isEmpty) {
+        if (taskState.selectedQueueType == '' || taskState.selectedQueueTimeFrame == '') {
+          return const EmptyWidget(
+              icon: taskIcon,
+              title: 'No tasks on your queue',
+              subTitle: 'Go back, then add new tasks');
+        } else {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: secondaryColor),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                taskState.selectedQueueTimeFrame,
+                                style: tTextStyleBold.copyWith(
+                                    color: white, fontSize: 16),
+                              ),
+                              IconButton(
+                                  onPressed: () async {
+                                    taskState.getQueueFilterTimeType('', '');
+                                    await taskState.getAllTaskList();
+                                  },
+                                  icon: const Icon(
+                                    Icons.clear,
+                                    color: white,
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ),
+                      eightHorizontalSpace,
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: secondaryColor),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                taskState.selectedQueueType,
+                                style: tTextStyleBold.copyWith(
+                                    color: white, fontSize: 16),
+                              ),
+                              IconButton(
+                                  onPressed: () async {
+                                    taskState.getQueueFilterTimeType('', '');
+                                    await taskState.getAllTaskList();
+                                  },
+                                  icon: const Icon(
+                                    Icons.clear,
+                                    color: white,
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            isSelected ? _bottomSheet(context) : const SizedBox.shrink()
-          ],
-        );
+              const EmptyWidget(
+                  icon: taskIcon,
+                  title: 'No matching tasks',
+                  subTitle: 'Go back, then add new tasks'),
+              const SizedBox(
+                height: 10,
+                width: 10,
+              ),
+            ],
+          );
+        }
       } else {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: secondaryColor),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            taskState.selectedQueueTimeFrame,
-                            style: tTextStyleBold.copyWith(
-                                color: white, fontSize: 16),
-                          ),
-                          IconButton(
-                              onPressed: () async {
-                                taskState.getQueueFilterTimeType('', '');
-                                await taskState.getAllTaskList();
-                              },
-                              icon: const Icon(
-                                Icons.clear,
-                                color: white,
-                              ))
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: secondaryColor),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            taskState.selectedQueueType,
-                            style: tTextStyleBold.copyWith(
-                                color: white, fontSize: 16),
-                          ),
-                          IconButton(
-                              onPressed: () async {
-                                taskState.getQueueFilterTimeType('', '');
-                                await taskState.getAllTaskList();
-                              },
-                              icon: const Icon(
-                                Icons.clear,
-                                color: white,
-                              ))
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.separated(
-                    itemBuilder: (_, index) {
-                      var item = taskState.allTaskList[index];
+        if (taskState.selectedQueueTimeFrame == '' ||
+            taskState.selectedQueueType == '') {
+          return Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView.separated(
+                      itemBuilder: (_, index) {
+                        var item = taskState.allTaskList[index];
 
-                      return TaskTile(
-                        onLongPress: () {
-                          setState(() {
-                            selectedTask = index;
-                            isSelected = true;
-                            selectedTaskId = item.id;
-                            selectedTaskTitle = item.title;
-                            selectedTaskType = item.type;
-                            selectedTaskPriority = item.priority;
-                            selectedTaskDescription = item.description;
-                            selectedTaskGoal = item.goal;
-                            selectedTaskCreatedAt = item.createdAt.toString();
-                          });
-                        },
-                        title: item.title,
-                        isTimeTracking: false,
-                        time: item.timeframe,
-                        cardColor: selectedTask == index
-                            ? secondaryColor
-                            : const Color(0xFFF0F1F8),
-                        titleColor: selectedTask == index ? white : black,
-                        timeDateColor: selectedTask == index
-                            ? const Color(0xFFBFC2E0)
-                            : iconColor,
-                        isSelected: selectedTask == index ? true : false,
-                        createdAt: item.createdAt.toString(),
-                      );
-                    },
-                    separatorBuilder: (_, index) => eightVerticalSpace,
-                    itemCount: taskState.allTaskList.length),
+                        return TaskTile(
+                          onLongPress: () {
+                            setState(() {
+                              selectedTask = index;
+                              isSelected = true;
+                              selectedTaskId = item.id;
+                              selectedTaskTitle = item.title;
+                              selectedTaskType = item.type;
+                              selectedTaskPriority = item.priority;
+                              selectedTaskDescription = item.description;
+                              selectedTaskGoal = item.goal;
+                              selectedTaskCreatedAt = item.createdAt.toString();
+                            });
+                          },
+                          title: item.title,
+                          isTimeTracking: false,
+                          time: item.timeframe,
+                          cardColor: selectedTask == index
+                              ? secondaryColor
+                              : const Color(0xFFF0F1F8),
+                          titleColor: selectedTask == index ? white : black,
+                          timeDateColor: selectedTask == index
+                              ? const Color(0xFFBFC2E0)
+                              : iconColor,
+                          isSelected: selectedTask == index ? true : false,
+                          createdAt: item.createdAt.toString(),
+                        );
+                      },
+                      separatorBuilder: (_, index) => eightVerticalSpace,
+                      itemCount: taskState.allTaskList.length),
+                ),
               ),
-            ),
-            isSelected ? _bottomSheet(context) : const SizedBox.shrink()
-          ],
-        );
+              isSelected ? _bottomSheet(context) : const SizedBox.shrink()
+            ],
+          );
+        } else {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: secondaryColor),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                taskState.selectedQueueTimeFrame,
+                                style: tTextStyleBold.copyWith(
+                                    color: white, fontSize: 16),
+                              ),
+                              IconButton(
+                                  onPressed: () async {
+                                    taskState.getQueueFilterTimeType('', '');
+                                    await taskState.getAllTaskList();
+                                  },
+                                  icon: const Icon(
+                                    Icons.clear,
+                                    color: white,
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ),
+                      eightHorizontalSpace,
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: secondaryColor),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                taskState.selectedQueueType,
+                                style: tTextStyleBold.copyWith(
+                                    color: white, fontSize: 16),
+                              ),
+                              IconButton(
+                                  onPressed: () async {
+                                    taskState.getQueueFilterTimeType('', '');
+                                    await taskState.getAllTaskList();
+                                  },
+                                  icon: const Icon(
+                                    Icons.clear,
+                                    color: white,
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView.separated(
+                      itemBuilder: (_, index) {
+                        var item = taskState.allTaskList[index];
+
+                        return TaskTile(
+                          onLongPress: () {
+                            setState(() {
+                              selectedTask = index;
+                              isSelected = true;
+                              selectedTaskId = item.id;
+                              selectedTaskTitle = item.title;
+                              selectedTaskType = item.type;
+                              selectedTaskPriority = item.priority;
+                              selectedTaskDescription = item.description;
+                              selectedTaskGoal = item.goal;
+                              selectedTaskCreatedAt = item.createdAt.toString();
+                            });
+                          },
+                          title: item.title,
+                          isTimeTracking: false,
+                          time: item.timeframe,
+                          cardColor: selectedTask == index
+                              ? secondaryColor
+                              : const Color(0xFFF0F1F8),
+                          titleColor: selectedTask == index ? white : black,
+                          timeDateColor: selectedTask == index
+                              ? const Color(0xFFBFC2E0)
+                              : iconColor,
+                          isSelected: selectedTask == index ? true : false,
+                          createdAt: item.createdAt.toString(),
+                        );
+                      },
+                      separatorBuilder: (_, index) => eightVerticalSpace,
+                      itemCount: taskState.allTaskList.length),
+                ),
+              ),
+              isSelected ? _bottomSheet(context) : const SizedBox.shrink()
+            ],
+          );
+        }
       }
+
+
     }
   }
 
@@ -315,14 +417,14 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                   ),
                   child: _taskState.isMoving
                       ? const Center(
-                      child: CircularProgressIndicator(
-                        color: white,
-                      ))
+                          child: CircularProgressIndicator(
+                          color: white,
+                        ))
                       : Text(
-                    'Move to “Today’s tasks”',
-                    style: tTextStyle600.copyWith(
-                        fontSize: 16, color: white),
-                  ),
+                          'Move to “Today’s tasks”',
+                          style: tTextStyle600.copyWith(
+                              fontSize: 16, color: white),
+                        ),
                 ),
               ),
             )
@@ -331,4 +433,5 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
       ),
     );
   }
+
 }

@@ -57,11 +57,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
             sixteenHorizontalSpace,
           ],
         ),
-        body:
-        // taskState.todayTaskList.isEmpty
-        //     ? _emptyListWidget(context)
-        //     :
-        Padding(
+        body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: _taskList(context),
               ),

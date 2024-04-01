@@ -5,7 +5,6 @@ import 'package:task_rm/views/tasks/taskQueue/widgets/filter_option_tile.dart';
 import 'package:task_rm/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
-import '../../../providers/goals_provider.dart';
 import '../../../providers/task_provider.dart';
 
 class TaskQueueFilterBottomSheet extends StatefulWidget {
@@ -14,12 +13,22 @@ class TaskQueueFilterBottomSheet extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TaskQueueFilterBottomSheet> createState() => _TaskQueueFilterBottomSheetState();
+  State<TaskQueueFilterBottomSheet> createState() =>
+      _TaskQueueFilterBottomSheetState();
 }
 
-class _TaskQueueFilterBottomSheetState extends State<TaskQueueFilterBottomSheet> {
-  late String selectedTime = '';
-  late String selectedType = '';
+class _TaskQueueFilterBottomSheetState
+    extends State<TaskQueueFilterBottomSheet> {
+  final List<String> _timeFrameList = [
+    'Today',
+    '3 days',
+    'Week',
+    'Fortnight',
+    'Month',
+    '90 days',
+    'Year'
+  ];
+  final List<String> _typeList = ['Work', 'Personal Project', 'Self'];
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +42,18 @@ class _TaskQueueFilterBottomSheetState extends State<TaskQueueFilterBottomSheet>
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              eightVerticalSpace,
-              _header(),
-              eightVerticalSpace,
-              const Divider(),
-              _allInfo()
-            ],
-          ),
+          child: Consumer<TaskProvider>(builder: (_, taskState, child) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                eightVerticalSpace,
+                _header(),
+                eightVerticalSpace,
+                const Divider(),
+                _allInfo()
+              ],
+            );
+          }),
         ),
       ),
     );
@@ -75,7 +86,6 @@ class _TaskQueueFilterBottomSheetState extends State<TaskQueueFilterBottomSheet>
   }
 
   Widget _allInfo() {
-
     final taskState = Provider.of<TaskProvider>(context, listen: false);
 
     return Padding(
@@ -83,141 +93,64 @@ class _TaskQueueFilterBottomSheetState extends State<TaskQueueFilterBottomSheet>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          /// time frame ///
           Text(
             'Timeframe',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Today';
-              });
-            },
-            title: 'Today',
-            checkBoxColor: selectedTime == 'Today' ? primaryColor : white,
-            boxBorderColor: selectedTime == 'Today' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = '3 days';
-              });
-            },
-            title: '3 days',
-            checkBoxColor: selectedTime == '3 days' ? primaryColor : white,
-            boxBorderColor: selectedTime == '3 days' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Week';
-              });
-            },
-            title: 'Week',
-            checkBoxColor: selectedTime == 'Week' ? primaryColor : white,
-            boxBorderColor: selectedTime == 'Week' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Fortnight';
-              });
-            },
-            title: 'Fortnight',
-            checkBoxColor: selectedTime == 'Fortnight' ? primaryColor : white,
-            boxBorderColor:
-                selectedTime == 'Fortnight' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Month';
-              });
-            },
-            title: 'Month',
-            checkBoxColor: selectedTime == 'Month' ? primaryColor : white,
-            boxBorderColor: selectedTime == 'Month' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = '90 days';
-              });
-            },
-            title: '90 days',
-            checkBoxColor: selectedTime == '90 days' ? primaryColor : white,
-            boxBorderColor: selectedTime == '90 days' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Year';
-              });
-            },
-            title: 'Year',
-            checkBoxColor: selectedTime == 'Year' ? primaryColor : white,
-            boxBorderColor: selectedTime == 'Year' ? trans : secondaryColor,
-          ),
-          const SizedBox(
-            height: 48,
-          ),
+          ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (_, index) {
+                var time = _timeFrameList[index];
+                return FilterOptionTile(
+                    onTap: () {
+                      taskState.getQueueFilterTimeType(
+                          taskState.selectedQueueType, time);
+                    },
+                    title: time,
+                    checkBoxColor: taskState.selectedQueueTimeFrame == time
+                        ? primaryColor
+                        : white,
+                    boxBorderColor: taskState.selectedQueueTimeFrame == time
+                        ? trans
+                        : secondaryColor);
+              },
+              separatorBuilder: (_, index) => sixteenVerticalSpace,
+              itemCount: _timeFrameList.length),
+
+          /// work type ///
           Text(
             'Type',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedType = 'Work';
-              });
-            },
-            title: 'Work',
-            checkBoxColor: selectedType == 'Work' ? primaryColor : white,
-            boxBorderColor: selectedType == 'Work' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedType = 'Personal Project';
-              });
-            },
-            title: 'Personal Project',
-            checkBoxColor:
-                selectedType == 'Personal Project' ? primaryColor : white,
-            boxBorderColor:
-                selectedType == 'Personal Project' ? trans : secondaryColor,
-          ),
-          sixteenVerticalSpace,
-          FilterOptionTile(
-            onTap: () {
-              setState(() {
-                selectedType = 'Self';
-              });
-            },
-            title: 'Self',
-            checkBoxColor: selectedType == 'Self' ? primaryColor : white,
-            boxBorderColor: selectedType == 'Self' ? trans : secondaryColor,
-          ),
-          const SizedBox(
-            height: 48,
-          ),
+          ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (_, index) {
+                var type = _typeList[index];
+                return FilterOptionTile(
+                    onTap: () {
+                      taskState.getQueueFilterTimeType(
+                          type, taskState.selectedQueueTimeFrame);
+                    },
+                    title: type,
+                    checkBoxColor: taskState.selectedQueueType == type
+                        ? primaryColor
+                        : white,
+                    boxBorderColor: taskState.selectedQueueType == type
+                        ? trans
+                        : secondaryColor);
+              },
+              separatorBuilder: (_, index) => sixteenVerticalSpace,
+              itemCount: _typeList.length),
+
           PrimaryButton(
             onTap: () async {
-              taskState.getQueueFilterTimeType(selectedType, selectedTime);
               await taskState.getAllTaskList();
               Navigator.pop(context);
             },
             buttonTitle: 'Apply',
-            buttonColor: selectedTime == '' && selectedType == ''
+            buttonColor: taskState.selectedQueueTimeFrame == '' &&
+                    taskState.selectedQueueType == ''
                 ? primaryLight
                 : primaryColor,
           ),
@@ -226,5 +159,4 @@ class _TaskQueueFilterBottomSheetState extends State<TaskQueueFilterBottomSheet>
       ),
     );
   }
-
 }
