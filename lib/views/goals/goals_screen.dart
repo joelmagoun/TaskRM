@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:task_rm/models/task.dart';
 import 'package:task_rm/providers/goals_provider.dart';
 import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/color.dart';
@@ -89,7 +90,6 @@ class GoalsScreen extends StatelessWidget {
   }
 
   Widget _goalList(BuildContext context) {
-
     final goalState = Provider.of<GoalProvider>(context, listen: false);
 
     if (goalState.isGoalLoading) {
@@ -112,6 +112,19 @@ class GoalsScreen extends StatelessWidget {
                 timeDateColor: iconColor,
                 isSelected: false,
                 createdAt: item.createdAt.toString(),
+                task: Task(
+                    id: '',
+                    title: '',
+                    type: '',
+                    priority: '',
+                    timeframe: '',
+                    description: '',
+                    createdAt: DateTime.now(),
+                    expectedCompletion: DateTime.now(),
+                    isMarkedForToday: false,
+                    jiraID: '',
+                    userID: '',
+                    goal: goal),
               );
             },
             separatorBuilder: (_, index) => eightVerticalSpace,
@@ -132,7 +145,8 @@ class GoalsScreen extends StatelessWidget {
                   children: [
                     Text(
                       goalState.selectedFilterType,
-                      style: tTextStyleBold.copyWith(color: white, fontSize: 16),
+                      style:
+                          tTextStyleBold.copyWith(color: white, fontSize: 16),
                     ),
                     IconButton(
                         onPressed: () async {
@@ -162,6 +176,19 @@ class GoalsScreen extends StatelessWidget {
                       timeDateColor: iconColor,
                       isSelected: false,
                       createdAt: item.createdAt.toString(),
+                      task: Task(
+                          id: '',
+                          title: '',
+                          type: '',
+                          priority: '',
+                          timeframe: '',
+                          description: '',
+                          createdAt: DateTime.now(),
+                          expectedCompletion: DateTime.now(),
+                          isMarkedForToday: false,
+                          jiraID: '',
+                          userID: '',
+                          goal: goal),
                     );
                   },
                   separatorBuilder: (_, index) => eightVerticalSpace,
@@ -172,5 +199,4 @@ class GoalsScreen extends StatelessWidget {
       }
     }
   }
-
 }

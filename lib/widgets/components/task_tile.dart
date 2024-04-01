@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:task_rm/models/task.dart';
 import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/spacer.dart';
@@ -17,6 +18,7 @@ class TaskTile extends StatefulWidget {
   final Color timeDateColor;
   final bool isSelected;
   final String createdAt;
+  final Task task;
 
   const TaskTile({
     Key? key,
@@ -28,7 +30,8 @@ class TaskTile extends StatefulWidget {
     required this.titleColor,
     required this.timeDateColor,
     required this.isSelected,
-    required this.createdAt
+    required this.createdAt,
+    required this.task
   }) : super(key: key);
 
   @override
@@ -54,7 +57,7 @@ class _TaskTileState extends State<TaskTile> {
     return GestureDetector(
       onLongPress: widget.onLongPress,
       onTap: (){
-        Navigator.pushNamed(context, Routes.taskDetails);
+        Navigator.pushNamed(context, Routes.taskDetails, arguments: widget.task);
       },
       child: Container(
         decoration: BoxDecoration(

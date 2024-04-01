@@ -30,12 +30,14 @@ const filterIcon = 'assets/svgs/filter.svg';
 const timerIcon = 'assets/svgs/timer.svg';
 const checkBox = 'assets/svgs/check_box.svg';
 const menuIcon = 'assets/svgs/menu_button.svg';
-
 const descriptionIcon = 'assets/svgs/description.svg';
 const jiraIcon = 'assets/svgs/jira_t.svg';
 const priorityIcon = 'assets/svgs/priority.svg';
 const timeFrameIcon = 'assets/svgs/time_frame.svg';
 const typeIcon = 'assets/svgs/type.svg';
+const addTimeIcon = 'assets/svgs/add_time.svg';
+const checkIcon = 'assets/svgs/check.svg';
+const clearIcon = 'assets/svgs/clear.svg';
 
 
 

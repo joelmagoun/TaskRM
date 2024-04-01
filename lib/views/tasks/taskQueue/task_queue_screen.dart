@@ -78,14 +78,6 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
           ),
         ),
         body: _allTaskListWidget(context),
-        // Center(
-        //     child: _taskState.allTaskList.isEmpty
-        //         ? const EmptyWidget(
-        //         icon: taskIcon,
-        //         title: 'No tasks on your queue',
-        //         subTitle: 'Go back, then add new tasks')
-        //         :
-        //     _allTaskListWidget(context)),
       );
     });
   }
@@ -228,6 +220,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                               : iconColor,
                           isSelected: selectedTask == index ? true : false,
                           createdAt: item.createdAt.toString(),
+                          task: item,
                         );
                       },
                       separatorBuilder: (_, index) => eightVerticalSpace,
@@ -338,6 +331,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                               : iconColor,
                           isSelected: selectedTask == index ? true : false,
                           createdAt: item.createdAt.toString(),
+                          task: item,
                         );
                       },
                       separatorBuilder: (_, index) => eightVerticalSpace,

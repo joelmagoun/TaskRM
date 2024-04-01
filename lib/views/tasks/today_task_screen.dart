@@ -159,6 +159,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                  timeDateColor: iconColor,
                  isSelected: false,
                  createdAt: item.createdAt.toString(),
+                 task: item,
                );
              },
              separatorBuilder: (_, index) => eightVerticalSpace,
@@ -209,6 +210,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                        timeDateColor: iconColor,
                        isSelected: false,
                        createdAt: item.createdAt.toString(),
+                       task: item,
                      );
                    },
                    separatorBuilder: (_, index) => eightVerticalSpace,

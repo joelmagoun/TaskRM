@@ -4,6 +4,7 @@ import 'package:task_rm/views/goals/goals_screen.dart';
 import 'package:task_rm/views/tasks/taskDetails/task_details_screen.dart';
 import 'package:task_rm/views/tasks/taskQueue/task_queue_screen.dart';
 import 'package:task_rm/views/tasks/today_task_screen.dart';
+import '../models/task.dart';
 import '../views/auth/login/login_screen.dart';
 import '../views/auth/signup/signup_screen.dart';
 import '../views/home/home_screen.dart';
@@ -32,7 +33,7 @@ class AppRouter {
       case Routes.goals:
         return const GoalsScreen();
       case Routes.taskDetails:
-        return const TaskDetailsScreen();
+        return TaskDetailsScreen(task: settings.arguments as Task);
       // case Routes.newGoal:
       //   return const NewGoalPage();
       // case Routes.taskDetails:

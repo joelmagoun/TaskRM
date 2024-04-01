@@ -5,10 +5,13 @@ import 'package:task_rm/providers/task_provider.dart';
 import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
+import '../../../models/task.dart';
 import '../../../utils/assets_path.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
-  const TaskDetailsScreen({Key? key}) : super(key: key);
+  final Task task;
+
+  const TaskDetailsScreen({Key? key, required this.task}) : super(key: key);
 
   @override
   State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
@@ -44,7 +47,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
                 ),
                 Text(
-                  'Task title',
+                  widget.task.title,
                   maxLines: 2,
                   style: tTextStyleRegular.copyWith(fontSize: 14),
                 ),
@@ -53,108 +56,41 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             actions: [SvgPicture.asset(menuIcon), sixteenHorizontalSpace],
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              _infoTile(typeIcon, 'Type', 'type content'),
-              primaryVerticalSpace,
-              _infoTile(priorityIcon, 'Priority', 'priority content'),
-              primaryVerticalSpace,
-              _infoTile(timeFrameIcon, 'Timeframe', 'timeFrame content'),
-              primaryVerticalSpace,
-              _infoTile(descriptionIcon, 'Description', 'description content'),
-              primaryVerticalSpace,
-              _infoTile(goalIcon, 'Goal', 'goal content'),
-              primaryVerticalSpace,
-            ],
-          ),
+        body: Column(
+          children: [
+            Expanded(
+              child: SizedBox(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        _infoTile(typeIcon, 'Type', widget.task.type, false),
+                        primaryVerticalSpace,
+                        _infoTile(priorityIcon, 'Priority',
+                            widget.task.priority, false),
+                        primaryVerticalSpace,
+                        _infoTile(timeFrameIcon, 'Timeframe',
+                            widget.task.timeframe, false),
+                        primaryVerticalSpace,
+                        _infoTile(descriptionIcon, 'Description',
+                            widget.task.description, false),
+                        primaryVerticalSpace,
+                        _infoTile(goalIcon, 'Goal', widget.task.goal, true),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            _bottomSheet()
+          ],
         ),
       );
     });
   }
 
-  Widget _bottomSheet(BuildContext context) {
-    final _taskState = Provider.of<TaskProvider>(context, listen: false);
-
-    return Container(
-      height: 120,
-      width: double.infinity,
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(16), topLeft: Radius.circular(16)),
-          color: white,
-          boxShadow: [
-            BoxShadow(
-                color: const Color(0xFF2A2A2A).withOpacity(0.1),
-                spreadRadius: 0,
-                blurRadius: 10,
-                offset: const Offset(0, -2))
-          ]),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            InkWell(
-              onTap: () {
-                setState(() {
-                  isSelected = false;
-                  selectedTask = -1;
-                });
-              },
-              child: Container(
-                height: 56,
-                width: 56,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: borderColor)),
-                child: const Icon(
-                  Icons.clear,
-                  color: iconColor,
-                ),
-              ),
-            ),
-            eightHorizontalSpace,
-            Expanded(
-              child: InkWell(
-                onTap: () async {
-                  await _taskState.moveToTodayTaskList(
-                      selectedTaskId,
-                      selectedTaskTitle,
-                      selectedTaskType,
-                      selectedTaskPriority,
-                      selectedTaskDescription,
-                      selectedTaskGoal,
-                      selectedTaskCreatedAt,
-                      context);
-                },
-                child: Container(
-                  height: 56,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: primaryColor,
-                  ),
-                  child: _taskState.isMoving
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                          color: white,
-                        ))
-                      : Text(
-                          'Move to “Today’s tasks”',
-                          style: tTextStyle600.copyWith(
-                              fontSize: 16, color: white),
-                        ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _infoTile(String icon, String title, String content) {
+  Widget _infoTile(String icon, String title, String content, bool isGoal) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -169,7 +105,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             Text(
               title,
               style: tTextStyle500.copyWith(
-                  fontSize: 14, color: const Color(0xFFAAAAAA)),
+                  fontSize: 14, color: isGoal ? primaryColor : const Color(0xFFAAAAAA)),
             )
           ],
         ),
@@ -184,13 +120,53 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             const SizedBox(
               width: 4,
             ),
-            Text(
-              content,
-              style: tTextStyleRegular.copyWith(
-                  fontSize: 16, color: textColorBold),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 1.2,
+              child: Text(
+                content,
+                style: tTextStyleRegular.copyWith(
+                    fontSize: 16, color: textColorBold),
+              ),
             )
           ],
         ),
+      ],
+    );
+  }
+
+  Widget _bottomSheet() {
+    return Container(
+      height: 150,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(width: 1.0, color: borderColor),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _bottomButton(clearIcon, 'Remove from\nToday’s Tasks', false),
+            _bottomButton(addTimeIcon, 'Add Time', false),
+            _bottomButton(checkIcon, 'Complete Task', true),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _bottomButton(String icon, String title, bool isComplete) {
+    return Column(
+      children: [
+        SvgPicture.asset(icon),
+        eightVerticalSpace,
+        Text(
+          title,
+          style: tTextStyle500.copyWith(
+              fontSize: 14, color: isComplete ? primaryColor : secondaryColor),
+        )
       ],
     );
   }
