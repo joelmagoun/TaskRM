@@ -18,7 +18,7 @@ class GoalsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<GoalProvider>(builder: (_, _goalState, child) {
+    return Consumer<GoalProvider>(builder: (_, goalState, child) {
       return Scaffold(
         appBar: AppBar(
           centerTitle: false,
@@ -28,8 +28,8 @@ class GoalsScreen extends StatelessWidget {
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
-            if (_goalState.allGoalList.isNotEmpty ||
-                _goalState.selectedFilterType != '')
+            if (goalState.allGoalList.isNotEmpty ||
+                goalState.selectedFilterType != '')
               InkWell(
                   onTap: () {
                     CustomDialog.bottomSheet(
@@ -38,7 +38,7 @@ class GoalsScreen extends StatelessWidget {
                   child: SvgPicture.asset(filterIcon))
             else
               const SizedBox.shrink(),
-            _goalState.allGoalList.isNotEmpty
+            goalState.allGoalList.isNotEmpty
                 ? IconButton(
                     onPressed: () {
                       CustomDialog.bottomSheet(
@@ -54,39 +54,12 @@ class GoalsScreen extends StatelessWidget {
             sixteenHorizontalSpace,
           ],
         ),
-        body: _goalState.allGoalList.isEmpty
-            ? _emptyListWidget(context)
-            : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: _goalList(context),
-              ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: _goalList(context),
+        ),
       );
     });
-  }
-
-  Widget _emptyListWidget(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const EmptyWidget(
-            icon: goalIcon,
-            title: 'What do you aspire to achieve?',
-            subTitle:
-                'Add your personal and work goals to begin working on them.'),
-        sixteenVerticalSpace,
-        IconButton(
-          onPressed: () {
-            CustomDialog.bottomSheet(context, const AddNewGoalBottomSheet());
-          },
-          icon: const Icon(
-            Icons.add_circle_rounded,
-          ),
-          color: primaryColor,
-          iconSize: 64,
-        )
-      ],
-    );
   }
 
   Widget _goalList(BuildContext context) {
@@ -98,104 +71,158 @@ class GoalsScreen extends StatelessWidget {
         color: primaryColor,
       ));
     } else {
-      if (goalState.selectedFilterType == '') {
-        return ListView.separated(
-            itemBuilder: (_, index) {
-              var item = goalState.allGoalList[index];
-              return TaskTile(
-                onLongPress: () {},
-                title: item.title,
-                isTimeTracking: false,
-                time: '00',
-                cardColor: const Color(0xFFF0F1F8),
-                titleColor: black,
-                timeDateColor: iconColor,
-                isSelected: false,
-                createdAt: item.createdAt.toString(),
-                task: Task(
-                    id: '',
-                    title: '',
-                    type: '',
-                    priority: '',
-                    timeframe: '',
-                    description: '',
-                    createdAt: DateTime.now(),
-                    expectedCompletion: DateTime.now(),
-                    isMarkedForToday: false,
-                    jiraID: '',
-                    userID: '',
-                    goal: goal),
-              );
-            },
-            separatorBuilder: (_, index) => eightVerticalSpace,
-            itemCount: goalState.allGoalList.length);
-      } else {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            eightVerticalSpace,
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: secondaryColor),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      goalState.selectedFilterType,
-                      style:
-                          tTextStyleBold.copyWith(color: white, fontSize: 16),
-                    ),
-                    IconButton(
-                        onPressed: () async {
-                          goalState.getFilterType('');
-                          await goalState.getGoalList();
-                        },
-                        icon: const Icon(
-                          Icons.clear,
-                          color: white,
-                        ))
-                  ],
+      if (goalState.allGoalList.isEmpty) {
+        if (goalState.selectedFilterType == '') {
+          return const EmptyWidget(
+              icon: goalIcon,
+              title: 'What do you aspire to achieve?',
+              subTitle:
+                  'Add your personal and work goals to begin working on them.');
+        } else {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: secondaryColor),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        goalState.selectedFilterType,
+                        style:
+                            tTextStyleBold.copyWith(color: white, fontSize: 16),
+                      ),
+                      IconButton(
+                          onPressed: () async {
+                            goalState.getFilterType('');
+                            await goalState.getGoalList();
+                          },
+                          icon: const Icon(
+                            Icons.clear,
+                            color: white,
+                          ))
+                    ],
+                  ),
                 ),
               ),
-            ),
-            sixteenVerticalSpace,
-            Expanded(
-              child: ListView.separated(
-                  itemBuilder: (_, index) {
-                    var item = goalState.allGoalList[index];
-                    return TaskTile(
-                      onLongPress: () {},
-                      title: item.title,
-                      isTimeTracking: false,
-                      time: '00',
-                      cardColor: const Color(0xFFF0F1F8),
-                      titleColor: black,
-                      timeDateColor: iconColor,
-                      isSelected: false,
-                      createdAt: item.createdAt.toString(),
-                      task: Task(
-                          id: '',
-                          title: '',
-                          type: '',
-                          priority: '',
-                          timeframe: '',
-                          description: '',
-                          createdAt: DateTime.now(),
-                          expectedCompletion: DateTime.now(),
-                          isMarkedForToday: false,
-                          jiraID: '',
-                          userID: '',
-                          goal: goal),
-                    );
-                  },
-                  separatorBuilder: (_, index) => eightVerticalSpace,
-                  itemCount: goalState.allGoalList.length),
-            )
-          ],
-        );
+              const Center(
+                child: EmptyWidget(
+                    icon: goalIcon,
+                    title: 'Sorry!',
+                    subTitle: 'No matching goals'),
+              ),
+              const SizedBox(
+                height: 10,
+                width: 10,
+              )
+            ],
+          );
+        }
+      } else {
+        if (goalState.selectedFilterType == '') {
+          return ListView.separated(
+              itemBuilder: (_, index) {
+                var item = goalState.allGoalList[index];
+                return TaskTile(
+                  onLongPress: () {},
+                  title: item.title,
+                  isTimeTracking: false,
+                  time: '00',
+                  cardColor: const Color(0xFFF0F1F8),
+                  titleColor: black,
+                  timeDateColor: iconColor,
+                  isSelected: false,
+                  createdAt: item.createdAt.toString(),
+                  task: Task(
+                      id: '',
+                      title: '',
+                      type: '',
+                      priority: '',
+                      timeframe: '',
+                      description: '',
+                      createdAt: DateTime.now(),
+                      expectedCompletion: DateTime.now(),
+                      isMarkedForToday: false,
+                      jiraID: '',
+                      userID: '',
+                      goal: goal),
+                );
+              },
+              separatorBuilder: (_, index) => eightVerticalSpace,
+              itemCount: goalState.allGoalList.length);
+        } else {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              eightVerticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: secondaryColor),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        goalState.selectedFilterType,
+                        style:
+                            tTextStyleBold.copyWith(color: white, fontSize: 16),
+                      ),
+                      IconButton(
+                          onPressed: () async {
+                            goalState.getFilterType('');
+                            await goalState.getGoalList();
+                          },
+                          icon: const Icon(
+                            Icons.clear,
+                            color: white,
+                          ))
+                    ],
+                  ),
+                ),
+              ),
+              sixteenVerticalSpace,
+              Expanded(
+                child: ListView.separated(
+                    itemBuilder: (_, index) {
+                      var item = goalState.allGoalList[index];
+                      return TaskTile(
+                        onLongPress: () {},
+                        title: item.title,
+                        isTimeTracking: false,
+                        time: '00',
+                        cardColor: const Color(0xFFF0F1F8),
+                        titleColor: black,
+                        timeDateColor: iconColor,
+                        isSelected: false,
+                        createdAt: item.createdAt.toString(),
+                        task: Task(
+                            id: '',
+                            title: '',
+                            type: '',
+                            priority: '',
+                            timeframe: '',
+                            description: '',
+                            createdAt: DateTime.now(),
+                            expectedCompletion: DateTime.now(),
+                            isMarkedForToday: false,
+                            jiraID: '',
+                            userID: '',
+                            goal: goal),
+                      );
+                    },
+                    separatorBuilder: (_, index) => eightVerticalSpace,
+                    itemCount: goalState.allGoalList.length),
+              )
+            ],
+          );
+        }
       }
     }
   }

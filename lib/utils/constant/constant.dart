@@ -24,6 +24,23 @@ class AppConstant{
   static final primaryRadius = BorderRadius.circular(12);
 
 
+  /// time frame list ///
+
+  static final List<String> timeFrameList = [
+    'Today',
+    '3 days',
+    'Week',
+    'Fortnight',
+    'Month',
+    '90 days',
+    'Year'
+  ];
+
+  /// type list ///
+
+  static final List<String> typeList = ['Work', 'Personal Project', 'Self'];
+
+
   /// user image url ///
 
   static String userImageUrl = '';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_rm/utils/constant/constant.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/taskQueue/widgets/filter_option_tile.dart';
 import 'package:task_rm/widgets/components/buttons/primary_button.dart';
@@ -19,16 +20,6 @@ class TaskQueueFilterBottomSheet extends StatefulWidget {
 
 class _TaskQueueFilterBottomSheetState
     extends State<TaskQueueFilterBottomSheet> {
-  final List<String> _timeFrameList = [
-    'Today',
-    '3 days',
-    'Week',
-    'Fortnight',
-    'Month',
-    '90 days',
-    'Year'
-  ];
-  final List<String> _typeList = ['Work', 'Personal Project', 'Self'];
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +92,7 @@ class _TaskQueueFilterBottomSheetState
           ListView.separated(
               shrinkWrap: true,
               itemBuilder: (_, index) {
-                var time = _timeFrameList[index];
+                var time = AppConstant.timeFrameList[index];
                 return FilterOptionTile(
                     onTap: () {
                       taskState.getQueueFilterTimeType(
@@ -116,7 +107,7 @@ class _TaskQueueFilterBottomSheetState
                         : secondaryColor);
               },
               separatorBuilder: (_, index) => sixteenVerticalSpace,
-              itemCount: _timeFrameList.length),
+              itemCount: AppConstant.timeFrameList.length),
 
           /// work type ///
           Text(
@@ -126,7 +117,7 @@ class _TaskQueueFilterBottomSheetState
           ListView.separated(
               shrinkWrap: true,
               itemBuilder: (_, index) {
-                var type = _typeList[index];
+                var type = AppConstant.typeList[index];
                 return FilterOptionTile(
                     onTap: () {
                       taskState.getQueueFilterTimeType(
@@ -141,7 +132,7 @@ class _TaskQueueFilterBottomSheetState
                         : secondaryColor);
               },
               separatorBuilder: (_, index) => sixteenVerticalSpace,
-              itemCount: _typeList.length),
+              itemCount: AppConstant.typeList.length),
 
           PrimaryButton(
             onTap: () async {

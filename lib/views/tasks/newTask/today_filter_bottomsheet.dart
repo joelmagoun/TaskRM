@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_rm/providers/task_provider.dart';
+import 'package:task_rm/utils/constant/constant.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/taskQueue/widgets/filter_option_tile.dart';
 import 'package:task_rm/widgets/components/buttons/primary_button.dart';
@@ -17,8 +18,6 @@ class TodayFilterBottomSheet extends StatefulWidget {
 }
 
 class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
-
-  final List<String> _typeList = ['Work', 'Personal Project', 'Self'];
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +89,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
           ListView.separated(
               shrinkWrap: true,
               itemBuilder: (_, index) {
-                var type = _typeList[index];
+                var type = AppConstant.typeList[index];
                 return FilterOptionTile(
                     onTap: () {
                       taskState.getFilterType(type);
@@ -104,7 +103,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
                         : secondaryColor);
               },
               separatorBuilder: (_, index) => sixteenVerticalSpace,
-              itemCount: _typeList.length),
+              itemCount: AppConstant.typeList.length),
           PrimaryButton(
             onTap: () async {
               await taskState.getTodayTaskList();

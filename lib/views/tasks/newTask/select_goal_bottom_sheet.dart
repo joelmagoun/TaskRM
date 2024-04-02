@@ -7,7 +7,9 @@ import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';
 
 class SelectGoalBottomSheet extends StatefulWidget {
-  const SelectGoalBottomSheet({Key? key}) : super(key: key);
+  final String type;
+
+  const SelectGoalBottomSheet({Key? key, required this.type}) : super(key: key);
 
   @override
   State<SelectGoalBottomSheet> createState() => _SelectGoalBottomSheetState();
@@ -16,6 +18,12 @@ class SelectGoalBottomSheet extends StatefulWidget {
 class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
   late String selectedGoal = 'Select';
 
+  // @override
+  // void initState() {
+  //   Provider.of<GoalProvider>(context, listen: false).getGoalList(selectedFilterType);
+  //   super.initState();
+  // }
+  
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -44,8 +52,8 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                           )),
                       Text(
                         'Select Goal',
-                        style: tTextStyle500.copyWith(
-                            fontSize: 20, color: black),
+                        style:
+                            tTextStyle500.copyWith(fontSize: 20, color: black),
                       ),
                       IconButton(
                           onPressed: () {
@@ -84,149 +92,6 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                         itemCount: goalState.allGoalList.length),
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.all(16.0),
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       _optionTile(
-                //         onTap: () {
-                //           setState(() {
-                //             selectedGoal = 'None';
-                //           });
-                //           _taskState.getSelectedGoal('None', context);
-                //         },
-                //         tileBorderColor: selectedGoal == 'None'
-                //             ? secondaryColor
-                //             : borderColor,
-                //         circleColor:
-                //             selectedGoal == 'None' ? secondaryColor : trans,
-                //         title: 'None',
-                //       ),
-                //       sixteenVerticalSpace,
-                //       _optionTile(
-                //         onTap: () {
-                //           setState(() {
-                //             selectedGoal =
-                //                 'Attend 6 of networking events within the industry in the';
-                //           });
-                //           _taskState.getSelectedGoal(
-                //               'Attend 6 of networking events within the industry in the',
-                //               context);
-                //         },
-                //         tileBorderColor: selectedGoal ==
-                //                 'Attend 6 of networking events within the industry in the'
-                //             ? secondaryColor
-                //             : borderColor,
-                //         circleColor: selectedGoal ==
-                //                 'Attend 6 of networking events within the industry in the'
-                //             ? secondaryColor
-                //             : trans,
-                //         title:
-                //             'Attend 6 of networking events within the industry in the',
-                //       ),
-                //       sixteenVerticalSpace,
-                //       Text(
-                //         'Improving my personal life',
-                //         style: tTextStyle500.copyWith(
-                //             fontSize: 14, color: iconColor),
-                //       ),
-                //       eightVerticalSpace,
-                //       _optionTile(
-                //         onTap: () {
-                //           setState(() {
-                //             selectedGoal =
-                //                 'Read 4 of self-improvement books within the next six';
-                //           });
-                //           _taskState.getSelectedGoal(
-                //               'Read 4 of self-improvement books within the next six',
-                //               context);
-                //         },
-                //         tileBorderColor: selectedGoal ==
-                //                 'Read 4 of self-improvement books within the next six'
-                //             ? secondaryColor
-                //             : borderColor,
-                //         circleColor: selectedGoal ==
-                //                 'Read 4 of self-improvement books within the next six'
-                //             ? secondaryColor
-                //             : trans,
-                //         title:
-                //             'Read 4 of self-improvement books within the next six',
-                //       ),
-                //       sixteenVerticalSpace,
-                //       _optionTile(
-                //         onTap: () {
-                //           setState(() {
-                //             selectedGoal =
-                //                 'Explore and participate in adventurous activities.';
-                //           });
-                //           _taskState.getSelectedGoal(
-                //               'Explore and participate in adventurous activities.',
-                //               context);
-                //         },
-                //         tileBorderColor: selectedGoal ==
-                //                 'Explore and participate in adventurous activities.'
-                //             ? secondaryColor
-                //             : borderColor,
-                //         circleColor: selectedGoal ==
-                //                 'Explore and participate in adventurous activities.'
-                //             ? secondaryColor
-                //             : trans,
-                //         title:
-                //             'Explore and participate in adventurous activities.',
-                //       ),
-                //       sixteenVerticalSpace,
-                //       _optionTile(
-                //         onTap: () {
-                //           setState(() {
-                //             selectedGoal =
-                //                 'complete and present the final project.';
-                //           });
-                //           _taskState.getSelectedGoal(
-                //               'complete and present the final project.',
-                //               context);
-                //         },
-                //         tileBorderColor: selectedGoal ==
-                //                 'complete and present the final project.'
-                //             ? secondaryColor
-                //             : borderColor,
-                //         circleColor: selectedGoal ==
-                //                 'complete and present the final project.'
-                //             ? secondaryColor
-                //             : trans,
-                //         title: 'complete and present the final project.',
-                //       ),
-                //       sixteenVerticalSpace,
-                //       Text(
-                //         'Career growth & progress',
-                //         style: tTextStyle500.copyWith(
-                //             fontSize: 14, color: iconColor),
-                //       ),
-                //       eightVerticalSpace,
-                //       _optionTile(
-                //         onTap: () {
-                //           setState(() {
-                //             selectedGoal =
-                //                 'Work towards obtaining certifications that are valuable';
-                //           });
-                //           _taskState.getSelectedGoal(
-                //               'Work towards obtaining certifications that are valuable',
-                //               context);
-                //         },
-                //         tileBorderColor: selectedGoal ==
-                //                 'Work towards obtaining certifications that are valuable'
-                //             ? secondaryColor
-                //             : borderColor,
-                //         circleColor: selectedGoal ==
-                //                 'Work towards obtaining certifications that are valuable'
-                //             ? secondaryColor
-                //             : trans,
-                //         title:
-                //             'Work towards obtaining certifications that are valuable',
-                //       ),
-                //     ],
-                //   ),
-                // )
               ],
             );
           }),

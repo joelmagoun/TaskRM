@@ -394,7 +394,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
         eightVerticalSpace,
         InkWell(
           onTap: () {
-            CustomDialog.bottomSheet(context, const SelectGoalBottomSheet());
+            CustomDialog.bottomSheet(context, SelectGoalBottomSheet(type: selectedType,));
           },
           child: Container(
             decoration: BoxDecoration(

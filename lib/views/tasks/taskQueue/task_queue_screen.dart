@@ -103,7 +103,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
               subTitle: 'Go back, then add new tasks');
         } else {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
@@ -171,10 +171,12 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                   ),
                 ),
               ),
-              const EmptyWidget(
-                  icon: taskIcon,
-                  title: 'No matching tasks',
-                  subTitle: 'Go back, then add new tasks'),
+              const Center(
+                child: EmptyWidget(
+                    icon: taskIcon,
+                    title: 'No matching tasks',
+                    subTitle: 'Go back, then add new tasks'),
+              ),
               const SizedBox(
                 height: 10,
                 width: 10,
