@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_rm/providers/goals_provider.dart';
 import 'package:task_rm/providers/task_provider.dart';
+import 'package:task_rm/utils/assets_path.dart';
+import 'package:task_rm/widgets/empty_widget.dart';
 import '../../../utils/color.dart';
 import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';
@@ -18,12 +20,6 @@ class SelectGoalBottomSheet extends StatefulWidget {
 class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
   late String selectedGoal = 'Select';
 
-  // @override
-  // void initState() {
-  //   Provider.of<GoalProvider>(context, listen: false).getGoalList(selectedFilterType);
-  //   super.initState();
-  // }
-  
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -70,26 +66,35 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: ListView.separated(
-                        itemBuilder: (_, index) {
-                          var item = goalState.allGoalList[index];
-                          return _optionTile(
-                              onTap: () {
-                                setState(() {
-                                  selectedGoal = item.title;
-                                });
-                                taskState.getSelectedGoal(item.title, context);
-                              },
-                              tileBorderColor: selectedGoal == item.title
-                                  ? secondaryColor
-                                  : borderColor,
-                              circleColor: selectedGoal == item.title
-                                  ? secondaryColor
-                                  : trans,
-                              title: item.title);
-                        },
-                        separatorBuilder: (_, index) => eightVerticalSpace,
-                        itemCount: goalState.allGoalList.length),
+                    child: goalState.allGoalList.isEmpty
+                        ? const EmptyWidget(
+                            icon: goalIcon, title: 'Sorry!', subTitle: 'No matching goals with task type')
+                        : ListView.separated(
+                            itemBuilder: (_, index) {
+                              var item = goalState.allGoalList[index];
+                              return _optionTile(
+                                  onTap: () {
+
+                                    setState(() {
+                                      selectedGoal = item.title;
+                                    });
+                                    taskState.getSelectedGoal(
+                                        item.title, context);
+                                    goalState.getFilterType('');
+                                    goalState.getGoalList();
+                                    Navigator.pop(context);
+
+                                  },
+                                  tileBorderColor: selectedGoal == item.title
+                                      ? secondaryColor
+                                      : borderColor,
+                                  circleColor: selectedGoal == item.title
+                                      ? secondaryColor
+                                      : trans,
+                                  title: item.title);
+                            },
+                            separatorBuilder: (_, index) => eightVerticalSpace,
+                            itemCount: goalState.allGoalList.length),
                   ),
                 ),
               ],

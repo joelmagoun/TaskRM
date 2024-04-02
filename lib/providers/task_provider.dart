@@ -51,7 +51,7 @@ class TaskProvider extends ChangeNotifier {
   getSelectedGoal(String goal, BuildContext context) {
     _selectedGoal = goal;
     notifyListeners();
-    Navigator.pop(context);
+    //Navigator.pop(context);
   }
 
   /// get today task list ///

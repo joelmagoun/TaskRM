@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_rm/providers/goals_provider.dart';
 import 'package:task_rm/providers/task_provider.dart';
 import 'package:task_rm/utils/custom_dialog.dart';
+import 'package:task_rm/utils/custom_snack.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/newTask/select_goal_bottom_sheet.dart';
 import '../../../../utils/color.dart';
@@ -380,7 +382,8 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
   }
 
   Widget _goalField() {
-    final _taskState = Provider.of<TaskProvider>(context, listen: false);
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -394,7 +397,14 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
         eightVerticalSpace,
         InkWell(
           onTap: () {
-            CustomDialog.bottomSheet(context, SelectGoalBottomSheet(type: selectedType,));
+            if(selectedType != ''){
+              goalState.getFilterType(selectedType);
+              goalState.getGoalList();
+              CustomDialog.bottomSheet(context, SelectGoalBottomSheet(type: selectedType));
+              taskState.getSelectedGoal('Select', context);
+            }else{
+              CustomSnack.warningSnack('Please select task type.', context);
+            }
           },
           child: Container(
             decoration: BoxDecoration(
@@ -412,7 +422,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                         .size
                         .width / 1.4,
                     child: Text(
-                      _taskState.selectedGoal,
+                      taskState.selectedGoal,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: tTextStyleRegular.copyWith(
