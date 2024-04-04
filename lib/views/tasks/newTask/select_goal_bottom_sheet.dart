@@ -79,7 +79,7 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                                       selectedGoal = item.title;
                                     });
                                     taskState.getSelectedGoal(
-                                        item.title, context);
+                                        item.title, item.id, context);
                                     goalState.getFilterType('');
                                     goalState.getGoalList();
                                     Navigator.pop(context);

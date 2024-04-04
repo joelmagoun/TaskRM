@@ -30,10 +30,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
     return Material(
       color: Colors.transparent,
       child: Container(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height / 1.2,
+        height: MediaQuery.of(context).size.height / 1.2,
         width: double.infinity,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -91,14 +88,29 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
           ),
           InkWell(
             onTap: () async {
-              await _taskState.addNewTask(
-                  _titleController.text,
-                  selectedType,
-                  selectedPriority,
-                  selectedTime,
-                  _descriptionController.text,
-                  _taskState.selectedGoal,
-                  context);
+              var expected =
+                  _taskState.getExpectedDateFromTimeframe(selectedTime);
+              print('alkdjfalkdj $expected');
+
+              if (selectedType != null &&
+                  selectedPriority != null &&
+                  selectedTime != null &&
+                  _titleController.text.trim().isNotEmpty &&
+                  _descriptionController.text.trim().isNotEmpty &&
+                  _taskState.selectedGoal.trim().isNotEmpty) {
+                await _taskState.addNewTask(
+                    _titleController.text,
+                    selectedType,
+                    _taskState.selectedGoalId,
+                    selectedPriority,
+                    selectedTime,
+                    _descriptionController.text,
+                    _taskState.selectedGoal,
+                    context);
+              } else {
+                CustomDialog.autoDialog(context, Icons.warning,
+                    'Please select all required information.');
+              }
             },
             child: Container(
               height: 40,
@@ -111,10 +123,10 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               child: _taskState.isTaskAdding
                   ? const CircularProgressIndicator()
                   : Text(
-                'Add',
-                style:
-                tTextStyleBold.copyWith(color: white, fontSize: 16),
-              ),
+                      'Add',
+                      style:
+                          tTextStyleBold.copyWith(color: white, fontSize: 16),
+                    ),
             ),
           )
         ],
@@ -182,9 +194,9 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               });
             },
             tileBorderColor:
-            selectedType == 'Personal Project' ? borderColor : trans,
+                selectedType == 'Personal Project' ? borderColor : trans,
             circleColor:
-            selectedType == 'Personal Project' ? secondaryColor : trans,
+                selectedType == 'Personal Project' ? secondaryColor : trans,
             title: 'Personal Project'),
         eightVerticalSpace,
         _optionTile(
@@ -219,9 +231,9 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               });
             },
             tileBorderColor:
-            selectedPriority == 'Needs to be done' ? borderColor : trans,
+                selectedPriority == 'Needs to be done' ? borderColor : trans,
             circleColor:
-            selectedPriority == 'Needs to be done' ? secondaryColor : trans,
+                selectedPriority == 'Needs to be done' ? secondaryColor : trans,
             title: 'Needs to be done'),
         eightVerticalSpace,
         _optionTile(
@@ -231,9 +243,9 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               });
             },
             tileBorderColor:
-            selectedPriority == 'Nice to have' ? borderColor : trans,
+                selectedPriority == 'Nice to have' ? borderColor : trans,
             circleColor:
-            selectedPriority == 'Nice to have' ? secondaryColor : trans,
+                selectedPriority == 'Nice to have' ? secondaryColor : trans,
             title: 'Nice to have'),
         eightVerticalSpace,
         _optionTile(
@@ -243,9 +255,9 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               });
             },
             tileBorderColor:
-            selectedPriority == 'Nice idea' ? borderColor : trans,
+                selectedPriority == 'Nice idea' ? borderColor : trans,
             circleColor:
-            selectedPriority == 'Nice idea' ? secondaryColor : trans,
+                selectedPriority == 'Nice idea' ? secondaryColor : trans,
             title: 'Nice idea'),
       ],
     );
@@ -397,12 +409,13 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
         eightVerticalSpace,
         InkWell(
           onTap: () {
-            if(selectedType != ''){
+            if (selectedType != '') {
               goalState.getFilterType(selectedType);
               goalState.getGoalList();
-              CustomDialog.bottomSheet(context, SelectGoalBottomSheet(type: selectedType));
-              taskState.getSelectedGoal('Select', context);
-            }else{
+              CustomDialog.bottomSheet(
+                  context, SelectGoalBottomSheet(type: selectedType));
+              taskState.getSelectedGoal('Select', '', context);
+            } else {
               CustomSnack.warningSnack('Please select task type.', context);
             }
           },
@@ -417,10 +430,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 1.4,
+                    width: MediaQuery.of(context).size.width / 1.4,
                     child: Text(
                       taskState.selectedGoal,
                       maxLines: 2,
@@ -468,10 +478,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               ),
               eightHorizontalSpace,
               SizedBox(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 1.4,
+                width: MediaQuery.of(context).size.width / 1.4,
                 child: Text(
                   title,
                   maxLines: 2,

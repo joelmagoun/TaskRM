@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:task_rm/utils/app_storage.dart';
+import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/custom_snack.dart';
 import '../models/task.dart';
 import '../utils/config/constants.dart';
@@ -48,8 +49,13 @@ class TaskProvider extends ChangeNotifier {
 
   String get selectedGoal => _selectedGoal;
 
-  getSelectedGoal(String goal, BuildContext context) {
+  late String _selectedGoalId = '';
+
+  String get selectedGoalId => _selectedGoalId;
+
+  getSelectedGoal(String goal, String goalId, BuildContext context) {
     _selectedGoal = goal;
+    _selectedGoalId = goalId;
     notifyListeners();
     //Navigator.pop(context);
   }
@@ -180,7 +186,7 @@ class TaskProvider extends ChangeNotifier {
         notifyListeners();
 
         res.documents.forEach((e) {
-          if(e.data['timeframe'] != 'Today'){
+          if (e.data['timeframe'] != 'Today') {
             if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
               _allTaskList.add(Task(
                   id: e.$id ?? '',
@@ -196,14 +202,10 @@ class TaskProvider extends ChangeNotifier {
                   userID: e.data['userID'] ?? '',
                   goal: e.data['goal'] ?? ''));
               notifyListeners();
-
-            } else if (_selectedQueueTimeFrame != ''
-                || _selectedQueueType != ''
-            ) {
-              if (
-              e.data['type'] == _selectedQueueType &&
+            } else if (_selectedQueueTimeFrame != '' ||
+                _selectedQueueType != '') {
+              if (e.data['type'] == _selectedQueueType &&
                   e.data['timeframe'] == _selectedQueueTimeFrame) {
-
                 _allTaskList.add(Task(
                     id: e.$id ?? '',
                     title: e.data['title'] ?? '',
@@ -227,7 +229,6 @@ class TaskProvider extends ChangeNotifier {
       }
     } catch (e) {
       // CustomSnack.warningSnack(e.toString(), context);
-
     } finally {
       _isAllTaskLoading = false;
       notifyListeners();
@@ -239,6 +240,7 @@ class TaskProvider extends ChangeNotifier {
   Future<void> addNewTask(
       String title,
       String type,
+      String goalId,
       String priority,
       String timeFrame,
       String description,
@@ -259,16 +261,17 @@ class TaskProvider extends ChangeNotifier {
             'jiraID': '',
             'title': title,
             'type': type,
-            'isMarkedForToday': false,
-            'goalId': '',
+            'isMarkedForToday': timeFrame == 'Today' ? true : false,
+            'goalId': goalId,
             'priority': priority,
             'description': description,
             'userID': uid,
             'goal': goal,
-            'createdAt': DateTime.now().toString()
+            'createdAt': DateTime.now().toString(),
+            'expectedCompletion': getExpectedDateFromTimeframe(timeFrame).toString(),
           }).then((value) {
         Navigator.pop(context);
-        CustomSnack.successSnack('Task is added successfully!', context);
+        CustomDialog.autoDialog(context, Icons.check, 'Task is added successfully!');
         getTodayTaskList();
         getAllTaskList();
       });
@@ -281,10 +284,34 @@ class TaskProvider extends ChangeNotifier {
       //   // Navigator.pushNamed(context, Routes.moments);
       // }
     } catch (e) {
+      print('catch error ${e.toString()}');
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
       _isTaskAdding = false;
       notifyListeners();
+    }
+  }
+
+  DateTime getExpectedDateFromTimeframe(String timeFrame) {
+    final now = DateTime.now();
+
+    switch (timeFrame) {
+      case "Today":
+        return now.add(const Duration(days: 1));
+      case "3 days":
+        return now.add(const Duration(days: 3));
+      case "Week":
+        return now.add(const Duration(days: 7));
+      case "Fortnight":
+        return now.add(const Duration(days: 14));
+      case "Month":
+        return now.add(const Duration(days: 30));
+      case "90 days":
+        return now.add(const Duration(days: 90));
+      case "Year":
+        return now.add(const Duration(days: 365));
+      default:
+        return DateTime.now();
     }
   }
 
@@ -340,5 +367,4 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

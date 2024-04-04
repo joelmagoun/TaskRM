@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
-
 import 'color.dart';
 
 class CustomSnack {
@@ -18,7 +17,8 @@ class CustomSnack {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(milliseconds: 500),
         backgroundColor: white,
-        content: ContentCart(isSuccess: false, message: message),));
+        content: ContentCart(isSuccess: false, message: message),
+    ));
   }
 }
 
@@ -53,10 +53,13 @@ class ContentCart extends StatelessWidget {
               color: isSuccess ? const Color(0xFF2AD6B7) : red,
             ),
             sixteenHorizontalSpace,
-            Text(
-              message,
-              style:
-                  tTextStyleRegular.copyWith(fontSize: 14, color: Colors.black),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              child: Text(
+                message,
+                style:
+                    tTextStyleRegular.copyWith(fontSize: 14, color: Colors.black),
+              ),
             ),
             const Spacer(),
             const Icon(

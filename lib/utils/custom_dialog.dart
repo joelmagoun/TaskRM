@@ -44,7 +44,7 @@ class CustomDialog {
     );
   }
 
-  static Future<void> autoDialog(BuildContext context, String message) {
+  static Future<void> autoDialog(BuildContext context, IconData icon, String message) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -58,18 +58,18 @@ class CustomDialog {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                  CircleAvatar(
+                CircleAvatar(
                     radius: 24,
                     backgroundColor: primaryLight,
                     child: Icon(
-                      Icons.check,
+                      icon,
                       color: primaryColor,
                     )),
                 sixteenVerticalSpace,
                 Text(
                   message,
                   textAlign: TextAlign.center,
-                  style: subtitle2,
+                  style: subtitle2.copyWith(color: black),
                 ),
               ],
             ),

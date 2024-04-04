@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:task_rm/providers/task_provider.dart';
 import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/custom_dialog.dart';
+import 'package:task_rm/utils/custom_snack.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/taskQueue/task_queue_filter_bottom_sheet.dart';
@@ -73,7 +74,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                           },
                           child: SvgPicture.asset(filterIcon)),
                     )
-                  : const SizedBox.shrink()
+                  : const SizedBox.shrink(),
             ],
           ),
         ),
