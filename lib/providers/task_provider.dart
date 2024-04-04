@@ -96,15 +96,20 @@ class TaskProvider extends ChangeNotifier {
         _todayTaskList.clear();
         notifyListeners();
 
+        //e.data['timeframe']
+        
         res.documents.forEach((e) {
-          if (e.data['timeframe'] == 'Today') {
+          var timeFrameResult = getTimeFrameFromExpectedDate(e.data['expectedCompletion']);
+          print('time frame result $timeFrameResult');
+          if (getTimeFrameFromExpectedDate(e.data['expectedCompletion']) == 'Today') {
             if (_selectedFilterType == '') {
               _todayTaskList.add(Task(
                   id: e.$id ?? '',
                   title: e.data['title'] ?? '',
                   type: e.data['type'] ?? '',
                   priority: e.data['priority'] ?? '',
-                  timeframe: e.data['timeframe'] ?? '',
+                  //timeframe: e.data['timeframe'] ?? '',
+                  timeframe: getTimeFrameFromExpectedDate(e.data['expectedCompletion']),
                   description: e.data['description'] ?? '',
                   createdAt: DateTime.parse(e.data['createdAt']),
                   expectedCompletion: DateTime.now(),
@@ -225,7 +230,7 @@ class TaskProvider extends ChangeNotifier {
           }
         });
       } else {
-        // CustomSnack.warningSnack('No task on your queue', context);
+        //CustomSnack.warningSnack('No task on your queue', context);
       }
     } catch (e) {
       // CustomSnack.warningSnack(e.toString(), context);
@@ -268,10 +273,12 @@ class TaskProvider extends ChangeNotifier {
             'userID': uid,
             'goal': goal,
             'createdAt': DateTime.now().toString(),
-            'expectedCompletion': getExpectedDateFromTimeframe(timeFrame).toString(),
+            'expectedCompletion':
+                getExpectedDateFromTimeframe(timeFrame).toString(),
           }).then((value) {
         Navigator.pop(context);
-        CustomDialog.autoDialog(context, Icons.check, 'Task is added successfully!');
+        CustomDialog.autoDialog(
+            context, Icons.check, 'Task is added successfully!');
         getTodayTaskList();
         getAllTaskList();
       });
@@ -289,29 +296,6 @@ class TaskProvider extends ChangeNotifier {
     } finally {
       _isTaskAdding = false;
       notifyListeners();
-    }
-  }
-
-  DateTime getExpectedDateFromTimeframe(String timeFrame) {
-    final now = DateTime.now();
-
-    switch (timeFrame) {
-      case "Today":
-        return now.add(const Duration(days: 1));
-      case "3 days":
-        return now.add(const Duration(days: 3));
-      case "Week":
-        return now.add(const Duration(days: 7));
-      case "Fortnight":
-        return now.add(const Duration(days: 14));
-      case "Month":
-        return now.add(const Duration(days: 30));
-      case "90 days":
-        return now.add(const Duration(days: 90));
-      case "Year":
-        return now.add(const Duration(days: 365));
-      default:
-        return DateTime.now();
     }
   }
 
@@ -365,6 +349,57 @@ class TaskProvider extends ChangeNotifier {
     } finally {
       _isMoving = false;
       notifyListeners();
+    }
+  }
+
+  /// for finding timeframe and expectedDate ///
+
+  String getTimeFrameFromExpectedDate(String expectedDate) {
+    // //2024-04-08 03:36:07.983147
+
+    final now = DateTime.now();
+    DateTime parsedExpectedDate = DateTime.parse(expectedDate);
+    Duration remainDays = parsedExpectedDate.difference(now);
+
+    if (remainDays.inDays == 0) {
+      return 'Today';
+    } else if (remainDays.inDays > 0 && remainDays.inDays <= 3) {
+      return '3 days';
+    } else if (remainDays.inDays > 3 && remainDays.inDays <= 7) {
+      return 'Week';
+    } else if (remainDays.inDays > 7 && remainDays.inDays <= 14) {
+      return 'Fortnight';
+    } else if (remainDays.inDays > 14 && remainDays.inDays <= 30) {
+      return 'Month';
+    } else if (remainDays.inDays > 30 && remainDays.inDays <= 90) {
+      return '90 days';
+    } else if (remainDays.inDays > 90 && remainDays.inDays <= 365) {
+      return 'Year';
+    } else {
+      return 'Date over';
+    }
+  }
+
+  DateTime getExpectedDateFromTimeframe(String timeFrame) {
+    final now = DateTime.now();
+
+    switch (timeFrame) {
+      case "Today":
+        return now.add(const Duration(days: 1));
+      case "3 days":
+        return now.add(const Duration(days: 3));
+      case "Week":
+        return now.add(const Duration(days: 7));
+      case "Fortnight":
+        return now.add(const Duration(days: 14));
+      case "Month":
+        return now.add(const Duration(days: 30));
+      case "90 days":
+        return now.add(const Duration(days: 90));
+      case "Year":
+        return now.add(const Duration(days: 365));
+      default:
+        return DateTime.now();
     }
   }
 }

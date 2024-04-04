@@ -88,10 +88,6 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
           ),
           InkWell(
             onTap: () async {
-              var expected =
-                  _taskState.getExpectedDateFromTimeframe(selectedTime);
-              print('alkdjfalkdj $expected');
-
               if (selectedType != null &&
                   selectedPriority != null &&
                   selectedTime != null &&
