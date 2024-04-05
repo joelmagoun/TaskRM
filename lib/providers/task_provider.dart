@@ -95,13 +95,11 @@ class TaskProvider extends ChangeNotifier {
       if (res.documents.isNotEmpty) {
         _todayTaskList.clear();
         notifyListeners();
-
-        //e.data['timeframe']
         
         res.documents.forEach((e) {
-          var timeFrameResult = getTimeFrameFromExpectedDate(e.data['expectedCompletion']);
-          print('time frame result $timeFrameResult');
-          if (getTimeFrameFromExpectedDate(e.data['expectedCompletion']) == 'Today') {
+          String timeFrameResult = getTimeFrameFromExpectedDate(e.data['expectedCompletion']);
+
+          if (timeFrameResult == 'Today') {
             if (_selectedFilterType == '') {
               _todayTaskList.add(Task(
                   id: e.$id ?? '',
@@ -361,9 +359,9 @@ class TaskProvider extends ChangeNotifier {
     DateTime parsedExpectedDate = DateTime.parse(expectedDate);
     Duration remainDays = parsedExpectedDate.difference(now);
 
-    if (remainDays.inDays == 0) {
+    if (remainDays.inDays <= 1) {
       return 'Today';
-    } else if (remainDays.inDays > 0 && remainDays.inDays <= 3) {
+    } else if (remainDays.inDays > 1 && remainDays.inDays <= 3) {
       return '3 days';
     } else if (remainDays.inDays > 3 && remainDays.inDays <= 7) {
       return 'Week';

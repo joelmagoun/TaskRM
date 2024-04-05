@@ -44,8 +44,9 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
             taskState.todayTaskList.isNotEmpty
                 ? IconButton(
                     onPressed: () {
-                      CustomDialog.bottomSheet(
-                          context, const AddTaskBottomSheet());
+                      taskState.getTodayTaskList();
+                      // CustomDialog.bottomSheet(
+                      //     context, const AddTaskBottomSheet());
                     },
                     icon: const Icon(
                       Icons.add_circle_rounded,
