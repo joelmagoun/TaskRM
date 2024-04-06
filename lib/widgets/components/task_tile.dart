@@ -20,44 +20,44 @@ class TaskTile extends StatefulWidget {
   final String createdAt;
   final Task task;
 
-  const TaskTile({
-    Key? key,
-    required this.onLongPress,
-    required this.title,
-    required this.isTimeTracking,
-    required this.time,
-    required this.cardColor,
-    required this.titleColor,
-    required this.timeDateColor,
-    required this.isSelected,
-    required this.createdAt,
-    required this.task
-  }) : super(key: key);
+  const TaskTile(
+      {Key? key,
+      required this.onLongPress,
+      required this.title,
+      required this.isTimeTracking,
+      required this.time,
+      required this.cardColor,
+      required this.titleColor,
+      required this.timeDateColor,
+      required this.isSelected,
+      required this.createdAt,
+      required this.task})
+      : super(key: key);
 
   @override
   State<TaskTile> createState() => _TaskTileState();
 }
 
 class _TaskTileState extends State<TaskTile> {
-
   String getTimeAgo(String dateTime) {
     timeago.setLocaleMessages('en', timeago.EnMessages());
-      dateTime = timeago.format(DateTime.parse(dateTime),
-          locale: 'en');
+    dateTime = timeago.format(DateTime.parse(dateTime), locale: 'en');
     return dateTime;
   }
 
   @override
   void initState() {
-   getTimeAgo(widget.createdAt);
+    getTimeAgo(widget.createdAt);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: widget.onLongPress,
-      onTap: (){
-        Navigator.pushNamed(context, Routes.taskDetails, arguments: widget.task);
+      onTap: () {
+        Navigator.pushNamed(context, Routes.taskDetails,
+            arguments: widget.task);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -184,7 +184,7 @@ class _TaskTileState extends State<TaskTile> {
                           width: 4,
                         ),
                         Text(
-                            getTimeAgo(widget.createdAt),
+                          getTimeAgo(widget.createdAt),
                           style: tTextStyleRegular.copyWith(
                               fontSize: 14, color: widget.timeDateColor),
                         ),

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:task_rm/routes/routes.dart';
+import 'package:task_rm/views/goals/goalDetails/goal_details_screen.dart';
 import 'package:task_rm/views/goals/goals_screen.dart';
 import 'package:task_rm/views/tasks/taskDetails/task_details_screen.dart';
 import 'package:task_rm/views/tasks/taskQueue/task_queue_screen.dart';
 import 'package:task_rm/views/tasks/today_task_screen.dart';
+import '../models/goal.dart';
 import '../models/task.dart';
 import '../views/auth/login/login_screen.dart';
 import '../views/auth/signup/signup_screen.dart';
 import '../views/home/home_screen.dart';
-
 
 class AppRouter {
   static generateRoute() {
@@ -34,14 +35,15 @@ class AppRouter {
         return const GoalsScreen();
       case Routes.taskDetails:
         return TaskDetailsScreen(task: settings.arguments as Task);
+      case Routes.goalDetails:
+        return GoalDetailsScreen(goal: settings.arguments as Goal);
       // case Routes.newGoal:
       //   return const NewGoalPage();
       // case Routes.taskDetails:
       //   return TaskDetailsPage(task: settings.arguments as Task);
       // case Routes.goalsList:
       //   return const GoalsListPage();
-      // case Routes.goalDetails:
-      //   return GoalDetailPage(goalId: settings.arguments as String);
+
       // //return GoalDetailPage(goal: settings.arguments as Goal);
       // case Routes.todayTasksList:
       //   return const TodayTaskListPage();

@@ -146,4 +146,5 @@ class GoalProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 }

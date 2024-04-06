@@ -38,6 +38,8 @@ const typeIcon = 'assets/svgs/type.svg';
 const addTimeIcon = 'assets/svgs/add_time.svg';
 const checkIcon = 'assets/svgs/check.svg';
 const clearIcon = 'assets/svgs/clear.svg';
+const scheduleIcon = 'assets/svgs/schedule.svg';
+const reloadIcon = 'assets/svgs/reload.svg';
 
 
 
