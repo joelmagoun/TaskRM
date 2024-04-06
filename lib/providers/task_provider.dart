@@ -110,7 +110,7 @@ class TaskProvider extends ChangeNotifier {
                   timeframe: timeFrameResult,
                   description: e.data['description'] ?? '',
                   createdAt: DateTime.parse(e.data['createdAt']),
-                  expectedCompletion: DateTime.now(),
+                  expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
                   isMarkedForToday: false,
                   jiraID: e.data['jiraID'] ?? '',
                   userID: e.data['userID'] ?? '',
@@ -126,7 +126,7 @@ class TaskProvider extends ChangeNotifier {
                     timeframe: e.data['timeframe'] ?? '',
                     description: e.data['description'] ?? '',
                     createdAt: DateTime.parse(e.data['createdAt']),
-                    expectedCompletion: DateTime.now(),
+                    expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
                     isMarkedForToday: false,
                     jiraID: e.data['jiraID'] ?? '',
                     userID: e.data['userID'] ?? '',
@@ -189,17 +189,21 @@ class TaskProvider extends ChangeNotifier {
         notifyListeners();
 
         res.documents.forEach((e) {
-          if (e.data['timeframe'] != 'Today') {
+
+          String timeFrameResult = getTimeFrameFromExpectedDate(e.data['expectedCompletion']);
+
+          if (timeFrameResult != 'Today') {
             if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
               _allTaskList.add(Task(
                   id: e.$id ?? '',
                   title: e.data['title'] ?? '',
                   type: e.data['type'] ?? '',
                   priority: e.data['priority'] ?? '',
-                  timeframe: e.data['timeframe'] ?? '',
+                  //timeframe: e.data['timeframe'] ?? '',
+                  timeframe: timeFrameResult,
                   description: e.data['description'] ?? '',
                   createdAt: DateTime.parse(e.data['createdAt']),
-                  expectedCompletion: DateTime.now(),
+                  expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
                   isMarkedForToday: false,
                   jiraID: e.data['jiraID'] ?? '',
                   userID: e.data['userID'] ?? '',
@@ -214,10 +218,11 @@ class TaskProvider extends ChangeNotifier {
                     title: e.data['title'] ?? '',
                     type: e.data['type'] ?? '',
                     priority: e.data['priority'] ?? '',
-                    timeframe: e.data['timeframe'] ?? '',
+                    //timeframe: e.data['timeframe'] ?? '',
+                    timeframe: timeFrameResult,
                     description: e.data['description'] ?? '',
                     createdAt: DateTime.parse(e.data['createdAt']),
-                    expectedCompletion: DateTime.now(),
+                    expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
                     isMarkedForToday: false,
                     jiraID: e.data['jiraID'] ?? '',
                     userID: e.data['userID'] ?? '',

@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:task_rm/providers/task_provider.dart';
 import 'package:task_rm/utils/color.dart';
 import 'package:task_rm/utils/custom_dialog.dart';
-import 'package:task_rm/utils/custom_snack.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/taskQueue/task_queue_filter_bottom_sheet.dart';
@@ -39,11 +38,6 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(65.0),
           child: AppBar(
-            leading: IconButton(onPressed: (){
-              var result =
-              _taskState.getTimeFrameFromExpectedDate('expectedDate');
-              print('time frame $result');
-            }, icon: const Icon(Icons.add)),
             centerTitle: false,
             shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
             title: _taskState.allTaskList.isEmpty
