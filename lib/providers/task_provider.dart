@@ -107,7 +107,7 @@ class TaskProvider extends ChangeNotifier {
                   type: e.data['type'] ?? '',
                   priority: e.data['priority'] ?? '',
                   //timeframe: e.data['timeframe'] ?? '',
-                  timeframe: getTimeFrameFromExpectedDate(e.data['expectedCompletion']),
+                  timeframe: timeFrameResult,
                   description: e.data['description'] ?? '',
                   createdAt: DateTime.parse(e.data['createdAt']),
                   expectedCompletion: DateTime.now(),
