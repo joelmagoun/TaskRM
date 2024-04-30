@@ -141,7 +141,6 @@ class TaskProvider extends ChangeNotifier {
       }
     } catch (e) {
       // CustomSnack.warningSnack(e.toString(), context);
-      print(e.toString());
     } finally {
       _isTaskLoading = false;
       notifyListeners();
@@ -294,7 +293,6 @@ class TaskProvider extends ChangeNotifier {
       //   // Navigator.pushNamed(context, Routes.moments);
       // }
     } catch (e) {
-      print('catch error ${e.toString()}');
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
       _isTaskAdding = false;
@@ -364,7 +362,7 @@ class TaskProvider extends ChangeNotifier {
     DateTime parsedExpectedDate = DateTime.parse(expectedDate);
     Duration remainDays = parsedExpectedDate.difference(now);
 
-    if (remainDays.inDays <= 1) {
+    if (remainDays.inDays == 1 || remainDays.inDays == 0) {
       return 'Today';
     } else if (remainDays.inDays > 1 && remainDays.inDays <= 3) {
       return '3 days';
