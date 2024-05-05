@@ -97,21 +97,21 @@ class TaskProvider extends ChangeNotifier {
         notifyListeners();
         
         res.documents.forEach((e) {
-          String timeFrameResult = getTimeFrameFromExpectedDate(e.data['expectedCompletion']);
+        //  String timeFrameResult = getTimeFrameFromExpectedDate(e.data['expectedCompletion']);
 
-          if (timeFrameResult == 'Today') {
+          if (e.data['isMarkedForToday']) {
             if (_selectedFilterType == '') {
               _todayTaskList.add(Task(
                   id: e.$id ?? '',
                   title: e.data['title'] ?? '',
                   type: e.data['type'] ?? '',
                   priority: e.data['priority'] ?? '',
-                  //timeframe: e.data['timeframe'] ?? '',
-                  timeframe: timeFrameResult,
+                  timeframe: e.data['timeframe'] ?? '',
+                 // timeframe: timeFrameResult,
                   description: e.data['description'] ?? '',
                   createdAt: DateTime.parse(e.data['createdAt']),
                   expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
-                  isMarkedForToday: false,
+                  isMarkedForToday: e.data['isMarkedForToday'] ?? false,
                   jiraID: e.data['jiraID'] ?? '',
                   userID: e.data['userID'] ?? '',
                   goal: e.data['goal'] ?? ''));
@@ -127,7 +127,7 @@ class TaskProvider extends ChangeNotifier {
                     description: e.data['description'] ?? '',
                     createdAt: DateTime.parse(e.data['createdAt']),
                     expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
-                    isMarkedForToday: false,
+                    isMarkedForToday: e.data['isMarkedForToday'] ?? false,
                     jiraID: e.data['jiraID'] ?? '',
                     userID: e.data['userID'] ?? '',
                     goal: e.data['goal'] ?? ''));
@@ -191,15 +191,15 @@ class TaskProvider extends ChangeNotifier {
 
           String timeFrameResult = getTimeFrameFromExpectedDate(e.data['expectedCompletion']);
 
-          if (timeFrameResult != 'Today') {
+          if (e.data['isMarkedForToday'] == false) {
             if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
               _allTaskList.add(Task(
                   id: e.$id ?? '',
                   title: e.data['title'] ?? '',
                   type: e.data['type'] ?? '',
                   priority: e.data['priority'] ?? '',
-                  //timeframe: e.data['timeframe'] ?? '',
-                  timeframe: timeFrameResult,
+                  timeframe: e.data['timeframe'] ?? '',
+                  //timeframe: timeFrameResult,
                   description: e.data['description'] ?? '',
                   createdAt: DateTime.parse(e.data['createdAt']),
                   expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
@@ -310,6 +310,7 @@ class TaskProvider extends ChangeNotifier {
       String taskId,
       String title,
       String type,
+      String goalId,
       String priority,
       String description,
       String goal,
@@ -330,13 +331,15 @@ class TaskProvider extends ChangeNotifier {
             'jiraID': '',
             'title': title,
             'type': type,
-            'isMarkedForToday': false,
-            'goalId': '',
+            'isMarkedForToday': true,
+            'goalId': goalId,
             'priority': priority,
             'description': description,
             'userID': uid,
             'goal': goal,
-            'createdAt': createdAt
+            'createdAt': createdAt,
+            'expectedCompletion':
+            getExpectedDateFromTimeframe('Today').toString(),
           }).then((value) {
         Navigator.pop(context);
         CustomSnack.successSnack(

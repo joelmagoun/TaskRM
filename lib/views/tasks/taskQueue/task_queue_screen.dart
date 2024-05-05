@@ -26,6 +26,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
   late String selectedTaskId = '';
   late String selectedTaskTitle = '';
   late String selectedTaskType = '';
+  late String selectedGoalId = '';
   late String selectedTaskPriority = '';
   late String selectedTaskDescription = '';
   late String selectedTaskGoal = '';
@@ -42,37 +43,37 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
             shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
             title: _taskState.allTaskList.isEmpty
                 ? Text(
-                    'Task queue',
-                    style: tTextStyle500.copyWith(fontSize: 20, color: black),
-                  )
+              'Task queue',
+              style: tTextStyle500.copyWith(fontSize: 20, color: black),
+            )
                 : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Task queue',
-                        style:
-                            tTextStyle500.copyWith(fontSize: 20, color: black),
-                      ),
-                      Text(
-                        'Long press a task to move it to today’s list',
-                        maxLines: 2,
-                        style: tTextStyleRegular.copyWith(fontSize: 14),
-                      ),
-                    ],
-                  ),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Task queue',
+                  style:
+                  tTextStyle500.copyWith(fontSize: 20, color: black),
+                ),
+                Text(
+                  'Long press a task to move it to today’s list',
+                  maxLines: 2,
+                  style: tTextStyleRegular.copyWith(fontSize: 14),
+                ),
+              ],
+            ),
             actions: [
               _taskState.allTaskList.isNotEmpty ||
-                      _taskState.selectedQueueType != '' ||
-                      _taskState.selectedQueueTimeFrame != ''
+                  _taskState.selectedQueueType != '' ||
+                  _taskState.selectedQueueTimeFrame != ''
                   ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: InkWell(
-                          onTap: () {
-                            CustomDialog.bottomSheet(
-                                context, const TaskQueueFilterBottomSheet());
-                          },
-                          child: SvgPicture.asset(filterIcon)),
-                    )
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: InkWell(
+                    onTap: () {
+                      CustomDialog.bottomSheet(
+                          context, const TaskQueueFilterBottomSheet());
+                    },
+                    child: SvgPicture.asset(filterIcon)),
+              )
                   : const SizedBox.shrink(),
             ],
           ),
@@ -86,21 +87,20 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
     final taskState = Provider.of<TaskProvider>(context, listen: false);
 
     if (taskState.isAllTaskLoading) {
-
       return const Center(
           child: CircularProgressIndicator(
-        color: primaryColor,
-      ));
-
+            color: primaryColor,
+          ));
     } else {
-
-
       if (taskState.allTaskList.isEmpty) {
-        if (taskState.selectedQueueType == '' || taskState.selectedQueueTimeFrame == '') {
-          return const EmptyWidget(
-              icon: taskIcon,
-              title: 'No tasks on your queue',
-              subTitle: 'Go back, then add new tasks');
+        if (taskState.selectedQueueType == '' ||
+            taskState.selectedQueueTimeFrame == '') {
+          return const Center(
+            child: EmptyWidget(
+                icon: taskIcon,
+                title: 'No tasks on your queue',
+                subTitle: 'Go back, then add new tasks'),
+          );
         } else {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,6 +204,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                               selectedTaskId = item.id;
                               selectedTaskTitle = item.title;
                               selectedTaskType = item.type;
+                              selectedGoalId = item.goalId!;
                               selectedTaskPriority = item.priority;
                               selectedTaskDescription = item.description;
                               selectedTaskGoal = item.goal;
@@ -315,6 +316,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                               selectedTaskId = item.id;
                               selectedTaskTitle = item.title;
                               selectedTaskType = item.type;
+                              selectedGoalId = item.goalId!;
                               selectedTaskPriority = item.priority;
                               selectedTaskDescription = item.description;
                               selectedTaskGoal = item.goal;
@@ -345,8 +347,6 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
           );
         }
       }
-
-
     }
   }
 
@@ -394,15 +394,18 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
             Expanded(
               child: InkWell(
                 onTap: () async {
+
                   await _taskState.moveToTodayTaskList(
                       selectedTaskId,
                       selectedTaskTitle,
                       selectedTaskType,
+                      selectedGoalId,
                       selectedTaskPriority,
                       selectedTaskDescription,
                       selectedTaskGoal,
                       selectedTaskCreatedAt,
                       context);
+
                 },
                 child: Container(
                   height: 56,
@@ -413,14 +416,14 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                   ),
                   child: _taskState.isMoving
                       ? const Center(
-                          child: CircularProgressIndicator(
-                          color: white,
-                        ))
+                      child: CircularProgressIndicator(
+                        color: white,
+                      ))
                       : Text(
-                          'Move to “Today’s tasks”',
-                          style: tTextStyle600.copyWith(
-                              fontSize: 16, color: white),
-                        ),
+                    'Move to “Today’s tasks”',
+                    style: tTextStyle600.copyWith(
+                        fontSize: 16, color: white),
+                  ),
                 ),
               ),
             )
