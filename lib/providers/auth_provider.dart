@@ -90,7 +90,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future uploadImage(BuildContext context) async {
-    final String hardImagePath =
+    const String hardImagePath =
         '/Users/macbookpro/Library/Developer/CoreSimulator/Devices/79A5C545-A2DE-421A-9212-BD5D060F8DDC/data/Containers/Data/Application/EE8CFFB9-8EC3-43E9-9337-AB3C9F9273DE/tmp/image_picker_4AAC3C8B-940A-4DB5-9A32-5FCE29512584-77706-0000008FD6E13DD0.jpg';
 
     print('image url 1 $imageUrl');
@@ -217,10 +217,11 @@ class AuthProvider extends ChangeNotifier {
   logout(BuildContext context) async {
     try {
       final sessionId = await storage.read(key: 'sessionId');
-      final res = await account.deleteSession(sessionId: sessionId!);
-      await storage.delete(key: 'sessionId');
+      final res = await account.deleteSession(sessionId: sessionId!).then((value) async {
+        await AppStorage.deleteStorageData();
+        Navigator.pushNamed(context, Routes.login);
+      });
 
-      Navigator.pushNamed(context, Routes.login);
     } catch (e) {
       print(e.toString());
       notifyListeners();
