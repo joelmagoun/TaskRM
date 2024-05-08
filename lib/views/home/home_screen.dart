@@ -14,53 +14,54 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(builder: (_, _authState, child) {
-      return SafeArea(
-        child: Scaffold(
-          body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Home',
-                      style: tTextStyle500.copyWith(fontSize: 20),
-                    ),
-                    Image.asset(logo),
-                    //SvgPicture.asset(notificationIcon),
-                    IconButton(onPressed: (){
-                      _authState.logout(context);
-                    }, icon: const Icon(Icons.logout, color: secondaryColor,))
-                  ],
+      return Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(65.0),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            centerTitle: true,
+            shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Home',
+                  style: tTextStyle500.copyWith(fontSize: 20),
                 ),
-              ),
-              const Divider(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _optionTile(task, taskIcon, 'Tasks', (){
-                        Navigator.pushNamed(context, Routes.todayTask);
-                      }),
-                      sixteenVerticalSpace,
-                      _optionTile(goal, goalIcon, 'Goals', (){
-                        Navigator.pushNamed(context, Routes.goals);
-                      }),
-                      sixteenVerticalSpace,
-                      _optionTile(moment, momentIcon, 'Moments', (){}),
-                      sixteenVerticalSpace,
-                      _optionTile(journal, journalIcon, 'Journal', (){}),
-                      sixteenVerticalSpace,
-                      _optionTile(review, reviewIcon, 'Review', (){}),
-                      sixteenVerticalSpace,
-                      _optionTile(feed, feedIcon, 'Feed', (){}),
-                    ],
-                  ),
-                ),
-              )
-            ],
+                Image.asset(logo),
+                IconButton(onPressed: (){
+                  _authState.logout(context);
+                }, icon: const Icon(Icons.logout, color: secondaryColor,))
+              ],
+            ),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _optionTile(task, taskIcon, 'Tasks', (){
+                  Navigator.pushNamed(context, Routes.todayTask);
+                }),
+                sixteenVerticalSpace,
+                _optionTile(goal, goalIcon, 'Goals', (){
+                  Navigator.pushNamed(context, Routes.goals);
+                }),
+                sixteenVerticalSpace,
+                _optionTile(moment, momentIcon, 'Moments', (){}),
+                sixteenVerticalSpace,
+                _optionTile(journal, journalIcon, 'Journal', (){}),
+                sixteenVerticalSpace,
+                _optionTile(review, reviewIcon, 'Review', (){}),
+                sixteenVerticalSpace,
+                _optionTile(feed, feedIcon, 'Feed', (){}),
+                sixteenVerticalSpace,
+                _optionTile(feed, profileIcon , 'Profile', (){
+                  Navigator.pushNamed(context, Routes.profile);
+                }),
+              ],
+            ),
           ),
         ),
       );
@@ -87,7 +88,7 @@ class HomeScreen extends StatelessWidget {
                 CircleAvatar(
                   radius: 20,
                   backgroundColor: white,
-                  child: SvgPicture.asset(icon),
+                  child: SvgPicture.asset(icon, color: primaryColor, height: 20, width: 20,),
                 ),
                 sixteenHorizontalSpace,
                 Text(

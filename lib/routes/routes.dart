@@ -5,6 +5,7 @@ class Routes {
   static const String goals = 'goals_screen';
   static const String taskDetails = "task_details";
   static const String goalDetails = "goal_details";
+  static const String profile = "profile_screen";
 
 
   static const String todayTasksList = "today_tasks_list";
@@ -15,7 +16,7 @@ class Routes {
   static const String journal = "journal_screen";
   static const String login = "login_screen";
   static const String signUp = "signUp_screen";
-  static const String profile = "profile_screen";
+
   static const String editProfile = "edit_profile_screen";
   static const String moments = "moments_screen";
   static const String feed = "feed_screen";

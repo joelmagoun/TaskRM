@@ -10,6 +10,7 @@ import '../models/task.dart';
 import '../views/auth/login/login_screen.dart';
 import '../views/auth/signup/signup_screen.dart';
 import '../views/home/home_screen.dart';
+import '../views/profile/profile_screen.dart';
 
 class AppRouter {
   static generateRoute() {
@@ -37,6 +38,8 @@ class AppRouter {
         return TaskDetailsScreen(task: settings.arguments as Task);
       case Routes.goalDetails:
         return GoalDetailsScreen(goal: settings.arguments as Goal);
+      case Routes.profile:
+        return const ProfileScreen();
       // case Routes.newGoal:
       //   return const NewGoalPage();
       // case Routes.taskDetails:
@@ -55,8 +58,7 @@ class AppRouter {
         return const LoginScreen();
       case Routes.signUp:
         return const SignUpScreen();
-      // case Routes.profile:
-      //   return const ProfileScreen();
+
       // case Routes.editProfile:
       //   return const EditProfileScreen();
       // case Routes.moments:

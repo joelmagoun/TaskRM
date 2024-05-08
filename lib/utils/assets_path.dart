@@ -40,6 +40,8 @@ const checkIcon = 'assets/svgs/check.svg';
 const clearIcon = 'assets/svgs/clear.svg';
 const scheduleIcon = 'assets/svgs/schedule.svg';
 const reloadIcon = 'assets/svgs/reload.svg';
+const profileIcon = 'assets/svgs/profile.svg';
+const userProfileIcon = 'assets/svgs/user.svg';
 
 
 

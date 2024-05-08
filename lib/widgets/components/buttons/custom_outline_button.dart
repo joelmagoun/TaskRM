@@ -20,10 +20,15 @@ class CustomOutlineButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: 55,
       width: double.infinity,
       child: OutlinedButton(
-        style: OutlinedButton.styleFrom(side: BorderSide(color: borderColor)),
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: borderColor),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+        ),
         onPressed: isLoading ? null : onTap,
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
