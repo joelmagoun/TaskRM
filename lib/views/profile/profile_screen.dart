@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:task_rm/utils/assets_path.dart';
+import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/spacer.dart';
+import 'package:task_rm/views/profile/widgets/edit_profile_bottomsheet.dart';
 import 'package:task_rm/widgets/components/buttons/custom_outline_button.dart';
 import '../../utils/color.dart';
 import '../../utils/typograpgy.dart';
@@ -76,29 +78,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildUserImage() {
-    return Container(
-      alignment: Alignment.center,
-      height: 175,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: textFieldFillColor,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            radius: 48,
-            backgroundColor: trans,
-            backgroundImage:
-                userImage.isEmpty ? null : NetworkImage(dummyProfileImage),
-            child: userImage.isEmpty ? SvgPicture.asset(userProfileIcon) : null,
-          ),
-          eightVerticalSpace,
-          Text('UserName',
-              style:
-                  tTextStyle500.copyWith(color: textPrimaryColor, fontSize: 20))
-        ],
+    return InkWell(
+      onTap: () {
+        CustomDialog.bottomSheet(context, const EditProfileBottomSheet());
+      },
+      child: Container(
+        alignment: Alignment.center,
+        height: 175,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: textFieldFillColor,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: 48,
+              backgroundColor: trans,
+              backgroundImage:
+                  userImage.isEmpty ? null : NetworkImage(dummyProfileImage),
+              child:
+                  userImage.isEmpty ? SvgPicture.asset(userProfileIcon) : null,
+            ),
+            eightVerticalSpace,
+            Text('UserName',
+                style: tTextStyle500.copyWith(
+                    color: textPrimaryColor, fontSize: 20))
+          ],
+        ),
       ),
     );
   }
