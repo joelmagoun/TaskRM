@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:task_rm/providers/profile_provider.dart';
 import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/typograpgy.dart';
@@ -21,7 +25,7 @@ class EditProfileBottomSheet extends StatefulWidget {
 }
 
 class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
-  final String userImage = 'sfgdg';
+  final String userImage = '';
   final TextEditingController _nameController = TextEditingController();
 
   @override
@@ -166,24 +170,29 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
   }
 
   Widget _addIcon() {
-    return Column(
-      children: [
-        const CircleAvatar(
-          radius: 24,
-          backgroundColor: textFieldFillColor,
-          child: Icon(
-            Icons.add,
-            color: black,
+    return InkWell(
+      onTap: () {
+        _selectImageDialog(context);
+      },
+      child: Column(
+        children: [
+          const CircleAvatar(
+            radius: 24,
+            backgroundColor: textFieldFillColor,
+            child: Icon(
+              Icons.add,
+              color: black,
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        Text(
-          'Add',
-          style: tTextStyle500.copyWith(fontSize: 16, color: secondaryColor),
-        )
-      ],
+          const SizedBox(
+            height: 4,
+          ),
+          Text(
+            'Add',
+            style: tTextStyle500.copyWith(fontSize: 16, color: secondaryColor),
+          )
+        ],
+      ),
     );
   }
 
@@ -218,5 +227,51 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
         ),
       ],
     );
+  }
+
+  void _selectImageDialog(BuildContext context) {
+    final profileState = Provider.of<ProfileProvider>(context, listen: false);
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text(
+              'Select Image',
+              style:
+                  tTextStyle500.copyWith(color: textPrimaryColor, fontSize: 18),
+            ),
+            actions: [
+              CupertinoDialogAction(
+                child: Text(
+                  'Gallery',
+                  style: tTextStyle500.copyWith(
+                      color: secondaryColor, fontSize: 16),
+                ),
+                onPressed: () async {
+                  await profileState.pickImage(ImageSource.gallery, context);
+                },
+              ),
+              CupertinoDialogAction(
+                child: Text(
+                  'Camera',
+                  style: tTextStyle500.copyWith(
+                      color: secondaryColor, fontSize: 16),
+                ),
+                onPressed: () async {
+                  await profileState.pickImage(ImageSource.camera, context);
+                },
+              ),
+              CupertinoDialogAction(
+                child: Text(
+                  'Back',
+                  style: tTextStyle500.copyWith(color: red, fontSize: 16),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 }

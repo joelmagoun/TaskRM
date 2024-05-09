@@ -9,16 +9,16 @@ import '../utils/app_storage.dart';
 import '../utils/config/constants.dart';
 import '../utils/custom_snack.dart';
 
-
 class ProfileProvider extends ChangeNotifier {
   Client client = Client();
-    late Databases db;
+  late Databases db;
   late Storage _appWriteStorage;
   File? image;
   late String imageUrl = '';
   late bool _isLoading = false;
 
   late UserData _user = UserData('', '', '', '');
+
   UserData get user => _user;
 
   /// this portion is for user profile info ///
@@ -31,10 +31,15 @@ class ProfileProvider extends ChangeNotifier {
   late String _profileJiraUrl = '';
 
   String get profileImage => _profileImage;
+
   String get profileName => _profileName;
+
   String get profileEncryption => _profileEncryption;
+
   String get profileJira => _profileJira;
+
   String get profileJiraUserName => _profileJiraUserName;
+
   String get profileJiraUrl => _profileJiraUrl;
 
   ProfileProvider() {
@@ -71,12 +76,14 @@ class ProfileProvider extends ChangeNotifier {
                   file: InputFile.fromPath(path: image.path))
               .then((value) {
             imageUrl =
-                "https://rest.is/v1/storage/buckets/${AppWriteConstant.userImageBucketId}/files/${value.$id}/view?project=${AppWriteConstant.projectId}";
+                "${AppWriteConstant.endPoint}/storage/buckets/${AppWriteConstant.userImageBucketId}/files/${value.$id}/view?project=${AppWriteConstant.projectId}";
             notifyListeners();
+            storage.write(key: 'imageUrl', value: imageUrl);
+            Navigator.pop(context);
+            CustomSnack.successSnack(
+                'Image is saved, please hit confirm button to update', context);
           });
-          await storage.write(key: 'imageUrl', value: imageUrl);
-          CustomSnack.successSnack(
-              'Image is saved, please hit confirm button to update', context);
+
         }
       }
     } on PlatformException catch (e) {
@@ -88,17 +95,23 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> saveProfile(String name, String encryption, String language,  String jiraApi,
-      String jiraUserName, String jiraUrl) async {
+  /// save profile info ///
 
-    final String uid = await storage.read(key: 'userId') ?? '';
-    final String image = await storage.read(key: 'imageUrl') ?? '';
+  late bool isProfileDataSaving = false;
+
+  Future<void> saveProfile(String name, String encryption, String language,
+      String jiraApi, String jiraUserName, String jiraUrl) async {
+    final String? uid = await AppStorage.getUserId();
+    final String? image = await AppStorage.getImageUrl();
 
     try {
+      isProfileDataSaving = true;
+      notifyListeners();
+
       var res = await db.createDocument(
           databaseId: AppWriteConstant.primaryDBId,
           collectionId: AppWriteConstant.profileCollectionId,
-          documentId: uid,
+          documentId: uid!,
           data: {
             'image_url': image,
             'name': name,
@@ -110,18 +123,19 @@ class ProfileProvider extends ChangeNotifier {
             'userId': uid
           });
 
-      if(res.data.isNotEmpty){
+      if (res.data.isNotEmpty) {
         await storage.write(key: 'seriesEncryptedPassword', value: encryption);
       }
-
     } catch (e) {
       print(e.toString());
+    }finally{
+      isProfileDataSaving = false;
+      notifyListeners();
     }
   }
 
   Future<void> getProfileInfo() async {
     try {
-
       final uid = await storage.read(key: 'userId');
 
       final res = await db.listDocuments(
@@ -129,8 +143,7 @@ class ProfileProvider extends ChangeNotifier {
           collectionId: AppWriteConstant.profileCollectionId,
           queries: [
             Query.equal("userId", uid),
-          ]
-      );
+          ]);
 
       if (res.documents.isNotEmpty) {
         res.documents.forEach((e) {
@@ -150,9 +163,8 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateProfile(
-      String name, String encryption, String jiraApi, String jiraUserName, String jiraUrl) async {
-
+  Future<void> updateProfile(String name, String encryption, String jiraApi,
+      String jiraUserName, String jiraUrl) async {
     final String uid = await storage.read(key: 'userId') ?? '';
     final String image = await storage.read(key: 'imageUrl') ?? '';
 
@@ -173,5 +185,4 @@ class ProfileProvider extends ChangeNotifier {
       print(e.toString());
     }
   }
-
 }

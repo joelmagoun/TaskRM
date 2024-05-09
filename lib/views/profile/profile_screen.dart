@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:task_rm/providers/auth_provider.dart';
 import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/views/profile/widgets/edit_profile_bottomsheet.dart';
+import 'package:task_rm/views/profile/widgets/logout_dialog.dart';
 import 'package:task_rm/widgets/components/buttons/custom_outline_button.dart';
 import 'package:task_rm/widgets/components/custom_image_holder.dart';
+import '../../providers/profile_provider.dart';
 import '../../utils/color.dart';
 import '../../utils/typograpgy.dart';
 import '../../widgets/components/buttons/primary_button.dart';
@@ -32,10 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -46,38 +46,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: tTextStyle500.copyWith(fontSize: 20),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            sixteenVerticalSpace,
-            _buildUserImage(),
-            sixteenVerticalSpace,
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 24,
-                  backgroundColor: textFieldFillColor,
-                  child: SvgPicture.asset(jiraIcon),
-                ),
-                eightHorizontalSpace,
-                Text(
-                  'Jira connections',
-                  style: tTextStyleRegular.copyWith(
-                      fontSize: 16, color: textPrimaryColor),
-                )
-              ],
-            ),
-            const Spacer(),
-            CustomOutlineButton(
-                onTap: () {},
+      body: Consumer2<AuthProvider, ProfileProvider>(
+          builder: (_, authState, profileState, child) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              sixteenVerticalSpace,
+              _buildUserImage(),
+              sixteenVerticalSpace,
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundColor: textFieldFillColor,
+                    child: SvgPicture.asset(jiraIcon),
+                  ),
+                  eightHorizontalSpace,
+                  Text(
+                    'Jira connections',
+                    style: tTextStyleRegular.copyWith(
+                        fontSize: 16, color: textPrimaryColor),
+                  )
+                ],
+              ),
+              const Spacer(),
+              CustomOutlineButton(
+                onTap: () {
+                  CustomDialog.dialogBuilder(
+                      context, const LogoutDeleteDialog());
+                },
                 buttonTitle: 'Log out',
                 borderColor: borderColor,
-                titleColor: iconColor),
-            primaryVerticalSpace
-          ],
-        ),
-      ),
+                titleColor: iconColor,
+              ),
+              primaryVerticalSpace
+            ],
+          ),
+        );
+      }),
     );
   }
 
@@ -97,7 +104,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomImageHolder(imageUrl: userImage,
+            CustomImageHolder(
+                imageUrl: userImage,
                 height: 96,
                 width: 96,
                 errorWidget: SvgPicture.asset(userProfileIcon)),

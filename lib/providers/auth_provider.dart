@@ -214,17 +214,29 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+
+  /// logout ///
+
+  late bool isLogOut = false;
+
   logout(BuildContext context) async {
     try {
+
+      isLogOut = true;
+      notifyListeners();
+
       final sessionId = await storage.read(key: 'sessionId');
       final res = await account.deleteSession(sessionId: sessionId!).then((value) async {
         await AppStorage.deleteStorageData();
-        Navigator.pushNamed(context, Routes.login);
+        Navigator.pushReplacementNamed(context, Routes.login);
       });
 
     } catch (e) {
-      print(e.toString());
+       CustomSnack.warningSnack(e.toString(), context);
+    }finally{
+      isLogOut = false;
       notifyListeners();
     }
   }
+
 }

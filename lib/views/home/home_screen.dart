@@ -29,9 +29,7 @@ class HomeScreen extends StatelessWidget {
                   style: tTextStyle500.copyWith(fontSize: 20),
                 ),
                 Image.asset(logo),
-                IconButton(onPressed: (){
-                  _authState.logout(context);
-                }, icon: const Icon(Icons.logout, color: secondaryColor,))
+                SvgPicture.asset(notificationIcon)
               ],
             ),
           ),
