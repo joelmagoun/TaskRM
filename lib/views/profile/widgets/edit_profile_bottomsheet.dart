@@ -5,9 +5,11 @@ import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/typograpgy.dart';
 import 'package:task_rm/views/tasks/newTask/add_new_task_bottomsheet.dart';
 import 'package:task_rm/widgets/components/buttons/primary_button.dart';
+import 'package:task_rm/widgets/components/custom_image_holder.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../utils/constant/constant.dart';
+import 'image_delete_dialog.dart';
 
 class EditProfileBottomSheet extends StatefulWidget {
   const EditProfileBottomSheet({
@@ -19,7 +21,7 @@ class EditProfileBottomSheet extends StatefulWidget {
 }
 
 class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
-  final String userImage = 'xcxz';
+  final String userImage = 'sfgdg';
   final TextEditingController _nameController = TextEditingController();
 
   @override
@@ -99,10 +101,8 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
           height: 4,
         ),
         Container(
-          //height: 320,
           width: double.infinity,
           decoration: BoxDecoration(
-            //color: const Color(0xFFE5E5E5),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: borderColor),
           ),
@@ -110,37 +110,17 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                CircleAvatar(
-                  radius: 96,
-                  backgroundColor: textFieldFillColor,
-                  backgroundImage: userImage.isEmpty
-                      ? null
-                      : NetworkImage(dummyProfileImage),
-                  child: userImage.isEmpty
-                      ? SvgPicture.asset(
-                          userProfileIcon,
-                          height: 150,
-                          width: 150,
-                        )
-                      : null,
-                ),
+                CustomImageHolder(
+                    imageUrl: userImage,
+                    height: 192,
+                    width: 192,
+                    errorWidget: SvgPicture.asset(
+                      userProfileIcon,
+                      height: 150,
+                      width: 150,
+                    )),
                 sixteenVerticalSpace,
-                const CircleAvatar(
-                  radius: 24,
-                  backgroundColor: textFieldFillColor,
-                  child: Icon(
-                    Icons.add,
-                    color: black,
-                  ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  'Add',
-                  style: tTextStyle500.copyWith(
-                      fontSize: 16, color: secondaryColor),
-                )
+                userImage.isEmpty ? _addIcon() : _buildDeleteAndChangeButtons()
               ],
             ),
           ),
@@ -181,6 +161,61 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
           ),
           autovalidateMode: AutovalidateMode.onUserInteraction,
         )
+      ],
+    );
+  }
+
+  Widget _addIcon() {
+    return Column(
+      children: [
+        const CircleAvatar(
+          radius: 24,
+          backgroundColor: textFieldFillColor,
+          child: Icon(
+            Icons.add,
+            color: black,
+          ),
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Text(
+          'Add',
+          style: tTextStyle500.copyWith(fontSize: 16, color: secondaryColor),
+        )
+      ],
+    );
+  }
+
+  Widget _buildDeleteAndChangeButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        InkWell(
+          onTap: () {
+            CustomDialog.dialogBuilder(context, const ImageDeleteDialog());
+          },
+          child: Column(
+            children: [
+              SvgPicture.asset(imageDeleteIcon),
+              Text(
+                'Delete',
+                style: tTextStyle500.copyWith(color: red, fontSize: 16),
+              )
+            ],
+          ),
+        ),
+        primaryHorizontalSpace,
+        Column(
+          children: [
+            SvgPicture.asset(imageEditIcon),
+            Text(
+              'Change',
+              style:
+                  tTextStyle500.copyWith(color: secondaryColor, fontSize: 16),
+            )
+          ],
+        ),
       ],
     );
   }

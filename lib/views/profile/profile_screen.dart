@@ -7,6 +7,7 @@ import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/spacer.dart';
 import 'package:task_rm/views/profile/widgets/edit_profile_bottomsheet.dart';
 import 'package:task_rm/widgets/components/buttons/custom_outline_button.dart';
+import 'package:task_rm/widgets/components/custom_image_holder.dart';
 import '../../utils/color.dart';
 import '../../utils/typograpgy.dart';
 import '../../widgets/components/buttons/primary_button.dart';
@@ -31,7 +32,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     return Scaffold(
       appBar: AppBar(
@@ -93,14 +97,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 48,
-              backgroundColor: trans,
-              backgroundImage:
-                  userImage.isEmpty ? null : NetworkImage(dummyProfileImage),
-              child:
-                  userImage.isEmpty ? SvgPicture.asset(userProfileIcon) : null,
-            ),
+            CustomImageHolder(imageUrl: userImage,
+                height: 96,
+                width: 96,
+                errorWidget: SvgPicture.asset(userProfileIcon)),
             eightVerticalSpace,
             Text('UserName',
                 style: tTextStyle500.copyWith(

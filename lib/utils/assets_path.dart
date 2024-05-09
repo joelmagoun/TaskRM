@@ -42,6 +42,8 @@ const scheduleIcon = 'assets/svgs/schedule.svg';
 const reloadIcon = 'assets/svgs/reload.svg';
 const profileIcon = 'assets/svgs/profile.svg';
 const userProfileIcon = 'assets/svgs/user.svg';
+const imageDeleteIcon = 'assets/svgs/image_delete.svg';
+const imageEditIcon = 'assets/svgs/image_edit.svg';
 
 
 
