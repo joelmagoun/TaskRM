@@ -27,7 +27,7 @@ class CustomImageHolder extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(isCircle ? 00 : 16),
+          //borderRadius: BorderRadius.circular(isCircle ? 00 : 16),
           image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
         ),
       ),

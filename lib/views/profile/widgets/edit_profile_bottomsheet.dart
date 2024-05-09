@@ -7,7 +7,6 @@ import 'package:task_rm/providers/profile_provider.dart';
 import 'package:task_rm/utils/assets_path.dart';
 import 'package:task_rm/utils/custom_dialog.dart';
 import 'package:task_rm/utils/typograpgy.dart';
-import 'package:task_rm/views/tasks/newTask/add_new_task_bottomsheet.dart';
 import 'package:task_rm/widgets/components/buttons/primary_button.dart';
 import 'package:task_rm/widgets/components/custom_image_holder.dart';
 import '../../../../utils/color.dart';
@@ -27,6 +26,7 @@ class EditProfileBottomSheet extends StatefulWidget {
 class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
   final String userImage = '';
   final TextEditingController _nameController = TextEditingController();
+  late bool isName = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,31 +38,39 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            eightVerticalSpace,
-            _header(),
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  _imageField(),
-                  primaryVerticalSpace,
-                  _buildNameField(),
-                  primaryVerticalSpace,
-                  PrimaryButton(
-                    onTap: () {},
-                    buttonTitle: 'Save',
-                    buttonColor: primaryLight,
-                  ),
-                  primaryVerticalSpace
-                ],
-              ),
-            )
-          ],
-        ),
+        child: Consumer<ProfileProvider>(builder: (_, profileState, child) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              eightVerticalSpace,
+              _header(),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    _imageField(),
+                    primaryVerticalSpace,
+                    _buildNameField(),
+                    primaryVerticalSpace,
+                    PrimaryButton(
+                      onTap: () async {
+                        await profileState.saveProfile(
+                            _nameController.text, '', '', '', '', '');
+                      },
+                      buttonTitle: 'Save',
+                      buttonColor: _nameController.text.isEmpty || !isName
+                          ? primaryLight
+                          : primaryColor,
+                      isLoading: profileState.isProfileDataSaving,
+                    ),
+                    primaryVerticalSpace
+                  ],
+                ),
+              )
+            ],
+          );
+        }),
       ),
     );
   }
@@ -94,6 +102,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
   }
 
   Widget _imageField() {
+    final profileState = Provider.of<ProfileProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -105,6 +114,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
           height: 4,
         ),
         Container(
+          alignment: Alignment.center,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
@@ -115,7 +125,8 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             child: Column(
               children: [
                 CustomImageHolder(
-                    imageUrl: userImage,
+                    imageUrl: profileState.imageUrl,
+                    isCircle: true,
                     height: 192,
                     width: 192,
                     errorWidget: SvgPicture.asset(
@@ -143,6 +154,11 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
         ),
         TextFormField(
           controller: _nameController,
+          onChanged: (value){
+            setState(() {
+              isName = true;
+            });
+          },
           autofocus: false,
           cursorColor: primaryColor,
           decoration: InputDecoration(

@@ -78,6 +78,7 @@ class ProfileProvider extends ChangeNotifier {
             imageUrl =
                 "${AppWriteConstant.endPoint}/storage/buckets/${AppWriteConstant.userImageBucketId}/files/${value.$id}/view?project=${AppWriteConstant.projectId}";
             notifyListeners();
+            print(imageUrl);
             storage.write(key: 'imageUrl', value: imageUrl);
             Navigator.pop(context);
             CustomSnack.successSnack(
