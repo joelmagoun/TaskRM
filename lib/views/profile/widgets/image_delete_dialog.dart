@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:task_rm/utils/color.dart';
-import 'package:task_rm/utils/spacer.dart';
-import 'package:task_rm/utils/typograpgy.dart';
-import 'package:task_rm/widgets/components/buttons/custom_outline_button.dart';
+import 'package:TaskRM/utils/color.dart';
+import 'package:TaskRM/utils/spacer.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
+import 'package:TaskRM/widgets/components/buttons/custom_outline_button.dart';
 
 class ImageDeleteDialog extends StatelessWidget {
   const ImageDeleteDialog({Key? key}) : super(key: key);

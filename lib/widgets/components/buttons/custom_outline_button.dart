@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_rm/utils/typograpgy.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
 
 class CustomOutlineButton extends StatelessWidget {
   final VoidCallback onTap;

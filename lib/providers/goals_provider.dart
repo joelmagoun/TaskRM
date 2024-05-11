@@ -1,8 +1,8 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:task_rm/models/goal.dart';
-import 'package:task_rm/utils/app_storage.dart';
-import 'package:task_rm/utils/custom_snack.dart';
+import 'package:TaskRM/models/goal.dart';
+import 'package:TaskRM/utils/app_storage.dart';
+import 'package:TaskRM/utils/custom_snack.dart';
 import '../utils/config/constants.dart';
 
 class GoalProvider extends ChangeNotifier {

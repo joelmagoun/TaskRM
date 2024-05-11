@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/auth_provider.dart';
-import 'package:task_rm/utils/color.dart';
-import 'package:task_rm/utils/spacer.dart';
-import 'package:task_rm/utils/typograpgy.dart';
-import 'package:task_rm/widgets/components/buttons/custom_outline_button.dart';
+import 'package:TaskRM/providers/auth_provider.dart';
+import 'package:TaskRM/utils/color.dart';
+import 'package:TaskRM/utils/spacer.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
+import 'package:TaskRM/widgets/components/buttons/custom_outline_button.dart';
 
 class LogoutDeleteDialog extends StatelessWidget {
   const LogoutDeleteDialog({Key? key}) : super(key: key);

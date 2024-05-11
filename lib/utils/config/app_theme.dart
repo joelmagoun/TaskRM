@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_rm/utils/config/typography.dart';
+import 'package:TaskRM/utils/config/typography.dart';
 
 class AppTheme {
   static Color primaryColor = const Color(0xff4942E4);

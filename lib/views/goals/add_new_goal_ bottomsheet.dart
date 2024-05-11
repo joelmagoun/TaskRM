@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/task_provider.dart';
-import 'package:task_rm/utils/custom_dialog.dart';
-import 'package:task_rm/utils/typograpgy.dart';
-import 'package:task_rm/views/goals/select_parent_goal_bottomsheet.dart';
-import 'package:task_rm/views/tasks/newTask/select_goal_bottom_sheet.dart';
-import 'package:task_rm/widgets/components/buttons/primary_button.dart';
+import 'package:TaskRM/providers/task_provider.dart';
+import 'package:TaskRM/utils/custom_dialog.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
+import 'package:TaskRM/views/goals/select_parent_goal_bottomsheet.dart';
+import 'package:TaskRM/views/tasks/newTask/select_goal_bottom_sheet.dart';
+import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../providers/goals_provider.dart';

@@ -2,12 +2,12 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/auth_provider.dart';
-import 'package:task_rm/providers/goals_provider.dart';
-import 'package:task_rm/providers/task_provider.dart';
-import 'package:task_rm/providers/profile_provider.dart';
-import 'package:task_rm/routes/app_router.dart';
-import 'package:task_rm/views/splash_screen.dart';
+import 'package:TaskRM/providers/auth_provider.dart';
+import 'package:TaskRM/providers/goals_provider.dart';
+import 'package:TaskRM/providers/task_provider.dart';
+import 'package:TaskRM/providers/profile_provider.dart';
+import 'package:TaskRM/routes/app_router.dart';
+import 'package:TaskRM/views/splash_screen.dart';
 
 
 class MyApp extends StatefulWidget {

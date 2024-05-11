@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/task_provider.dart';
-import 'package:task_rm/utils/constant/constant.dart';
-import 'package:task_rm/utils/typograpgy.dart';
-import 'package:task_rm/views/tasks/taskQueue/widgets/filter_option_tile.dart';
-import 'package:task_rm/widgets/components/buttons/primary_button.dart';
+import 'package:TaskRM/providers/task_provider.dart';
+import 'package:TaskRM/utils/constant/constant.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
+import 'package:TaskRM/views/tasks/taskQueue/widgets/filter_option_tile.dart';
+import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 

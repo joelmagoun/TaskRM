@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:task_rm/utils/spacer.dart';
-import 'package:task_rm/utils/typograpgy.dart';
+import 'package:TaskRM/utils/spacer.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
 import 'color.dart';
 
 class CustomSnack {

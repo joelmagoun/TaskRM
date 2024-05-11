@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:task_rm/utils/color.dart';
-import 'package:task_rm/views/auth/login/login_screen.dart';
-import 'package:task_rm/views/home/home_screen.dart';
+import 'package:TaskRM/utils/color.dart';
+import 'package:TaskRM/views/auth/login/login_screen.dart';
+import 'package:TaskRM/views/home/home_screen.dart';
 import '../utils/assets_path.dart';
 
 class SplashScreen extends StatefulWidget {

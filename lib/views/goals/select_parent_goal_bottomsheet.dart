@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/goals_provider.dart';
-import 'package:task_rm/providers/task_provider.dart';
+import 'package:TaskRM/providers/goals_provider.dart';
+import 'package:TaskRM/providers/task_provider.dart';
 import '../../../utils/color.dart';
 import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';

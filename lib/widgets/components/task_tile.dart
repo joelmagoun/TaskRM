@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:task_rm/models/task.dart';
-import 'package:task_rm/utils/assets_path.dart';
-import 'package:task_rm/utils/color.dart';
-import 'package:task_rm/utils/spacer.dart';
-import 'package:task_rm/utils/typograpgy.dart';
+import 'package:TaskRM/models/task.dart';
+import 'package:TaskRM/utils/assets_path.dart';
+import 'package:TaskRM/utils/color.dart';
+import 'package:TaskRM/utils/spacer.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../routes/routes.dart';
 

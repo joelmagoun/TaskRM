@@ -4,7 +4,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/profile_provider.dart';
+import 'package:TaskRM/providers/profile_provider.dart';
 import '../routes/routes.dart';
 import '../utils/app_storage.dart';
 import '../utils/config/constants.dart';

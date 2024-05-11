@@ -1,6 +1,6 @@
 {
-    "name": "task_rm",
-    "short_name": "task_rm",
+    "name": "TaskRM",
+    "short_name": "TaskRM",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,8 +1,8 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:task_rm/app.dart';
-import 'package:task_rm/utils/app_storage.dart';
-import 'package:task_rm/utils/config/constants.dart';
+import 'package:TaskRM/app.dart';
+import 'package:TaskRM/utils/app_storage.dart';
+import 'package:TaskRM/utils/config/constants.dart';
 
 void main() async {
 

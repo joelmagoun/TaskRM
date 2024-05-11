@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/auth_provider.dart';
-import 'package:task_rm/utils/color.dart';
-import 'package:task_rm/utils/spacer.dart';
-import 'package:task_rm/utils/typograpgy.dart';
+import 'package:TaskRM/providers/auth_provider.dart';
+import 'package:TaskRM/utils/color.dart';
+import 'package:TaskRM/utils/spacer.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
 import '../../routes/routes.dart';
 import '../../utils/assets_path.dart';
 

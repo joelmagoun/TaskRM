@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/goals_provider.dart';
-import 'package:task_rm/providers/task_provider.dart';
-import 'package:task_rm/utils/assets_path.dart';
-import 'package:task_rm/widgets/empty_widget.dart';
+import 'package:TaskRM/providers/goals_provider.dart';
+import 'package:TaskRM/providers/task_provider.dart';
+import 'package:TaskRM/utils/assets_path.dart';
+import 'package:TaskRM/widgets/empty_widget.dart';
 import '../../../utils/color.dart';
 import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';

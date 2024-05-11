@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:task_rm/utils/assets_path.dart';
-import 'package:task_rm/utils/custom_dialog.dart';
-import 'package:task_rm/utils/typograpgy.dart';
-import 'package:task_rm/views/tasks/newTask/add_new_task_bottomsheet.dart';
+import 'package:TaskRM/utils/assets_path.dart';
+import 'package:TaskRM/utils/custom_dialog.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
+import 'package:TaskRM/views/tasks/newTask/add_new_task_bottomsheet.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../routes/routes.dart';

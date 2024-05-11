@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/models/goal.dart';
-import 'package:task_rm/models/task.dart';
-import 'package:task_rm/providers/goals_provider.dart';
-import 'package:task_rm/utils/assets_path.dart';
-import 'package:task_rm/utils/color.dart';
-import 'package:task_rm/utils/custom_dialog.dart';
-import 'package:task_rm/utils/spacer.dart';
-import 'package:task_rm/utils/typograpgy.dart';
-import 'package:task_rm/views/goals/add_new_goal_%20bottomsheet.dart';
-import 'package:task_rm/views/goals/goal_filter_bottomsheet.dart';
-import 'package:task_rm/views/goals/widgets/goal_tile.dart';
-import 'package:task_rm/widgets/components/task_tile.dart';
-import 'package:task_rm/widgets/empty_widget.dart';
+import 'package:TaskRM/models/goal.dart';
+import 'package:TaskRM/models/task.dart';
+import 'package:TaskRM/providers/goals_provider.dart';
+import 'package:TaskRM/utils/assets_path.dart';
+import 'package:TaskRM/utils/color.dart';
+import 'package:TaskRM/utils/custom_dialog.dart';
+import 'package:TaskRM/utils/spacer.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
+import 'package:TaskRM/views/goals/add_new_goal_%20bottomsheet.dart';
+import 'package:TaskRM/views/goals/goal_filter_bottomsheet.dart';
+import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
+import 'package:TaskRM/widgets/components/task_tile.dart';
+import 'package:TaskRM/widgets/empty_widget.dart';
 
 class GoalsScreen extends StatelessWidget {
   const GoalsScreen({Key? key}) : super(key: key);

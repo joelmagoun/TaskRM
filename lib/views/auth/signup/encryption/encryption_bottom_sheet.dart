@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gesture_password_widget/widget/gesture_password_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:task_rm/providers/auth_provider.dart';
-import 'package:task_rm/utils/typograpgy.dart';
-import 'package:task_rm/widgets/components/buttons/primary_button.dart';
+import 'package:TaskRM/providers/auth_provider.dart';
+import 'package:TaskRM/utils/typograpgy.dart';
+import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../routes/routes.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/custom_snack.dart';
