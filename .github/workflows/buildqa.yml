@@ -54,6 +54,9 @@ jobs:
      - name: 🍏📦 Create iOS appbundle release
        run: |
          flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist
+     - name: 🍏📦 Create iOS appbundle release
+       run: |
+         ls -al /Users/runner/work/TaskRM/TaskRM/build/ios/ipa/
      - name: 🍏🚀 Deploy to App Store (Testflight)
        uses: apple-actions/upload-testflight-build@v1
        with:
