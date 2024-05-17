@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/auth_provider.dart';
@@ -11,9 +10,9 @@ import 'package:TaskRM/views/profile/widgets/logout_dialog.dart';
 import 'package:TaskRM/widgets/components/buttons/custom_outline_button.dart';
 import 'package:TaskRM/widgets/components/custom_image_holder.dart';
 import '../../providers/profile_provider.dart';
+import '../../routes/routes.dart';
 import '../../utils/color.dart';
 import '../../utils/typograpgy.dart';
-import '../../widgets/components/buttons/primary_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -28,15 +27,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    //final profileState = Provider.of<ProfileProvider>(context, listen: false);
-    //profileState.getProfileInfo();
+    final profileState = Provider.of<ProfileProvider>(context, listen: false);
+    profileState.getProfileInfo(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -50,45 +47,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (_, authState, profileState, child) {
         return Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              sixteenVerticalSpace,
-              _buildUserImage(),
-              sixteenVerticalSpace,
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 24,
-                    backgroundColor: textFieldFillColor,
-                    child: SvgPicture.asset(jiraIcon),
-                  ),
-                  eightHorizontalSpace,
-                  Text(
-                    'Jira connections',
-                    style: tTextStyleRegular.copyWith(
-                        fontSize: 16, color: textPrimaryColor),
-                  )
-                ],
-              ),
-              const Spacer(),
-              CustomOutlineButton(
-                onTap: () {
-                  CustomDialog.dialogBuilder(
-                      context, const LogoutDeleteDialog());
-                },
-                buttonTitle: 'Log out',
-                borderColor: borderColor,
-                titleColor: iconColor,
-              ),
-              primaryVerticalSpace
-            ],
-          ),
+          child: profileState.isProfileDataLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                  children: [
+                    sixteenVerticalSpace,
+                    _buildUserImage(),
+                    sixteenVerticalSpace,
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, Routes.jiraCollectionScreen);
+                      },
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 24,
+                            backgroundColor: textFieldFillColor,
+                            child: SvgPicture.asset(jiraIcon),
+                          ),
+                          eightHorizontalSpace,
+                          Text(
+                            'Jira connections',
+                            style: tTextStyleRegular.copyWith(
+                                fontSize: 16, color: textPrimaryColor),
+                          )
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    CustomOutlineButton(
+                      onTap: () {
+                        CustomDialog.dialogBuilder(
+                            context, const LogoutDeleteDialog());
+                      },
+                      buttonTitle: 'Log out',
+                      borderColor: borderColor,
+                      titleColor: iconColor,
+                    ),
+                    primaryVerticalSpace
+                  ],
+                ),
         );
       }),
     );
   }
 
   Widget _buildUserImage() {
+    final profileState = Provider.of<ProfileProvider>(context, listen: false);
     return InkWell(
       onTap: () {
         CustomDialog.bottomSheet(context, const EditProfileBottomSheet());
@@ -105,12 +111,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomImageHolder(
-                imageUrl: userImage,
+                imageUrl: profileState.profileImage,
                 height: 96,
                 width: 96,
                 errorWidget: SvgPicture.asset(userProfileIcon)),
             eightVerticalSpace,
-            Text('UserName',
+            Text(profileState.profileName,
                 style: tTextStyle500.copyWith(
                     color: textPrimaryColor, fontSize: 20))
           ],

@@ -44,6 +44,9 @@ const profileIcon = 'assets/svgs/profile.svg';
 const userProfileIcon = 'assets/svgs/user.svg';
 const imageDeleteIcon = 'assets/svgs/image_delete.svg';
 const imageEditIcon = 'assets/svgs/image_edit.svg';
+const emptyJira = 'assets/svgs/empty_jira.svg';
+const jiraDelete = 'assets/svgs/jira_delete.svg';
+const jiraEdit = 'assets/svgs/jira_edit.svg';
 
 
 

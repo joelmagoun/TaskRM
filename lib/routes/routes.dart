@@ -6,6 +6,7 @@ class Routes {
   static const String taskDetails = "task_details";
   static const String goalDetails = "goal_details";
   static const String profile = "profile_screen";
+  static const String jiraCollectionScreen = 'jira_collection_screen';
 
 
   static const String todayTasksList = "today_tasks_list";

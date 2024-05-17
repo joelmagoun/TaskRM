@@ -23,6 +23,11 @@ class AppStorage {
     return imageUrl;
   }
 
+  static Future<String?> getImageFileId() async {
+    String? imageFileId = await storage.read(key: 'image_file_id');
+    return imageFileId;
+  }
+
   static Future<void> deleteStorageData() async {
     await storage.deleteAll();
   }

@@ -25,8 +25,15 @@ class EditProfileBottomSheet extends StatefulWidget {
 
 class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
   final String userImage = '';
-  final TextEditingController _nameController = TextEditingController();
+  late TextEditingController _nameController;
   late bool isName = false;
+
+  @override
+  void initState() {
+    final profileState = Provider.of<ProfileProvider>(context, listen: false);
+    _nameController = TextEditingController(text: profileState.profileName);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +62,20 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                     primaryVerticalSpace,
                     PrimaryButton(
                       onTap: () async {
-                        await profileState.saveProfile(
-                            _nameController.text, '', '', '', '', '');
+                        await profileState.updateProfile(
+                            profileState.profileImage,
+                            _nameController.text,
+                            profileState.profileEncryption,
+                            profileState.profileJira,
+                            profileState.profileJiraUserName,
+                            profileState.profileJiraUrl,
+                            context);
                       },
                       buttonTitle: 'Save',
-                      buttonColor: _nameController.text.isEmpty || !isName
+                      buttonColor: _nameController.text.isEmpty
                           ? primaryLight
                           : primaryColor,
-                      isLoading: profileState.isProfileDataSaving,
+                      isLoading: profileState.isProfileUpdating,
                     ),
                     primaryVerticalSpace
                   ],
@@ -125,7 +138,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             child: Column(
               children: [
                 CustomImageHolder(
-                    imageUrl: profileState.imageUrl,
+                    imageUrl: profileState.profileImage,
                     isCircle: true,
                     height: 192,
                     width: 192,
@@ -135,7 +148,9 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                       width: 150,
                     )),
                 sixteenVerticalSpace,
-                userImage.isEmpty ? _addIcon() : _buildDeleteAndChangeButtons()
+                profileState.profileImage.isEmpty
+                    ? _addIcon()
+                    : _buildDeleteAndChangeButtons()
               ],
             ),
           ),
@@ -154,13 +169,13 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
         ),
         TextFormField(
           controller: _nameController,
-          onChanged: (value){
-            setState(() {
-              isName = true;
-            });
-          },
           autofocus: false,
           cursorColor: primaryColor,
+          // onChanged: (value){
+          //   setState(() {
+          //     isName = true;
+          //   });
+          // },
           decoration: InputDecoration(
             filled: true,
             fillColor: white,
@@ -231,15 +246,20 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
           ),
         ),
         primaryHorizontalSpace,
-        Column(
-          children: [
-            SvgPicture.asset(imageEditIcon),
-            Text(
-              'Change',
-              style:
-                  tTextStyle500.copyWith(color: secondaryColor, fontSize: 16),
-            )
-          ],
+        InkWell(
+          onTap: () {
+            _selectImageDialog(context);
+          },
+          child: Column(
+            children: [
+              SvgPicture.asset(imageEditIcon),
+              Text(
+                'Change',
+                style:
+                    tTextStyle500.copyWith(color: secondaryColor, fontSize: 16),
+              )
+            ],
+          ),
         ),
       ],
     );
