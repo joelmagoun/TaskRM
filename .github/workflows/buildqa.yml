@@ -54,10 +54,13 @@ jobs:
      - name: 🍏📦 Create iOS appbundle release
        run: |
          flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist
+     - name: 📦 List App Bundle directory
+       run: |
+         ls -al /Users/runner/work/TaskRM/TaskRM/build/ios/ipa/
      - name: 🍏🚀 Deploy to App Store (Testflight)
        uses: apple-actions/upload-testflight-build@v1
        with:
-         app-path: ${{ github.workspace }}/build/ios/ipa/DemoRMQA.ipa
+         app-path: ${{ github.workspace }}/build/ios/ipa/TaskRMQA.ipa
          issuer-id: ${{ secrets.IOS_APP_STORE_CONNECT_ISSUER_ID }}
          api-key-id: ${{ secrets.IOS_APP_STORE_CONNECT_API_KEY_ID }}
          api-private-key: ${{ secrets.IOS_APP_STORE_CONNECT_API_PRIVATE_KEY }}

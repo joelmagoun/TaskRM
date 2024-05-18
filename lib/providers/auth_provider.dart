@@ -148,7 +148,7 @@ class AuthProvider extends ChangeNotifier {
         final _profileState =
             Provider.of<ProfileProvider>(context, listen: false);
         _profileState.saveProfile(
-            _name, _encryption, _language, _jira, _jiraUserName, _jiraUrl);
+            _name, _encryption, _language, _jira, _jiraUserName, _jiraUrl, context);
       }
 
       Navigator.pushReplacementNamed(context, Routes.home);

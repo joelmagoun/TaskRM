@@ -6,8 +6,10 @@ import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/widgets/components/buttons/custom_outline_button.dart';
 
-class ImageDeleteDialog extends StatelessWidget {
-  const ImageDeleteDialog({Key? key}) : super(key: key);
+class JiraDeleteDialog extends StatelessWidget {
+  final String docId;
+
+  const JiraDeleteDialog({Key? key, required this.docId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,25 +18,19 @@ class ImageDeleteDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Delete profile photo',
+            'Delete connection',
             style:
                 tTextStyle500.copyWith(fontSize: 18, color: textPrimaryColor),
-          ),
-          eightVerticalSpace,
-          Text(
-            'Are you sure?',
-            style: tTextStyleRegular.copyWith(
-                fontSize: 14, color: const Color(0xFF555555)),
           ),
           primaryVerticalSpace,
           CustomOutlineButton(
             onTap: () {
-              profileState.deleteImage(context);
+              profileState.deleteJiraConnection(docId, context);
             },
-            buttonTitle: 'Yes, delete',
+            buttonTitle: 'Delete',
             borderColor: borderColor,
             titleColor: red,
-            isLoading: profileState.isProfileUpdating,
+           // isLoading: profileState.isJiraDeleting,
           ),
           eightVerticalSpace,
           CustomOutlineButton(

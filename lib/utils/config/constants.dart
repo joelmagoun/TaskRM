@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const String primaryDatabaseId =  "TaskRM"; // = "primary_db";
+const String primaryDatabaseId = "primary_db";
 const String tasksCollectionId = "tasks";
 const String goalsCollectionId = "goals";
 
@@ -24,13 +24,14 @@ const List<String> timeframes = [
 ];
 
 class AppWriteConstant {
-  static const String projectId = "taskrm";
+  static const String projectId = "taskrm-dev";
   static const String endPoint = "https://rest.is/v1";
-  static const String primaryDBId = "TaskRM";
+  static const String primaryDBId = "TaskRM-DEV";
   static const String userImageBucketId = '65d872347bcd376062c8';
   static const String profileCollectionId = 'user_profile';
   static const String taskCollectionId = 'tasks';
   static const String goalCollectionId = 'goals';
+  static const String jiraConnectionCollectionId = 'jiraConnections';
 
 
 

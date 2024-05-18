@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:TaskRM/models/jira_connection_model.dart';
+import 'package:TaskRM/utils/assets_path.dart';
+import 'package:TaskRM/utils/constant/constant.dart';
 import '../models/user_data.dart';
 import '../utils/app_storage.dart';
 import '../utils/config/constants.dart';
@@ -15,8 +17,6 @@ class ProfileProvider extends ChangeNotifier {
   late Storage _appWriteStorage;
   File? image;
   late String imageUrl = '';
-  late bool _isLoading = false;
-
   late UserData _user = UserData('', '', '', '');
 
   UserData get user => _user;
@@ -65,34 +65,23 @@ class ProfileProvider extends ChangeNotifier {
 
     try {
       if (image != null) {
-        if (!_isLoading) {
-          _isLoading = true;
-          notifyListeners();
-
-          final res = await _appWriteStorage
-              .createFile(
-                  bucketId: AppWriteConstant.userImageBucketId,
-                  fileId: ID.unique(),
-                  file: InputFile.fromPath(path: image.path))
-              .then((value) {
-            imageUrl =
-                "${AppWriteConstant.endPoint}/storage/buckets/${AppWriteConstant.userImageBucketId}/files/${value.$id}/view?project=${AppWriteConstant.projectId}";
-            notifyListeners();
-            print(imageUrl);
-            storage.write(key: 'imageUrl', value: imageUrl);
-            Navigator.pop(context);
-            CustomSnack.successSnack(
-                'Image is saved, please hit confirm button to update', context);
-          });
-
-        }
+        final res = await _appWriteStorage
+            .createFile(
+                bucketId: AppWriteConstant.userImageBucketId,
+                fileId: ID.unique(),
+                file: InputFile.fromPath(path: image.path))
+            .then((value) {
+          final String newImageUrl =
+              "${AppWriteConstant.endPoint}/storage/buckets/${AppWriteConstant.userImageBucketId}/files/${value.$id}/view?project=${AppWriteConstant.projectId}";
+          updateProfile(newImageUrl, _profileName, _profileEncryption,
+              _profileJira, _profileJiraUserName, _profileJiraUrl, context);
+          storage.write(key: 'image_file_id', value: value.$id);
+          CustomSnack.successSnack(
+              'Image is saved, please hit confirm button to update', context);
+        });
       }
     } on PlatformException catch (e) {
-      print(e.toString());
-      CustomSnack.warningSnack('$e', context);
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      CustomSnack.warningSnack(e.toString(), context);
     }
   }
 
@@ -100,8 +89,14 @@ class ProfileProvider extends ChangeNotifier {
 
   late bool isProfileDataSaving = false;
 
-  Future<void> saveProfile(String name, String encryption, String language,
-      String jiraApi, String jiraUserName, String jiraUrl) async {
+  Future<void> saveProfile(
+      String name,
+      String encryption,
+      String language,
+      String jiraApi,
+      String jiraUserName,
+      String jiraUrl,
+      BuildContext context) async {
     final String? uid = await AppStorage.getUserId();
     final String? image = await AppStorage.getImageUrl();
 
@@ -128,15 +123,20 @@ class ProfileProvider extends ChangeNotifier {
         await storage.write(key: 'seriesEncryptedPassword', value: encryption);
       }
     } catch (e) {
-      print(e.toString());
-    }finally{
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
       isProfileDataSaving = false;
       notifyListeners();
     }
   }
 
-  Future<void> getProfileInfo() async {
+  late bool isProfileDataLoading = false;
+
+  Future<void> getProfileInfo(BuildContext context) async {
     try {
+      isProfileDataLoading = true;
+      notifyListeners();
+
       final uid = await storage.read(key: 'userId');
 
       final res = await db.listDocuments(
@@ -156,34 +156,238 @@ class ProfileProvider extends ChangeNotifier {
           _profileJiraUrl = e.data['jira_url'];
           notifyListeners();
         });
-      } else {
-        print('There is no user data');
       }
     } catch (e) {
-      print(e.toString());
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      isProfileDataLoading = false;
+      notifyListeners();
     }
   }
 
-  Future<void> updateProfile(String name, String encryption, String jiraApi,
-      String jiraUserName, String jiraUrl) async {
+  late bool isProfileUpdating = false;
+
+  Future<void> updateProfile(
+      String imageUrl,
+      String name,
+      String encryption,
+      String jiraApi,
+      String jiraUserName,
+      String jiraUrl,
+      BuildContext context) async {
     final String uid = await storage.read(key: 'userId') ?? '';
-    final String image = await storage.read(key: 'imageUrl') ?? '';
 
     try {
+      isProfileUpdating = true;
+      notifyListeners();
+
       var res = await db.updateDocument(
           databaseId: AppWriteConstant.primaryDBId,
           collectionId: AppWriteConstant.profileCollectionId,
           documentId: uid,
           data: {
-            'image_url': image,
+            'image_url': imageUrl,
             'name': name,
             'encryption_key': encryption,
             'jira_key': jiraApi,
             'jira_user_name': jiraUserName,
             'jira_url': jiraUrl
-          });
+          }).then((value) {
+        Navigator.pop(context);
+        getProfileInfo(context);
+        CustomSnack.successSnack('Profile is updated successfully', context);
+      });
     } catch (e) {
-      print(e.toString());
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      isProfileUpdating = false;
+      notifyListeners();
+    }
+  }
+
+  /// image deleting ///
+
+  Future<void> deleteImage(BuildContext context) async {
+    final String uid = await storage.read(key: 'userId') ?? '';
+    final String imageFileId = await storage.read(key: 'image_file_id') ?? '';
+
+    try {
+      var res = _appWriteStorage
+          .deleteFile(
+              bucketId: AppWriteConstant.userImageBucketId, fileId: imageFileId)
+          .then((value) {
+        updateProfile('', _profileName, _profileEncryption, _profileJira,
+            _profileJiraUserName, _profileJiraUrl, context);
+        CustomSnack.successSnack('Image is deleted successfully!', context);
+      });
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    }
+  }
+
+  /// get jira connection ///
+
+  late bool isJiraLoading = false;
+  late JiraConnectionModel workModel = JiraConnectionModel();
+  late JiraConnectionModel personalModel = JiraConnectionModel();
+  late JiraConnectionModel selfModel = JiraConnectionModel();
+
+  Future<void> getJiraConnections(BuildContext context) async {
+    try {
+      isJiraLoading = true;
+      notifyListeners();
+
+      final uid = await storage.read(key: 'userId');
+
+      final res = await db.listDocuments(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.jiraConnectionCollectionId,
+          queries: [
+            Query.equal("userId", uid),
+          ]);
+
+      if (res.documents.isNotEmpty) {
+        res.documents.forEach((e) {
+          if (e.data['taskType'] == '1') {
+            workModel = JiraConnectionModel(
+                docId: e.$id ?? '',
+                userId: e.data['userId'] ?? '',
+                taskType: e.data['taskType'] ?? '',
+                userName: e.data['userName'] ?? '',
+                apiKey: e.data['apiKey'] ?? '',
+                url: e.data['url'] ?? '');
+            notifyListeners();
+          } else if (e.data['taskType'] == '2') {
+            personalModel = JiraConnectionModel(
+                docId: e.$id ?? '',
+                userId: e.data['userId'] ?? '',
+                taskType: e.data['taskType'] ?? '',
+                userName: e.data['userName'] ?? '',
+                apiKey: e.data['apiKey'] ?? '',
+                url: e.data['url'] ?? '');
+            notifyListeners();
+          } else if (e.data['taskType'] == '3') {
+            selfModel = JiraConnectionModel(
+                docId: e.$id ?? '',
+                userId: e.data['userId'] ?? '',
+                taskType: e.data['taskType'] ?? '',
+                userName: e.data['userName'] ?? '',
+                apiKey: e.data['apiKey'] ?? '',
+                url: e.data['url'] ?? '');
+            notifyListeners();
+          }
+
+        });
+        //notifyListeners();
+      }
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      isJiraLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// add jira connection ///
+
+  late bool isJiraAdding = false;
+
+  Future<void> addJiraConnection(String taskType, String userName,
+      String apiKey, String url, BuildContext context) async {
+    final String? uid = await AppStorage.getUserId();
+
+    try {
+      isJiraAdding = true;
+      notifyListeners();
+
+      var res = await db.createDocument(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.jiraConnectionCollectionId,
+          documentId: ID.unique(),
+          data: {
+            'userId': uid,
+            'taskType': taskType,
+            'userName': userName,
+            'apiKey': apiKey,
+            'url': url,
+          });
+
+      if (res.data.isNotEmpty) {
+        Navigator.pop(context);
+        getJiraConnections(context);
+        CustomSnack.successSnack(
+            'Jira connection is added successfully!', context);
+      }
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      isJiraAdding = false;
+      notifyListeners();
+    }
+  }
+
+  /// jira connection updating ///
+
+  late bool isJiraUpdating = false;
+
+  Future<void> jiraConnectionUpdating(
+      String docId,
+      String taskType,
+      String userName,
+      String apiKey,
+      String jiraUrl,
+      BuildContext context) async {
+    final String uid = await storage.read(key: 'userId') ?? '';
+
+    try {
+      isJiraUpdating = true;
+      notifyListeners();
+
+      var res = await db.updateDocument(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.jiraConnectionCollectionId,
+          documentId: docId,
+          data: {
+            'userId': uid,
+            'taskType': taskType,
+            'userName': userName,
+            'apiKey': apiKey,
+            'url': jiraUrl,
+          }).then((value) {
+        Navigator.pop(context);
+        getJiraConnections(context);
+        CustomSnack.successSnack(
+            'Jira connection is updated successfully', context);
+      });
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      isJiraUpdating = false;
+      notifyListeners();
+    }
+  }
+
+  /// delete jira connection ///
+
+  Future<void> deleteJiraConnection(
+      String docId,
+      BuildContext context) async {
+
+    try {
+
+      var res = db
+          .deleteDocument(
+        databaseId: AppWriteConstant.primaryDBId,
+        collectionId: AppWriteConstant.jiraConnectionCollectionId,
+        documentId: docId,
+      ).then((value) {
+        Navigator.pop(context);
+        getJiraConnections(context);
+        CustomSnack.successSnack(
+            'Jira connection is deleted successfully', context);
+      });
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
     }
   }
 }
