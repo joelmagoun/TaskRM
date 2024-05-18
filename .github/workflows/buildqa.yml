@@ -1,4 +1,4 @@
-name: Build QA App
+name: Build iOS QA App
 
 on: 
  workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Build App
+name: Build iOS Prod App
 
 on: 
  workflow_dispatch:
