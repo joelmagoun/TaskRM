@@ -30,6 +30,7 @@ Timeframes are the most important aspect of creating a task.
 
 When we create a task, we want to try and estimate the timeframe we would like to see it completed in.  
 
-<img src="assets/docs/timeframes.jpg" width="350">
+| Today | 3 Days | Week | Fortnight | Month | 90 Days | Year |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 
 As time marches forward and the user continues choosing their daily tasks, they will see their deadlines approaching and be forced to deal with them, or extend them.
