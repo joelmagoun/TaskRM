@@ -41,8 +41,16 @@ jobs:
             alias: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}         
             keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}             
             keyPassword: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
-        - name: Upload Signed App Bundle
-          uses: actions/upload-artifact@v3
+        # - name: Upload Signed App Bundle
+        #   uses: actions/upload-artifact@v3
+        #   with:
+        #     name: signed-app-bundle
+        #     path: ${{steps.sign_app.outputs.signedReleaseFile}}
+        - name: Upload to Play Store (Internal Testing)
+          uses: r0adkll/upload-google-play@v1.0.18  
           with:
-            name: signed-app-bundle
-            path: ${{steps.sign_app.outputs.signedReleaseFile}}
+            serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON }}
+            packageName: vc.rms.taskrm        
+            releaseFiles: ${{steps.sign_app.outputs.signedReleaseFile}}        
+            mappingFile: ./build/app/outputs/mapping/release/mapping.txt
+            track: internal
