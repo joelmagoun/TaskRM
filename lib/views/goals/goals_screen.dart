@@ -15,6 +15,8 @@ import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 
+import '../tasks/add_task_bottom_sheet.dart';
+
 class GoalsScreen extends StatelessWidget {
   const GoalsScreen({Key? key}) : super(key: key);
 
@@ -75,12 +77,26 @@ class GoalsScreen extends StatelessWidget {
     } else {
       if (goalState.allGoalList.isEmpty) {
         if (goalState.selectedFilterType == '') {
-          return const Center(
-            child: EmptyWidget(
-                icon: goalIcon,
-                title: 'What do you aspire to achieve?',
-                subTitle:
-                    'Add your personal and work goals to begin working on them.'),
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,children: [
+              const EmptyWidget(
+                  icon: goalIcon,
+                  title: 'What do you aspire to achieve?',
+                  subTitle:
+                  'Add your personal and work goals to begin working on them.'),
+              sixteenVerticalSpace,
+              IconButton(
+                onPressed: () {
+                  CustomDialog.bottomSheet(context,  const AddNewGoalBottomSheet());
+                },
+                icon: const Icon(
+                  Icons.add_circle_rounded,
+                ),
+                color: primaryColor,
+                iconSize: 64,
+              ),
+            ],),
           );
         } else {
           return Column(
