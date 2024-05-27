@@ -7,7 +7,7 @@ import 'color.dart';
 class CustomSnack {
   static void successSnack(String message, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 1500),
       backgroundColor: white,
       content: ContentCart(isSuccess: true, message: message),
     ));
@@ -15,7 +15,7 @@ class CustomSnack {
 
   static void warningSnack(String message, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 1500),
         backgroundColor: white,
         content: ContentCart(isSuccess: false, message: message),
     ));
