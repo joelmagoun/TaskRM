@@ -1,4 +1,4 @@
-import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/appwrite.dart' as aw;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -8,10 +8,11 @@ import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
 import 'package:TaskRM/routes/app_router.dart';
 import 'package:TaskRM/views/splash_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class MyApp extends StatefulWidget {
-  final Client client;
+  final aw.Client client;
   final String sessionId;
   const MyApp({Key? key, required this.client, required this.sessionId})
       : super(key: key);
@@ -21,12 +22,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late Databases db;
+  late aw.Databases db;
   // late TasksListProvider tasksListProvider;
   // late GoalsListProvider goalsListProvider;
   @override
   void initState() {
-    db = Databases(widget.client);
+    db = aw.Databases(widget.client);
     // tasksListProvider = TasksListProvider(db: db);
     // goalsListProvider = GoalsListProvider(db: db);
     super.initState();
@@ -80,6 +81,9 @@ class _MyAppState extends State<MyApp> {
       //  theme: AppTheme.light,
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.generateRoute(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en', ''), // force for now
         home: SplashScreen(sessionId: widget.sessionId,),
         //home: const LoginScreen(),
       ),
