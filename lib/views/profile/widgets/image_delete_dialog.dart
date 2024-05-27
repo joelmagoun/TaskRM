@@ -34,7 +34,7 @@ class ImageDeleteDialog extends StatelessWidget {
             buttonTitle: 'Yes, delete',
             borderColor: borderColor,
             titleColor: red,
-            isLoading: profileState.isProfileUpdating,
+            isLoading: profileState.isImageDeleting,
           ),
           eightVerticalSpace,
           CustomOutlineButton(

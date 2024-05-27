@@ -207,21 +207,31 @@ class ProfileProvider extends ChangeNotifier {
 
   /// image deleting ///
 
+  late bool isImageDeleting = false;
+
   Future<void> deleteImage(BuildContext context) async {
     final String uid = await storage.read(key: 'userId') ?? '';
     final String imageFileId = await storage.read(key: 'image_file_id') ?? '';
 
     try {
+
+      isImageDeleting = true;
+      notifyListeners();
+
       var res = _appWriteStorage
           .deleteFile(
               bucketId: AppWriteConstant.userImageBucketId, fileId: imageFileId)
           .then((value) {
         updateProfile('', _profileName, _profileEncryption, _profileJira,
             _profileJiraUserName, _profileJiraUrl, context);
+        storage.delete(key: 'image_file_id');
         CustomSnack.successSnack('Image is deleted successfully!', context);
       });
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
+    }finally{
+      isImageDeleting = true;
+      notifyListeners();
     }
   }
 
