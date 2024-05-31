@@ -29,6 +29,7 @@ class ProfileProvider extends ChangeNotifier {
   late String _profileJira = '';
   late String _profileJiraUserName = '';
   late String _profileJiraUrl = '';
+  late String _language = 'en';
 
   String get profileImage => _profileImage;
 
@@ -41,6 +42,8 @@ class ProfileProvider extends ChangeNotifier {
   String get profileJiraUserName => _profileJiraUserName;
 
   String get profileJiraUrl => _profileJiraUrl;
+
+  String get language => _language;
 
   ProfileProvider() {
     _init();
@@ -73,8 +76,15 @@ class ProfileProvider extends ChangeNotifier {
             .then((value) {
           final String newImageUrl =
               "${AppWriteConstant.endPoint}/storage/buckets/${AppWriteConstant.userImageBucketId}/files/${value.$id}/view?project=${AppWriteConstant.projectId}";
-          updateProfile(newImageUrl, _profileName, _profileEncryption,
-              _profileJira, _profileJiraUserName, _profileJiraUrl, context);
+          updateProfile(
+              newImageUrl,
+              _profileName,
+              _profileEncryption,
+              _profileJira,
+              _profileJiraUserName,
+              _profileJiraUrl,
+              _language,
+              context);
           storage.write(key: 'image_file_id', value: value.$id);
           CustomSnack.successSnack(
               'Image is saved, please hit confirm button to update', context);
@@ -154,6 +164,7 @@ class ProfileProvider extends ChangeNotifier {
           _profileJira = e.data['jira_key'];
           _profileJiraUserName = e.data['jira_user_name'];
           _profileJiraUrl = e.data['jira_url'];
+          _language = e.data['language'] ?? '';
           notifyListeners();
         });
       }
@@ -174,6 +185,7 @@ class ProfileProvider extends ChangeNotifier {
       String jiraApi,
       String jiraUserName,
       String jiraUrl,
+      String language,
       BuildContext context) async {
     final String uid = await storage.read(key: 'userId') ?? '';
 
@@ -191,7 +203,8 @@ class ProfileProvider extends ChangeNotifier {
             'encryption_key': encryption,
             'jira_key': jiraApi,
             'jira_user_name': jiraUserName,
-            'jira_url': jiraUrl
+            'jira_url': jiraUrl,
+            'language': language,
           }).then((value) {
         Navigator.pop(context);
         getProfileInfo(context);
@@ -214,7 +227,6 @@ class ProfileProvider extends ChangeNotifier {
     final String imageFileId = await storage.read(key: 'image_file_id') ?? '';
 
     try {
-
       isImageDeleting = true;
       notifyListeners();
 
@@ -223,13 +235,13 @@ class ProfileProvider extends ChangeNotifier {
               bucketId: AppWriteConstant.userImageBucketId, fileId: imageFileId)
           .then((value) {
         updateProfile('', _profileName, _profileEncryption, _profileJira,
-            _profileJiraUserName, _profileJiraUrl, context);
+            _profileJiraUserName, _profileJiraUrl, _language, context);
         storage.delete(key: 'image_file_id');
         CustomSnack.successSnack('Image is deleted successfully!', context);
       });
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
-    }finally{
+    } finally {
       isImageDeleting = true;
       notifyListeners();
     }
@@ -286,7 +298,6 @@ class ProfileProvider extends ChangeNotifier {
                 url: e.data['url'] ?? '');
             notifyListeners();
           }
-
         });
         //notifyListeners();
       }
@@ -379,18 +390,15 @@ class ProfileProvider extends ChangeNotifier {
 
   /// delete jira connection ///
 
-  Future<void> deleteJiraConnection(
-      String docId,
-      BuildContext context) async {
-
+  Future<void> deleteJiraConnection(String docId, BuildContext context) async {
     try {
-
       var res = db
           .deleteDocument(
         databaseId: AppWriteConstant.primaryDBId,
         collectionId: AppWriteConstant.jiraConnectionCollectionId,
         documentId: docId,
-      ).then((value) {
+      )
+          .then((value) {
         Navigator.pop(context);
         getJiraConnections(context);
         CustomSnack.successSnack(
@@ -400,4 +408,13 @@ class ProfileProvider extends ChangeNotifier {
       CustomSnack.warningSnack(e.toString(), context);
     }
   }
+
+  /// change language ///
+
+changeLanguage(String languageCode){
+_language = languageCode;
+notifyListeners();
+}
+
+
 }
