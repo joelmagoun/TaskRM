@@ -1,3 +1,4 @@
+import 'package:TaskRM/providers/localization_provider.dart';
 import 'package:appwrite/appwrite.dart' as aw;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +48,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => GoalProvider()),
+        ChangeNotifierProvider(create: (context) => LocalizationProvider()),
         // ChangeNotifierProvider(create: (context) => tasksListProvider),
         // ChangeNotifierProvider(create: (context) => goalsListProvider),
         // ChangeNotifierProvider(
@@ -77,17 +79,19 @@ class _MyAppState extends State<MyApp> {
            ChangeNotifierProvider(create: (context) => TaskProvider()),
        //  ChangeNotifierProvider(create: (context) => JiraProvider()),
       ],
-      child: MaterialApp(
-        title: "TaskRM",
-      //  theme: AppTheme.light,
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: AppRouter.generateRoute(),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: const Locale('en', ''), // force for now
-        home: SplashScreen(sessionId: widget.sessionId,),
-        //home: const LoginScreen(),
-      ),
+      child: Consumer<LocalizationProvider>(builder: (_, localizationState, child){
+        return MaterialApp(
+          title: "TaskRM",
+          //  theme: AppTheme.light,
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: AppRouter.generateRoute(),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: localizationState.local, // force for now
+          home: SplashScreen(sessionId: widget.sessionId,),
+          //home: const LoginScreen(),
+        );
+      }),
     );
   }
 }

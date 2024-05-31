@@ -1,3 +1,4 @@
+import 'package:TaskRM/providers/localization_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -318,6 +319,8 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
 
   Column _languageField() {
     final profileState = Provider.of<ProfileProvider>(context, listen: false);
+    final localizationState =
+        Provider.of<LocalizationProvider>(context, listen: true);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -365,10 +368,8 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                         Languages.norwegian
                       ],
                       onValuePicked: (language) {
-                        // setState(() {
-                        //   _selectedLanguage = language.isoCode;
-                        // });
                         profileState.changeLanguage(language.isoCode);
+                        localizationState.setLocale(Locale(language.isoCode));
                       }),
                 )
               ],
