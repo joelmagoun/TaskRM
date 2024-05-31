@@ -10,6 +10,9 @@ const goal = 'assets/images/goal.png';
 const journal = 'assets/images/journal.png';
 const moment = 'assets/images/moment.png';
 const review = 'assets/images/review.png';
+const icelandFlag = 'assets/images/iceland.png';
+const germanyFlag = 'assets/images/germany.png';
+const norwegianFlag = 'assets/images/norwegian.png';
 
 
 /// svg paths ///

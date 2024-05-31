@@ -9,6 +9,7 @@ import 'package:TaskRM/providers/profile_provider.dart';
 import 'package:TaskRM/routes/app_router.dart';
 import 'package:TaskRM/views/splash_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+//import 'package:flutter_localization/flutter_localization.dart';
 
 
 class MyApp extends StatefulWidget {

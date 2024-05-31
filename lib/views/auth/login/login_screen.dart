@@ -1,4 +1,4 @@
-import 'package:country_picker/country_picker.dart';
+//import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
@@ -140,16 +140,16 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         InkWell(
           onTap: () {
-            showCountryPicker(
-              context: context,
-              showPhoneCode: false,
-              onSelect: (Country country) {
-                setState(() {
-                  _selectedCountry = country.name;
-                  _selectedCountryFlag = country.flagEmoji;
-                });
-              },
-            );
+            // showCountryPicker(
+            //   context: context,
+            //   showPhoneCode: false,
+            //   onSelect: (Country country) {
+            //     setState(() {
+            //       _selectedCountry = country.name;
+            //       _selectedCountryFlag = country.flagEmoji;
+            //     });
+            //   },
+            // );
           },
           child: Container(
             height: 48,

@@ -38,7 +38,7 @@ dependencies:
   google_fonts: ^6.1.0
   flutter_form_builder: ^9.1.1
   form_builder_validators: ^9.1.0
-  country_picker: ^2.0.23
+  language_picker: ^0.4.3
   flutter_svg: ^2.0.9
   gesture_password_widget: ^2.0.1
   appwrite: ^11.0.1
