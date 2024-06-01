@@ -1,3 +1,4 @@
+import 'package:TaskRM/views/goals/goalDetails/editGoal/edit_goal_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/goal.dart';
 import '../../../utils/assets_path.dart';
+import '../../../utils/custom_dialog.dart';
 
 class GoalDetailsScreen extends StatefulWidget {
   final Goal goal;
@@ -53,7 +55,53 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                 ),
               ],
             ),
-            actions: [SvgPicture.asset(menuIcon), sixteenHorizontalSpace],
+            actions: [
+              PopupMenuButton(
+                icon: SvgPicture.asset(menuIcon),
+                color: white,
+                onSelected: (value) {
+                  // your logic
+                },
+                itemBuilder: (BuildContext bc) {
+                  return [
+                    PopupMenuItem(
+                      onTap: () {
+                        CustomDialog.bottomSheet(
+                            context,
+                            EditGoalBottomSheet(
+                              goal: widget.goal
+                            ));
+                      },
+                      value: 'edit',
+                      child: const Row(
+                        children: [
+                          Icon(Icons.edit_outlined),
+                          eightHorizontalSpace,
+                          Text('Edit'),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: '/hello',
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.delete_outline,
+                            color: red,
+                          ),
+                          eightHorizontalSpace,
+                          Text(
+                            'Delete',
+                            style: tTextStyle600.copyWith(color: red),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ];
+                },
+              ),
+              sixteenHorizontalSpace,
+            ],
           ),
         ),
         body: Column(

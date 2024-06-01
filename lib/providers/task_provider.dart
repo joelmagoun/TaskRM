@@ -300,6 +300,68 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
+  /// edit task state ///
+
+  late bool isTaskEditing = false;
+
+  Future<void> editTask(
+      String docId,
+      String title,
+      String type,
+      String goalId,
+      String priority,
+      String timeFrame,
+      String description,
+      String goal,
+      BuildContext context) async {
+    try {
+      isTaskEditing = true;
+      notifyListeners();
+
+      final uid = await AppStorage.getUserId();
+
+      var res = await db.updateDocument(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.taskCollectionId,
+          documentId: docId,
+          data: {
+            'timeframe': timeFrame,
+            'jiraID': '',
+            'title': title,
+            'type': type,
+            'isMarkedForToday': timeFrame == 'Today' ? true : false,
+            'goalId': goalId,
+            'priority': priority,
+            'description': description,
+            'userID': uid,
+            'goal': goal,
+            'createdAt': DateTime.now().toString(),
+            'expectedCompletion':
+            getExpectedDateFromTimeframe(timeFrame).toString(),
+          }).then((value) {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        CustomDialog.autoDialog(
+            context, Icons.check, 'Task is edited successfully!');
+        getTodayTaskList();
+        getAllTaskList();
+      });
+      notifyListeners();
+
+      // if (res.data.isNotEmpty) {
+      //   _allFeedList.clear();
+      //   notifyListeners();
+      //   getFeedList();
+      //   // Navigator.pushNamed(context, Routes.moments);
+      // }
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      isTaskEditing = false;
+      notifyListeners();
+    }
+  }
+
   /// move to today task list ///
 
   late bool _isMoving = false;

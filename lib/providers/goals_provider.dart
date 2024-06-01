@@ -32,9 +32,10 @@ class GoalProvider extends ChangeNotifier {
   List<Goal> get allGoalList => _allGoalList;
 
   late String _selectedFilterType = '';
+
   String get selectedFilterType => _selectedFilterType;
 
-  void getFilterType(String workType){
+  void getFilterType(String workType) {
     _selectedFilterType = workType;
     notifyListeners();
   }
@@ -58,32 +59,31 @@ class GoalProvider extends ChangeNotifier {
         notifyListeners();
 
         res.documents.forEach((e) {
-
-          if(_selectedFilterType == ''){
+          if (_selectedFilterType == '') {
             _allGoalList.add(Goal(
                 id: e.$id ?? '',
                 title: e.data['title'] ?? '',
                 type: e.data['type'] ?? '',
                 description: e.data['description'] ?? '',
+                parentGoal: e.data['parentGoal'] ?? '',
                 isCompleted: false,
                 userId: e.data['userId'] ?? '',
                 createdAt: DateTime.parse(e.data['createdAt'])));
             notifyListeners();
-          }else if(_selectedFilterType != ''){
-            if(e.data['type'] == _selectedFilterType){
+          } else if (_selectedFilterType != '') {
+            if (e.data['type'] == _selectedFilterType) {
               _allGoalList.add(Goal(
                   id: e.$id ?? '',
                   title: e.data['title'] ?? '',
                   type: e.data['type'] ?? '',
                   description: e.data['description'] ?? '',
+                  parentGoal: e.data['parentGoal'] ?? '',
                   isCompleted: false,
                   userId: e.data['userId'] ?? '',
                   createdAt: DateTime.parse(e.data['createdAt'])));
               notifyListeners();
             }
-
           }
-
         });
       } else {
         // CustomSnack.warningSnack('No task on your queue', context);
@@ -108,10 +108,10 @@ class GoalProvider extends ChangeNotifier {
 
   String get selectedParentGoal => _selectedParentGoal;
 
-  getSelectedParentGoal(String parentGoal, BuildContext context) {
+  getSelectedParentGoal(String parentGoal, bool isInit, BuildContext context) {
     _selectedParentGoal = parentGoal;
     notifyListeners();
-    Navigator.pop(context);
+    isInit ? null : Navigator.pop(context);
   }
 
   Future<void> addNewGoal(String title, String description, String type,
@@ -143,6 +143,45 @@ class GoalProvider extends ChangeNotifier {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
       _isGoalAdding = false;
+      notifyListeners();
+    }
+  }
+
+
+  /// goal editing state ///
+
+  late bool isGoalEditing = false;
+
+  Future<void> editGoal(String docId, String title, String description, String type,
+      BuildContext context) async {
+    try {
+      isGoalEditing = true;
+      notifyListeners();
+
+      final uid = await AppStorage.getUserId();
+
+      var res = await db.updateDocument(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.goalCollectionId,
+          documentId: docId,
+          data: {
+            'title': title,
+            'userId': uid,
+            'description': description,
+            'type': type,
+            'parentGoal': _selectedParentGoal,
+            'createdAt': DateTime.now().toString()
+          }).then((value) {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        CustomSnack.successSnack('Goal is edited successfully.', context);
+        getGoalList();
+      });
+      notifyListeners();
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      isGoalEditing = false;
       notifyListeners();
     }
   }

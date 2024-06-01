@@ -8,28 +8,31 @@ class Goal {
   final String title;
   final String type;
   final String description;
+  final String parentGoal;
   final bool isCompleted;
   final int? totalMinutesSpent;
   final DateTime? updatedAt;
   final DateTime? createdAt;
   final String userId;
-  Goal({
-    required this.id,
-    required this.title,
-    required this.type,
-    required this.description,
-    required this.isCompleted,
-    this.totalMinutesSpent,
-    this.updatedAt,
-    this.createdAt,
-    required this.userId
-  });
+
+  Goal(
+      {required this.id,
+      required this.title,
+      required this.type,
+      required this.description,
+      required this.parentGoal,
+      required this.isCompleted,
+      this.totalMinutesSpent,
+      this.updatedAt,
+      this.createdAt,
+      required this.userId});
 
   Goal copyWith({
     String? id,
     String? title,
     String? type,
     String? description,
+    String? parentGoal,
     bool? isCompleted,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -37,16 +40,16 @@ class Goal {
     String? userId,
   }) {
     return Goal(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      type: type ?? this.type,
-      description: description ?? this.description,
-      isCompleted: isCompleted ?? this.isCompleted,
-      totalMinutesSpent: totalMinutesSpent ?? this.totalMinutesSpent,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      userId: userId ?? this.userId
-    );
+        id: id ?? this.id,
+        title: title ?? this.title,
+        type: type ?? this.type,
+        description: description ?? this.description,
+        parentGoal: parentGoal ?? this.parentGoal,
+        isCompleted: isCompleted ?? this.isCompleted,
+        totalMinutesSpent: totalMinutesSpent ?? this.totalMinutesSpent,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        userId: userId ?? this.userId);
   }
 
   Map<String, dynamic> toMap() {
@@ -54,6 +57,7 @@ class Goal {
       'title': title,
       'type': type,
       'description': description,
+      'parentGoal': parentGoal,
       'isCompleted': isCompleted,
       'totalMinutesSpent': totalMinutesSpent,
       'updatedAt': updatedAt?.toString(),
@@ -68,6 +72,7 @@ class Goal {
       title: map['title'] as String,
       type: map['type'] as String,
       description: map['description'] as String,
+      parentGoal: map['parentGoal'] as String,
       isCompleted: map['isCompleted'] as bool,
       totalMinutesSpent: map['totalMinutesSpent'],
       createdAt:
@@ -86,6 +91,7 @@ class Goal {
       title: data['title'] as String,
       type: data['type'] as String,
       description: data['description'] as String,
+      parentGoal: data['parentGoal'] as String,
       totalMinutesSpent: data['totalMinutesSpent'],
       createdAt:
           data['createdAt'] == null ? null : DateTime.parse(data['createdAt']),
@@ -113,6 +119,7 @@ class Goal {
         other.title == title &&
         other.type == type &&
         other.description == description &&
+        other.parentGoal == parentGoal &&
         other.isCompleted == isCompleted &&
         other.userId == userId;
   }
@@ -123,6 +130,7 @@ class Goal {
         title.hashCode ^
         type.hashCode ^
         description.hashCode ^
+        parentGoal.hashCode ^
         isCompleted.hashCode ^
         userId.hashCode;
   }
