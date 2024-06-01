@@ -1,3 +1,5 @@
+import 'package:TaskRM/utils/custom_dialog.dart';
+import 'package:TaskRM/views/tasks/taskDetails/editTask/edit_task_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +32,18 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   late String selectedTaskGoal = '';
   late String selectedTaskCreatedAt = '';
 
+  void _showPopupMenu() async {
+    await showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(100, 100, 100, 100),
+      items: [
+        PopupMenuItem<String>(child: const Text('Doge'), value: 'Doge'),
+        PopupMenuItem<String>(child: const Text('Lion'), value: 'Lion'),
+      ],
+      elevation: 8.0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<TaskProvider>(builder: (_, _taskState, child) {
@@ -53,7 +67,53 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 ),
               ],
             ),
-            actions: [SvgPicture.asset(menuIcon), sixteenHorizontalSpace],
+            actions: [
+              PopupMenuButton(
+                icon: SvgPicture.asset(menuIcon),
+                color: white,
+                onSelected: (value) {
+                  // your logic
+                },
+                itemBuilder: (BuildContext bc) {
+                  return [
+                    PopupMenuItem(
+                      onTap: () {
+                        CustomDialog.bottomSheet(
+                            context,
+                            EditTaskBottomSheet(
+                              task: widget.task,
+                            ));
+                      },
+                      value: 'edit',
+                      child: const Row(
+                        children: [
+                          Icon(Icons.edit_outlined),
+                          eightHorizontalSpace,
+                          Text('Edit'),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: '/hello',
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.delete_outline,
+                            color: red,
+                          ),
+                          eightHorizontalSpace,
+                          Text(
+                            'Delete',
+                            style: tTextStyle600.copyWith(color: red),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ];
+                },
+              ),
+              sixteenHorizontalSpace,
+            ],
           ),
         ),
         body: Column(
@@ -105,7 +165,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             Text(
               title,
               style: tTextStyle500.copyWith(
-                  fontSize: 14, color: isGoal ? primaryColor : const Color(0xFFAAAAAA)),
+                  fontSize: 14,
+                  color: isGoal ? primaryColor : const Color(0xFFAAAAAA)),
             )
           ],
         ),
