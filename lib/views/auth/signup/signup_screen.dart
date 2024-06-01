@@ -1,10 +1,9 @@
-  //import 'package:cached_network_image/cached_network_image.dart';
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:language_picker/language_picker_dropdown.dart';
+import 'package:language_picker/languages.g.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/auth_provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
@@ -30,8 +29,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _signUpFormKey = GlobalKey<FormBuilderState>();
   late bool isLoading = false;
-  late String _selectedCountryFlag = '';
-  late String _selectedCountry = 'English';
+  late String _selectedLanguage = 'en';
   late String imageUrl = dummyProfileImage;
 
   @override
@@ -120,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           password: _signUpFormKey.currentState
                                                   ?.value['password'] ??
                                               '',
-                                          language: _selectedCountry ?? ''));
+                                          language: _selectedLanguage ?? ''));
                                 } else {
                                   CustomSnack.warningSnack(
                                       'Please enter all information', context);
@@ -167,51 +165,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
         const SizedBox(
           height: 4,
         ),
-        InkWell(
-          onTap: () {
-            showCountryPicker(
-              context: context,
-              showPhoneCode: false,
-              onSelect: (Country country) {
-                setState(() {
-                  _selectedCountry = country.name;
-                  _selectedCountryFlag = country.flagEmoji;
-                });
-              },
-            );
-          },
-          child: Container(
-            height: 48,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: textFieldFillColor),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Row(
-                children: [
-                  _selectedCountryFlag.isEmpty
-                      ? Image.asset(usaFlag)
-                      : Text(
-                          _selectedCountryFlag,
-                          style: const TextStyle(fontSize: 28),
-                        ),
-                  eightHorizontalSpace,
-                  Text(
-                    _selectedCountry,
-                    style: tTextStyleRegular.copyWith(
-                        fontSize: 16, color: textPrimaryColor),
-                  ),
-                  const Spacer(),
-                  const Icon(
-                    Icons.keyboard_arrow_down_sharp,
-                    color: Color(0xFF555DAD),
-                  )
-                ],
-              ),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: textFieldFillColor),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Image.asset(_selectedLanguage == 'en'
+                    ? usaFlag
+                    : _selectedLanguage == 'is'
+                        ? icelandFlag
+                        : _selectedLanguage == 'de'
+                            ? germanyFlag
+                            : norwegianFlag, height: 32, width: 32,),
+                sixteenHorizontalSpace,
+                Expanded(
+                  child: LanguagePickerDropdown(
+                      initialValue: Languages.english,
+                      languages: [
+                        Languages.english,
+                        Languages.icelandic,
+                        Languages.german,
+                        Languages.norwegian
+                      ],
+                      onValuePicked: (language) {
+                        setState(() {
+                          _selectedLanguage = language.isoCode;
+                        });
+                      }),
+                )
+              ],
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -326,7 +315,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: subtitle2,
                 ),
                 onPressed: () {
-                 Navigator.pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ],

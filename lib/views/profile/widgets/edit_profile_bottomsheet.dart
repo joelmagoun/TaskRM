@@ -1,7 +1,10 @@
+import 'package:TaskRM/providers/localization_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:language_picker/language_picker_dropdown.dart';
+import 'package:language_picker/languages.g.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
 import 'package:TaskRM/utils/assets_path.dart';
@@ -60,6 +63,8 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                     primaryVerticalSpace,
                     _buildNameField(),
                     primaryVerticalSpace,
+                    _languageField(),
+                    primaryVerticalSpace,
                     PrimaryButton(
                       onTap: () async {
                         await profileState.updateProfile(
@@ -69,6 +74,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                             profileState.profileJira,
                             profileState.profileJiraUserName,
                             profileState.profileJiraUrl,
+                            profileState.language,
                             context);
                       },
                       buttonTitle: 'Save',
@@ -309,5 +315,68 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             ],
           );
         });
+  }
+
+  Column _languageField() {
+    final profileState = Provider.of<ProfileProvider>(context, listen: false);
+    final localizationState =
+        Provider.of<LocalizationProvider>(context, listen: true);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Language',
+          style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: textFieldFillColor),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Image.asset(
+                  profileState.language == 'en'
+                      ? usaFlag
+                      : profileState.language == 'is'
+                          ? icelandFlag
+                          : profileState.language == 'de'
+                              ? germanyFlag
+                              : norwegianFlag,
+                  height: 32,
+                  width: 32,
+                ),
+                sixteenHorizontalSpace,
+                Expanded(
+                  child: LanguagePickerDropdown(
+                      initialValue: profileState.language == 'is'
+                          ? Languages.icelandic
+                          : profileState.language == 'de'
+                              ? Languages.german
+                              : profileState.language == 'no'
+                                  ? Languages.norwegian
+                                  : Languages.english,
+                      languages: [
+                        Languages.english,
+                        Languages.icelandic,
+                        Languages.german,
+                        Languages.norwegian
+                      ],
+                      onValuePicked: (language) {
+                        profileState.changeLanguage(language.isoCode);
+                        localizationState.setLocale(Locale(language.isoCode));
+                      }),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

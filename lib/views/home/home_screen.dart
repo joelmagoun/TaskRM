@@ -9,6 +9,7 @@ import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/widgets/components/custom_image_holder.dart';
 import '../../routes/routes.dart';
 import '../../utils/assets_path.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Home',
+                  AppLocalizations.of(context)!.home,
                   style: tTextStyle500.copyWith(fontSize: 20),
                 ),
                 Image.asset(logo),
