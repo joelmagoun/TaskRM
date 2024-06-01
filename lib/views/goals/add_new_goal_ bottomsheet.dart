@@ -244,7 +244,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
         InkWell(
           onTap: () {
             CustomDialog.bottomSheet(
-                context, const SelectParentGoalBottomSheet());
+                context, const SelectParentGoalBottomSheet(parentGoal: '',));
           },
           child: Container(
             decoration: BoxDecoration(

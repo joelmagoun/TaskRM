@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/goals_provider.dart';
-import 'package:TaskRM/providers/task_provider.dart';
 import '../../../utils/color.dart';
 import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';
 
 class SelectParentGoalBottomSheet extends StatefulWidget {
-  const SelectParentGoalBottomSheet({Key? key}) : super(key: key);
+  final String parentGoal;
+
+  const SelectParentGoalBottomSheet({Key? key, required this.parentGoal})
+      : super(key: key);
 
   @override
   State<SelectParentGoalBottomSheet> createState() =>
@@ -16,7 +18,7 @@ class SelectParentGoalBottomSheet extends StatefulWidget {
 
 class _SelectParentGoalBottomSheetState
     extends State<SelectParentGoalBottomSheet> {
-  late String selectedParentGoal = 'Select';
+  late String selectedParentGoal = widget.parentGoal;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,8 @@ class _SelectParentGoalBottomSheetState
                             setState(() {
                               selectedParentGoal = 'None';
                             });
-                            _goalState.getSelectedParentGoal('None', context);
+                            _goalState.getSelectedParentGoal(
+                                'None', false, context);
                           },
                           tileBorderColor: selectedParentGoal == 'None'
                               ? secondaryColor
@@ -90,6 +93,7 @@ class _SelectParentGoalBottomSheetState
 
                             _goalState.getSelectedParentGoal(
                                 'Work towards obtaining certifications that are valuable...',
+                                false,
                                 context);
                           },
                           tileBorderColor: selectedParentGoal ==
@@ -112,6 +116,7 @@ class _SelectParentGoalBottomSheetState
                             });
                             _goalState.getSelectedParentGoal(
                                 'Read 4 of self-improvement books within the next six mon...',
+                                false,
                                 context);
                           },
                           tileBorderColor: selectedParentGoal ==
@@ -134,6 +139,7 @@ class _SelectParentGoalBottomSheetState
                             });
                             _goalState.getSelectedParentGoal(
                                 'Explore and participate in adventurous activities.',
+                                false,
                                 context);
                           },
                           tileBorderColor: selectedParentGoal ==

@@ -32,18 +32,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   late String selectedTaskGoal = '';
   late String selectedTaskCreatedAt = '';
 
-  void _showPopupMenu() async {
-    await showMenu(
-      context: context,
-      position: RelativeRect.fromLTRB(100, 100, 100, 100),
-      items: [
-        PopupMenuItem<String>(child: const Text('Doge'), value: 'Doge'),
-        PopupMenuItem<String>(child: const Text('Lion'), value: 'Lion'),
-      ],
-      elevation: 8.0,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<TaskProvider>(builder: (_, _taskState, child) {

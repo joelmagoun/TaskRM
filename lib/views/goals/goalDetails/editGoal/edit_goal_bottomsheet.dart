@@ -1,40 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:TaskRM/providers/goals_provider.dart';
-import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
-import 'package:TaskRM/utils/custom_snack.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import 'package:TaskRM/views/tasks/newTask/select_goal_bottom_sheet.dart';
-import '../../../../models/task.dart';
+import 'package:TaskRM/views/goals/select_parent_goal_bottomsheet.dart';
+import '../../../../models/goal.dart';
+import '../../../../providers/goals_provider.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 
-class EditTaskBottomSheet extends StatefulWidget {
-  final Task task;
+class EditGoalBottomSheet extends StatefulWidget {
+  final Goal goal;
 
-  const EditTaskBottomSheet({
+  const EditGoalBottomSheet({
     Key? key,
-    required this.task,
+    required this.goal,
   }) : super(key: key);
 
   @override
-  State<EditTaskBottomSheet> createState() => _EditTaskBottomSheetState();
+  State<EditGoalBottomSheet> createState() => _EditGoalBottomSheetState();
 }
 
-class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
-  late String selectedTime = widget.task.timeframe;
-  late String selectedType = widget.task.type;
-  late String selectedPriority = widget.task.priority;
-  late final TextEditingController _titleController = TextEditingController(
-      text: widget.task.title);
-  late final TextEditingController _descriptionController = TextEditingController(
-      text: widget.task.description);
+class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
+  late String selectedType = widget.goal.type;
+  late final TextEditingController _titleController =
+      TextEditingController(text: widget.goal.title);
+  late final TextEditingController _descriptionController =
+      TextEditingController(text: widget.goal.description);
 
   @override
   void initState() {
-    final taskState = Provider.of<TaskProvider>(context, listen: false);
-    taskState.getSelectedGoal( widget.task.goal, widget.task.goalId ?? '', context);
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
+    goalState.getSelectedParentGoal(widget.goal.parentGoal, true, context);
     super.initState();
   }
 
@@ -43,17 +39,14 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
     return Material(
       color: Colors.transparent,
       child: Container(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height / 1.2,
+        height: MediaQuery.of(context).size.height / 1.2,
         width: double.infinity,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Consumer<TaskProvider>(builder: (_, _taskState, child) {
+          child: Consumer<GoalProvider>(builder: (_, _goalState, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -65,8 +58,6 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
                     children: [
                       _titleField(),
                       _typeField(),
-                      _priorityField(),
-                      _timeFrameField(),
                       _descriptionField(),
                       _goalField(),
                       const SizedBox(
@@ -84,7 +75,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
   }
 
   Widget _header(BuildContext context) {
-    final taskState = Provider.of<TaskProvider>(context, listen: false);
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -99,37 +90,30 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
                 color: iconColor,
               )),
           Text(
-            'Edit Task',
+            'Edit Goal',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           InkWell(
             onTap: () async {
-              await taskState.editTask(
-                  widget.task.id,
-                  _titleController.text,
-                  selectedType,
-                  taskState.selectedGoalId,
-                  selectedPriority,
-                  selectedTime,
-                  _descriptionController.text,
-                  taskState.selectedGoal,
-                  context);
+              await goalState.editGoal(widget.goal.id, _titleController.text,
+                  _descriptionController.text, selectedType, context);
             },
             child: Container(
               height: 40,
-              width: 60,
+              width: 64,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: primaryColor,
               ),
-              child: taskState.isTaskEditing
-                  ? const CircularProgressIndicator()
+              child: goalState.isGoalEditing
+                  ? const SizedBox(
+                      height: 16, width: 16, child: CircularProgressIndicator())
                   : Text(
-                'Save',
-                style:
-                tTextStyleBold.copyWith(color: white, fontSize: 16),
-              ),
+                      'Save',
+                      style:
+                          tTextStyleBold.copyWith(color: white, fontSize: 16),
+                    ),
             ),
           )
         ],
@@ -152,7 +136,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
               filled: true,
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
-              hintText: 'Schedule Team Meeting',
+              hintText: 'Learn New Skill',
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -197,9 +181,9 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
               });
             },
             tileBorderColor:
-            selectedType == 'Personal Project' ? borderColor : trans,
+                selectedType == 'Personal Project' ? borderColor : trans,
             circleColor:
-            selectedType == 'Personal Project' ? secondaryColor : trans,
+                selectedType == 'Personal Project' ? secondaryColor : trans,
             title: 'Personal Project'),
         eightVerticalSpace,
         _optionTile(
@@ -211,152 +195,6 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
             tileBorderColor: selectedType == 'Self' ? borderColor : trans,
             circleColor: selectedType == 'Self' ? secondaryColor : trans,
             title: 'Self'),
-      ],
-    );
-  }
-
-  Widget _priorityField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(
-          height: 32,
-        ),
-        Text(
-          'Priority',
-          style: tTextStyle500.copyWith(fontSize: 20, color: black),
-        ),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedPriority = 'Needs to be done';
-              });
-            },
-            tileBorderColor:
-            selectedPriority == 'Needs to be done' ? borderColor : trans,
-            circleColor:
-            selectedPriority == 'Needs to be done' ? secondaryColor : trans,
-            title: 'Needs to be done'),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedPriority = 'Nice to have';
-              });
-            },
-            tileBorderColor:
-            selectedPriority == 'Nice to have' ? borderColor : trans,
-            circleColor:
-            selectedPriority == 'Nice to have' ? secondaryColor : trans,
-            title: 'Nice to have'),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedPriority = 'Nice idea';
-              });
-            },
-            tileBorderColor:
-            selectedPriority == 'Nice idea' ? borderColor : trans,
-            circleColor:
-            selectedPriority == 'Nice idea' ? secondaryColor : trans,
-            title: 'Nice idea'),
-      ],
-    );
-  }
-
-  Widget _timeFrameField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(
-          height: 32,
-        ),
-        Text(
-          'Timeframe',
-          style: tTextStyle500.copyWith(fontSize: 20, color: black),
-        ),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'None';
-              });
-            },
-            tileBorderColor: selectedTime == 'None' ? borderColor : trans,
-            circleColor: selectedTime == 'None' ? secondaryColor : trans,
-            title: 'None'),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Today';
-              });
-            },
-            tileBorderColor: selectedTime == 'Today' ? borderColor : trans,
-            circleColor: selectedTime == 'Today' ? secondaryColor : trans,
-            title: 'Today'),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = '3 days';
-              });
-            },
-            tileBorderColor: selectedTime == '3 days' ? borderColor : trans,
-            circleColor: selectedTime == '3 days' ? secondaryColor : trans,
-            title: '3 days'),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Week';
-              });
-            },
-            tileBorderColor: selectedTime == 'Week' ? borderColor : trans,
-            circleColor: selectedTime == 'Week' ? secondaryColor : trans,
-            title: 'Week'),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Fortnight';
-              });
-            },
-            tileBorderColor: selectedTime == 'Fortnight' ? borderColor : trans,
-            circleColor: selectedTime == 'Fortnight' ? secondaryColor : trans,
-            title: 'Fortnight'),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Month';
-              });
-            },
-            tileBorderColor: selectedTime == 'Month' ? borderColor : trans,
-            circleColor: selectedTime == 'Month' ? secondaryColor : trans,
-            title: 'Month'),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = '90 days';
-              });
-            },
-            tileBorderColor: selectedTime == '90 days' ? borderColor : trans,
-            circleColor: selectedTime == '90 days' ? secondaryColor : trans,
-            title: '90 days'),
-        eightVerticalSpace,
-        _optionTile(
-            onTap: () {
-              setState(() {
-                selectedTime = 'Year';
-              });
-            },
-            tileBorderColor: selectedTime == 'Year' ? borderColor : trans,
-            circleColor: selectedTime == 'Year' ? secondaryColor : trans,
-            title: 'Year'),
       ],
     );
   }
@@ -380,7 +218,8 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
               filled: true,
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
-              hintText: 'Enter the description of the task',
+              hintText:
+                  'Contribute insights, updates, and ideas crucial for team synergy ...',
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -397,7 +236,6 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
   }
 
   Widget _goalField() {
-    final taskState = Provider.of<TaskProvider>(context, listen: false);
     final goalState = Provider.of<GoalProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -406,21 +244,17 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
           height: 32,
         ),
         Text(
-          'Goal',
+          'Parent Goal',
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
         InkWell(
           onTap: () {
-            if (selectedType != '') {
-              goalState.getFilterType(selectedType);
-              goalState.getGoalList();
-              CustomDialog.bottomSheet(
-                  context, SelectGoalBottomSheet(type: selectedType));
-              taskState.getSelectedGoal( widget.task.goal, widget.task.goalId!, context);
-            } else {
-              CustomSnack.warningSnack('Please select task type.', context);
-            }
+            CustomDialog.bottomSheet(
+                context,
+                SelectParentGoalBottomSheet(
+                  parentGoal: widget.goal.parentGoal,
+                ));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -433,13 +267,9 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 1.4,
+                    width: MediaQuery.of(context).size.width / 1.4,
                     child: Text(
-                      taskState.selectedGoal,
-                     // widget.task.goal,
+                      goalState.selectedParentGoal,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: tTextStyleRegular.copyWith(
@@ -485,10 +315,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
               ),
               eightHorizontalSpace,
               SizedBox(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 1.4,
+                width: MediaQuery.of(context).size.width / 1.4,
                 child: Text(
                   title,
                   maxLines: 2,
