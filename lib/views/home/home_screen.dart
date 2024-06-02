@@ -19,10 +19,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
-    return Consumer2<AuthProvider, ProfileProvider>(builder: (_, authState, profileState, child) {
+    return Consumer2<AuthProvider, ProfileProvider>(
+        builder: (_, authState, profileState, child) {
       return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(65.0),
@@ -43,10 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     SvgPicture.asset(notificationIcon),
                     eightHorizontalSpace,
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pushNamed(context, Routes.profile);
                       },
-                      child: CustomImageHolder(imageUrl: profileState.profileImage,
+                      child: CustomImageHolder(
+                          imageUrl: profileState.profileImage,
                           height: 40,
                           width: 40,
                           errorWidget: Container(
@@ -56,7 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 shape: BoxShape.circle,
                                 color: white,
                                 border: Border.all(color: borderColor)),
-                            child: const Icon(Icons.person_2_rounded, color: iconColor,),
+                            child: const Icon(
+                              Icons.person_2_rounded,
+                              color: iconColor,
+                            ),
                           )),
                     ),
                   ],
@@ -70,21 +74,27 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _optionTile(task, taskIcon, 'Tasks', () {
+                _optionTile(task, taskIcon, AppLocalizations.of(context)!.tasks,
+                    () {
                   Navigator.pushNamed(context, Routes.todayTask);
                 }),
                 sixteenVerticalSpace,
-                _optionTile(goal, goalIcon, 'Goals', () {
+                _optionTile(goal, goalIcon, AppLocalizations.of(context)!.goals,
+                    () {
                   Navigator.pushNamed(context, Routes.goals);
                 }),
                 sixteenVerticalSpace,
-                _optionTile(moment, momentIcon, 'Moments', () {}),
+                _optionTile(moment, momentIcon,
+                    AppLocalizations.of(context)!.moments, () {}),
                 sixteenVerticalSpace,
-                _optionTile(journal, journalIcon, 'Journal', () {}),
+                _optionTile(journal, journalIcon,
+                    AppLocalizations.of(context)!.journal, () {}),
                 sixteenVerticalSpace,
-                _optionTile(review, reviewIcon, 'Review', () {}),
+                _optionTile(review, reviewIcon,
+                    AppLocalizations.of(context)!.review, () {}),
                 sixteenVerticalSpace,
-                _optionTile(feed, feedIcon, 'Feed', () {}),
+                _optionTile(
+                    feed, feedIcon, AppLocalizations.of(context)!.feed, () {}),
                 // sixteenVerticalSpace,
                 // _optionTile(feed, profileIcon, 'Profile', () {
                 //   Navigator.pushNamed(context, Routes.profile);
@@ -97,8 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Widget _optionTile(String image, String icon, String title,
-      VoidCallback onTap) {
+  Widget _optionTile(
+      String image, String icon, String title, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: Container(

@@ -1,3 +1,27 @@
 {
-    "home": "Home"
+    "home": "Home",
+    "tasks": "Tasks",
+    "goals": "Goals",
+    "moments": "Moments",
+    "journal": "Journal",
+    "review": "Review",
+    "feed": "Feed",
+    "profile": "Profile",
+    "jiraconns": "Jira Connections",
+    "logout": "Log Out",
+    "todaystasks": "Today's Tasks",
+    "notaskstoday": "No tasks for today",
+    "addtaskstxt": "Add tasks by creating new ones or selecting from the queue.",
+    "addtask": "Add Task",
+    "selectfromqueue": "Select from queue",
+    "newtask": "New task",
+    "title": "Title",
+    "type": "Type",
+    "priority": "Priority",
+    "timeframe": "Timeframe",
+    "description": "Description",
+    "goal": "Goal",
+    "work": "Work",
+    "personalproject": "Personal Project",
+    "self": "Self"
 }

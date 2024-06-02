@@ -1,3 +1,9 @@
 {
-    "home": "Hjem"
+    "home": "Hjem",
+    "tasks": "Oppgaver",
+    "goals": "Mål",
+    "moments": "Øyeblikk",
+    "journal": "Tidsskrift",
+    "review": "Anmeldelser",
+    "feed": "Feed"
 }

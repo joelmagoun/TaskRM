@@ -1,3 +1,9 @@
 {
-    "home": "Heima"
+    "home": "Heima",
+    "tasks": "Verkefni",
+    "goals": "Markmið",
+    "moments": "Augnablik",
+    "journal": "Dagbók",
+    "review": "Endurskoðun",
+    "feed": "Straumur"
 }

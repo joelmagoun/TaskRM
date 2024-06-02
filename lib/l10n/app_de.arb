@@ -1,3 +1,9 @@
 {
-    "home": "Heim"
+    "home": "Heim",
+    "tasks": "Aufgaben",
+    "goals": "Ziele",
+    "moments": "Momente",
+    "journal": "Tagebuch",
+    "review": "Überblick",
+    "feed": "Neuigkeiten"
 }
