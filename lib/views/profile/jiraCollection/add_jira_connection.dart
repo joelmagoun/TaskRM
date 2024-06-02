@@ -3,13 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
 import 'package:TaskRM/utils/assets_path.dart';
-import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import 'package:TaskRM/views/tasks/newTask/add_new_task_bottomsheet.dart';
 import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
-import '../../../routes/routes.dart';
 import '../../../utils/constant/constant.dart';
 
 class AddJiraConnectionBottomSheet extends StatefulWidget {

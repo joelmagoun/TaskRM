@@ -1,4 +1,6 @@
+import 'package:TaskRM/views/tasks/newTask/link_jira_bottomsheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/goals_provider.dart';
 import 'package:TaskRM/providers/task_provider.dart';
@@ -8,6 +10,7 @@ import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/views/tasks/newTask/select_goal_bottom_sheet.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
+import '../../../utils/assets_path.dart';
 
 class AddNewTaskBottomSheet extends StatefulWidget {
   const AddNewTaskBottomSheet({
@@ -24,6 +27,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
   late String selectedPriority = '';
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  //final TextEditingController _jiraIssueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Consumer<TaskProvider>(builder: (_, _taskState, child) {
+          child: Consumer<TaskProvider>(builder: (_, taskState, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -49,6 +53,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                     children: [
                       _titleField(),
                       _typeField(),
+                      _jiraField(),
                       _priorityField(),
                       _timeFrameField(),
                       _descriptionField(),
@@ -68,7 +73,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
   }
 
   Widget _header(BuildContext context) {
-    final _taskState = Provider.of<TaskProvider>(context, listen: false);
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -93,15 +98,15 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                   selectedTime != null &&
                   _titleController.text.trim().isNotEmpty &&
                   _descriptionController.text.trim().isNotEmpty &&
-                  _taskState.selectedGoal.trim().isNotEmpty) {
-                await _taskState.addNewTask(
+                  taskState.selectedGoal.trim().isNotEmpty) {
+                await taskState.addNewTask(
                     _titleController.text,
                     selectedType,
-                    _taskState.selectedGoalId,
+                    taskState.selectedGoalId,
                     selectedPriority,
                     selectedTime,
                     _descriptionController.text,
-                    _taskState.selectedGoal,
+                    taskState.selectedGoal,
                     context);
               } else {
                 CustomDialog.autoDialog(context, Icons.warning,
@@ -116,7 +121,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 borderRadius: BorderRadius.circular(8),
                 color: primaryColor,
               ),
-              child: _taskState.isTaskAdding
+              child: taskState.isTaskAdding
                   ? const CircularProgressIndicator()
                   : Text(
                       'Add',
@@ -486,6 +491,56 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _jiraField() {
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
+    return Column(
+      children: [
+        const SizedBox(
+          height: 32,
+        ),
+        Row(
+          children: [
+            SvgPicture.asset(jiraIcon),
+            eightHorizontalSpace,
+            Text(
+              'Jira',
+              style:
+                  tTextStyle500.copyWith(fontSize: 20, color: secondaryColor),
+            )
+          ],
+        ),
+        eightVerticalSpace,
+        TextFormField(
+            controller: TextEditingController(text: taskState.jiraId),
+           //initialValue: taskState.jiraId,
+            readOnly: true,
+            onTap: () {
+              CustomDialog.bottomSheet(context, const LinkJiraBottomSheet());
+            },
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: white,
+              contentPadding: const EdgeInsets.all(12),
+              hintText: 'Add Jira issue',
+              hintStyle: hintTextStyle,
+              suffixIcon: const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: iconColor,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide(color: borderColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide(color: borderColor),
+              ),
+              focusColor: primaryColor,
+            ))
+      ],
     );
   }
 }
