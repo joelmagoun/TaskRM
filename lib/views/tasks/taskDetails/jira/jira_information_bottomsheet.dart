@@ -8,6 +8,7 @@ import 'package:TaskRM/utils/assets_path.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
+import '../../../../widgets/empty_widget.dart';
 
 class JiraInformationBottomSheet extends StatefulWidget {
   final String jiraIssueId;
@@ -35,42 +36,70 @@ class _JiraInformationBottomSheetState
 
   @override
   void initState() {
+    print('initi calling ${widget.jiraIssueId} alkdfjakl ${widget.taskType}');
     final jiraState = Provider.of<JiraProvider>(context, listen: false);
-    jiraState.getProfileInfo(
-      widget.jiraIssueId, widget.taskType
-    );
+    jiraState.getProfileInfo(widget.jiraIssueId, widget.taskType);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: Container(
-        height: MediaQuery.of(context).size.height / 1.2,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(24), topLeft: Radius.circular(24)),
-            color: white),
-        child: Consumer<JiraProvider>(builder: (_, jiraState, child) {
-          return  jiraState.isJiraInfoLoading
-              ? const Center(child: CircularProgressIndicator())
-              : SingleChildScrollView(
-            child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      eightVerticalSpace,
-                      _header(),
-                      const Divider(),
-                      _infoBody(),
-                      const Divider(),
-                      _commentSection(),
-                    ],
-                  ),
-          );
-        }),
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60.0),
+        child: AppBar(
+          shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  SvgPicture.asset(jiraIcon),
+                  eightHorizontalSpace,
+                  Text(
+                    'Jira',
+                    style: tTextStyle500.copyWith(
+                        fontSize: 14, color: secondaryColor),
+                  )
+                ],
+              ),
+              Text(
+                'Information',
+                style:
+                tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
+              ),
+            ],
+          ),
+        ),
       ),
+      body: Consumer<JiraProvider>(builder: (_, jiraState, child) {
+        if(jiraState.isLoading){
+          return const Center(child: CircularProgressIndicator());
+        }else if(!jiraState.isJiraInfoLoaded){
+          return const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: EmptyWidget(
+                icon: emptyJira,
+                title: 'No matching Jira ID',
+                subTitle:
+                'There is no jira issue id matching with the given jira issue id or task type'),
+          );
+        }else{
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // eightVerticalSpace,
+                // _header(),
+                // const Divider(),
+                _infoBody(),
+                const Divider(),
+                _commentSection(),
+              ],
+            ),
+          );
+        }
+      }),
     );
   }
 
@@ -243,7 +272,7 @@ class _JiraInformationBottomSheetState
                     onPressed: () async {
                       await jiraState
                           .addCommentToJira(
-                          widget.jiraIssueId, _commentController.text)
+                              widget.jiraIssueId, _commentController.text)
                           .then((value) {
                         _commentController.clear();
                       });

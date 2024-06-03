@@ -9,6 +9,7 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/task.dart';
+import '../../../routes/routes.dart';
 import '../../../utils/assets_path.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
@@ -241,15 +242,17 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         eightVerticalSpace,
         TextFormField(
             controller: TextEditingController(text: widget.task.jiraID),
-            //initialValue: taskState.jiraId,
             readOnly: true,
             onTap: () {
-              CustomDialog.bottomSheet(
-                  context,
-                  JiraInformationBottomSheet(
-                    jiraIssueId: widget.task.jiraID,
-                    taskType: widget.task.type,
-                  ));
+              Navigator.pushNamed(
+                context,
+                Routes.jiraInformationScreen,
+                arguments: {
+                  'jiraIssueId': widget.task.jiraID,
+                  'taskType': widget.task.type,
+                },
+              );
+
             },
             decoration: InputDecoration(
               filled: true,
