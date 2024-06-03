@@ -8,7 +8,7 @@
 PRODUCT_NAME = TaskRM
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = vc.rms.taskrm
+PRODUCT_BUNDLE_IDENTIFIER = vc.rms.taskrm.qa
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2024 TaskRM. All rights reserved.
