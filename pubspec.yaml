@@ -47,6 +47,7 @@ dependencies:
   image_picker: ^1.0.7
   timeago: ^3.6.1
   cached_network_image: any
+  atlassian_apis: ^0.15.0
   flutter_localizations:
     sdk: flutter
   intl: any
