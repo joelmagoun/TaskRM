@@ -248,6 +248,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   context,
                   JiraInformationBottomSheet(
                     jiraIssueId: widget.task.jiraID,
+                    taskType: widget.task.type,
                   ));
             },
             decoration: InputDecoration(

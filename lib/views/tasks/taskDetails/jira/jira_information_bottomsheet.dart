@@ -11,8 +11,10 @@ import '../../../../utils/spacer.dart';
 
 class JiraInformationBottomSheet extends StatefulWidget {
   final String jiraIssueId;
+  final String taskType;
 
-  const JiraInformationBottomSheet({Key? key, required this.jiraIssueId})
+  const JiraInformationBottomSheet(
+      {Key? key, required this.jiraIssueId, required this.taskType})
       : super(key: key);
 
   @override
@@ -34,13 +36,9 @@ class _JiraInformationBottomSheetState
   @override
   void initState() {
     final jiraState = Provider.of<JiraProvider>(context, listen: false);
-    //jiraState.getJiraIssueInfo('TSKIMPL-16');
-    jiraState.connectToJira(
-        'taskrm.atlassian.net',
-        'joel.magoun@gmail.com',
-        'ATATT3xFfGF0JGcmfqC0J4eaK7qHm_DnRGX2Kldp1y7bCBw3LOOFBGZLKYZleqINq4u3ehh3TBACaZHhOfilTdQMViBcQjnfXhgE8G_LN7pfxIMnuYl6lSBjkulr844LsXO2YqdutLz6NT3_tYXt0TO2VKJihVQypv3Y7d5asb3tkyNvWg4RXt0=0BDDA307',
-        'TSKIMPL-16');
-    //jiraState.getProfileInfo('TSKIMPL-16');
+    jiraState.getProfileInfo(
+      widget.jiraIssueId, widget.taskType
+    );
     super.initState();
   }
 
@@ -56,10 +54,10 @@ class _JiraInformationBottomSheetState
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: Consumer<JiraProvider>(builder: (_, jiraState, child) {
-          return SingleChildScrollView(
-            child: jiraState.isJiraInfoLoading
-                ? const Center(child: CircularProgressIndicator())
-                : Column(
+          return  jiraState.isJiraInfoLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+            child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       eightVerticalSpace,
@@ -245,7 +243,7 @@ class _JiraInformationBottomSheetState
                     onPressed: () async {
                       await jiraState
                           .addCommentToJira(
-                              'TSKIMPL-16', _commentController.text)
+                          widget.jiraIssueId, _commentController.text)
                           .then((value) {
                         _commentController.clear();
                       });

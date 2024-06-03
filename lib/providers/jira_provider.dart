@@ -13,30 +13,39 @@ class JiraProvider extends ChangeNotifier {
   var _jira;
 
   late bool _isLoading = false;
+
   bool get isLoading => _isLoading;
 
   late String _summary = '';
+
   String get summary => _summary;
 
   late String _status = '';
+
   String get status => _status;
 
   late String _priority = '';
+
   String get priority => _priority;
 
   late String _type = '';
+
   String get type => _type;
 
   late String _description = '';
+
   String get description => _description;
 
   late String _created = '';
+
   String get created => _created;
 
   late String _updated = '';
+
   String get updated => _updated;
 
   late List<CommentModel> _commentList = [];
+
   List<CommentModel> get commentList => _commentList;
 
   JiraProvider() {
@@ -50,27 +59,34 @@ class JiraProvider extends ChangeNotifier {
     db = Databases(client);
     _appWriteStorage = Storage(client);
 
-   // await getProfileInfo(issueId);
+    // await getProfileInfo(issueId);
   }
 
-  Future<void> getProfileInfo(String issueId) async {
+  Future<void> getProfileInfo(String issueId, String taskType) async {
     try {
       _isLoading = true;
       notifyListeners();
 
       final String? userId = await storage.read(key: 'userId');
-      final res = await db.getDocument(
-        databaseId: AppWriteConstant.primaryDBId,
-        collectionId: AppWriteConstant.profileCollectionId,
-        documentId: userId!,
-      );
+      final res = await db.listDocuments(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.jiraConnectionCollectionId,
+          queries: [
+            Query.equal("userId", userId),
+            Query.equal(
+                "taskType",
+                taskType == 'Work'
+                    ? '1'
+                    : taskType == 'Personal Project'
+                        ? '2'
+                        : '3'),
+          ]);
 
-      if (res.data.isNotEmpty) {
-        await connectToJira(
-            res.data['jira_url'] ?? '',
-            res.data['jira_user_name'] ?? '',
-            res.data['jira_key'] ?? '',
-            issueId);
+      if (res.documents.isNotEmpty) {
+        res.documents.forEach((e) async {
+          await connectToJira(e.data['url'] ?? '', e.data['userName'] ?? '',
+              e.data['apiKey'] ?? '', issueId);
+        });
       } else {
         print('There is no user data');
       }
@@ -101,7 +117,6 @@ class JiraProvider extends ChangeNotifier {
 
   Future<void> getJiraIssueInfo(String issueId) async {
     try {
-
       isJiraInfoLoading = true;
       notifyListeners();
 
@@ -114,7 +129,6 @@ class JiraProvider extends ChangeNotifier {
           await _jira.issuePriorities.getPriority(priorityId);
 
       if (result.id != null) {
-
         _commentList.clear();
         notifyListeners();
 
@@ -144,7 +158,7 @@ class JiraProvider extends ChangeNotifier {
       }
     } catch (e) {
       print(e.toString());
-    }finally{
+    } finally {
       isJiraInfoLoading = false;
       notifyListeners();
     }
