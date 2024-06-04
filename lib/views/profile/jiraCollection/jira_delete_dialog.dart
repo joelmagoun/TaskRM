@@ -5,6 +5,7 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/widgets/components/buttons/custom_outline_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class JiraDeleteDialog extends StatelessWidget {
   final String docId;
@@ -27,7 +28,7 @@ class JiraDeleteDialog extends StatelessWidget {
             onTap: () {
               profileState.deleteJiraConnection(docId, context);
             },
-            buttonTitle: 'Delete',
+            buttonTitle: AppLocalizations.of(context)!.delete,
             borderColor: borderColor,
             titleColor: red,
            // isLoading: profileState.isJiraDeleting,

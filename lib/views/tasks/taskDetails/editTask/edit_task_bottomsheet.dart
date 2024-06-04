@@ -9,6 +9,7 @@ import 'package:TaskRM/views/tasks/newTask/select_goal_bottom_sheet.dart';
 import '../../../../models/task.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditTaskBottomSheet extends StatefulWidget {
   final Task task;
@@ -142,7 +143,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Title',
+          AppLocalizations.of(context)!.title,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -176,7 +177,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
           height: 32,
         ),
         Text(
-          'Type',
+          AppLocalizations.of(context)!.type,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -223,7 +224,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
           height: 32,
         ),
         Text(
-          'Priority',
+          AppLocalizations.of(context)!.priority,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -274,7 +275,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
           height: 32,
         ),
         Text(
-          'Timeframe',
+          AppLocalizations.of(context)!.timeframe,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -369,7 +370,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
           height: 32,
         ),
         Text(
-          'Description',
+          AppLocalizations.of(context)!.description,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -406,7 +407,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
           height: 32,
         ),
         Text(
-          'Goal',
+          AppLocalizations.of(context)!.goal,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,

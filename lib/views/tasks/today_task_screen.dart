@@ -11,6 +11,7 @@ import 'package:TaskRM/views/tasks/add_task_bottom_sheet.dart';
 import 'package:TaskRM/views/tasks/newTask/today_filter_bottomsheet.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TodayTaskScreen extends StatefulWidget {
   const TodayTaskScreen({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
           centerTitle: false,
           shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
           title: Text(
-            'Today’s tasks',
+            AppLocalizations.of(context)!.todaystasks,
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
@@ -71,11 +72,11 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const EmptyWidget(
+          EmptyWidget(
               icon: taskIcon,
-              title: 'No tasks for today',
+              title: AppLocalizations.of(context)!.notaskstoday,
               subTitle:
-                  'Add tasks by creating new ones or selecting from the queue.'),
+                  AppLocalizations.of(context)!.addtaskstxt),
           sixteenVerticalSpace,
           IconButton(
             onPressed: () {

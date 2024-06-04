@@ -5,6 +5,7 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/widgets/components/buttons/custom_outline_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LogoutDeleteDialog extends StatelessWidget {
   const LogoutDeleteDialog({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class LogoutDeleteDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Log out',
+            AppLocalizations.of(context)!.logout,
             style: tTextStyle500.copyWith(fontSize: 18, color: textPrimaryColor),
           ),
           eightVerticalSpace,

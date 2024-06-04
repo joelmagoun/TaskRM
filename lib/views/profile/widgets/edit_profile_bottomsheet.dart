@@ -16,6 +16,7 @@ import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../utils/constant/constant.dart';
 import 'image_delete_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfileBottomSheet extends StatefulWidget {
   const EditProfileBottomSheet({
@@ -245,7 +246,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             children: [
               SvgPicture.asset(imageDeleteIcon),
               Text(
-                'Delete',
+                AppLocalizations.of(context)!.delete,
                 style: tTextStyle500.copyWith(color: red, fontSize: 16),
               )
             ],

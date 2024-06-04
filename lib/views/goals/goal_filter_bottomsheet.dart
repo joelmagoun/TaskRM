@@ -7,6 +7,7 @@ import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../providers/goals_provider.dart';
 import '../../utils/constant/constant.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GoalFilterBottomSheet extends StatefulWidget {
   const GoalFilterBottomSheet({
@@ -60,7 +61,7 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
               color: trans,
             )),
         Text(
-          'Filters',
+          AppLocalizations.of(context)!.filters,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         IconButton(
@@ -85,7 +86,7 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Type',
+            AppLocalizations.of(context)!.type,
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           ListView.separated(
@@ -111,7 +112,7 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
               await goalState.getGoalList();
               Navigator.pop(context);
             },
-            buttonTitle: 'Apply',
+            buttonTitle: AppLocalizations.of(context)!.apply,
             buttonColor: goalState.selectedFilterType == ''
                 ? primaryLight
                 : primaryColor,

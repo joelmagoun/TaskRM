@@ -11,6 +11,7 @@ import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../routes/routes.dart';
 import '../../../utils/constant/constant.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddJiraConnectionBottomSheet extends StatefulWidget {
   final String taskType;
@@ -116,7 +117,7 @@ class _AddJiraConnectionBottomSheetState
               title: 'URL',
               controller: _urlController,
               hintText:
-              'ex. https://sarasmith.atlassian.net/browse/Personalprojectstasks9784'),
+              'ex. sarasmith.atlassian.net'),
           primaryVerticalSpace,
           _buildField(
               title: 'API key',

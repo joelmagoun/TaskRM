@@ -7,6 +7,7 @@ import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../providers/task_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskQueueFilterBottomSheet extends StatefulWidget {
   const TaskQueueFilterBottomSheet({
@@ -61,7 +62,7 @@ class _TaskQueueFilterBottomSheetState
               color: trans,
             )),
         Text(
-          'Filters',
+          AppLocalizations.of(context)!.filters,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         IconButton(
@@ -86,7 +87,7 @@ class _TaskQueueFilterBottomSheetState
         children: [
           /// time frame ///
           Text(
-            'Timeframe',
+            AppLocalizations.of(context)!.timeframe,
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           ListView.separated(
@@ -111,7 +112,7 @@ class _TaskQueueFilterBottomSheetState
 
           /// work type ///
           Text(
-            'Type',
+            AppLocalizations.of(context)!.type,
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           ListView.separated(
@@ -139,7 +140,7 @@ class _TaskQueueFilterBottomSheetState
               await taskState.getAllTaskList();
               Navigator.pop(context);
             },
-            buttonTitle: 'Apply',
+            buttonTitle: AppLocalizations.of(context)!.apply,
             buttonColor: taskState.selectedQueueTimeFrame == '' &&
                     taskState.selectedQueueType == ''
                 ? primaryLight

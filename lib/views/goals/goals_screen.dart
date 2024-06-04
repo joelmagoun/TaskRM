@@ -14,6 +14,7 @@ import 'package:TaskRM/views/goals/goal_filter_bottomsheet.dart';
 import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class GoalsScreen extends StatelessWidget {
@@ -27,7 +28,7 @@ class GoalsScreen extends StatelessWidget {
           centerTitle: false,
           shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
           title: Text(
-            'Goals',
+            AppLocalizations.of(context)!.goals,
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [

@@ -9,6 +9,7 @@ import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/task.dart';
 import '../../../utils/assets_path.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
   final Task task;
@@ -73,11 +74,11 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             ));
                       },
                       value: 'edit',
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Icon(Icons.edit_outlined),
+                          const Icon(Icons.edit_outlined),
                           eightHorizontalSpace,
-                          Text('Edit'),
+                          Text(AppLocalizations.of(context)!.edit),
                         ],
                       ),
                     ),
@@ -91,7 +92,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           ),
                           eightHorizontalSpace,
                           Text(
-                            'Delete',
+                            AppLocalizations.of(context)!.delete,
                             style: tTextStyle600.copyWith(color: red),
                           ),
                         ],
@@ -113,18 +114,18 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, 'Type', widget.task.type, false),
+                        _infoTile(typeIcon, AppLocalizations.of(context)!.type, widget.task.type, false),
                         primaryVerticalSpace,
-                        _infoTile(priorityIcon, 'Priority',
+                        _infoTile(priorityIcon, AppLocalizations.of(context)!.priority,
                             widget.task.priority, false),
                         primaryVerticalSpace,
-                        _infoTile(timeFrameIcon, 'Timeframe',
+                        _infoTile(timeFrameIcon, AppLocalizations.of(context)!.timeframe,
                             widget.task.timeframe, false),
                         primaryVerticalSpace,
-                        _infoTile(descriptionIcon, 'Description',
+                        _infoTile(descriptionIcon, AppLocalizations.of(context)!.description,
                             widget.task.description, false),
                         primaryVerticalSpace,
-                        _infoTile(goalIcon, 'Goal', widget.task.goal, true),
+                        _infoTile(goalIcon, AppLocalizations.of(context)!.goal, widget.task.goal, true),
                       ],
                     ),
                   ),
@@ -198,7 +199,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _bottomButton(clearIcon, 'Remove from\nToday’s Tasks', false),
-            _bottomButton(addTimeIcon, 'Add Time', false),
+            _bottomButton(addTimeIcon, AppLocalizations.of(context)!.addtime, false),
             _bottomButton(checkIcon, 'Complete Task', true),
           ],
         ),

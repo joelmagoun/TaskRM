@@ -7,6 +7,7 @@ import 'package:TaskRM/views/tasks/newTask/add_new_task_bottomsheet.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../routes/routes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({
@@ -42,11 +43,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 children: [
                   _optionTile(() {
                     Navigator.pushNamed(context, Routes.taskQueue);
-                  }, queueIcon, 'Select from queue'),
+                  }, queueIcon, AppLocalizations.of(context)!.selectfromqueue),
                   _optionTile(() {
                     CustomDialog.bottomSheet(
                         context, const AddNewTaskBottomSheet());
-                  }, newTaskIcon, 'New task'),
+                  }, newTaskIcon, AppLocalizations.of(context)!.newtask),
                 ],
               ),
             ),
@@ -70,7 +71,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               color: trans,
             )),
         Text(
-          'Add task',
+          AppLocalizations.of(context)!.addtask,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         IconButton(

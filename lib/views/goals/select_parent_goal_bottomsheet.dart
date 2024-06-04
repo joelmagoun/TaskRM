@@ -4,6 +4,7 @@ import 'package:TaskRM/providers/goals_provider.dart';
 import '../../../utils/color.dart';
 import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectParentGoalBottomSheet extends StatefulWidget {
   final String parentGoal;
@@ -47,7 +48,7 @@ class _SelectParentGoalBottomSheetState
                               color: trans,
                             )),
                         Text(
-                          'Select Parent Goal',
+                          AppLocalizations.of(context)!.selectparentgoal,
                           style: tTextStyle500.copyWith(
                               fontSize: 20, color: black),
                         ),

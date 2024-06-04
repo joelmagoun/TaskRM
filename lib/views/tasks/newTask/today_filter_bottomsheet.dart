@@ -7,6 +7,7 @@ import 'package:TaskRM/views/tasks/taskQueue/widgets/filter_option_tile.dart';
 import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TodayFilterBottomSheet extends StatefulWidget {
   const TodayFilterBottomSheet({
@@ -59,7 +60,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
               color: trans,
             )),
         Text(
-          'Filters',
+          AppLocalizations.of(context)!.filters,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         IconButton(
@@ -83,7 +84,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Type',
+            AppLocalizations.of(context)!.type,
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           ListView.separated(
@@ -109,7 +110,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
               await taskState.getTodayTaskList();
               Navigator.pop(context);
             },
-            buttonTitle: 'Apply',
+            buttonTitle: AppLocalizations.of(context)!.apply,
             buttonColor: taskState.selectedFilterType == '' ? primaryLight : primaryColor,
           ),
           primaryVerticalSpace

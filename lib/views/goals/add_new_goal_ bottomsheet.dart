@@ -9,6 +9,7 @@ import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../providers/goals_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddNewGoalBottomSheet extends StatefulWidget {
   const AddNewGoalBottomSheet({
@@ -80,7 +81,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                 color: iconColor,
               )),
           Text(
-            'New Goal',
+            AppLocalizations.of(context)!.newgoal,
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           InkWell(
@@ -103,7 +104,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                   ? const SizedBox(
                       height: 16, width: 16, child: CircularProgressIndicator())
                   : Text(
-                      'Add',
+                      AppLocalizations.of(context)!.add,
                       style:
                           tTextStyleBold.copyWith(color: white, fontSize: 16),
                     ),
@@ -119,7 +120,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Title',
+          AppLocalizations.of(context)!.title,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -129,7 +130,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
               filled: true,
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
-              hintText: 'Learn New Skill',
+              hintText: AppLocalizations.of(context)!.learnnewskill,
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -200,7 +201,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
           height: 32,
         ),
         Text(
-          'Description',
+          AppLocalizations.of(context)!.description,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -212,7 +213,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
               hintText:
-                  'Contribute insights, updates, and ideas crucial for team synergy ...',
+                  AppLocalizations.of(context)!.descriptiontxt,
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -237,7 +238,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
           height: 32,
         ),
         Text(
-          'Parent Goal',
+          AppLocalizations.of(context)!.parentgoal,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,

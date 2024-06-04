@@ -7,6 +7,7 @@ import 'package:TaskRM/widgets/empty_widget.dart';
 import '../../../utils/color.dart';
 import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectGoalBottomSheet extends StatefulWidget {
   final String type;
@@ -47,7 +48,7 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                             color: trans,
                           )),
                       Text(
-                        'Select Goal',
+                        AppLocalizations.of(context)!.selectgoal,
                         style:
                             tTextStyle500.copyWith(fontSize: 20, color: black),
                       ),

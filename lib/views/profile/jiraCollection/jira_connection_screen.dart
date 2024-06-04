@@ -10,6 +10,7 @@ import 'package:TaskRM/views/profile/jiraCollection/add_jira_connection.dart';
 import 'package:TaskRM/views/profile/jiraCollection/jira_connection_card.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 import '../../../utils/assets_path.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class JiraConnectionScreen extends StatefulWidget {
   const JiraConnectionScreen({Key? key}) : super(key: key);
@@ -52,7 +53,7 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
                   ],
                 ),
                 Text(
-                  'Connections',
+                  AppLocalizations.of(context)!.connections,
                   style: tTextStyle500.copyWith(
                       fontSize: 20, color: textPrimaryColor),
                 ),
@@ -64,15 +65,15 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
                     color: textPrimaryColor, fontSize: 16),
                 unselectedLabelStyle:
                     tTextStyle500.copyWith(color: iconColor, fontSize: 16),
-                tabs: const [
+                tabs: [
                   Tab(
-                    text: 'Work',
+                    text: AppLocalizations.of(context)!.work,
                   ),
                   Tab(
                     text: 'Personal',
                   ),
                   Tab(
-                    text: 'Self',
+                    text: AppLocalizations.of(context)!.self,
                   )
                 ]),
           ),

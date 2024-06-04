@@ -7,6 +7,7 @@ import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../routes/routes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskTile extends StatefulWidget {
   final VoidCallback onLongPress;

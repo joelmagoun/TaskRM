@@ -7,6 +7,7 @@ import '../../../../models/goal.dart';
 import '../../../../providers/goals_provider.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditGoalBottomSheet extends StatefulWidget {
   final Goal goal;
@@ -126,7 +127,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Title',
+          AppLocalizations.of(context)!.title,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -136,7 +137,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
               filled: true,
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
-              hintText: 'Learn New Skill',
+              hintText: AppLocalizations.of(context)!.learnnewskill,
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -160,7 +161,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
           height: 32,
         ),
         Text(
-          'Type',
+          AppLocalizations.of(context)!.type,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -207,7 +208,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
           height: 32,
         ),
         Text(
-          'Description',
+          AppLocalizations.of(context)!.description,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -219,7 +220,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
               hintText:
-                  'Contribute insights, updates, and ideas crucial for team synergy ...',
+                  AppLocalizations.of(context)!.descriptiontxt,
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -244,7 +245,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
           height: 32,
         ),
         Text(
-          'Parent Goal',
+          AppLocalizations.of(context)!.parentgoal,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,

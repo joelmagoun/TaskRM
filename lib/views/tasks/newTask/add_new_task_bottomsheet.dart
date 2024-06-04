@@ -8,6 +8,7 @@ import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/views/tasks/newTask/select_goal_bottom_sheet.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddNewTaskBottomSheet extends StatefulWidget {
   const AddNewTaskBottomSheet({
@@ -83,7 +84,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 color: iconColor,
               )),
           Text(
-            'New Task',
+            AppLocalizations.of(context)!.newtask,
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           InkWell(
@@ -119,7 +120,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               child: _taskState.isTaskAdding
                   ? const CircularProgressIndicator()
                   : Text(
-                      'Add',
+                      AppLocalizations.of(context)!.add,
                       style:
                           tTextStyleBold.copyWith(color: white, fontSize: 16),
                     ),
@@ -135,7 +136,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Title',
+          AppLocalizations.of(context)!.title,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -169,7 +170,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
           height: 32,
         ),
         Text(
-          'Type',
+          AppLocalizations.of(context)!.type,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -267,7 +268,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
           height: 32,
         ),
         Text(
-          'Timeframe',
+          AppLocalizations.of(context)!.timeframe,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -362,7 +363,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
           height: 32,
         ),
         Text(
-          'Description',
+          AppLocalizations.of(context)!.description,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
@@ -399,7 +400,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
           height: 32,
         ),
         Text(
-          'Goal',
+          AppLocalizations.of(context)!.goal,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,

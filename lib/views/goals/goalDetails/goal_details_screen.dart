@@ -9,6 +9,7 @@ import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/goal.dart';
 import '../../../utils/assets_path.dart';
 import '../../../utils/custom_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GoalDetailsScreen extends StatefulWidget {
   final Goal goal;
@@ -45,7 +46,7 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Goal',
+                  AppLocalizations.of(context)!.goal,
                   style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
                 ),
                 Text(
@@ -73,11 +74,11 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                             ));
                       },
                       value: 'edit',
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Icon(Icons.edit_outlined),
+                          const Icon(Icons.edit_outlined),
                           eightHorizontalSpace,
-                          Text('Edit'),
+                          Text(AppLocalizations.of(context)!.edit),
                         ],
                       ),
                     ),
@@ -91,7 +92,7 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                           ),
                           eightHorizontalSpace,
                           Text(
-                            'Delete',
+                            AppLocalizations.of(context)!.delete,
                             style: tTextStyle600.copyWith(color: red),
                           ),
                         ],
@@ -113,23 +114,23 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, 'Type', widget.goal.type, false),
+                        _infoTile(typeIcon, AppLocalizations.of(context)!.type, widget.goal.type, false),
                         primaryVerticalSpace,
-                        _infoTile(timeFrameIcon, 'Timeframe',
+                        _infoTile(timeFrameIcon, AppLocalizations.of(context)!.timeframe,
                             " widget.goal.timeFrame", false),
                         primaryVerticalSpace,
-                        _infoTile(descriptionIcon, 'Description',
+                        _infoTile(descriptionIcon, AppLocalizations.of(context)!.description,
                             widget.goal.description, false),
                         primaryVerticalSpace,
-                        _infoTile(goalIcon, 'Parent Goal', 'None', true),
+                        _infoTile(goalIcon, AppLocalizations.of(context)!.parentgoal, 'None', true),
                         primaryVerticalSpace,
-                        _infoTile(taskIcon, 'Tasks', 'None', true),
-                        primaryVerticalSpace,
-                        _infoTile(
-                            scheduleIcon, 'Time spent', '1 hr 15 min', false),
+                        _infoTile(taskIcon, AppLocalizations.of(context)!.tasks, 'None', true),
                         primaryVerticalSpace,
                         _infoTile(
-                            reloadIcon, 'Last activity', '11 Mar, 2023', false),
+                            scheduleIcon, AppLocalizations.of(context)!.timespent, '1 hr 15 min', false),
+                        primaryVerticalSpace,
+                        _infoTile(
+                            reloadIcon, AppLocalizations.of(context)!.lastactivity, '11 Mar, 2023', false),
                       ],
                     ),
                   ),
@@ -202,8 +203,8 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _bottomButton(addTimeIcon, 'Add Time', false),
-            _bottomButton(checkIcon, 'Complete Goal', true),
+            _bottomButton(addTimeIcon, AppLocalizations.of(context)!.addtime, false),
+            _bottomButton(checkIcon, AppLocalizations.of(context)!.completegoal, true),
           ],
         ),
       ),

@@ -10,6 +10,7 @@ import 'package:TaskRM/views/tasks/taskQueue/task_queue_filter_bottom_sheet.dart
 import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 import '../../../utils/assets_path.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskQueueScreen extends StatefulWidget {
   const TaskQueueScreen({Key? key}) : super(key: key);
@@ -43,14 +44,14 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
             shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
             title: _taskState.allTaskList.isEmpty
                 ? Text(
-              'Task queue',
+              AppLocalizations.of(context)!.taskqueue,
               style: tTextStyle500.copyWith(fontSize: 20, color: black),
             )
                 : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Task queue',
+                  AppLocalizations.of(context)!.taskqueue,
                   style:
                   tTextStyle500.copyWith(fontSize: 20, color: black),
                 ),
@@ -95,11 +96,11 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
       if (taskState.allTaskList.isEmpty) {
         if (taskState.selectedQueueType == '' ||
             taskState.selectedQueueTimeFrame == '') {
-          return const Center(
+          return Center(
             child: EmptyWidget(
                 icon: taskIcon,
-                title: 'No tasks on your queue',
-                subTitle: 'Go back, then add new tasks'),
+                title: AppLocalizations.of(context)!.notasksonqueue,
+                subTitle: AppLocalizations.of(context)!.gobacktxt),
           );
         } else {
           return Column(
@@ -171,11 +172,11 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                   ),
                 ),
               ),
-              const Center(
+              Center(
                 child: EmptyWidget(
                     icon: taskIcon,
                     title: 'No matching tasks',
-                    subTitle: 'Go back, then add new tasks'),
+                    subTitle: AppLocalizations.of(context)!.gobacktxt),
               ),
               const SizedBox(
                 height: 10,
