@@ -70,7 +70,7 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
                     text: AppLocalizations.of(context)!.work,
                   ),
                   Tab(
-                    text: 'Personal',
+                    text: AppLocalizations.of(context)!.personal,
                   ),
                   Tab(
                     text: AppLocalizations.of(context)!.self,
@@ -97,11 +97,11 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const EmptyWidget(
+            EmptyWidget(
                 icon: emptyJira,
-                title: 'Add Jira link',
+                title: AppLocalizations.of(context)!.emptyjiratitle,
                 subTitle:
-                    'All tasks of the type “Work” will be linked to this Jira address.'),
+                    AppLocalizations.of(context)!.emptyjirasubtitlework),
             sixteenVerticalSpace,
             IconButton(
               onPressed: () {
@@ -124,7 +124,7 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
       return Column(
         children: [
           Text(
-            'All tasks of the type “Work” are linked to this Jira addresses.',
+            AppLocalizations.of(context)!.emptyjirasubtitlework,
             style: tTextStyleRegular.copyWith(
                 fontSize: 14, color: textPrimaryColor),
           ),
@@ -149,11 +149,11 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const EmptyWidget(
+            EmptyWidget(
                 icon: emptyJira,
-                title: 'Add Jira link',
+                title: AppLocalizations.of(context)!.emptyjiratitle,
                 subTitle:
-                    'All tasks of the type “Personal” will be linked to this Jira address.'),
+                    AppLocalizations.of(context)!.emptyjirasubtitlepersonal),
             sixteenVerticalSpace,
             IconButton(
               onPressed: () {
@@ -201,11 +201,11 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const EmptyWidget(
+            EmptyWidget(
                 icon: emptyJira,
-                title: 'Add Jira link',
+                title: AppLocalizations.of(context)!.emptyjiratitle,
                 subTitle:
-                    'All tasks of the type “Self” will be linked to this Jira address.'),
+                    AppLocalizations.of(context)!.emptyjirasubtitleself),
             sixteenVerticalSpace,
             IconButton(
               onPressed: () {

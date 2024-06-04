@@ -84,7 +84,7 @@ class _AddJiraConnectionBottomSheetState
               ],
             ),
             Text(
-              'Add connection',
+              AppLocalizations.of(context)!.addconnection,
               style:
               tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
             ),
@@ -109,18 +109,18 @@ class _AddJiraConnectionBottomSheetState
       child: Column(
         children: [
           _buildField(
-              title: 'Username',
+              title: AppLocalizations.of(context)!.username,
               controller: _userNameController,
               hintText: 'ex. sarasmith5498'),
           primaryVerticalSpace,
           _buildField(
-              title: 'URL',
+              title: AppLocalizations.of(context)!.url,
               controller: _urlController,
               hintText:
               'ex. sarasmith.atlassian.net'),
           primaryVerticalSpace,
           _buildField(
-              title: 'API key',
+              title: AppLocalizations.of(context)!.apikey,
               controller: _apiController,
               hintText: 'ex. B48N65'),
           const SizedBox(
@@ -147,7 +147,7 @@ class _AddJiraConnectionBottomSheetState
                   _apiController.text, _urlController.text,
                   context);
             },
-            buttonTitle: 'Add',
+            buttonTitle: AppLocalizations.of(context)!.add,
             buttonColor:
             !isData ? primaryLight : primaryColor,
             isLoading: profileState.isJiraAdding,

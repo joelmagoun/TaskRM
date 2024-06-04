@@ -22,7 +22,7 @@ class LogoutDeleteDialog extends StatelessWidget {
           ),
           eightVerticalSpace,
           Text(
-            'Are you sure?',
+            AppLocalizations.of(context)!.areyousure,
             style: tTextStyleRegular.copyWith(
                 fontSize: 14, color: const Color(0xFF555555)),
           ),
@@ -31,7 +31,7 @@ class LogoutDeleteDialog extends StatelessWidget {
               onTap: () async {
                 await authState.logout(context);
               },
-              buttonTitle: 'Log me out',
+              buttonTitle: AppLocalizations.of(context)!.logmeout,
               borderColor: borderColor,
               titleColor: red,
               isLoading: authState.isLogOut,
@@ -41,7 +41,7 @@ class LogoutDeleteDialog extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
               },
-              buttonTitle: 'Cancel',
+              buttonTitle: AppLocalizations.of(context)!.cancel,
               borderColor: borderColor,
               titleColor: iconColor),
         ],

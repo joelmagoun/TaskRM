@@ -111,5 +111,12 @@
     "mustenterpattern": "You must enter a pattern password!",
     "submit": "Submit",
     "encryptionkey": "Encryption key",
-    "pattern": "Pattern"
+    "pattern": "Pattern",
+    "createaccount": "Create Account",
+    "pleaseenterall": "Please enter all information",
+    "alreadyhaveacct": "Already have an account?",
+    "jirasubtitlework": "All tasks of the type 'Work' are linked to this Jira address.",
+    "jirasubtitlepersonal": "All tasks of the type 'Personal' are linked to this Jira address.",
+    "jirasubtitleself": "All tasks of the type 'Self' are linked to this Jira address."
+    
 }

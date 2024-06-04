@@ -100,7 +100,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
                 color: iconColor,
               )),
           Text(
-            'Edit Task',
+            AppLocalizations.of(context)!.edittask,
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           InkWell(
@@ -127,7 +127,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
               child: taskState.isTaskEditing
                   ? const CircularProgressIndicator()
                   : Text(
-                'Save',
+                AppLocalizations.of(context)!.save,
                 style:
                 tTextStyleBold.copyWith(color: white, fontSize: 16),
               ),
@@ -153,7 +153,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
               filled: true,
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
-              hintText: 'Schedule Team Meeting',
+              hintText: AppLocalizations.of(context)!.titlehinttxt,
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -381,7 +381,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
               filled: true,
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
-              hintText: 'Enter the description of the task',
+              hintText: AppLocalizations.of(context)!.taskdescriptionhint,
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -420,7 +420,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
                   context, SelectGoalBottomSheet(type: selectedType));
               taskState.getSelectedGoal( widget.task.goal, widget.task.goalId!, context);
             } else {
-              CustomSnack.warningSnack('Please select task type.', context);
+              CustomSnack.warningSnack(AppLocalizations.of(context)!.selecttasktype, context);
             }
           },
           child: Container(

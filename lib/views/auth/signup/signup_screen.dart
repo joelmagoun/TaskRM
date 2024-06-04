@@ -18,6 +18,7 @@ import 'package:TaskRM/widgets/components/inputFields/common_textfield.dart';
 import '../../../utils/spacer.dart';
 import '../../../widgets/components/inputFields/email_inputfield.dart';
 import '../../../widgets/components/inputFields/password_inputfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -80,17 +81,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: <Widget>[
-                          const CommonTextField(name: 'name', hintText: 'Name'),
+                          CommonTextField(name: 'name', hintText: AppLocalizations.of(context)!.name),
                           sixteenVerticalSpace,
-                          const EmailInputField(
+                          EmailInputField(
                             name: 'email',
-                            hintText: 'Email',
+                            hintText: AppLocalizations.of(context)!.email,
                           ),
                           sixteenVerticalSpace,
-                          const PasswordInputField(
-                            title: 'Password',
+                          PasswordInputField(
+                            title: AppLocalizations.of(context)!.password,
                             name: 'password',
-                            hintText: 'Password',
+                            hintText: AppLocalizations.of(context)!.password,
                           ),
                           sixteenVerticalSpace,
                           _languageField(),
@@ -124,7 +125,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       'Please enter all information', context);
                                 }
                               },
-                              buttonTitle: 'Sign up'),
+                              buttonTitle: AppLocalizations.of(context)!.signup),
                           const SizedBox(
                             height: 36,
                           ),
@@ -135,7 +136,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           TextButton(
                               onPressed: () {},
                               child: Text(
-                                'Log in',
+                                AppLocalizations.of(context)!.login,
                                 style: tTextStyle500.copyWith(
                                     fontSize: 16, color: primaryColor),
                               )),
@@ -158,7 +159,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Language',
+          AppLocalizations.of(context)!.language,
           style: tTextStyle500.copyWith(
               fontSize: 14, color: const Color(0xFF8085C2)),
         ),
@@ -257,13 +258,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         builder: (context) {
           return CupertinoAlertDialog(
             title: Text(
-              'Select Image',
+              AppLocalizations.of(context)!.selectimage,
               style: subtitle2,
             ),
             actions: [
               CupertinoDialogAction(
                 child: Text(
-                  'Gallery',
+                  AppLocalizations.of(context)!.gallery,
                   style: subtitle2.copyWith(color: black),
                 ),
                 onPressed: galleryTap,
@@ -287,7 +288,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               CupertinoDialogAction(
                 child: Text(
-                  'Camera',
+                  AppLocalizations.of(context)!.camera,
                   style: subtitle2.copyWith(color: black),
                 ),
                 onPressed: cameraTap,
@@ -311,7 +312,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               CupertinoDialogAction(
                 child: Text(
-                  'Back',
+                  AppLocalizations.of(context)!.back,
                   style: subtitle2,
                 ),
                 onPressed: () {

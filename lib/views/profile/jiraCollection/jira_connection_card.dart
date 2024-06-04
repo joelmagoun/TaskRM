@@ -8,6 +8,7 @@ import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/views/profile/jiraCollection/edit_jira_connection.dart';
 import 'package:TaskRM/views/profile/jiraCollection/jira_delete_dialog.dart';
 import '../../../utils/assets_path.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class JiraConnectionCard extends StatelessWidget {
   final String docId;
@@ -36,11 +37,11 @@ class JiraConnectionCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            infoTile(Icons.person_2_outlined, 'Username', userName, context),
+            infoTile(Icons.person_2_outlined, AppLocalizations.of(context)!.username, userName, context),
             sixteenVerticalSpace,
-            infoTile(Icons.link, 'URL', url, context),
+            infoTile(Icons.link, AppLocalizations.of(context)!.url, url, context),
             sixteenVerticalSpace,
-            infoTile(Icons.key, 'API key', apiKey, context),
+            infoTile(Icons.key, AppLocalizations.of(context)!.apikey, apiKey, context),
             sixteenVerticalSpace,
             const Divider(),
             eightVerticalSpace,

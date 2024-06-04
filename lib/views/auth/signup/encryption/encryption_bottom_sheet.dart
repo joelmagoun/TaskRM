@@ -8,6 +8,7 @@ import '../../../../routes/routes.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/custom_snack.dart';
 import '../../../../utils/spacer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EncryptionBottomSheet extends StatefulWidget {
   final String name;
@@ -54,7 +55,7 @@ class _EncryptionBottomSheetState extends State<EncryptionBottomSheet> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'This pattern enables you to recall your encryption key in case of phone loss or data deletion.',
+                      AppLocalizations.of(context)!.encryptionintrotxt,
                       textAlign: TextAlign.center,
                       style: tTextStyleRegular.copyWith(fontSize: 14),
                     ),
@@ -81,7 +82,7 @@ class _EncryptionBottomSheetState extends State<EncryptionBottomSheet> {
                           });
                         },
                         child: Text(
-                          'Reset',
+                          AppLocalizations.of(context)!.reset,
                           style: tTextStyle600.copyWith(
                               fontSize: 16,
                               color: primaryColor),
@@ -107,11 +108,11 @@ class _EncryptionBottomSheetState extends State<EncryptionBottomSheet> {
                           }
 
                         }else{
-                          CustomSnack.warningSnack('You must enter a pattern password!', context);
+                          CustomSnack.warningSnack(AppLocalizations.of(context)!.mustenterpattern, context);
                         }
 
                       },
-                      buttonTitle: 'Submit',
+                      buttonTitle: AppLocalizations.of(context)!.submit,
                       buttonColor: primaryColor,
                       isLoading: _authState.isAccountCreating,
                     ),
@@ -139,11 +140,11 @@ class _EncryptionBottomSheetState extends State<EncryptionBottomSheet> {
         Column(
           children: [
             Text(
-              '“Encryption key”',
+              AppLocalizations.of(context)!.encryptionkey,
               style: tTextStyle500.copyWith(fontSize: 20, color: black),
             ),
             Text(
-              'Pattern',
+              AppLocalizations.of(context)!.pattern,
               style: tTextStyle500.copyWith(fontSize: 20, color: black),
             ),
           ],

@@ -56,7 +56,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                   tTextStyle500.copyWith(fontSize: 20, color: black),
                 ),
                 Text(
-                  'Long press a task to move it to today’s list',
+                  AppLocalizations.of(context)!.longpresstxt,
                   maxLines: 2,
                   style: tTextStyleRegular.copyWith(fontSize: 14),
                 ),
@@ -175,7 +175,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
               Center(
                 child: EmptyWidget(
                     icon: taskIcon,
-                    title: 'No matching tasks',
+                    title: AppLocalizations.of(context)!.nomatchingtasks,
                     subTitle: AppLocalizations.of(context)!.gobacktxt),
               ),
               const SizedBox(
@@ -421,7 +421,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                         color: white,
                       ))
                       : Text(
-                    'Move to “Today’s tasks”',
+                    AppLocalizations.of(context)!.movetotodaystasks,
                     style: tTextStyle600.copyWith(
                         fontSize: 16, color: white),
                   ),

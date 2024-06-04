@@ -78,7 +78,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                             profileState.language,
                             context);
                       },
-                      buttonTitle: 'Save',
+                      buttonTitle: AppLocalizations.of(context)!.save,
                       buttonColor: _nameController.text.isEmpty
                           ? primaryLight
                           : primaryColor,
@@ -106,7 +106,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               color: trans,
             )),
         Text(
-          'Edit profile details',
+          AppLocalizations.of(context)!.editprofiledetails,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         IconButton(
@@ -127,7 +127,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Profile photo',
+          AppLocalizations.of(context)!.profilephoto,
           style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
         ),
         const SizedBox(
@@ -171,7 +171,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Name',
+          AppLocalizations.of(context)!.name,
           style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
         ),
         TextFormField(
@@ -187,7 +187,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             filled: true,
             fillColor: white,
             contentPadding: const EdgeInsets.all(12),
-            hintText: 'User name',
+            hintText: AppLocalizations.of(context)!.username,
             hintStyle: hintTextStyle,
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),
@@ -226,7 +226,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             height: 4,
           ),
           Text(
-            'Add',
+            AppLocalizations.of(context)!.add,
             style: tTextStyle500.copyWith(fontSize: 16, color: secondaryColor),
           )
         ],
@@ -261,7 +261,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             children: [
               SvgPicture.asset(imageEditIcon),
               Text(
-                'Change',
+                AppLocalizations.of(context)!.change,
                 style:
                     tTextStyle500.copyWith(color: secondaryColor, fontSize: 16),
               )
@@ -279,14 +279,14 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
         builder: (context) {
           return CupertinoAlertDialog(
             title: Text(
-              'Select Image',
+              AppLocalizations.of(context)!.selectimage,
               style:
                   tTextStyle500.copyWith(color: textPrimaryColor, fontSize: 18),
             ),
             actions: [
               CupertinoDialogAction(
                 child: Text(
-                  'Gallery',
+                  AppLocalizations.of(context)!.gallery,
                   style: tTextStyle500.copyWith(
                       color: secondaryColor, fontSize: 16),
                 ),
@@ -296,7 +296,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               ),
               CupertinoDialogAction(
                 child: Text(
-                  'Camera',
+                  AppLocalizations.of(context)!.camera,
                   style: tTextStyle500.copyWith(
                       color: secondaryColor, fontSize: 16),
                 ),
@@ -306,7 +306,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               ),
               CupertinoDialogAction(
                 child: Text(
-                  'Back',
+                  AppLocalizations.of(context)!.back,
                   style: tTextStyle500.copyWith(color: red, fontSize: 16),
                 ),
                 onPressed: () {
@@ -326,7 +326,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Language',
+          AppLocalizations.of(context)!.language,
           style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
         ),
         const SizedBox(

@@ -91,7 +91,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
                 color: iconColor,
               )),
           Text(
-            'Edit Goal',
+            AppLocalizations.of(context)!.editgoal,
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           InkWell(

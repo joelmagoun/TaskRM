@@ -12,6 +12,7 @@ import '../../../routes/routes.dart';
 import '../../../utils/spacer.dart';
 import '../../../widgets/components/inputFields/email_inputfield.dart';
 import '../../../widgets/components/inputFields/password_inputfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -48,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 32,
                   ),
                   Text(
-                    'Log in',
+                    AppLocalizations.of(context)!.login,
                     style: tTextStyle500.copyWith(
                         fontSize: 24, color: textPrimaryColor),
                   ),
@@ -64,22 +65,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: <Widget>[
-                          const EmailInputField(
+                         EmailInputField(
                             name: 'email',
-                            hintText: 'Email',
+                            hintText: AppLocalizations.of(context)!.email,
                           ),
                           sixteenVerticalSpace,
-                          const PasswordInputField(
-                            title: 'Password',
+                          PasswordInputField(
+                            title: AppLocalizations.of(context)!.password,
                             name: 'password',
-                            hintText: 'Password',
+                            hintText: AppLocalizations.of(context)!.password,
                           ),
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
                                 onPressed: () {},
                                 child: Text(
-                                  'Forgot password?',
+                                  AppLocalizations.of(context)!.forgotpassword,
                                   style: tTextStyleRegular.copyWith(
                                       fontSize: 12, color: textPrimaryColor),
                                 )),
@@ -95,12 +96,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                         .currentState?.value['password'],
                                     context);
                               },
-                              buttonTitle: 'Log in', isLoading: _authState.isLogin,),
+                              buttonTitle: AppLocalizations.of(context)!.login, isLoading: _authState.isLogin,),
                           const SizedBox(
                             height: 36,
                           ),
                           Text(
-                            'Don’t have an account?',
+                            AppLocalizations.of(context)!.donthaveacct,
                             style: tTextStyleRegular.copyWith(fontSize: 14),
                           ),
                           TextButton(
@@ -108,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.pushNamed(context, Routes.signUp);
                               },
                               child: Text(
-                                'Sign up',
+                                AppLocalizations.of(context)!.signup,
                                 style: tTextStyle500.copyWith(
                                     fontSize: 16, color: primaryColor),
                               ))
@@ -130,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Language',
+          AppLocalizations.of(context)!.language,
           style: tTextStyle500.copyWith(
               fontSize: 14, color: const Color(0xFF8085C2)),
         ),

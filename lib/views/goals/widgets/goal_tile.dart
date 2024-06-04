@@ -92,7 +92,7 @@ class _GoalTileState extends State<GoalTile> {
                           width: 4,
                         ),
                         Text(
-                          'Time tracking',
+                          AppLocalizations.of(context)!.timetracking,
                           style: tTextStyleRegular.copyWith(
                               fontSize: 14, color: iconColor),
                         )
@@ -155,7 +155,7 @@ class _GoalTileState extends State<GoalTile> {
                     width: 4,
                   ),
                   Text(
-                    'Time tracking',
+                    AppLocalizations.of(context)!.timetracking,
                     style: tTextStyleRegular.copyWith(
                         fontSize: 14, color: iconColor),
                   )

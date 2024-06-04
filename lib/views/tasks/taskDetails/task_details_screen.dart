@@ -46,7 +46,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Task',
+                  AppLocalizations.of(context)!.task,
                   style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
                 ),
                 Text(
@@ -198,9 +198,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _bottomButton(clearIcon, 'Remove from\nToday’s Tasks', false),
+            _bottomButton(clearIcon, AppLocalizations.of(context)!.removefromtodaystasks, false),
             _bottomButton(addTimeIcon, AppLocalizations.of(context)!.addtime, false),
-            _bottomButton(checkIcon, 'Complete Task', true),
+            _bottomButton(checkIcon, AppLocalizations.of(context)!.completetask, true),
           ],
         ),
       ),

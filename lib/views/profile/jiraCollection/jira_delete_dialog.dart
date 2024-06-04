@@ -19,7 +19,7 @@ class JiraDeleteDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Delete connection',
+            AppLocalizations.of(context)!.deleteconnection,
             style:
                 tTextStyle500.copyWith(fontSize: 18, color: textPrimaryColor),
           ),
@@ -38,7 +38,7 @@ class JiraDeleteDialog extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
               },
-              buttonTitle: 'Cancel',
+              buttonTitle: AppLocalizations.of(context)!.cancel,
               borderColor: borderColor,
               titleColor: iconColor),
         ],

@@ -80,11 +80,11 @@ class GoalsScreen extends StatelessWidget {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,children: [
-              const EmptyWidget(
+              EmptyWidget(
                   icon: goalIcon,
-                  title: 'What do you aspire to achieve?',
+                  title: AppLocalizations.of(context)!.emptygoalstitle,
                   subTitle:
-                  'Add your personal and work goals to begin working on them.'),
+                  AppLocalizations.of(context)!.emptygoalssubtitle),
               sixteenVerticalSpace,
               IconButton(
                 onPressed: () {
@@ -130,11 +130,11 @@ class GoalsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const Center(
+              Center(
                 child: EmptyWidget(
                     icon: goalIcon,
-                    title: 'Sorry!',
-                    subTitle: 'No matching goals'),
+                    title: AppLocalizations.of(context)!.sorry,
+                    subTitle: AppLocalizations.of(context)!.nomatchinggoals),
               ),
               const SizedBox(
                 height: 10,

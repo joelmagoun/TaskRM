@@ -154,7 +154,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
           height: 32,
         ),
         Text(
-          'Type',
+          AppLocalizations.of(context)!.type,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,

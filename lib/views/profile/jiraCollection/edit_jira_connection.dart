@@ -12,6 +12,7 @@ import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../routes/routes.dart';
 import '../../../utils/constant/constant.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditJiraConnectionBottomSheet extends StatefulWidget {
   final JiraConnectionModel jiraModel;
@@ -92,7 +93,7 @@ class _EditJiraConnectionBottomSheetState
               ],
             ),
             Text(
-              'Edit connection',
+              AppLocalizations.of(context)!.editconnection,
               style:
                   tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
             ),
@@ -117,18 +118,18 @@ class _EditJiraConnectionBottomSheetState
       child: Column(
         children: [
           _buildField(
-              title: 'Username',
+              title: AppLocalizations.of(context)!.username,
               controller: _userNameController,
               hintText: 'ex. sarasmith5498'),
           primaryVerticalSpace,
           _buildField(
-              title: 'URL',
+              title: AppLocalizations.of(context)!.url,
               controller: _urlController,
               hintText:
-                  'ex. https://sarasmith.atlassian.net/browse/Personalprojectstasks9784'),
+                  'ex. sarasmith.atlassian.net'),
           primaryVerticalSpace,
           _buildField(
-              title: 'API key',
+              title: AppLocalizations.of(context)!.apikey,
               controller: _apiController,
               hintText: 'ex. B48N65'),
           const SizedBox(
@@ -144,7 +145,7 @@ class _EditJiraConnectionBottomSheetState
                   _urlController.text,
                   context);
             },
-            buttonTitle: 'Save',
+            buttonTitle: AppLocalizations.of(context)!.save,
             buttonColor: !isData ? primaryLight : primaryColor,
             isLoading: profileState.isJiraUpdating,
           ),

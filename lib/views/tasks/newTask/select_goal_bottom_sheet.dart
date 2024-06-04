@@ -68,8 +68,8 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: goalState.allGoalList.isEmpty
-                        ? const EmptyWidget(
-                            icon: goalIcon, title: 'Sorry!', subTitle: 'No matching goals with task type')
+                        ? EmptyWidget(
+                            icon: goalIcon, title: AppLocalizations.of(context)!.sorry, subTitle: AppLocalizations.of(context)!.nomatchinggoalstt)
                         : ListView.separated(
                             itemBuilder: (_, index) {
                               var item = goalState.allGoalList[index];
