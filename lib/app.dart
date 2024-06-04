@@ -1,3 +1,4 @@
+import 'package:TaskRM/providers/jira_provider.dart';
 import 'package:TaskRM/providers/localization_provider.dart';
 import 'package:appwrite/appwrite.dart' as aw;
 import 'package:flutter/material.dart';
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (context) => GoalProvider()),
         ChangeNotifierProvider(create: (context) => LocalizationProvider()),
+        ChangeNotifierProvider(create: (context) => JiraProvider()),
         // ChangeNotifierProvider(create: (context) => tasksListProvider),
         // ChangeNotifierProvider(create: (context) => goalsListProvider),
         // ChangeNotifierProvider(
@@ -77,7 +79,6 @@ class _MyAppState extends State<MyApp> {
        // ChangeNotifierProvider(create: (context) => MomentsProvider()),
        //  ChangeNotifierProvider(create: (context) => FeedProvider()),
            ChangeNotifierProvider(create: (context) => TaskProvider()),
-       //  ChangeNotifierProvider(create: (context) => JiraProvider()),
       ],
       child: Consumer<LocalizationProvider>(builder: (_, localizationState, child){
         return MaterialApp(

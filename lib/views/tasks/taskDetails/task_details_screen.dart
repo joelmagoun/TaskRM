@@ -1,5 +1,6 @@
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/views/tasks/taskDetails/editTask/edit_task_bottomsheet.dart';
+import 'package:TaskRM/views/tasks/taskDetails/jira/jira_information_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -115,6 +116,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     child: Column(
                       children: [
                         _infoTile(typeIcon, AppLocalizations.of(context)!.type, widget.task.type, false),
+                        _jiraField(),
                         primaryVerticalSpace,
                         _infoTile(priorityIcon, AppLocalizations.of(context)!.priority,
                             widget.task.priority, false),
@@ -217,6 +219,59 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           style: tTextStyle500.copyWith(
               fontSize: 14, color: isComplete ? primaryColor : secondaryColor),
         )
+      ],
+    );
+  }
+
+  Widget _jiraField() {
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
+    return Column(
+      children: [
+        primaryVerticalSpace,
+        Row(
+          children: [
+            SvgPicture.asset(jiraIcon),
+            eightHorizontalSpace,
+            Text(
+              'Jira Issue',
+              style:
+                  tTextStyle500.copyWith(fontSize: 20, color: secondaryColor),
+            )
+          ],
+        ),
+        eightVerticalSpace,
+        TextFormField(
+            controller: TextEditingController(text: widget.task.jiraID),
+            //initialValue: taskState.jiraId,
+            readOnly: true,
+            onTap: () {
+              CustomDialog.bottomSheet(
+                  context,
+                  JiraInformationBottomSheet(
+                    jiraIssueId: widget.task.jiraID,
+                    taskType: widget.task.type,
+                  ));
+            },
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: white,
+              contentPadding: const EdgeInsets.all(12),
+              hintText: 'View Jira\'s information',
+              hintStyle: hintTextStyle,
+              suffixIcon: const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: iconColor,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide(color: borderColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide(color: borderColor),
+              ),
+              focusColor: primaryColor,
+            ))
       ],
     );
   }

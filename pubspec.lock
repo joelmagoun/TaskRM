@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  atlassian_apis:
+    dependency: "direct main"
+    description:
+      name: atlassian_apis
+      sha256: "7e75709c299938e6ade70b06447138be2b5a8c067bfac8e5976fd57aebdb1785"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.15.0"
   boolean_selector:
     dependency: transitive
     description:

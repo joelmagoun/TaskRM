@@ -50,6 +50,10 @@ const imageEditIcon = 'assets/svgs/image_edit.svg';
 const emptyJira = 'assets/svgs/empty_jira.svg';
 const jiraDelete = 'assets/svgs/jira_delete.svg';
 const jiraEdit = 'assets/svgs/jira_edit.svg';
+const summaryIcon = 'assets/svgs/summary.svg';
+const flagIcon = 'assets/svgs/flag.svg';
+const updatedIcon = 'assets/svgs/updated.svg';
+const createdIcon = 'assets/svgs/created.svg';
 
 
 
