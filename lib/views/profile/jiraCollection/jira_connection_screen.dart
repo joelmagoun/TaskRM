@@ -124,7 +124,7 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
       return Column(
         children: [
           Text(
-            AppLocalizations.of(context)!.emptyjirasubtitlework,
+            AppLocalizations.of(context)!.jirasubtitlework,
             style: tTextStyleRegular.copyWith(
                 fontSize: 14, color: textPrimaryColor),
           ),
@@ -176,7 +176,7 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
       return Column(
         children: [
           Text(
-            'All tasks of the type “Personal” are linked to this Jira addresses.',
+            AppLocalizations.of(context)!.jirasubtitlepersonal,
             style: tTextStyleRegular.copyWith(
                 fontSize: 14, color: textPrimaryColor),
           ),
@@ -228,7 +228,7 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
       return Column(
         children: [
           Text(
-            'All tasks of the type “Self” are linked to this Jira addresses.',
+            AppLocalizations.of(context)!.jirasubtitleself,
             style: tTextStyleRegular.copyWith(
                 fontSize: 14, color: textPrimaryColor),
           ),

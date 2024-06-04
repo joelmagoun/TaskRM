@@ -118,5 +118,4 @@
     "jirasubtitlework": "All tasks of the type 'Work' are linked to this Jira address.",
     "jirasubtitlepersonal": "All tasks of the type 'Personal' are linked to this Jira address.",
     "jirasubtitleself": "All tasks of the type 'Self' are linked to this Jira address."
-    
 }

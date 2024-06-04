@@ -111,5 +111,11 @@
     "mustenterpattern": "Du må angi et mønsterpassord!",
     "submit": "Sende",
     "encryptionkey": "Krypteringsnøkkel",
-    "pattern": "Mønster"
+    "pattern": "Mønster",
+    "createaccount": "Opprett konto",
+    "pleaseenterall": "Vennligst skriv inn all informasjon",
+    "alreadyhaveacct": "Har du allerede en konto?",
+    "jirasubtitlework": "Alle oppgaver av typen 'Arbeid' er knyttet til denne Jira-adressen.",
+    "jirasubtitlepersonal": "Alle oppgaver av typen 'Personlig' er knyttet til denne Jira-adressen.",
+    "jirasubtitleself": "Alle oppgaver av typen 'Selv' er knyttet til denne Jira-adressen."
 }

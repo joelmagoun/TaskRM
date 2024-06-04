@@ -111,5 +111,11 @@
     "mustenterpattern": "Sie müssen ein Musterpasswort eingeben!",
     "submit": "Einreichen",
     "encryptionkey": "Verschlüsselungsschlüssel",
-    "pattern": "Muster"
+    "pattern": "Muster",
+    "createaccount": "Benutzerkonto erstellen",
+    "pleaseenterall": "Bitte alle Informationen eingeben",
+    "alreadyhaveacct": "Habe schon einen Account?",
+    "jirasubtitlework": "Alle Aufgaben vom Typ 'Arbeit' sind mit dieser Jira-Adresse verknüpft.",
+    "jirasubtitlepersonal": "Alle Aufgaben vom Typ 'Persönlich' sind mit dieser Jira-Adresse verknüpft.",
+    "jirasubtitleself": "Alle Aufgaben vom Typ 'Selbst' sind mit dieser Jira-Adresse verknüpft."
 }

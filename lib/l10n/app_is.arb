@@ -111,5 +111,11 @@
     "mustenterpattern": "Þú verður að slá inn mynstur lykilorð!",
     "submit": "Submit",
     "encryptionkey": "Dulkóðunarlykill",
-    "pattern": "Mynstur"
+    "pattern": "Mynstur",
+    "createaccount": "Stofna reikning",
+    "pleaseenterall": "Vinsamlegast sláðu inn allar upplýsingar",
+    "alreadyhaveacct": "Ertu nú þegar með reikning?",
+    "jirasubtitlework": "Öll verkefni af gerðinni 'Vinna' eru tengd þessu Jira heimilisfangi.",
+    "jirasubtitlepersonal": "Öll verkefni af gerðinni 'Persónuleg' eru tengd þessu Jira heimilisfangi.",
+    "jirasubtitleself": "Öll verkefni af gerðinni 'Sjálf' eru tengd þessu Jira heimilisfangi."
 }

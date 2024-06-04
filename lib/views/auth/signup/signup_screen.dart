@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 32,
                   ),
                   Text(
-                    'Create Account',
+                    AppLocalizations.of(context)!.createaccount,
                     style: tTextStyle500.copyWith(
                         fontSize: 24, color: textPrimaryColor),
                   ),
@@ -122,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           language: _selectedLanguage ?? ''));
                                 } else {
                                   CustomSnack.warningSnack(
-                                      'Please enter all information', context);
+                                      AppLocalizations.of(context)!.pleaseenterall, context);
                                 }
                               },
                               buttonTitle: AppLocalizations.of(context)!.signup),
@@ -130,7 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             height: 36,
                           ),
                           Text(
-                            'Already have an account?',
+                            AppLocalizations.of(context)!.alreadyhaveacct,
                             style: tTextStyleRegular.copyWith(fontSize: 14),
                           ),
                           TextButton(
