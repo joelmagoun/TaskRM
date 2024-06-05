@@ -46,7 +46,7 @@ class TaskProvider extends ChangeNotifier {
 
   bool get isTaskAdding => _isTaskAdding;
 
-  late String _selectedGoal = 'Select';
+  late String _selectedGoal = '';
 
   String get selectedGoal => _selectedGoal;
 
