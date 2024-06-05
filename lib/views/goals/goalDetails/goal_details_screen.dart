@@ -1,3 +1,4 @@
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/views/goals/goalDetails/editGoal/edit_goal_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -68,10 +69,7 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                     PopupMenuItem(
                       onTap: () {
                         CustomDialog.bottomSheet(
-                            context,
-                            EditGoalBottomSheet(
-                              goal: widget.goal
-                            ));
+                            context, EditGoalBottomSheet(goal: widget.goal));
                       },
                       value: 'edit',
                       child: Row(
@@ -114,7 +112,8 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, AppLocalizations.of(context)!.type, widget.goal.type, false),
+                        _infoTile(typeIcon, AppLocalizations.of(context)!.type,
+                            AppConstant.convertType(widget.goal.type), false),
                         primaryVerticalSpace,
                         //_infoTile(timeFrameIcon, AppLocalizations.of(context)!.timeframe,
                         //    " widget.goal.timeFrame", false),
@@ -122,7 +121,12 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                         _infoTile(descriptionIcon, AppLocalizations.of(context)!.description,
                             widget.goal.description, false),
                         primaryVerticalSpace,
-                        _infoTile(goalIcon, AppLocalizations.of(context)!.parentgoal, 'None', true),
+                        _infoTile(
+                            goalIcon,
+                            AppLocalizations.of(context)!.parentgoal,
+                            AppConstant.convertParentGoal(
+                                widget.goal.parentGoal),
+                            true),
                         primaryVerticalSpace,
                         _infoTile(taskIcon, AppLocalizations.of(context)!.tasks, 'None', true),
                         primaryVerticalSpace,

@@ -184,33 +184,33 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
         _optionTile(
             onTap: () {
               setState(() {
-                selectedType = 'Work';
+                selectedType = '1';
               });
             },
-            tileBorderColor: selectedType == 'Work' ? borderColor : trans,
-            circleColor: selectedType == 'Work' ? secondaryColor : trans,
+            tileBorderColor: selectedType == '1' ? borderColor : trans,
+            circleColor: selectedType == '1' ? secondaryColor : trans,
             title: 'Work'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedType = 'Personal Project';
+                selectedType = '2';
               });
             },
             tileBorderColor:
-            selectedType == 'Personal Project' ? borderColor : trans,
+            selectedType == '2' ? borderColor : trans,
             circleColor:
-            selectedType == 'Personal Project' ? secondaryColor : trans,
+            selectedType == '2' ? secondaryColor : trans,
             title: 'Personal Project'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedType = 'Self';
+                selectedType = '3';
               });
             },
-            tileBorderColor: selectedType == 'Self' ? borderColor : trans,
-            circleColor: selectedType == 'Self' ? secondaryColor : trans,
+            tileBorderColor: selectedType == '3' ? borderColor : trans,
+            circleColor: selectedType == '3' ? secondaryColor : trans,
             title: 'Self'),
       ],
     );
@@ -231,37 +231,37 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
         _optionTile(
             onTap: () {
               setState(() {
-                selectedPriority = 'Needs to be done';
+                selectedPriority = '1';
               });
             },
             tileBorderColor:
-            selectedPriority == 'Needs to be done' ? borderColor : trans,
+            selectedPriority == '1' ? borderColor : trans,
             circleColor:
-            selectedPriority == 'Needs to be done' ? secondaryColor : trans,
+            selectedPriority == '1' ? secondaryColor : trans,
             title: 'Needs to be done'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedPriority = 'Nice to have';
+                selectedPriority = '2';
               });
             },
             tileBorderColor:
-            selectedPriority == 'Nice to have' ? borderColor : trans,
+            selectedPriority == '2' ? borderColor : trans,
             circleColor:
-            selectedPriority == 'Nice to have' ? secondaryColor : trans,
+            selectedPriority == '2' ? secondaryColor : trans,
             title: 'Nice to have'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedPriority = 'Nice idea';
+                selectedPriority = '3';
               });
             },
             tileBorderColor:
-            selectedPriority == 'Nice idea' ? borderColor : trans,
+            selectedPriority == '3' ? borderColor : trans,
             circleColor:
-            selectedPriority == 'Nice idea' ? secondaryColor : trans,
+            selectedPriority == '3' ? secondaryColor : trans,
             title: 'Nice idea'),
       ],
     );
@@ -282,81 +282,81 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
         _optionTile(
             onTap: () {
               setState(() {
-                selectedTime = 'None';
+                selectedTime = '0';
               });
             },
-            tileBorderColor: selectedTime == 'None' ? borderColor : trans,
-            circleColor: selectedTime == 'None' ? secondaryColor : trans,
+            tileBorderColor: selectedTime == '0' ? borderColor : trans,
+            circleColor: selectedTime == '0' ? secondaryColor : trans,
             title: 'None'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedTime = 'Today';
+                selectedTime = '1';
               });
             },
-            tileBorderColor: selectedTime == 'Today' ? borderColor : trans,
-            circleColor: selectedTime == 'Today' ? secondaryColor : trans,
+            tileBorderColor: selectedTime == '1' ? borderColor : trans,
+            circleColor: selectedTime == '1' ? secondaryColor : trans,
             title: 'Today'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedTime = '3 days';
+                selectedTime = '3';
               });
             },
-            tileBorderColor: selectedTime == '3 days' ? borderColor : trans,
-            circleColor: selectedTime == '3 days' ? secondaryColor : trans,
+            tileBorderColor: selectedTime == '3' ? borderColor : trans,
+            circleColor: selectedTime == '3' ? secondaryColor : trans,
             title: '3 days'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedTime = 'Week';
+                selectedTime = '7';
               });
             },
-            tileBorderColor: selectedTime == 'Week' ? borderColor : trans,
-            circleColor: selectedTime == 'Week' ? secondaryColor : trans,
+            tileBorderColor: selectedTime == '7' ? borderColor : trans,
+            circleColor: selectedTime == '7' ? secondaryColor : trans,
             title: 'Week'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedTime = 'Fortnight';
+                selectedTime = '14';
               });
             },
-            tileBorderColor: selectedTime == 'Fortnight' ? borderColor : trans,
-            circleColor: selectedTime == 'Fortnight' ? secondaryColor : trans,
+            tileBorderColor: selectedTime == '14' ? borderColor : trans,
+            circleColor: selectedTime == '14' ? secondaryColor : trans,
             title: 'Fortnight'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedTime = 'Month';
+                selectedTime = '30';
               });
             },
-            tileBorderColor: selectedTime == 'Month' ? borderColor : trans,
-            circleColor: selectedTime == 'Month' ? secondaryColor : trans,
+            tileBorderColor: selectedTime == '30' ? borderColor : trans,
+            circleColor: selectedTime == '30' ? secondaryColor : trans,
             title: 'Month'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedTime = '90 days';
+                selectedTime = '90';
               });
             },
-            tileBorderColor: selectedTime == '90 days' ? borderColor : trans,
-            circleColor: selectedTime == '90 days' ? secondaryColor : trans,
+            tileBorderColor: selectedTime == '90' ? borderColor : trans,
+            circleColor: selectedTime == '90' ? secondaryColor : trans,
             title: '90 days'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedTime = 'Year';
+                selectedTime = '365';
               });
             },
-            tileBorderColor: selectedTime == 'Year' ? borderColor : trans,
-            circleColor: selectedTime == 'Year' ? secondaryColor : trans,
+            tileBorderColor: selectedTime == '365' ? borderColor : trans,
+            circleColor: selectedTime == '365' ? secondaryColor : trans,
             title: 'Year'),
       ],
     );

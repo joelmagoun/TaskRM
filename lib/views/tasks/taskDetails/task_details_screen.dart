@@ -1,6 +1,6 @@
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/views/tasks/taskDetails/editTask/edit_task_bottomsheet.dart';
-import 'package:TaskRM/views/tasks/taskDetails/jira/jira_information_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +9,7 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/task.dart';
+import '../../../routes/routes.dart';
 import '../../../utils/assets_path.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -115,14 +116,21 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, AppLocalizations.of(context)!.type, widget.task.type, false),
+                        _infoTile(typeIcon, 'Type',
+                            AppConstant.convertType(widget.task.type), false),
                         _jiraField(),
                         primaryVerticalSpace,
-                        _infoTile(priorityIcon, AppLocalizations.of(context)!.priority,
-                            widget.task.priority, false),
+                        _infoTile(
+                            priorityIcon,
+                            'Priority',
+                            AppConstant.convertPriority(widget.task.priority),
+                            false),
                         primaryVerticalSpace,
-                        _infoTile(timeFrameIcon, AppLocalizations.of(context)!.timeframe,
-                            widget.task.timeframe, false),
+                        _infoTile(
+                            timeFrameIcon,
+                            'Timeframe',
+                            AppConstant.convertTimeFrame(widget.task.timeframe),
+                            false),
                         primaryVerticalSpace,
                         _infoTile(descriptionIcon, AppLocalizations.of(context)!.description,
                             widget.task.description, false),
@@ -242,15 +250,16 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         eightVerticalSpace,
         TextFormField(
             controller: TextEditingController(text: widget.task.jiraID),
-            //initialValue: taskState.jiraId,
             readOnly: true,
             onTap: () {
-              CustomDialog.bottomSheet(
-                  context,
-                  JiraInformationBottomSheet(
-                    jiraIssueId: widget.task.jiraID,
-                    taskType: widget.task.type,
-                  ));
+              Navigator.pushNamed(
+                context,
+                Routes.jiraInformationScreen,
+                arguments: {
+                  'jiraIssueId': widget.task.jiraID,
+                  'taskType': widget.task.type,
+                },
+              );
             },
             decoration: InputDecoration(
               filled: true,

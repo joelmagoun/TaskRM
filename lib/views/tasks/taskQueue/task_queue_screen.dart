@@ -1,3 +1,4 @@
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -32,49 +33,50 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
   late String selectedTaskDescription = '';
   late String selectedTaskGoal = '';
   late String selectedTaskCreatedAt = '';
+  late String selectedTaskJiraId = '';
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskProvider>(builder: (_, _taskState, child) {
+    return Consumer<TaskProvider>(builder: (_, taskState, child) {
       return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(65.0),
           child: AppBar(
             centerTitle: false,
             shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
-            title: _taskState.allTaskList.isEmpty
+            title: taskState.allTaskList.isEmpty
                 ? Text(
-              AppLocalizations.of(context)!.taskqueue,
-              style: tTextStyle500.copyWith(fontSize: 20, color: black),
-            )
+                    AppLocalizations.of(context)!.taskqueue,
+                    style: tTextStyle500.copyWith(fontSize: 20, color: black),
+                  )
                 : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.taskqueue,
-                  style:
-                  tTextStyle500.copyWith(fontSize: 20, color: black),
-                ),
-                Text(
-                  AppLocalizations.of(context)!.longpresstxt,
-                  maxLines: 2,
-                  style: tTextStyleRegular.copyWith(fontSize: 14),
-                ),
-              ],
-            ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.taskqueue,
+                        style:
+                            tTextStyle500.copyWith(fontSize: 20, color: black),
+                      ),
+                      Text(
+                        AppLocalizations.of(context)!.longpresstxt,
+                        maxLines: 2,
+                        style: tTextStyleRegular.copyWith(fontSize: 14),
+                      ),
+                    ],
+                  ),
             actions: [
-              _taskState.allTaskList.isNotEmpty ||
-                  _taskState.selectedQueueType != '' ||
-                  _taskState.selectedQueueTimeFrame != ''
+              taskState.allTaskList.isNotEmpty ||
+                      taskState.selectedQueueType != '' ||
+                      taskState.selectedQueueTimeFrame != ''
                   ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: InkWell(
-                    onTap: () {
-                      CustomDialog.bottomSheet(
-                          context, const TaskQueueFilterBottomSheet());
-                    },
-                    child: SvgPicture.asset(filterIcon)),
-              )
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: InkWell(
+                          onTap: () {
+                            CustomDialog.bottomSheet(
+                                context, const TaskQueueFilterBottomSheet());
+                          },
+                          child: SvgPicture.asset(filterIcon)),
+                    )
                   : const SizedBox.shrink(),
             ],
           ),
@@ -90,8 +92,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
     if (taskState.isAllTaskLoading) {
       return const Center(
           child: CircularProgressIndicator(
-            color: primaryColor,
-          ));
+        color: primaryColor,
+      ));
     } else {
       if (taskState.allTaskList.isEmpty) {
         if (taskState.selectedQueueType == '' ||
@@ -123,7 +125,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                taskState.selectedQueueTimeFrame,
+                                AppConstant.convertTimeFrame(
+                                    taskState.selectedQueueTimeFrame),
                                 style: tTextStyleBold.copyWith(
                                     color: white, fontSize: 16),
                               ),
@@ -151,7 +154,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                taskState.selectedQueueType,
+                                AppConstant.convertType(
+                                    taskState.selectedQueueType),
                                 style: tTextStyleBold.copyWith(
                                     color: white, fontSize: 16),
                               ),
@@ -205,11 +209,12 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                               selectedTaskId = item.id;
                               selectedTaskTitle = item.title;
                               selectedTaskType = item.type;
-                              selectedGoalId = item.goalId!;
+                              selectedGoalId = item.goalId;
                               selectedTaskPriority = item.priority;
                               selectedTaskDescription = item.description;
                               selectedTaskGoal = item.goal;
                               selectedTaskCreatedAt = item.createdAt.toString();
+                              selectedTaskJiraId = item.jiraID;
                             });
                           },
                           title: item.title,
@@ -253,7 +258,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                taskState.selectedQueueTimeFrame,
+                                AppConstant.convertTimeFrame(
+                                    taskState.selectedQueueTimeFrame),
                                 style: tTextStyleBold.copyWith(
                                     color: white, fontSize: 16),
                               ),
@@ -281,7 +287,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                taskState.selectedQueueType,
+                                AppConstant.convertType(
+                                    taskState.selectedQueueType),
                                 style: tTextStyleBold.copyWith(
                                     color: white, fontSize: 16),
                               ),
@@ -308,7 +315,6 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                   child: ListView.separated(
                       itemBuilder: (_, index) {
                         var item = taskState.allTaskList[index];
-
                         return TaskTile(
                           onLongPress: () {
                             setState(() {
@@ -317,11 +323,12 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                               selectedTaskId = item.id;
                               selectedTaskTitle = item.title;
                               selectedTaskType = item.type;
-                              selectedGoalId = item.goalId!;
+                              selectedGoalId = item.goalId;
                               selectedTaskPriority = item.priority;
                               selectedTaskDescription = item.description;
                               selectedTaskGoal = item.goal;
                               selectedTaskCreatedAt = item.createdAt.toString();
+                              selectedTaskJiraId = item.jiraID;
                             });
                           },
                           title: item.title,
@@ -352,7 +359,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
   }
 
   Widget _bottomSheet(BuildContext context) {
-    final _taskState = Provider.of<TaskProvider>(context, listen: false);
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
 
     return Container(
       height: 120,
@@ -395,8 +402,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
             Expanded(
               child: InkWell(
                 onTap: () async {
-
-                  await _taskState.moveToTodayTaskList(
+                  await taskState.moveToTodayTaskList(
                       selectedTaskId,
                       selectedTaskTitle,
                       selectedTaskType,
@@ -405,8 +411,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                       selectedTaskDescription,
                       selectedTaskGoal,
                       selectedTaskCreatedAt,
+                      selectedTaskJiraId,
                       context);
-
                 },
                 child: Container(
                   height: 56,
@@ -415,16 +421,16 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                     borderRadius: BorderRadius.circular(12),
                     color: primaryColor,
                   ),
-                  child: _taskState.isMoving
+                  child: taskState.isMoving
                       ? const Center(
-                      child: CircularProgressIndicator(
-                        color: white,
-                      ))
+                          child: CircularProgressIndicator(
+                          color: white,
+                        ))
                       : Text(
-                    AppLocalizations.of(context)!.movetotodaystasks,
-                    style: tTextStyle600.copyWith(
-                        fontSize: 16, color: white),
-                  ),
+                          AppLocalizations.of(context)!.movetotodaystasks,
+                          style: tTextStyle600.copyWith(
+                              fontSize: 16, color: white),
+                        ),
                 ),
               ),
             )
@@ -433,5 +439,4 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
       ),
     );
   }
-
 }

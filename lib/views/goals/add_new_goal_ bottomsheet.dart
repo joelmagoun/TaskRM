@@ -1,11 +1,9 @@
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/views/goals/select_parent_goal_bottomsheet.dart';
-import 'package:TaskRM/views/tasks/newTask/select_goal_bottom_sheet.dart';
-import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../providers/goals_provider.dart';
@@ -66,7 +64,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
   }
 
   Widget _header(BuildContext context) {
-    final _goalState = Provider.of<GoalProvider>(context, listen: false);
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -86,11 +84,8 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
           ),
           InkWell(
             onTap: () async {
-              await _goalState.addNewGoal(
-                  _titleController.text,
-                  _descriptionController.text,
-                  selectedType,
-                  context);
+              await goalState.addNewGoal(_titleController.text,
+                  _descriptionController.text, selectedType, context);
             },
             child: Container(
               height: 40,
@@ -100,7 +95,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                 borderRadius: BorderRadius.circular(8),
                 color: primaryColor,
               ),
-              child: _goalState.isGoalAdding
+              child: goalState.isGoalAdding
                   ? const SizedBox(
                       height: 16, width: 16, child: CircularProgressIndicator())
                   : Text(
@@ -161,33 +156,31 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
         _optionTile(
             onTap: () {
               setState(() {
-                selectedType = 'Work';
+                selectedType = '1';
               });
             },
-            tileBorderColor: selectedType == 'Work' ? borderColor : trans,
-            circleColor: selectedType == 'Work' ? secondaryColor : trans,
+            tileBorderColor: selectedType == '1' ? borderColor : trans,
+            circleColor: selectedType == '1' ? secondaryColor : trans,
             title: 'Work'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedType = 'Personal Project';
+                selectedType = '2';
               });
             },
-            tileBorderColor:
-                selectedType == 'Personal Project' ? borderColor : trans,
-            circleColor:
-                selectedType == 'Personal Project' ? secondaryColor : trans,
+            tileBorderColor: selectedType == '2' ? borderColor : trans,
+            circleColor: selectedType == '2' ? secondaryColor : trans,
             title: 'Personal Project'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedType = 'Self';
+                selectedType = '3';
               });
             },
-            tileBorderColor: selectedType == 'Self' ? borderColor : trans,
-            circleColor: selectedType == 'Self' ? secondaryColor : trans,
+            tileBorderColor: selectedType == '3' ? borderColor : trans,
+            circleColor: selectedType == '3' ? secondaryColor : trans,
             title: 'Self'),
       ],
     );
@@ -230,7 +223,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
   }
 
   Widget _goalField() {
-    final _goalState = Provider.of<GoalProvider>(context, listen: false);
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -245,7 +238,10 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
         InkWell(
           onTap: () {
             CustomDialog.bottomSheet(
-                context, const SelectParentGoalBottomSheet(parentGoal: '',));
+                context,
+                const SelectParentGoalBottomSheet(
+                  parentGoal: '',
+                ));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -260,7 +256,8 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 1.4,
                     child: Text(
-                      _goalState.selectedParentGoal,
+                      AppConstant.convertParentGoal(
+                          goalState.selectedParentGoal),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: tTextStyleRegular.copyWith(

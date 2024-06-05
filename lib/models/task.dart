@@ -13,7 +13,7 @@ class Task {
   final String description;
   final DateTime createdAt;
   final DateTime? expectedCompletion;
-  final String? goalId;
+  final String goalId;
   final bool isMarkedForToday;
   final bool? isCompleted;
   final DateTime? updatedAt;
@@ -31,7 +31,7 @@ class Task {
     required this.description,
     required this.createdAt,
     required this.expectedCompletion,
-    this.goalId,
+    required this.goalId,
     required this.isMarkedForToday,
     this.isCompleted,
     this.updatedAt,
@@ -116,7 +116,7 @@ class Task {
         expectedCompletion: data['expectedCompletion'] != null
             ? DateTime.parse(data['expectedCompletion'])
             : null,
-        goalId: data['goalId'] as String?,
+        goalId: data['goalId'] as String,
         isMarkedForToday: data['isMarkedForToday'] as bool,
         totalMinutesSpent: data['totalMinutesSpent'],
         updatedAt: data['updatedAt'] == null
@@ -241,7 +241,7 @@ class Task {
             ? DateTime.fromMillisecondsSinceEpoch(
                 map['expectedCompletion'] as int)
             : null,
-        goalId: map['goalId'] != null ? map['goalId'] as String : null,
+        goalId: map['goalId'] as String,
         isMarkedForToday: map['isMarkedForToday'] as bool,
         jiraID: map['jiraID'] as String,
         userID: map['userID'] as String,

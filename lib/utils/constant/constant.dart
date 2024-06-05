@@ -27,18 +27,77 @@ class AppConstant{
   /// time frame list ///
 
   static final List<String> timeFrameList = [
-    'Today',
-    '3 days',
-    'Week',
-    'Fortnight',
-    'Month',
-    '90 days',
-    'Year'
+    '0'
+    '1',
+    '3',
+    '7',
+    '14',
+    '30',
+    '90',
+    '365'
   ];
 
   /// type list ///
 
-  static final List<String> typeList = ['Work', 'Personal Project', 'Self'];
+  static final List<String> typeList = ['1', '2', '3'];
+
+  /// convert type ///
+  static String convertType(String code){
+    switch (code) {
+      case "1":
+        return 'Work';
+      case "2":
+        return 'Personal Project';
+      default:
+        return 'Self';
+    }
+  }
+
+  /// convert time frame ///
+  static String convertPriority(String code){
+    switch (code) {
+      case "1":
+        return 'Needs to be done';
+      case "2":
+        return 'Nice to have';
+      default:
+        return 'Nice idea';
+    }
+  }
+
+  /// convert time frame ///
+  static String convertTimeFrame(String code){
+    switch (code) {
+      case "0":
+        return 'None';
+      case "1":
+        return 'Today';
+      case "7":
+        return 'Week';
+      case "14":
+        return 'Fortnight';
+      case "30":
+        return 'Month';
+      case "90":
+        return '90 days';
+      default:
+        return 'Year';
+    }
+  }
+
+  /// convert time frame ///
+  static String convertParentGoal(String code){
+    switch (code) {
+      case "0":
+        return 'None';
+      case "1":
+        return 'Work towards obtaining certifications that are valuable...';
+      case "2":
+        return 'Read 4 of self-improvement books within the next six mon...';
+      default:
+        return 'Explore and participate in adventurous activities.';
+    }
+  }
 
 
   /// user image url ///

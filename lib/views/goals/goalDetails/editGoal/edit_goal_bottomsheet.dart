@@ -1,3 +1,4 @@
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
@@ -168,33 +169,33 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
         _optionTile(
             onTap: () {
               setState(() {
-                selectedType = 'Work';
+                selectedType = '1';
               });
             },
-            tileBorderColor: selectedType == 'Work' ? borderColor : trans,
-            circleColor: selectedType == 'Work' ? secondaryColor : trans,
+            tileBorderColor: selectedType == '1' ? borderColor : trans,
+            circleColor: selectedType == '1' ? secondaryColor : trans,
             title: 'Work'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedType = 'Personal Project';
+                selectedType = '2';
               });
             },
             tileBorderColor:
-                selectedType == 'Personal Project' ? borderColor : trans,
+                selectedType == '2' ? borderColor : trans,
             circleColor:
-                selectedType == 'Personal Project' ? secondaryColor : trans,
+                selectedType == '2' ? secondaryColor : trans,
             title: 'Personal Project'),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
               setState(() {
-                selectedType = 'Self';
+                selectedType = '3';
               });
             },
-            tileBorderColor: selectedType == 'Self' ? borderColor : trans,
-            circleColor: selectedType == 'Self' ? secondaryColor : trans,
+            tileBorderColor: selectedType == '3' ? borderColor : trans,
+            circleColor: selectedType == '3' ? secondaryColor : trans,
             title: 'Self'),
       ],
     );
@@ -270,7 +271,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 1.4,
                     child: Text(
-                      goalState.selectedParentGoal,
+                      AppConstant.convertParentGoal(goalState.selectedParentGoal),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: tTextStyleRegular.copyWith(
