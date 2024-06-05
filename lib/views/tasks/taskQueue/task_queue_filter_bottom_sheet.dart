@@ -98,7 +98,7 @@ class _TaskQueueFilterBottomSheetState
                       taskState.getQueueFilterTimeType(
                           taskState.selectedQueueType, time);
                     },
-                    title: time,
+                    title: AppConstant.convertTimeFrame(time),
                     checkBoxColor: taskState.selectedQueueTimeFrame == time
                         ? primaryColor
                         : white,
@@ -123,7 +123,7 @@ class _TaskQueueFilterBottomSheetState
                       taskState.getQueueFilterTimeType(
                           type, taskState.selectedQueueTimeFrame);
                     },
-                    title: type,
+                    title: AppConstant.convertType(type),
                     checkBoxColor: taskState.selectedQueueType == type
                         ? primaryColor
                         : white,

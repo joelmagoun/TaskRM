@@ -78,7 +78,6 @@ class TaskProvider extends ChangeNotifier {
 
   void getFilterType(String workType) {
     _selectedFilterType = workType;
-    print('filter type $_selectedFilterType');
     notifyListeners();
   }
 
@@ -225,8 +224,8 @@ class TaskProvider extends ChangeNotifier {
                     title: e.data['title'] ?? '',
                     type: e.data['type'] ?? '',
                     priority: e.data['priority'] ?? '',
-                    //timeframe: e.data['timeframe'] ?? '',
-                    timeframe: timeFrameResult,
+                    timeframe: e.data['timeframe'] ?? '',
+                    //timeframe: timeFrameResult,
                     description: e.data['description'] ?? '',
                     createdAt: DateTime.parse(e.data['createdAt']),
                     expectedCompletion:

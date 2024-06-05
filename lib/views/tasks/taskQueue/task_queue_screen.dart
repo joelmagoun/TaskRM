@@ -1,3 +1,4 @@
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -44,37 +45,37 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
             shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
             title: taskState.allTaskList.isEmpty
                 ? Text(
-              'Task queue',
-              style: tTextStyle500.copyWith(fontSize: 20, color: black),
-            )
+                    'Task queue',
+                    style: tTextStyle500.copyWith(fontSize: 20, color: black),
+                  )
                 : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Task queue',
-                  style:
-                  tTextStyle500.copyWith(fontSize: 20, color: black),
-                ),
-                Text(
-                  'Long press a task to move it to today’s list',
-                  maxLines: 2,
-                  style: tTextStyleRegular.copyWith(fontSize: 14),
-                ),
-              ],
-            ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Task queue',
+                        style:
+                            tTextStyle500.copyWith(fontSize: 20, color: black),
+                      ),
+                      Text(
+                        'Long press a task to move it to today’s list',
+                        maxLines: 2,
+                        style: tTextStyleRegular.copyWith(fontSize: 14),
+                      ),
+                    ],
+                  ),
             actions: [
               taskState.allTaskList.isNotEmpty ||
-                  taskState.selectedQueueType != '' ||
-                  taskState.selectedQueueTimeFrame != ''
+                      taskState.selectedQueueType != '' ||
+                      taskState.selectedQueueTimeFrame != ''
                   ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: InkWell(
-                    onTap: () {
-                      CustomDialog.bottomSheet(
-                          context, const TaskQueueFilterBottomSheet());
-                    },
-                    child: SvgPicture.asset(filterIcon)),
-              )
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: InkWell(
+                          onTap: () {
+                            CustomDialog.bottomSheet(
+                                context, const TaskQueueFilterBottomSheet());
+                          },
+                          child: SvgPicture.asset(filterIcon)),
+                    )
                   : const SizedBox.shrink(),
             ],
           ),
@@ -90,8 +91,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
     if (taskState.isAllTaskLoading) {
       return const Center(
           child: CircularProgressIndicator(
-            color: primaryColor,
-          ));
+        color: primaryColor,
+      ));
     } else {
       if (taskState.allTaskList.isEmpty) {
         if (taskState.selectedQueueType == '' ||
@@ -123,7 +124,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                taskState.selectedQueueTimeFrame,
+                                AppConstant.convertTimeFrame(
+                                    taskState.selectedQueueTimeFrame),
                                 style: tTextStyleBold.copyWith(
                                     color: white, fontSize: 16),
                               ),
@@ -151,7 +153,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                taskState.selectedQueueType,
+                                AppConstant.convertType(
+                                    taskState.selectedQueueType),
                                 style: tTextStyleBold.copyWith(
                                     color: white, fontSize: 16),
                               ),
@@ -254,7 +257,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                taskState.selectedQueueTimeFrame,
+                                AppConstant.convertTimeFrame(
+                                    taskState.selectedQueueTimeFrame),
                                 style: tTextStyleBold.copyWith(
                                     color: white, fontSize: 16),
                               ),
@@ -282,7 +286,8 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                taskState.selectedQueueType,
+                                AppConstant.convertType(
+                                    taskState.selectedQueueType),
                                 style: tTextStyleBold.copyWith(
                                     color: white, fontSize: 16),
                               ),
@@ -309,7 +314,6 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                   child: ListView.separated(
                       itemBuilder: (_, index) {
                         var item = taskState.allTaskList[index];
-
                         return TaskTile(
                           onLongPress: () {
                             setState(() {
@@ -397,7 +401,6 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
             Expanded(
               child: InkWell(
                 onTap: () async {
-
                   await taskState.moveToTodayTaskList(
                       selectedTaskId,
                       selectedTaskTitle,
@@ -409,7 +412,6 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                       selectedTaskCreatedAt,
                       selectedTaskJiraId,
                       context);
-
                 },
                 child: Container(
                   height: 56,
@@ -420,14 +422,14 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                   ),
                   child: taskState.isMoving
                       ? const Center(
-                      child: CircularProgressIndicator(
-                        color: white,
-                      ))
+                          child: CircularProgressIndicator(
+                          color: white,
+                        ))
                       : Text(
-                    'Move to “Today’s tasks”',
-                    style: tTextStyle600.copyWith(
-                        fontSize: 16, color: white),
-                  ),
+                          'Move to “Today’s tasks”',
+                          style: tTextStyle600.copyWith(
+                              fontSize: 16, color: white),
+                        ),
                 ),
               ),
             )
@@ -436,5 +438,4 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
       ),
     );
   }
-
 }

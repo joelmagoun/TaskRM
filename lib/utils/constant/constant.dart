@@ -27,13 +27,14 @@ class AppConstant{
   /// time frame list ///
 
   static final List<String> timeFrameList = [
-    'Today',
-    '3 days',
-    'Week',
-    'Fortnight',
-    'Month',
-    '90 days',
-    'Year'
+    '0'
+    '1',
+    '3',
+    '7',
+    '14',
+    '30',
+    '90',
+    '365'
   ];
 
   /// type list ///
