@@ -46,49 +46,49 @@ class AppConstant{
   static String convertType(BuildContext context, String code){
     switch (code) {
       case "1":
-        return AppLocalizations.of(context)!.home;
+        return AppLocalizations.of(context)!.work;
       case "2":
-        return 'Personal Project';
+        return AppLocalizations.of(context)!.personalproject;
       case "3":
-        return 'Self';
+        return AppLocalizations.of(context)!.self;
       default:
         return 'Error';
     }
   }
 
   /// convert time frame ///
-  static String convertPriority(String code){
+  static String convertPriority(BuildContext context, String code){
     switch (code) {
       case "1":
-        return 'Needs to be done';
+        return AppLocalizations.of(context)!.needstobedone;
       case "2":
-        return 'Nice to have';
+        return AppLocalizations.of(context)!.nicetohave;
       case "3":
-        return 'Nice idea';
+        return AppLocalizations.of(context)!.niceidea;
       default:
         return 'Error';
     }
   }
 
   /// convert time frame ///
-  static String convertTimeFrame(String code){
+  static String convertTimeFrame(BuildContext context, String code){
     switch (code) {
       case "0":
-        return 'None';
+        return AppLocalizations.of(context)!.none;
       case "1":
-        return 'Today';
+        return AppLocalizations.of(context)!.today;
       case"3":
-        return '3 days';
+        return AppLocalizations.of(context)!.threedays;
       case "7":
-        return 'Week';
+        return AppLocalizations.of(context)!.week;
       case "14":
-        return 'Fortnight';
+        return AppLocalizations.of(context)!.fortnight;
       case "30":
-        return 'Month';
+        return AppLocalizations.of(context)!.month;
       case "90":
-        return '90 days';
+        return AppLocalizations.of(context)!.ninteydays;
       case "365":
-        return 'Year';
+        return AppLocalizations.of(context)!.year;
       default:
         return 'Error';
     }

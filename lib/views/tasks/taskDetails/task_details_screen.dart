@@ -123,13 +123,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         _infoTile(
                             priorityIcon,
                             'Priority',
-                            AppConstant.convertPriority(widget.task.priority),
+                            AppConstant.convertPriority(context, widget.task.priority),
                             false),
                         primaryVerticalSpace,
                         _infoTile(
                             timeFrameIcon,
                             'Timeframe',
-                            AppConstant.convertTimeFrame(widget.task.timeframe),
+                            AppConstant.convertTimeFrame(context, widget.task.timeframe),
                             false),
                         primaryVerticalSpace,
                         _infoTile(descriptionIcon, AppLocalizations.of(context)!.description,

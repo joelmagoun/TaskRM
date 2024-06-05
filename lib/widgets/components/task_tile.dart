@@ -110,7 +110,7 @@ class _TaskTileState extends State<TaskTile> {
                                 width: 4,
                               ),
                               Text(
-                                AppConstant.convertTimeFrame(widget.time),
+                                AppConstant.convertTimeFrame(context, widget.time),
                                // widget.time,
                                 style: tTextStyleRegular.copyWith(
                                     fontSize: 14, color: widget.timeDateColor),
@@ -174,7 +174,7 @@ class _TaskTileState extends State<TaskTile> {
                           width: 4,
                         ),
                         Text(
-                          AppConstant.convertTimeFrame(widget.time),
+                          AppConstant.convertTimeFrame(context, widget.time),
                          // widget.time,
                           style: tTextStyleRegular.copyWith(
                               fontSize: 14, color: widget.timeDateColor),

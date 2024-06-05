@@ -125,7 +125,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                AppConstant.convertTimeFrame(
+                                AppConstant.convertTimeFrame(context, 
                                     taskState.selectedQueueTimeFrame),
                                 style: tTextStyleBold.copyWith(
                                     color: white, fontSize: 16),
@@ -258,7 +258,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                AppConstant.convertTimeFrame(
+                                AppConstant.convertTimeFrame(context, 
                                     taskState.selectedQueueTimeFrame),
                                 style: tTextStyleBold.copyWith(
                                     color: white, fontSize: 16),
