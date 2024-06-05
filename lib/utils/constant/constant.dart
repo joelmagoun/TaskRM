@@ -48,8 +48,10 @@ class AppConstant{
         return 'Work';
       case "2":
         return 'Personal Project';
-      default:
+      case "3":
         return 'Self';
+      default:
+        return 'Error';
     }
   }
 
@@ -60,8 +62,10 @@ class AppConstant{
         return 'Needs to be done';
       case "2":
         return 'Nice to have';
-      default:
+      case "3":
         return 'Nice idea';
+      default:
+        return 'Error';
     }
   }
 
@@ -80,8 +84,10 @@ class AppConstant{
         return 'Month';
       case "90":
         return '90 days';
-      default:
+      case "365":
         return 'Year';
+      default:
+        return 'Error';
     }
   }
 
