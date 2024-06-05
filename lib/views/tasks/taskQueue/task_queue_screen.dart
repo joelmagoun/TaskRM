@@ -31,17 +31,18 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
   late String selectedTaskDescription = '';
   late String selectedTaskGoal = '';
   late String selectedTaskCreatedAt = '';
+  late String selectedTaskJiraId = '';
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskProvider>(builder: (_, _taskState, child) {
+    return Consumer<TaskProvider>(builder: (_, taskState, child) {
       return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(65.0),
           child: AppBar(
             centerTitle: false,
             shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
-            title: _taskState.allTaskList.isEmpty
+            title: taskState.allTaskList.isEmpty
                 ? Text(
               'Task queue',
               style: tTextStyle500.copyWith(fontSize: 20, color: black),
@@ -62,9 +63,9 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
               ],
             ),
             actions: [
-              _taskState.allTaskList.isNotEmpty ||
-                  _taskState.selectedQueueType != '' ||
-                  _taskState.selectedQueueTimeFrame != ''
+              taskState.allTaskList.isNotEmpty ||
+                  taskState.selectedQueueType != '' ||
+                  taskState.selectedQueueTimeFrame != ''
                   ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: InkWell(
@@ -204,11 +205,12 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                               selectedTaskId = item.id;
                               selectedTaskTitle = item.title;
                               selectedTaskType = item.type;
-                              selectedGoalId = item.goalId!;
+                              selectedGoalId = item.goalId;
                               selectedTaskPriority = item.priority;
                               selectedTaskDescription = item.description;
                               selectedTaskGoal = item.goal;
                               selectedTaskCreatedAt = item.createdAt.toString();
+                              selectedTaskJiraId = item.jiraID;
                             });
                           },
                           title: item.title,
@@ -316,11 +318,12 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                               selectedTaskId = item.id;
                               selectedTaskTitle = item.title;
                               selectedTaskType = item.type;
-                              selectedGoalId = item.goalId!;
+                              selectedGoalId = item.goalId;
                               selectedTaskPriority = item.priority;
                               selectedTaskDescription = item.description;
                               selectedTaskGoal = item.goal;
                               selectedTaskCreatedAt = item.createdAt.toString();
+                              selectedTaskJiraId = item.jiraID;
                             });
                           },
                           title: item.title,
@@ -351,7 +354,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
   }
 
   Widget _bottomSheet(BuildContext context) {
-    final _taskState = Provider.of<TaskProvider>(context, listen: false);
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
 
     return Container(
       height: 120,
@@ -395,7 +398,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
               child: InkWell(
                 onTap: () async {
 
-                  await _taskState.moveToTodayTaskList(
+                  await taskState.moveToTodayTaskList(
                       selectedTaskId,
                       selectedTaskTitle,
                       selectedTaskType,
@@ -404,6 +407,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                       selectedTaskDescription,
                       selectedTaskGoal,
                       selectedTaskCreatedAt,
+                      selectedTaskJiraId,
                       context);
 
                 },
@@ -414,7 +418,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                     borderRadius: BorderRadius.circular(12),
                     color: primaryColor,
                   ),
-                  child: _taskState.isMoving
+                  child: taskState.isMoving
                       ? const Center(
                       child: CircularProgressIndicator(
                         color: white,

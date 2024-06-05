@@ -1,6 +1,7 @@
+import 'package:TaskRM/utils/config/constants.dart';
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/views/tasks/taskDetails/editTask/edit_task_bottomsheet.dart';
-import 'package:TaskRM/views/tasks/taskDetails/jira/jira_information_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -115,14 +116,21 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, 'Type', widget.task.type, false),
+                        _infoTile(typeIcon, 'Type',
+                            AppConstant.convertType(widget.task.type), false),
                         _jiraField(),
                         primaryVerticalSpace,
-                        _infoTile(priorityIcon, 'Priority',
-                            widget.task.priority, false),
+                        _infoTile(
+                            priorityIcon,
+                            'Priority',
+                            AppConstant.convertPriority(widget.task.priority),
+                            false),
                         primaryVerticalSpace,
-                        _infoTile(timeFrameIcon, 'Timeframe',
-                            widget.task.timeframe, false),
+                        _infoTile(
+                            timeFrameIcon,
+                            'Timeframe',
+                            AppConstant.convertTimeFrame(widget.task.timeframe),
+                            false),
                         primaryVerticalSpace,
                         _infoTile(descriptionIcon, 'Description',
                             widget.task.description, false),
@@ -252,7 +260,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   'taskType': widget.task.type,
                 },
               );
-
             },
             decoration: InputDecoration(
               filled: true,

@@ -226,6 +226,7 @@ class GoalsScreen extends StatelessWidget {
                             description: '',
                             createdAt: DateTime.now(),
                             expectedCompletion: DateTime.now(),
+                            goalId: '',
                             isMarkedForToday: false,
                             jiraID: '',
                             userID: '',

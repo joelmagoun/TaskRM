@@ -1,3 +1,4 @@
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:TaskRM/models/task.dart';
@@ -39,6 +40,7 @@ class TaskTile extends StatefulWidget {
 }
 
 class _TaskTileState extends State<TaskTile> {
+
   String getTimeAgo(String dateTime) {
     timeago.setLocaleMessages('en', timeago.EnMessages());
     dateTime = timeago.format(DateTime.parse(dateTime), locale: 'en');
@@ -107,7 +109,8 @@ class _TaskTileState extends State<TaskTile> {
                                 width: 4,
                               ),
                               Text(
-                                widget.time,
+                                AppConstant.convertTimeFrame(widget.time),
+                               // widget.time,
                                 style: tTextStyleRegular.copyWith(
                                     fontSize: 14, color: widget.timeDateColor),
                               ),
@@ -170,7 +173,8 @@ class _TaskTileState extends State<TaskTile> {
                           width: 4,
                         ),
                         Text(
-                          widget.time,
+                          AppConstant.convertTimeFrame(widget.time),
+                         // widget.time,
                           style: tTextStyleRegular.copyWith(
                               fontSize: 14, color: widget.timeDateColor),
                         ),

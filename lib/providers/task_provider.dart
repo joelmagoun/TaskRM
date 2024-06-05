@@ -78,6 +78,7 @@ class TaskProvider extends ChangeNotifier {
 
   void getFilterType(String workType) {
     _selectedFilterType = workType;
+    print('filter type $_selectedFilterType');
     notifyListeners();
   }
 
@@ -113,6 +114,7 @@ class TaskProvider extends ChangeNotifier {
                   createdAt: DateTime.parse(e.data['createdAt']),
                   expectedCompletion:
                       DateTime.parse(e.data['expectedCompletion']),
+                  goalId: e.data['goalId'] ?? '',
                   isMarkedForToday: e.data['isMarkedForToday'] ?? false,
                   jiraID: e.data['jiraID'] ?? '',
                   userID: e.data['userID'] ?? '',
@@ -130,6 +132,7 @@ class TaskProvider extends ChangeNotifier {
                     createdAt: DateTime.parse(e.data['createdAt']),
                     expectedCompletion:
                         DateTime.parse(e.data['expectedCompletion']),
+                    goalId: e.data['goalId'] ?? '',
                     isMarkedForToday: e.data['isMarkedForToday'] ?? false,
                     jiraID: e.data['jiraID'] ?? '',
                     userID: e.data['userID'] ?? '',
@@ -207,6 +210,7 @@ class TaskProvider extends ChangeNotifier {
                   createdAt: DateTime.parse(e.data['createdAt']),
                   expectedCompletion:
                       DateTime.parse(e.data['expectedCompletion']),
+                  goalId: e.data['goalId'] ?? '',
                   isMarkedForToday: false,
                   jiraID: e.data['jiraID'] ?? '',
                   userID: e.data['userID'] ?? '',
@@ -227,6 +231,7 @@ class TaskProvider extends ChangeNotifier {
                     createdAt: DateTime.parse(e.data['createdAt']),
                     expectedCompletion:
                         DateTime.parse(e.data['expectedCompletion']),
+                    goalId: e.data['goalId'] ?? '',
                     isMarkedForToday: false,
                     jiraID: e.data['jiraID'] ?? '',
                     userID: e.data['userID'] ?? '',
@@ -382,6 +387,7 @@ class TaskProvider extends ChangeNotifier {
       String description,
       String goal,
       String createdAt,
+      String jiraId,
       BuildContext context) async {
     try {
       _isMoving = true;
@@ -394,8 +400,8 @@ class TaskProvider extends ChangeNotifier {
           collectionId: AppWriteConstant.taskCollectionId,
           documentId: taskId,
           data: {
-            'timeframe': 'Today',
-            'jiraID': '',
+            'timeframe': '1',
+            'jiraID': jiraId,
             'title': title,
             'type': type,
             'isMarkedForToday': true,
@@ -473,4 +479,5 @@ class TaskProvider extends ChangeNotifier {
         return DateTime.now();
     }
   }
+
 }

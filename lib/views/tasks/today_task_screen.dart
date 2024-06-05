@@ -1,3 +1,4 @@
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -119,7 +120,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        taskState.selectedFilterType,
+                        AppConstant.convertType(taskState.selectedFilterType),
                         style:
                             tTextStyleBold.copyWith(color: white, fontSize: 16),
                       ),
@@ -179,7 +180,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        taskState.selectedFilterType,
+                  AppConstant.convertType(taskState.selectedFilterType),
                         style:
                             tTextStyleBold.copyWith(color: white, fontSize: 16),
                       ),
