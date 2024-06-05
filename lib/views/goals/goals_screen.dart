@@ -1,3 +1,4 @@
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -185,7 +186,7 @@ class GoalsScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        goalState.selectedFilterType,
+                        AppConstant.convertType(goalState.selectedFilterType),
                         style:
                             tTextStyleBold.copyWith(color: white, fontSize: 16),
                       ),
@@ -207,7 +208,8 @@ class GoalsScreen extends StatelessWidget {
                 child: ListView.separated(
                     itemBuilder: (_, index) {
                       var item = goalState.allGoalList[index];
-                      return TaskTile(
+                      return GoalTile(
+                        goalId: item.id,
                         onLongPress: () {},
                         title: item.title,
                         isTimeTracking: false,
@@ -217,21 +219,40 @@ class GoalsScreen extends StatelessWidget {
                         timeDateColor: iconColor,
                         isSelected: false,
                         createdAt: item.createdAt.toString(),
-                        task: Task(
-                            id: '',
-                            title: '',
-                            type: '',
-                            priority: '',
-                            timeframe: '',
-                            description: '',
-                            createdAt: DateTime.now(),
-                            expectedCompletion: DateTime.now(),
-                            goalId: '',
-                            isMarkedForToday: false,
-                            jiraID: '',
-                            userID: '',
-                            goal: goal),
+                        goal: Goal(
+                            id: item.id,
+                            title: item.title,
+                            type: item.type,
+                            description: item.description,
+                            parentGoal: item.parentGoal,
+                            isCompleted: item.isCompleted,
+                            userId: item.userId),
                       );
+                      // return TaskTile(
+                      //   onLongPress: () {},
+                      //   title: item.title,
+                      //   isTimeTracking: false,
+                      //   time: '00',
+                      //   cardColor: const Color(0xFFF0F1F8),
+                      //   titleColor: black,
+                      //   timeDateColor: iconColor,
+                      //   isSelected: false,
+                      //   createdAt: item.createdAt.toString(),
+                      //   task: Task(
+                      //       id: '',
+                      //       title: '',
+                      //       type: '',
+                      //       priority: '',
+                      //       timeframe: '',
+                      //       description: '',
+                      //       createdAt: DateTime.now(),
+                      //       expectedCompletion: DateTime.now(),
+                      //       goalId: '',
+                      //       isMarkedForToday: false,
+                      //       jiraID: '',
+                      //       userID: '',
+                      //       goal: goal),
+                      // );
                     },
                     separatorBuilder: (_, index) => eightVerticalSpace,
                     itemCount: goalState.allGoalList.length),

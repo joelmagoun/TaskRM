@@ -85,6 +85,20 @@ class AppConstant{
     }
   }
 
+  /// convert time frame ///
+  static String convertParentGoal(String code){
+    switch (code) {
+      case "0":
+        return 'None';
+      case "1":
+        return 'Work towards obtaining certifications that are valuable...';
+      case "2":
+        return 'Read 4 of self-improvement books within the next six mon...';
+      default:
+        return 'Explore and participate in adventurous activities.';
+    }
+  }
+
 
   /// user image url ///
 

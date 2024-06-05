@@ -1,3 +1,4 @@
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/views/goals/goalDetails/editGoal/edit_goal_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -67,10 +68,7 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                     PopupMenuItem(
                       onTap: () {
                         CustomDialog.bottomSheet(
-                            context,
-                            EditGoalBottomSheet(
-                              goal: widget.goal
-                            ));
+                            context, EditGoalBottomSheet(goal: widget.goal));
                       },
                       value: 'edit',
                       child: const Row(
@@ -113,7 +111,8 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, 'Type', widget.goal.type, false),
+                        _infoTile(typeIcon, 'Type',
+                            AppConstant.convertType(widget.goal.type), false),
                         primaryVerticalSpace,
                         _infoTile(timeFrameIcon, 'Timeframe',
                             " widget.goal.timeFrame", false),
@@ -121,7 +120,12 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                         _infoTile(descriptionIcon, 'Description',
                             widget.goal.description, false),
                         primaryVerticalSpace,
-                        _infoTile(goalIcon, 'Parent Goal', 'None', true),
+                        _infoTile(
+                            goalIcon,
+                            'Parent Goal',
+                            AppConstant.convertParentGoal(
+                                widget.goal.parentGoal),
+                            true),
                         primaryVerticalSpace,
                         _infoTile(taskIcon, 'Tasks', 'None', true),
                         primaryVerticalSpace,
