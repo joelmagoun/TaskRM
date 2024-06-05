@@ -174,7 +174,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
             },
             tileBorderColor: selectedType == '1' ? borderColor : trans,
             circleColor: selectedType == '1' ? secondaryColor : trans,
-            title: 'Work'),
+            title: AppLocalizations.of(context)!.work),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
@@ -186,7 +186,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
                 selectedType == '2' ? borderColor : trans,
             circleColor:
                 selectedType == '2' ? secondaryColor : trans,
-            title: 'Personal Project'),
+            title: AppLocalizations.of(context)!.personalproject),
         eightVerticalSpace,
         _optionTile(
             onTap: () {
@@ -196,7 +196,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
             },
             tileBorderColor: selectedType == '3' ? borderColor : trans,
             circleColor: selectedType == '3' ? secondaryColor : trans,
-            title: 'Self'),
+            title: AppLocalizations.of(context)!.self),
       ],
     );
   }
