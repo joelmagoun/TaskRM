@@ -36,7 +36,6 @@ class _JiraInformationBottomSheetState
 
   @override
   void initState() {
-    print('initi calling ${widget.jiraIssueId} alkdfjakl ${widget.taskType}');
     final jiraState = Provider.of<JiraProvider>(context, listen: false);
     jiraState.getProfileInfo(widget.jiraIssueId, widget.taskType);
     super.initState();

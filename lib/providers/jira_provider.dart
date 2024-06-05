@@ -75,22 +75,16 @@ class JiraProvider extends ChangeNotifier {
           collectionId: AppWriteConstant.jiraConnectionCollectionId,
           queries: [
             Query.equal("userId", userId),
-            Query.equal(
-                "taskType",
-                taskType == 'Work'
-                    ? '1'
-                    : taskType == 'Personal Project'
-                        ? '2'
-                        : '3'),
+            Query.equal("taskType", taskType),
           ]);
 
-      if (res.documents.isNotEmpty) {
+      if (res.documents.isNotEmpty && issueId.isNotEmpty) {
         res.documents.forEach((e) async {
           await connectToJira(e.data['url'] ?? '', e.data['userName'] ?? '',
               e.data['apiKey'] ?? '', issueId);
         });
-       isJiraInfoLoaded = true;
-       notifyListeners();
+        isJiraInfoLoaded = true;
+        notifyListeners();
       } else {
         print('There is no user data');
         isJiraInfoLoaded = false;
