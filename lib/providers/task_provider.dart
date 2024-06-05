@@ -277,7 +277,7 @@ class TaskProvider extends ChangeNotifier {
             'jiraID': _jiraId,
             'title': title,
             'type': type,
-            'isMarkedForToday': timeFrame == 'Today' ? true : false,
+            'isMarkedForToday': timeFrame == '1' ? true : false,
             'goalId': goalId,
             'priority': priority,
             'description': description,
@@ -338,7 +338,7 @@ class TaskProvider extends ChangeNotifier {
             'jiraID': '',
             'title': title,
             'type': type,
-            'isMarkedForToday': timeFrame == 'Today' ? true : false,
+            'isMarkedForToday': timeFrame == '1' ? true : false,
             'goalId': goalId,
             'priority': priority,
             'description': description,
@@ -411,7 +411,7 @@ class TaskProvider extends ChangeNotifier {
             'goal': goal,
             'createdAt': createdAt,
             'expectedCompletion':
-                getExpectedDateFromTimeframe('Today').toString(),
+                getExpectedDateFromTimeframe('1').toString(),
           }).then((value) {
         Navigator.pop(context);
         CustomSnack.successSnack(
@@ -438,19 +438,19 @@ class TaskProvider extends ChangeNotifier {
     Duration remainDays = parsedExpectedDate.difference(now);
 
     if (remainDays.inDays == 1 || remainDays.inDays == 0) {
-      return 'Today';
+      return '1';
     } else if (remainDays.inDays > 1 && remainDays.inDays <= 3) {
-      return '3 days';
+      return '3';
     } else if (remainDays.inDays > 3 && remainDays.inDays <= 7) {
-      return 'Week';
+      return '7';
     } else if (remainDays.inDays > 7 && remainDays.inDays <= 14) {
-      return 'Fortnight';
+      return '14';
     } else if (remainDays.inDays > 14 && remainDays.inDays <= 30) {
-      return 'Month';
+      return '30';
     } else if (remainDays.inDays > 30 && remainDays.inDays <= 90) {
-      return '90 days';
+      return '90';
     } else if (remainDays.inDays > 90 && remainDays.inDays <= 365) {
-      return 'Year';
+      return '365';
     } else {
       return 'Date over';
     }
@@ -460,19 +460,19 @@ class TaskProvider extends ChangeNotifier {
     final now = DateTime.now();
 
     switch (timeFrame) {
-      case "Today":
+      case "1":
         return now.add(const Duration(days: 1));
-      case "3 days":
+      case "3":
         return now.add(const Duration(days: 3));
-      case "Week":
+      case "7":
         return now.add(const Duration(days: 7));
-      case "Fortnight":
+      case "14":
         return now.add(const Duration(days: 14));
-      case "Month":
+      case "30":
         return now.add(const Duration(days: 30));
-      case "90 days":
+      case "90":
         return now.add(const Duration(days: 90));
-      case "Year":
+      case "365":
         return now.add(const Duration(days: 365));
       default:
         return DateTime.now();
