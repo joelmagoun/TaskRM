@@ -9,6 +9,7 @@ import '../../../../utils/spacer.dart';
 import '../../../providers/task_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
 class TaskQueueFilterBottomSheet extends StatefulWidget {
   const TaskQueueFilterBottomSheet({
     Key? key,
@@ -124,7 +125,7 @@ class _TaskQueueFilterBottomSheetState
                       taskState.getQueueFilterTimeType(
                           type, taskState.selectedQueueTimeFrame);
                     },
-                    title: AppConstant.convertType(type),
+                    title: AppConstant.convertType(context, type),
                     checkBoxColor: taskState.selectedQueueType == type
                         ? primaryColor
                         : white,

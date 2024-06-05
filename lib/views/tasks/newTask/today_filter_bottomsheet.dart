@@ -95,7 +95,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
                     onTap: () {
                       taskState.getFilterType(type);
                     },
-                    title: AppConstant.convertType(type),
+                    title: AppConstant.convertType(context, type),
                     checkBoxColor: taskState.selectedFilterType == type
                         ? primaryColor
                         : white,

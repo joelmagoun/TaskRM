@@ -187,7 +187,7 @@ class GoalsScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        AppConstant.convertType(goalState.selectedFilterType),
+                        AppConstant.convertType(context, goalState.selectedFilterType),
                         style:
                             tTextStyleBold.copyWith(color: white, fontSize: 16),
                       ),

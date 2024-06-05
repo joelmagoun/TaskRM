@@ -117,7 +117,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     child: Column(
                       children: [
                         _infoTile(typeIcon, 'Type',
-                            AppConstant.convertType(widget.task.type), false),
+                            AppConstant.convertType(context, widget.task.type), false),
                         _jiraField(),
                         primaryVerticalSpace,
                         _infoTile(

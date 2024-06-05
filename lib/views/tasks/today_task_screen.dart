@@ -121,7 +121,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        AppConstant.convertType(taskState.selectedFilterType),
+                        AppConstant.convertType(context, taskState.selectedFilterType),
                         style:
                             tTextStyleBold.copyWith(color: white, fontSize: 16),
                       ),
@@ -181,7 +181,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                  AppConstant.convertType(taskState.selectedFilterType),
+                  AppConstant.convertType(context, taskState.selectedFilterType),
                         style:
                             tTextStyleBold.copyWith(color: white, fontSize: 16),
                       ),
