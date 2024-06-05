@@ -116,9 +116,9 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                       children: [
                         _infoTile(typeIcon, AppLocalizations.of(context)!.type, widget.goal.type, false),
                         primaryVerticalSpace,
-                        _infoTile(timeFrameIcon, AppLocalizations.of(context)!.timeframe,
-                            " widget.goal.timeFrame", false),
-                        primaryVerticalSpace,
+                        //_infoTile(timeFrameIcon, AppLocalizations.of(context)!.timeframe,
+                        //    " widget.goal.timeFrame", false),
+                        //primaryVerticalSpace,
                         _infoTile(descriptionIcon, AppLocalizations.of(context)!.description,
                             widget.goal.description, false),
                         primaryVerticalSpace,
