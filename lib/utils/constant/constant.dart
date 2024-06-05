@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../color.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class AppConstant{
@@ -27,7 +28,7 @@ class AppConstant{
   /// time frame list ///
 
   static final List<String> timeFrameList = [
-    '0'
+    '0',
     '1',
     '3',
     '7',
@@ -42,10 +43,10 @@ class AppConstant{
   static final List<String> typeList = ['1', '2', '3'];
 
   /// convert type ///
-  static String convertType(String code){
+  static String convertType(BuildContext context, String code){
     switch (code) {
       case "1":
-        return 'Work';
+        return AppLocalizations.of(context)!.home;
       case "2":
         return 'Personal Project';
       case "3":
@@ -76,6 +77,8 @@ class AppConstant{
         return 'None';
       case "1":
         return 'Today';
+      case"3":
+        return '3 days';
       case "7":
         return 'Week';
       case "14":

@@ -97,7 +97,7 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
                     onTap: () {
                       goalState.getFilterType(type);
                     },
-                    title: AppConstant.convertType(type),
+                    title: AppConstant.convertType(context, type),
                     checkBoxColor: goalState.selectedFilterType == type
                         ? primaryColor
                         : white,

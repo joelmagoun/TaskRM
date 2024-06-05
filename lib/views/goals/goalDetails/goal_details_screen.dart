@@ -113,7 +113,7 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                     child: Column(
                       children: [
                         _infoTile(typeIcon, AppLocalizations.of(context)!.type,
-                            AppConstant.convertType(widget.goal.type), false),
+                            AppConstant.convertType(context, widget.goal.type), false),
                         primaryVerticalSpace,
                         //_infoTile(timeFrameIcon, AppLocalizations.of(context)!.timeframe,
                         //    " widget.goal.timeFrame", false),
