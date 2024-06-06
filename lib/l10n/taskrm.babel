@@ -24152,7 +24152,7 @@
 					<language>cy-GB</language>
 				</translation_url>
 				<translation_url>
-					<path>app_dk.arb</path>
+					<path>app_da.arb</path>
 					<language>da-DK</language>
 				</translation_url>
 				<translation_url>
@@ -24228,7 +24228,7 @@
 					<language>it-IT</language>
 				</translation_url>
 				<translation_url>
-					<path>app_jp.arb</path>
+					<path>app_ja.arb</path>
 					<language>ja-JP</language>
 				</translation_url>
 				<translation_url>
@@ -24324,7 +24324,7 @@
 					<language>vi-VN</language>
 				</translation_url>
 				<translation_url>
-					<path>app_cn.arb</path>
+					<path>app_zh.arb</path>
 					<language>zh-CN</language>
 				</translation_url>
 			</translation_urls>

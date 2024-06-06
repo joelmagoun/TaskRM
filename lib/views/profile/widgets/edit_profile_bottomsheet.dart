@@ -348,6 +348,8 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                           ? icelandFlag
                           : profileState.language == 'de'
                               ? germanyFlag
+                              : profileState.language == 'it'
+                              ? italyFlag
                               : norwegianFlag,
                   height: 32,
                   width: 32,
@@ -361,12 +363,15 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                               ? Languages.german
                               : profileState.language == 'no'
                                   ? Languages.norwegian
+                                  : profileState.language == 'it'
+                                  ? Languages.italian
                                   : Languages.english,
                       languages: [
                         Languages.english,
                         Languages.icelandic,
                         Languages.german,
-                        Languages.norwegian
+                        Languages.norwegian,
+                        Languages.italian
                       ],
                       onValuePicked: (language) {
                         profileState.changeLanguage(language.isoCode);

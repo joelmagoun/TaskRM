@@ -2,7 +2,6 @@
 
 const taskRMLogo = 'assets/images/taskRM.png';
 const topper = 'assets/images/topper.png';
-const usaFlag = 'assets/images/usa_flag.png';
 const logo = 'assets/images/logo.png';
 const task = 'assets/images/task.png';
 const feed = 'assets/images/feed.png';
@@ -10,9 +9,11 @@ const goal = 'assets/images/goal.png';
 const journal = 'assets/images/journal.png';
 const moment = 'assets/images/moment.png';
 const review = 'assets/images/review.png';
-const icelandFlag = 'assets/images/iceland.png';
-const germanyFlag = 'assets/images/germany.png';
-const norwegianFlag = 'assets/images/norwegian.png';
+const usaFlag = 'assets/images/flags/us.png';
+const icelandFlag = 'assets/images/is.png';
+const germanyFlag = 'assets/images/flags/de.png';
+const norwegianFlag = 'assets/images/flags/no.png';
+const italyFlag = 'assets/images/flags/it.png';
 
 
 /// svg paths ///
