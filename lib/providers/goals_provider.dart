@@ -27,9 +27,9 @@ class GoalProvider extends ChangeNotifier {
 
   bool get isGoalLoading => _isGoalLoading;
 
-  late List<Goal> _allGoalList = [];
+  late List<Goal> _allParentGoalList = [];
 
-  List<Goal> get allGoalList => _allGoalList;
+  List<Goal> get allParentGoalList => _allParentGoalList;
 
   late String _selectedFilterType = '';
 
@@ -85,15 +85,16 @@ class GoalProvider extends ChangeNotifier {
           collectionId: AppWriteConstant.goalCollectionId,
           queries: [
             Query.equal("userId", uid),
+            Query.equal("parentGoal", '0'),
           ]);
 
       if (res.documents.isNotEmpty) {
-        _allGoalList.clear();
+        _allParentGoalList.clear();
         notifyListeners();
 
         res.documents.forEach((e) {
           if (_selectedFilterType == '') {
-            _allGoalList.add(Goal(
+            _allParentGoalList.add(Goal(
                 id: e.$id ?? '',
                 title: e.data['title'] ?? '',
                 type: e.data['type'] ?? '',
@@ -105,7 +106,7 @@ class GoalProvider extends ChangeNotifier {
             notifyListeners();
           } else if (_selectedFilterType != '') {
             if (e.data['type'] == _selectedFilterType) {
-              _allGoalList.add(Goal(
+              _allParentGoalList.add(Goal(
                   id: e.$id ?? '',
                   title: e.data['title'] ?? '',
                   type: e.data['type'] ?? '',

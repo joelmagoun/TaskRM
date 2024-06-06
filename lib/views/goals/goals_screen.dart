@@ -33,7 +33,7 @@ class GoalsScreen extends StatelessWidget {
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
-            if (goalState.allGoalList.isNotEmpty ||
+            if (goalState.allParentGoalList.isNotEmpty ||
                 goalState.selectedFilterType != '')
               InkWell(
                   onTap: () {
@@ -43,7 +43,7 @@ class GoalsScreen extends StatelessWidget {
                   child: SvgPicture.asset(filterIcon))
             else
               const SizedBox.shrink(),
-            goalState.allGoalList.isNotEmpty
+            goalState.allParentGoalList.isNotEmpty
                 ? IconButton(
                     onPressed: () {
                       CustomDialog.bottomSheet(
@@ -76,7 +76,7 @@ class GoalsScreen extends StatelessWidget {
         color: primaryColor,
       ));
     } else {
-      if (goalState.allGoalList.isEmpty) {
+      if (goalState.allParentGoalList.isEmpty) {
         if (goalState.selectedFilterType == '') {
           return Center(
             child: Column(
@@ -148,7 +148,7 @@ class GoalsScreen extends StatelessWidget {
         if (goalState.selectedFilterType == '') {
           return ListView.separated(
               itemBuilder: (_, index) {
-                var item = goalState.allGoalList[index];
+                var item = goalState.allParentGoalList[index];
                 return GoalTile(
                   goalId: item.id,
                   onLongPress: () {},
@@ -171,7 +171,7 @@ class GoalsScreen extends StatelessWidget {
                 );
               },
               separatorBuilder: (_, index) => eightVerticalSpace,
-              itemCount: goalState.allGoalList.length);
+              itemCount: goalState.allParentGoalList.length);
         } else {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +208,7 @@ class GoalsScreen extends StatelessWidget {
               Expanded(
                 child: ListView.separated(
                     itemBuilder: (_, index) {
-                      var item = goalState.allGoalList[index];
+                      var item = goalState.allParentGoalList[index];
                       return GoalTile(
                         goalId: item.id,
                         onLongPress: () {},
@@ -256,7 +256,7 @@ class GoalsScreen extends StatelessWidget {
                       // );
                     },
                     separatorBuilder: (_, index) => eightVerticalSpace,
-                    itemCount: goalState.allGoalList.length),
+                    itemCount: goalState.allParentGoalList.length),
               )
             ],
           );

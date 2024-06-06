@@ -69,7 +69,7 @@ class _SelectParentGoalBottomSheetState
                 const Divider(),
 
                 /// new code ///
-                goalState.allGoalList.isEmpty
+                goalState.allParentGoalList.isEmpty
                     ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: _optionTile(
@@ -96,7 +96,7 @@ class _SelectParentGoalBottomSheetState
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: ListView.separated(
                             itemBuilder: (_, index) {
-                              var item = goalState.allGoalList[index];
+                              var item = goalState.allParentGoalList[index];
                               return _optionTile(
                                   onTap: () {
                                     setState(() {
@@ -117,7 +117,7 @@ class _SelectParentGoalBottomSheetState
                                   title: item.title);
                             },
                             separatorBuilder: (_, index) => eightVerticalSpace,
-                            itemCount: goalState.allGoalList.length),
+                            itemCount: goalState.allParentGoalList.length),
                   ),
                 ),
 
@@ -229,36 +229,41 @@ class _SelectParentGoalBottomSheetState
   }) {
     return InkWell(
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: tileBorderColor)),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: 16,
-                backgroundColor: assColor,
-                child: CircleAvatar(
-                  radius: 6,
-                  backgroundColor: circleColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: tileBorderColor)),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 16,
+                  backgroundColor: assColor,
+                  child: CircleAvatar(
+                    radius: 6,
+                    backgroundColor: circleColor,
+                  ),
                 ),
-              ),
-              eightHorizontalSpace,
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 1.4,
-                child: Text(
-                  title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
-                ),
-              )
-            ],
+                eightHorizontalSpace,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 1.6,
+                  child: Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
+        const Icon(Icons.arrow_forward_ios),
+      ],),
     );
   }
 
