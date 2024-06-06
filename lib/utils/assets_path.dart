@@ -9,11 +9,39 @@ const goal = 'assets/images/goal.png';
 const journal = 'assets/images/journal.png';
 const moment = 'assets/images/moment.png';
 const review = 'assets/images/review.png';
+
+
 const usaFlag = 'assets/images/flags/us.png';
-const icelandFlag = 'assets/images/is.png';
+const icelandFlag = 'assets/images/flags/is.png';
 const germanyFlag = 'assets/images/flags/de.png';
 const norwegianFlag = 'assets/images/flags/no.png';
 const italyFlag = 'assets/images/flags/it.png';
+const southafricaFlag = 'assets/images/flags/af.png';
+const bangladeshFlag = 'assets/images/flags/bn.png';
+const cataloniaFlag = 'assets/images/flags/ca.png';
+const czechFlag = 'assets/images/flags/cs.png';
+const walesFlag = 'assets/images/flags/cy.png';
+const denmarkFlag = 'assets/images/flags/da.png';
+const greeceFlag = 'assets/images/flags/el.png';
+const spainFlag = 'assets/images/flags/es.png';
+const estoniaFlag = 'assets/images/flags/et.png';
+const basqueFlag = 'assets/images/flags/eu.png';
+const persiaFlag = 'assets/images/flags/fa.png';
+const finlandFlag = 'assets/images/flags/fi.png';
+const franceFlag = 'assets/images/flags/fr.png';
+const galaciaFlag = 'assets/images/flags/gl.png';
+const israelFlag = 'assets/images/flags/he.png';
+const hindiFlag = 'assets/images/flags/hi.png';
+const croatiaFlag = 'assets/images/flags/hr.png';
+const hungaryFlag = 'assets/images/flags/hu.png';
+const armeniaFlag = 'assets/images/flags/hy.png';
+const indonesiaFlag = 'assets/images/flags/id.png';
+const japanFlag = 'assets/images/flags/ja.png';
+const kannadaFlag = 'assets/images/flags/kn.png';
+const koreaFlag = 'assets/images/flags/ko.png';
+const laosFlag = 'assets/images/flags/lo.png';
+const lithuaniaFlag = 'assets/images/flags/lt.png';
+const latviaFlag = 'assets/images/flags/lv.png';
 
 
 /// svg paths ///

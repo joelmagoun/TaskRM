@@ -350,6 +350,58 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                               ? germanyFlag
                               : profileState.language == 'it'
                               ? italyFlag
+                              : profileState.language == 'af'
+                              ? southafricaFlag
+                              : profileState.language == 'bn'
+                              ? bangladeshFlag
+                              : profileState.language == 'ca'
+                              ? cataloniaFlag
+                              : profileState.language == 'cs'
+                              ? czechFlag
+                              : profileState.language == 'cy'
+                              ? walesFlag
+                              : profileState.language == 'da'
+                              ? denmarkFlag
+                              : profileState.language == 'el'
+                              ? greeceFlag
+                              : profileState.language == 'es'
+                              ? spainFlag
+                              : profileState.language == 'et'
+                              ? estoniaFlag
+                              : profileState.language == 'eu'
+                              ? basqueFlag
+                              : profileState.language == 'fa'
+                              ? persiaFlag
+                              : profileState.language == 'fi'
+                              ? finlandFlag
+                              : profileState.language == 'fr'
+                              ? franceFlag
+                              : profileState.language == 'gl'
+                              ? galaciaFlag
+                              : profileState.language == 'he'
+                              ? israelFlag
+                              : profileState.language == 'hi'
+                              ? hindiFlag
+                              : profileState.language == 'hr'
+                              ? croatiaFlag
+                              : profileState.language == 'hu'
+                              ? hungaryFlag
+                              : profileState.language == 'hy'
+                              ? armeniaFlag
+                              : profileState.language == 'id'
+                              ? indonesiaFlag
+                              : profileState.language == 'ja'
+                              ? japanFlag
+                              : profileState.language == 'kn'
+                              ? kannadaFlag
+                              : profileState.language == 'ko'
+                              ? koreaFlag
+                              : profileState.language == 'lo'
+                              ? laosFlag
+                              : profileState.language == 'lt'
+                              ? lithuaniaFlag
+                              : profileState.language == 'lv'
+                              ? latviaFlag
                               : norwegianFlag,
                   height: 32,
                   width: 32,
@@ -365,13 +417,91 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                                   ? Languages.norwegian
                                   : profileState.language == 'it'
                                   ? Languages.italian
+                                  : profileState.language == 'af'
+                                  ? Languages.afrikaans
+                                  : profileState.language == 'bn'
+                                  ? Languages.bengali
+                                  : profileState.language == 'ca'
+                                  ? Languages.catalan
+                                  : profileState.language == 'cs'
+                                  ? Languages.czech
+                                  : profileState.language == 'cy'
+                                  ? Languages.welsh
+                                  : profileState.language == 'da'
+                                  ? Languages.danish
+                                  : profileState.language == 'el'
+                                  ? Languages.greek
+                                  : profileState.language == 'es'
+                                  ? Languages.spanish
+                                  : profileState.language == 'et'
+                                  ? Languages.estonian
+                                  : profileState.language == 'eu'
+                                  ? Languages.basque
+                                  : profileState.language == 'fa'
+                                  ? Languages.persian
+                                  : profileState.language == 'fi'
+                                  ? Languages.finnish
+                                  : profileState.language == 'fr'
+                                  ? Languages.french
+                                  : profileState.language == 'gl'
+                                  ? Languages.galician
+                                  : profileState.language == 'he'
+                                  ? Languages.hebrew
+                                  : profileState.language == 'hi'
+                                  ? Languages.hindi
+                                  : profileState.language == 'hr'
+                                  ? Languages.croatian
+                                  : profileState.language == 'hu'
+                                  ? Languages.hungarian
+                                  : profileState.language == 'hy'
+                                  ? Languages.armenian
+                                  : profileState.language == 'id'
+                                  ? Languages.indonesian
+                                  : profileState.language == 'ja'
+                                  ? Languages.japanese
+                                  : profileState.language == 'kn'
+                                  ? Languages.kannada
+                                  : profileState.language == 'ko'
+                                  ? Languages.korean
+                                  : profileState.language == 'lo'
+                                  ? Languages.lao
+                                  : profileState.language == 'lt'
+                                  ? Languages.lithuanian
+                                  : profileState.language == 'lv'
+                                  ? Languages.latvian
                                   : Languages.english,
                       languages: [
                         Languages.english,
                         Languages.icelandic,
                         Languages.german,
                         Languages.norwegian,
-                        Languages.italian
+                        Languages.italian,
+                        Languages.afrikaans,
+                        Languages.bengali,
+                        Languages.catalan,
+                        Languages.czech,
+                        Languages.welsh,
+                        Languages.danish,
+                        Languages.greek,
+                        Languages.spanish,
+                        Languages.estonian,
+                        Languages.basque,
+                        Languages.persian,
+                        Languages.finnish,
+                        Languages.french,
+                        Languages.galician,
+                        Languages.hebrew,
+                        Languages.hindi,
+                        Languages.croatian,
+                        Languages.hungarian,
+                        Languages.armenian,
+                        Languages.indonesian,
+                        Languages.japanese,
+                        Languages.kannada,
+                        Languages.korean,
+                        Languages.lao,
+                        Languages.lithuanian,
+                        Languages.latvian
                       ],
                       onValuePicked: (language) {
                         profileState.changeLanguage(language.isoCode);
