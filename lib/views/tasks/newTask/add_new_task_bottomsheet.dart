@@ -415,7 +415,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               onTap: () {
                 if (selectedType != '') {
                   goalState.getFilterType(selectedType);
-                  goalState.getGoalList();
+                  goalState.getParentGoalList();
                   CustomDialog.bottomSheet(
                       context, SelectGoalBottomSheet(type: selectedType));
                   taskState.getSelectedGoal('', '', context);

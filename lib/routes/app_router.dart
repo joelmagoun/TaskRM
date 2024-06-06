@@ -1,7 +1,8 @@
+import 'package:TaskRM/views/goals/goalDetails/sub_goal_details_screen.dart';
 import 'package:TaskRM/views/tasks/taskDetails/jira/jira_information_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:TaskRM/routes/routes.dart';
-import 'package:TaskRM/views/goals/goalDetails/goal_details_screen.dart';
+import 'package:TaskRM/views/goals/goalDetails/parent_goal_details_screen.dart';
 import 'package:TaskRM/views/goals/goals_screen.dart';
 import 'package:TaskRM/views/profile/jiraCollection/jira_connection_screen.dart';
 import 'package:TaskRM/views/tasks/taskDetails/task_details_screen.dart';
@@ -39,11 +40,13 @@ class AppRouter {
       case Routes.taskDetails:
         return TaskDetailsScreen(task: settings.arguments as Task);
       case Routes.goalDetails:
-        return GoalDetailsScreen(goal: settings.arguments as Goal);
+        return ParentGoalDetailsScreen(goal: settings.arguments as Goal);
       case Routes.profile:
         return const ProfileScreen();
       case Routes.jiraCollectionScreen:
         return const JiraConnectionScreen();
+      case Routes.subGoalDetailsScreen:
+        return SubGoalDetailsScreen(goal: settings.arguments as Goal);
       // case Routes.jiraInformationScreen:
       //   return JiraInformationBottomSheet(
       //       jiraIssueId: settings.arguments as String,

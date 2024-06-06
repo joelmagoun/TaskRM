@@ -80,7 +80,7 @@ class _SelectParentGoalBottomSheetState
                         goalState.getSelectedParentGoal(
                             'None', '0', false, context);
                         goalState.getFilterType('');
-                        goalState.getGoalList();
+                        goalState.getParentGoalList();
                         Navigator.pop(context);
                       },
                       tileBorderColor:  selectedGoal == 'None'
@@ -105,7 +105,7 @@ class _SelectParentGoalBottomSheetState
                                     goalState.getSelectedParentGoal(
                                         item.title, item.id, false, context);
                                     goalState.getFilterType('');
-                                    goalState.getGoalList();
+                                    goalState.getParentGoalList();
                                     Navigator.pop(context);
                                   },
                                   tileBorderColor: selectedGoal == item.title

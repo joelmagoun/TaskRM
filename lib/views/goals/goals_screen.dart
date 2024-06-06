@@ -17,6 +17,8 @@ import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../routes/routes.dart';
+
 
 class GoalsScreen extends StatelessWidget {
   const GoalsScreen({Key? key}) : super(key: key);
@@ -121,7 +123,7 @@ class GoalsScreen extends StatelessWidget {
                       IconButton(
                           onPressed: () async {
                             goalState.getFilterType('');
-                            await goalState.getGoalList();
+                            await goalState.getParentGoalList();
                           },
                           icon: const Icon(
                             Icons.clear,
@@ -152,6 +154,17 @@ class GoalsScreen extends StatelessWidget {
                 return GoalTile(
                   goalId: item.id,
                   onLongPress: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.goalDetails,
+                        arguments: Goal(
+                            id: item.id,
+                            title: item.title,
+                            type: item.type,
+                            description: item.description,
+                            parentGoal: item.parentGoal,
+                            isCompleted: item.isCompleted,
+                            userId: item.userId));
+                  },
                   title: item.title,
                   isTimeTracking: false,
                   time: '00',
@@ -194,7 +207,7 @@ class GoalsScreen extends StatelessWidget {
                       IconButton(
                           onPressed: () async {
                             goalState.getFilterType('');
-                            await goalState.getGoalList();
+                            await goalState.getParentGoalList();
                           },
                           icon: const Icon(
                             Icons.clear,
@@ -212,6 +225,17 @@ class GoalsScreen extends StatelessWidget {
                       return GoalTile(
                         goalId: item.id,
                         onLongPress: () {},
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.goalDetails,
+                              arguments: Goal(
+                                  id: item.id,
+                                  title: item.title,
+                                  type: item.type,
+                                  description: item.description,
+                                  parentGoal: item.parentGoal,
+                                  isCompleted: item.isCompleted,
+                                  userId: item.userId));
+                        },
                         title: item.title,
                         isTimeTracking: false,
                         time: '00',

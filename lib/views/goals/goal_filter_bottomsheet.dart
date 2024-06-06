@@ -109,7 +109,7 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
               itemCount: AppConstant.typeList.length),
           PrimaryButton(
             onTap: () async {
-              await goalState.getGoalList();
+              await goalState.getParentGoalList();
               Navigator.pop(context);
             },
             buttonTitle: AppLocalizations.of(context)!.apply,
