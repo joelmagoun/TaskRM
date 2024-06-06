@@ -1,3 +1,4 @@
+import 'package:TaskRM/views/goals/select_sub_goal_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/goals_provider.dart';
@@ -6,8 +7,7 @@ import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../utils/assets_path.dart';
-import '../../widgets/empty_widget.dart';
+import '../../utils/custom_dialog.dart';
 
 class SelectParentGoalBottomSheet extends StatefulWidget {
   final String type;
@@ -24,6 +24,7 @@ class _SelectParentGoalBottomSheetState
     extends State<SelectParentGoalBottomSheet> {
   // late String selectedParentGoal = widget.parentGoal;
   late String selectedGoal = '';
+  late String selectedGoalId = '';
 
   @override
   Widget build(BuildContext context) {
@@ -71,150 +72,61 @@ class _SelectParentGoalBottomSheetState
                 /// new code ///
                 goalState.allParentGoalList.isEmpty
                     ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: _optionTile(
-                      onTap: () {
-                        setState(() {
-                          selectedGoal = 'None';
-                        });
-                        goalState.getSelectedParentGoal(
-                            'None', '0', false, context);
-                        goalState.getFilterType('');
-                        goalState.getParentGoalList();
-                        Navigator.pop(context);
-                      },
-                      tileBorderColor:  selectedGoal == 'None'
-                          ? secondaryColor
-                          : borderColor,
-                      circleColor: selectedGoal == 'None'
-                          ? secondaryColor
-                          : trans,
-                      title: 'None'),
-                    )
-                    : Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: ListView.separated(
-                            itemBuilder: (_, index) {
-                              var item = goalState.allParentGoalList[index];
-                              return _optionTile(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedGoal = item.title;
-                                    });
-                                    goalState.getSelectedParentGoal(
-                                        item.title, item.id, false, context);
-                                    goalState.getFilterType('');
-                                    goalState.getParentGoalList();
-                                    Navigator.pop(context);
-                                  },
-                                  tileBorderColor: selectedGoal == item.title
-                                      ? secondaryColor
-                                      : borderColor,
-                                  circleColor: selectedGoal == item.title
-                                      ? secondaryColor
-                                      : trans,
-                                  title: item.title);
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: _optionTile(
+                            onTap: () {
+                              setState(() {
+                                selectedGoal = 'None';
+                              });
+                              goalState.getSelectedParentGoal(
+                                  'None', '0', false, context);
+                              goalState.getFilterType('');
+                              goalState.getParentGoalList();
+                              Navigator.pop(context);
                             },
-                            separatorBuilder: (_, index) => eightVerticalSpace,
-                            itemCount: goalState.allParentGoalList.length),
-                  ),
-                ),
-
-                /// old code ///
-                // Padding(
-                //   padding: const EdgeInsets.all(16.0),
-                //   child: Column(
-                //     children: [
-                //       _optionTile(
-                //         onTap: () {
-                //           setState(() {
-                //             selectedParentGoal = '0';
-                //           });
-                //           goalState.getSelectedParentGoal(
-                //               'None', false, context);
-                //         },
-                //         tileBorderColor: selectedParentGoal == '0'
-                //             ? secondaryColor
-                //             : borderColor,
-                //         circleColor: selectedParentGoal == '0'
-                //             ? secondaryColor
-                //             : trans,
-                //         title: 'None',
-                //       ),
-                //       sixteenVerticalSpace,
-                //       _optionTile(
-                //         onTap: () {
-                //           setState(() {
-                //             selectedParentGoal =
-                //                 '1';
-                //           });
-                //
-                //           goalState.getSelectedParentGoal(
-                //               '1',
-                //               false,
-                //               context);
-                //         },
-                //         tileBorderColor: selectedParentGoal ==
-                //                 '1'
-                //             ? secondaryColor
-                //             : borderColor,
-                //         circleColor: selectedParentGoal ==
-                //                 '1'
-                //             ? secondaryColor
-                //             : trans,
-                //         title:
-                //             'Work towards obtaining certifications that are valuable...',
-                //       ),
-                //       eightVerticalSpace,
-                //       _optionTile(
-                //         onTap: () {
-                //           setState(() {
-                //             selectedParentGoal =
-                //                 '2';
-                //           });
-                //           goalState.getSelectedParentGoal(
-                //               '2',
-                //               false,
-                //               context);
-                //         },
-                //         tileBorderColor: selectedParentGoal ==
-                //                 '2'
-                //             ? secondaryColor
-                //             : borderColor,
-                //         circleColor: selectedParentGoal ==
-                //                 '2'
-                //             ? secondaryColor
-                //             : trans,
-                //         title:
-                //             'Read 4 of self-improvement books within the next six mon...',
-                //       ),
-                //       sixteenVerticalSpace,
-                //       _optionTile(
-                //         onTap: () {
-                //           setState(() {
-                //             selectedParentGoal =
-                //                 '3';
-                //           });
-                //           goalState.getSelectedParentGoal(
-                //               '3',
-                //               false,
-                //               context);
-                //         },
-                //         tileBorderColor: selectedParentGoal ==
-                //                 '3'
-                //             ? secondaryColor
-                //             : borderColor,
-                //         circleColor: selectedParentGoal ==
-                //                 '3'
-                //             ? secondaryColor
-                //             : trans,
-                //         title:
-                //             'Explore and participate in adventurous activities.',
-                //       ),
-                //     ],
-                //   ),
-                // )
+                            tileBorderColor: selectedGoal == 'None'
+                                ? secondaryColor
+                                : borderColor,
+                            circleColor:
+                                selectedGoal == 'None' ? secondaryColor : trans,
+                            title: 'None'),
+                      )
+                    : Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: ListView.separated(
+                              itemBuilder: (_, index) {
+                                var item = goalState.allParentGoalList[index];
+                                return _optionTile(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedGoal = item.title;
+                                        selectedGoalId = item.id;
+                                      });
+                                      goalState.getSelectedParentGoal(
+                                          item.title, item.id, false, context);
+                                      goalState.getFilterType('');
+                                      goalState.getSubGoalList(selectedGoalId);
+                                      CustomDialog.bottomSheet(
+                                          context,
+                                          SelectSubGoalBottomSheet(
+                                            goalTitle: item.title,
+                                          ));
+                                     // Navigator.pop(context);
+                                    },
+                                    tileBorderColor: selectedGoal == item.title
+                                        ? secondaryColor
+                                        : borderColor,
+                                    circleColor: selectedGoal == item.title
+                                        ? secondaryColor
+                                        : trans,
+                                    title: item.title);
+                              },
+                              separatorBuilder: (_, index) =>
+                                  eightVerticalSpace,
+                              itemCount: goalState.allParentGoalList.length),
+                        ),
+                      ),
               ],
             );
           }),
@@ -232,40 +144,40 @@ class _SelectParentGoalBottomSheetState
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: tileBorderColor)),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 16,
-                  backgroundColor: assColor,
-                  child: CircleAvatar(
-                    radius: 6,
-                    backgroundColor: circleColor,
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: tileBorderColor)),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 16,
+                    backgroundColor: assColor,
+                    child: CircleAvatar(
+                      radius: 6,
+                      backgroundColor: circleColor,
+                    ),
                   ),
-                ),
-                eightHorizontalSpace,
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 1.6,
-                  child: Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
-                  ),
-                )
-              ],
+                  eightHorizontalSpace,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 1.6,
+                    child: Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: tTextStyleRegular.copyWith(
+                          fontSize: 16, color: black),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-        const Icon(Icons.arrow_forward_ios),
-      ],),
+          const Icon(Icons.arrow_forward_ios),
+        ],
+      ),
     );
   }
-
-
 }

@@ -243,7 +243,7 @@ class _SubGoalDetailsScreenState extends State<SubGoalDetailsScreen> {
               widget.goal.description, false),
           primaryVerticalSpace,
           _infoTile(goalIcon, AppLocalizations.of(context)!.parentgoal,
-              AppConstant.convertParentGoal(widget.goal.parentGoal), true),
+               widget.goal.parentGoal, true),
           primaryVerticalSpace,
           _infoTile(
               taskIcon, AppLocalizations.of(context)!.tasks, 'None', true),

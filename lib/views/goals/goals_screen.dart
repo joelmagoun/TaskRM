@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/models/goal.dart';
-import 'package:TaskRM/models/task.dart';
 import 'package:TaskRM/providers/goals_provider.dart';
 import 'package:TaskRM/utils/assets_path.dart';
 import 'package:TaskRM/utils/color.dart';
@@ -13,10 +12,8 @@ import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/views/goals/add_new_goal_%20bottomsheet.dart';
 import 'package:TaskRM/views/goals/goal_filter_bottomsheet.dart';
 import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
-import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../routes/routes.dart';
 
 
