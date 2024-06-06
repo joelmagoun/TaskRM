@@ -19,7 +19,7 @@ class SelectGoalBottomSheet extends StatefulWidget {
 }
 
 class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
-  late String selectedGoal = 'Select';
+  late String selectedGoal = '';
 
   @override
   Widget build(BuildContext context) {

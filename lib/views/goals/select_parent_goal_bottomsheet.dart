@@ -6,10 +6,13 @@ import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SelectParentGoalBottomSheet extends StatefulWidget {
-  final String parentGoal;
+import '../../utils/assets_path.dart';
+import '../../widgets/empty_widget.dart';
 
-  const SelectParentGoalBottomSheet({Key? key, required this.parentGoal})
+class SelectParentGoalBottomSheet extends StatefulWidget {
+  final String type;
+
+  const SelectParentGoalBottomSheet({Key? key, required this.type})
       : super(key: key);
 
   @override
@@ -19,7 +22,8 @@ class SelectParentGoalBottomSheet extends StatefulWidget {
 
 class _SelectParentGoalBottomSheetState
     extends State<SelectParentGoalBottomSheet> {
-  late String selectedParentGoal = widget.parentGoal;
+  // late String selectedParentGoal = widget.parentGoal;
+  late String selectedGoal = '';
 
   @override
   Widget build(BuildContext context) {
@@ -33,132 +37,185 @@ class _SelectParentGoalBottomSheetState
                   topRight: Radius.circular(24), topLeft: Radius.circular(24)),
               color: white),
           child: Consumer<GoalProvider>(builder: (_, goalState, child) {
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.clear,
-                              color: trans,
-                            )),
-                        Text(
-                          AppLocalizations.of(context)!.selectparentgoal,
-                          style: tTextStyle500.copyWith(
-                              fontSize: 20, color: black),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(
-                              Icons.clear,
-                              color: iconColor,
-                            )),
-                      ],
-                    ),
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.clear,
+                            color: trans,
+                          )),
+                      Text(
+                        AppLocalizations.of(context)!.selectparentgoal,
+                        style:
+                            tTextStyle500.copyWith(fontSize: 20, color: black),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.clear,
+                            color: iconColor,
+                          )),
+                    ],
                   ),
-                  const Divider(),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        _optionTile(
-                          onTap: () {
-                            setState(() {
-                              selectedParentGoal = '0';
-                            });
-                            goalState.getSelectedParentGoal(
-                                'None', false, context);
-                          },
-                          tileBorderColor: selectedParentGoal == '0'
-                              ? secondaryColor
-                              : borderColor,
-                          circleColor: selectedParentGoal == '0'
-                              ? secondaryColor
-                              : trans,
-                          title: 'None',
-                        ),
-                        sixteenVerticalSpace,
-                        _optionTile(
-                          onTap: () {
-                            setState(() {
-                              selectedParentGoal =
-                                  '1';
-                            });
+                ),
+                const Divider(),
 
-                            goalState.getSelectedParentGoal(
-                                '1',
-                                false,
-                                context);
-                          },
-                          tileBorderColor: selectedParentGoal ==
-                                  '1'
-                              ? secondaryColor
-                              : borderColor,
-                          circleColor: selectedParentGoal ==
-                                  '1'
-                              ? secondaryColor
-                              : trans,
-                          title:
-                              'Work towards obtaining certifications that are valuable...',
-                        ),
-                        eightVerticalSpace,
-                        _optionTile(
-                          onTap: () {
-                            setState(() {
-                              selectedParentGoal =
-                                  '2';
-                            });
-                            goalState.getSelectedParentGoal(
-                                '2',
-                                false,
-                                context);
-                          },
-                          tileBorderColor: selectedParentGoal ==
-                                  '2'
-                              ? secondaryColor
-                              : borderColor,
-                          circleColor: selectedParentGoal ==
-                                  '2'
-                              ? secondaryColor
-                              : trans,
-                          title:
-                              'Read 4 of self-improvement books within the next six mon...',
-                        ),
-                        sixteenVerticalSpace,
-                        _optionTile(
-                          onTap: () {
-                            setState(() {
-                              selectedParentGoal =
-                                  '3';
-                            });
-                            goalState.getSelectedParentGoal(
-                                '3',
-                                false,
-                                context);
-                          },
-                          tileBorderColor: selectedParentGoal ==
-                                  '3'
-                              ? secondaryColor
-                              : borderColor,
-                          circleColor: selectedParentGoal ==
-                                  '3'
-                              ? secondaryColor
-                              : trans,
-                          title:
-                              'Explore and participate in adventurous activities.',
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                /// new code ///
+                goalState.allGoalList.isEmpty
+                    ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: _optionTile(
+                      onTap: () {
+                        setState(() {
+                          selectedGoal = 'None';
+                        });
+                        goalState.getSelectedParentGoal(
+                            'None', '0', false, context);
+                        goalState.getFilterType('');
+                        goalState.getGoalList();
+                        Navigator.pop(context);
+                      },
+                      tileBorderColor:  selectedGoal == 'None'
+                          ? secondaryColor
+                          : borderColor,
+                      circleColor: selectedGoal == 'None'
+                          ? secondaryColor
+                          : trans,
+                      title: 'None'),
+                    )
+                    : Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ListView.separated(
+                            itemBuilder: (_, index) {
+                              var item = goalState.allGoalList[index];
+                              return _optionTile(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedGoal = item.title;
+                                    });
+                                    goalState.getSelectedParentGoal(
+                                        item.title, item.id, false, context);
+                                    goalState.getFilterType('');
+                                    goalState.getGoalList();
+                                    Navigator.pop(context);
+                                  },
+                                  tileBorderColor: selectedGoal == item.title
+                                      ? secondaryColor
+                                      : borderColor,
+                                  circleColor: selectedGoal == item.title
+                                      ? secondaryColor
+                                      : trans,
+                                  title: item.title);
+                            },
+                            separatorBuilder: (_, index) => eightVerticalSpace,
+                            itemCount: goalState.allGoalList.length),
+                  ),
+                ),
+
+                /// old code ///
+                // Padding(
+                //   padding: const EdgeInsets.all(16.0),
+                //   child: Column(
+                //     children: [
+                //       _optionTile(
+                //         onTap: () {
+                //           setState(() {
+                //             selectedParentGoal = '0';
+                //           });
+                //           goalState.getSelectedParentGoal(
+                //               'None', false, context);
+                //         },
+                //         tileBorderColor: selectedParentGoal == '0'
+                //             ? secondaryColor
+                //             : borderColor,
+                //         circleColor: selectedParentGoal == '0'
+                //             ? secondaryColor
+                //             : trans,
+                //         title: 'None',
+                //       ),
+                //       sixteenVerticalSpace,
+                //       _optionTile(
+                //         onTap: () {
+                //           setState(() {
+                //             selectedParentGoal =
+                //                 '1';
+                //           });
+                //
+                //           goalState.getSelectedParentGoal(
+                //               '1',
+                //               false,
+                //               context);
+                //         },
+                //         tileBorderColor: selectedParentGoal ==
+                //                 '1'
+                //             ? secondaryColor
+                //             : borderColor,
+                //         circleColor: selectedParentGoal ==
+                //                 '1'
+                //             ? secondaryColor
+                //             : trans,
+                //         title:
+                //             'Work towards obtaining certifications that are valuable...',
+                //       ),
+                //       eightVerticalSpace,
+                //       _optionTile(
+                //         onTap: () {
+                //           setState(() {
+                //             selectedParentGoal =
+                //                 '2';
+                //           });
+                //           goalState.getSelectedParentGoal(
+                //               '2',
+                //               false,
+                //               context);
+                //         },
+                //         tileBorderColor: selectedParentGoal ==
+                //                 '2'
+                //             ? secondaryColor
+                //             : borderColor,
+                //         circleColor: selectedParentGoal ==
+                //                 '2'
+                //             ? secondaryColor
+                //             : trans,
+                //         title:
+                //             'Read 4 of self-improvement books within the next six mon...',
+                //       ),
+                //       sixteenVerticalSpace,
+                //       _optionTile(
+                //         onTap: () {
+                //           setState(() {
+                //             selectedParentGoal =
+                //                 '3';
+                //           });
+                //           goalState.getSelectedParentGoal(
+                //               '3',
+                //               false,
+                //               context);
+                //         },
+                //         tileBorderColor: selectedParentGoal ==
+                //                 '3'
+                //             ? secondaryColor
+                //             : borderColor,
+                //         circleColor: selectedParentGoal ==
+                //                 '3'
+                //             ? secondaryColor
+                //             : trans,
+                //         title:
+                //             'Explore and participate in adventurous activities.',
+                //       ),
+                //     ],
+                //   ),
+                // )
+              ],
             );
           }),
         ));
@@ -204,4 +261,6 @@ class _SelectParentGoalBottomSheetState
       ),
     );
   }
+
+
 }

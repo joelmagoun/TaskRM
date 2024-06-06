@@ -443,47 +443,6 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               ),
               focusColor: primaryColor,
             )),
-        // InkWell(
-        //   onTap: () {
-        //     if (selectedType != '') {
-        //       goalState.getFilterType(selectedType);
-        //       goalState.getGoalList();
-        //       CustomDialog.bottomSheet(
-        //           context, SelectGoalBottomSheet(type: selectedType));
-        //       taskState.getSelectedGoal('Select', '', context);
-        //     } else {
-        //       CustomSnack.warningSnack('Please select task type.', context);
-        //     }
-        //   },
-        //   child: Container(
-        //     decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(12),
-        //       border: Border.all(color: borderColor),
-        //     ),
-        //     child: Padding(
-        //       padding: const EdgeInsets.all(16.0),
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           SizedBox(
-        //             width: MediaQuery.of(context).size.width / 1.4,
-        //             child: Text(
-        //               taskState.selectedGoal,
-        //               maxLines: 2,
-        //               overflow: TextOverflow.ellipsis,
-        //               style: tTextStyleRegular.copyWith(
-        //                   fontSize: 16, color: black),
-        //             ),
-        //           ),
-        //           const Icon(
-        //             Icons.keyboard_arrow_down_outlined,
-        //             color: iconColor,
-        //           )
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        // )
       ],
     );
   }

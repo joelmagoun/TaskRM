@@ -40,6 +40,39 @@ class GoalProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// for parent goal ///
+
+  // late String _selectedGoal = '';
+  //
+  // String get selectedGoal => _selectedGoal;
+  //
+  // late String _selectedGoalId = '';
+  //
+  // String get selectedGoalId => _selectedGoalId;
+  //
+  // getSelectedGoal(String goal, String goalId, BuildContext context) {
+  //   _selectedGoal = goal;
+  //   _selectedGoalId = goalId;
+  //   notifyListeners();
+  //   //Navigator.pop(context);
+  // }
+
+  late String _selectedParentGoal = '';
+
+  String get selectedParentGoal => _selectedParentGoal;
+
+  late String _selectedParentGoalId = '';
+
+  String get selectedParentGoalId => _selectedParentGoalId;
+
+  getSelectedParentGoal(String parentGoal, String parentGoalId, bool isInit,
+      BuildContext context) {
+    _selectedParentGoal = parentGoal;
+    _selectedParentGoalId = parentGoalId;
+    notifyListeners();
+    //isInit ? null : Navigator.pop(context);
+  }
+
   Future<void> getGoalList() async {
     try {
       _isGoalLoading = true;
@@ -104,16 +137,6 @@ class GoalProvider extends ChangeNotifier {
 
   bool get isGoalAdding => _isGoalAdding;
 
-  late String _selectedParentGoal = 'Select';
-
-  String get selectedParentGoal => _selectedParentGoal;
-
-  getSelectedParentGoal(String parentGoal, bool isInit, BuildContext context) {
-    _selectedParentGoal = parentGoal;
-    notifyListeners();
-    isInit ? null : Navigator.pop(context);
-  }
-
   Future<void> addNewGoal(String title, String description, String type,
       BuildContext context) async {
     try {
@@ -131,7 +154,7 @@ class GoalProvider extends ChangeNotifier {
             'userId': uid,
             'description': description,
             'type': type,
-            'parentGoal': _selectedParentGoal,
+            'parentGoal': _selectedParentGoalId,
             'createdAt': DateTime.now().toString()
           }).then((value) {
         Navigator.pop(context);
@@ -147,13 +170,12 @@ class GoalProvider extends ChangeNotifier {
     }
   }
 
-
   /// goal editing state ///
 
   late bool isGoalEditing = false;
 
-  Future<void> editGoal(String docId, String title, String description, String type,
-      BuildContext context) async {
+  Future<void> editGoal(String docId, String title, String description,
+      String type, BuildContext context) async {
     try {
       isGoalEditing = true;
       notifyListeners();
@@ -185,5 +207,4 @@ class GoalProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }
