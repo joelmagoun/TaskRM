@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import 'package:TaskRM/views/goals/select_parent_goal_bottomsheet.dart';
+import 'package:TaskRM/views/goals/select_parent_goal_screen.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../providers/goals_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../routes/routes.dart';
 import '../../utils/custom_snack.dart';
 import '../tasks/newTask/select_goal_bottom_sheet.dart';
 
@@ -243,10 +244,11 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
             readOnly: true,
             onTap: () {
               if (selectedType != '') {
-                goalState.getFilterType(selectedType);
-                goalState.getParentGoalList();
-                CustomDialog.bottomSheet(
-                    context, SelectParentGoalBottomSheet(type: selectedType));
+                Navigator.pushNamed(context, Routes.selectParentGoalScreen, arguments: selectedType);
+                // goalState.getFilterType(selectedType);
+                // goalState.getParentGoalList();
+                // CustomDialog.bottomSheet(
+                //     context, SelectParentGoalScreen(type: selectedType));
                // taskState.getSelectedGoal('', '', context);
               } else {
                 CustomSnack.warningSnack(AppLocalizations.of(context)!.selecttasktype, context);

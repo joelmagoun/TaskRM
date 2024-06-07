@@ -74,6 +74,7 @@ class GoalProvider extends ChangeNotifier {
     //isInit ? null : Navigator.pop(context);
   }
 
+  /// parent goals for goal screen ///
   Future<void> getParentGoalList() async {
     try {
       _isGoalLoading = true;
@@ -129,6 +130,61 @@ class GoalProvider extends ChangeNotifier {
       print(e.toString());
     } finally {
       _isGoalLoading = false;
+      notifyListeners();
+    }
+  }
+
+
+  late bool _isSelectorParentGoalLoading = false;
+
+  bool get isSelectorParentGoalLoading => _isSelectorParentGoalLoading;
+
+  late List<Goal> _selectorParentGoalList = [];
+
+  List<Goal> get selectorParentGoalList => _selectorParentGoalList;
+
+  /// parent goals for creating goal screen ///
+  Future<void> parentGoalListForCreatingGoal(String type) async {
+    try {
+      _isSelectorParentGoalLoading = true;
+      notifyListeners();
+
+      final uid = await AppStorage.getUserId();
+
+      final res = await db.listDocuments(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.goalCollectionId,
+          queries: [
+            Query.equal("userId", uid),
+            Query.equal("parentGoal", '0'),
+            Query.equal("type", type),
+          ]);
+
+      if (res.documents.isNotEmpty) {
+        _selectorParentGoalList.clear();
+        notifyListeners();
+
+        res.documents.forEach((e) {
+          _selectorParentGoalList.add(Goal(
+              id: e.$id ?? '',
+              title: e.data['title'] ?? '',
+              type: e.data['type'] ?? '',
+              description: e.data['description'] ?? '',
+              parentGoal: e.data['parentGoal'] ?? '',
+              isCompleted: false,
+              userId: e.data['userId'] ?? '',
+              createdAt: DateTime.parse(e.data['createdAt'])));
+          notifyListeners();
+        });
+      } else {
+        // CustomSnack.warningSnack('No task on your queue', context);
+        print('No task on your queue');
+      }
+    } catch (e) {
+      // CustomSnack.warningSnack(e.toString(), context);
+      print(e.toString());
+    } finally {
+      _isSelectorParentGoalLoading = false;
       notifyListeners();
     }
   }
@@ -198,6 +254,62 @@ class GoalProvider extends ChangeNotifier {
       print(e.toString());
     } finally {
       _isSubGoalLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// for sub goal list for select sub goal screen ///
+
+  late bool _isSelectorSubGoalLoading = false;
+
+  bool get isSelectorSubGoalLoading => _isSelectorSubGoalLoading;
+
+  late List<Goal> _selectorSubGoalList = [];
+
+  List<Goal> get selectorSubGoalList => _selectorSubGoalList;
+
+  Future<void> subGoalListForCreatingGoal(String parentGoalId, String type) async {
+    try {
+      _isSelectorSubGoalLoading = true;
+      notifyListeners();
+
+      final uid = await AppStorage.getUserId();
+
+      final res = await db.listDocuments(
+          databaseId: AppWriteConstant.primaryDBId,
+          collectionId: AppWriteConstant.goalCollectionId,
+          queries: [
+            Query.equal("userId", uid),
+            Query.equal("parentGoal", parentGoalId),
+            Query.equal("type", type),
+          ]);
+
+      if (res.documents.isNotEmpty) {
+        _selectorSubGoalList.clear();
+        notifyListeners();
+
+        res.documents.forEach((e) {
+          _selectorSubGoalList.add(Goal(
+              id: e.$id ?? '',
+              title: e.data['title'] ?? '',
+              type: e.data['type'] ?? '',
+              description: e.data['description'] ?? '',
+              parentGoal: e.data['parentGoal'] ?? '',
+              isCompleted: false,
+              userId: e.data['userId'] ?? '',
+              createdAt: DateTime.parse(e.data['createdAt'])));
+          notifyListeners();
+        });
+        print('sub goal list ${_selectorSubGoalList.length}');
+      } else {
+        // CustomSnack.warningSnack('No task on your queue', context);
+        print('No task on your queue');
+      }
+    } catch (e) {
+      // CustomSnack.warningSnack(e.toString(), context);
+      print(e.toString());
+    } finally {
+      _isSelectorSubGoalLoading = false;
       notifyListeners();
     }
   }
@@ -289,6 +401,9 @@ class GoalProvider extends ChangeNotifier {
         Navigator.pop(context);
         CustomSnack.successSnack('Goal added successfully.', context);
         getParentGoalList();
+        _selectedParentGoal = '';
+        _selectedParentGoalId = '';
+        notifyListeners();
       });
       notifyListeners();
     } catch (e) {

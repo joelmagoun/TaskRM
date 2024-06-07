@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import 'package:TaskRM/views/goals/select_parent_goal_bottomsheet.dart';
+import 'package:TaskRM/views/goals/select_parent_goal_screen.dart';
 import '../../../../models/goal.dart';
 import '../../../../providers/goals_provider.dart';
 import '../../../../utils/color.dart';
@@ -252,7 +252,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
           onTap: () {
             CustomDialog.bottomSheet(
                 context,
-                SelectParentGoalBottomSheet(
+                SelectParentGoalScreen(
                   type: widget.goal.type,
                 ));
           },
