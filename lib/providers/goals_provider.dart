@@ -300,7 +300,7 @@ class GoalProvider extends ChangeNotifier {
               createdAt: DateTime.parse(e.data['createdAt'])));
           notifyListeners();
         });
-        print('sub goal list ${_selectorSubGoalList.length}');
+
       } else {
         // CustomSnack.warningSnack('No task on your queue', context);
         print('No task on your queue');
@@ -361,6 +361,7 @@ class GoalProvider extends ChangeNotifier {
               goal: e.data['goal'] ?? ''));
           notifyListeners();
         });
+        print('all task list with goal ${_allGoalTaskList.length}');
       } else {
         //CustomSnack.warningSnack('No task on your queue', context);
       }

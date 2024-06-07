@@ -160,15 +160,26 @@ class _SubGoalDetailsScreenState extends State<SubGoalDetailsScreen> {
               goalId: item.id,
               onLongPress: () {},
               onTap: () {
-                // Navigator.pushNamed(context, Routes.goalDetails,
-                //     arguments: Goal(
-                //         id: item.id,
-                //         title: item.title,
-                //         type: item.type,
-                //         description: item.description,
-                //         parentGoal: item.parentGoal,
-                //         isCompleted: item.isCompleted,
-                //         userId: item.userId));
+                goalState.getSubGoalList(widget.goal.id).then((value) {
+                  if(goalState.allSubGoalList.isEmpty){
+                    return null;
+                  }else{
+                    goalState.getAllGoalTaskList(widget.goal.id);
+
+                    Navigator.pushNamed(context, Routes.goalDetails,
+                        arguments: Goal(
+                            id: item.id,
+                            title: item.title,
+                            type: item.type,
+                            description: item.description,
+                            parentGoal: item.parentGoal,
+                            isCompleted: item.isCompleted,
+                            userId: item.userId));
+                  }
+                });
+
+
+
               },
               title: item.title,
               isTimeTracking: false,
