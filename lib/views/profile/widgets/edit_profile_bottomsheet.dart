@@ -402,6 +402,42 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                               ? lithuaniaFlag
                               : profileState.language == 'lv'
                               ? latviaFlag
+                              : profileState.language == 'mk'
+                              ? macedoniaFlag
+                              : profileState.language == 'ne'
+                              ? nepalFlag
+                              : profileState.language == 'nl'
+                              ? netherlandsFlag
+                              : profileState.language == 'pa'
+                              ? punjabFlag
+                              : profileState.language == 'pl'
+                              ? polandFlag
+                              : profileState.language == 'pt'
+                              ? portugalFlag
+                              : profileState.language == 'ro'
+                              ? romaniaFlag
+                              : profileState.language == 'ru'
+                              ? russiaFlag
+                              : profileState.language == 'sl'
+                              ? sloveniaFlag
+                              : profileState.language == 'sv'
+                              ? swedenFlag
+                              : profileState.language == 'ta'
+                              ? tamilFlag
+                              : profileState.language == 'te'
+                              ? teluguFlag
+                              : profileState.language == 'th'
+                              ? thailandFlag
+                              : profileState.language == 'tr'
+                              ? turkeyFlag
+                              : profileState.language == 'uk'
+                              ? ukraineFlag
+                              : profileState.language == 'ur'
+                              ? pakistanFlag
+                              : profileState.language == 'vi'
+                              ? vietnamFlag
+                              : profileState.language == 'zh'
+                              ? chinaFlag
                               : norwegianFlag,
                   height: 32,
                   width: 32,
@@ -469,6 +505,42 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                                   ? Languages.lithuanian
                                   : profileState.language == 'lv'
                                   ? Languages.latvian
+                                  : profileState.language == 'mk'
+                                  ? Languages.macedonian
+                                  : profileState.language == 'ne'
+                                  ? Languages.nepali
+                                  : profileState.language == 'nl'
+                                  ? Languages.dutch
+                                  : profileState.language == 'pa'
+                                  ? Languages.panjabi
+                                  : profileState.language == 'pl'
+                                  ? Languages.polish
+                                  : profileState.language == 'pt'
+                                  ? Languages.portuguese
+                                  : profileState.language == 'ro'
+                                  ? Languages.romanian
+                                  : profileState.language == 'ru'
+                                  ? Languages.russian
+                                  : profileState.language == 'sl'
+                                  ? Languages.slovenian
+                                  : profileState.language == 'sv'
+                                  ? Languages.swedish
+                                  : profileState.language == 'ta'
+                                  ? Languages.tamil
+                                  : profileState.language == 'te'
+                                  ? Languages.telugu
+                                  : profileState.language == 'th'
+                                  ? Languages.thai
+                                  : profileState.language == 'tr'
+                                  ? Languages.turkish
+                                  : profileState.language == 'uk'
+                                  ? Languages.ukrainian
+                                  : profileState.language == 'ur'
+                                  ? Languages.urdu
+                                  : profileState.language == 'vi'
+                                  ? Languages.vietnamese
+                                  : profileState.language == 'zh'
+                                  ? Languages.chineseSimplified
                                   : Languages.english,
                       languages: [
                         Languages.english,
@@ -501,7 +573,25 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                         Languages.korean,
                         Languages.lao,
                         Languages.lithuanian,
-                        Languages.latvian
+                        Languages.latvian,
+                        Languages.macedonian,
+                        Languages.nepali,
+                        Languages.dutch,
+                        Languages.panjabi,
+                        Languages.polish,
+                        Languages.portuguese,
+                        Languages.romanian,
+                        Languages.russian,
+                        Languages.slovenian,
+                        Languages.swedish,
+                        Languages.tamil,
+                        Languages.telugu,
+                        Languages.thai,
+                        Languages.turkish,
+                        Languages.ukrainian,
+                        Languages.urdu,
+                        Languages.vietnamese,
+                        Languages.chineseSimplified
                       ],
                       onValuePicked: (language) {
                         profileState.changeLanguage(language.isoCode);

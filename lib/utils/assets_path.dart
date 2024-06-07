@@ -42,6 +42,24 @@ const koreaFlag = 'assets/images/flags/ko.png';
 const laosFlag = 'assets/images/flags/lo.png';
 const lithuaniaFlag = 'assets/images/flags/lt.png';
 const latviaFlag = 'assets/images/flags/lv.png';
+const macedoniaFlag = 'assets/images/flags/mk.png';
+const nepalFlag = 'assets/images/flags/ne.png';
+const netherlandsFlag = 'assets/images/flags/nl.png';
+const punjabFlag = 'assets/images/flags/pa.png';
+const polandFlag = 'assets/images/flags/pl.png';
+const portugalFlag = 'assets/images/flags/pt.png';
+const romaniaFlag = 'assets/images/flags/ro.png';
+const russiaFlag = 'assets/images/flags/ru.png';
+const sloveniaFlag = 'assets/images/flags/sl.png';
+const swedenFlag = 'assets/images/flags/sv.png';
+const tamilFlag = 'assets/images/flags/ta.png';
+const teluguFlag = 'assets/images/flags/te.png';
+const thailandFlag = 'assets/images/flags/th.png';
+const turkeyFlag = 'assets/images/flags/tr.png';
+const ukraineFlag = 'assets/images/flags/uk.png';
+const pakistanFlag = 'assets/images/flags/ur.png';
+const vietnamFlag = 'assets/images/flags/vi.png';
+const chinaFlag = 'assets/images/flags/zh.png';
 
 
 /// svg paths ///
