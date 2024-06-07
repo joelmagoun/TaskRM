@@ -60,6 +60,16 @@ const ukraineFlag = 'assets/images/flags/uk.png';
 const pakistanFlag = 'assets/images/flags/ur.png';
 const vietnamFlag = 'assets/images/flags/vi.png';
 const chinaFlag = 'assets/images/flags/zh.png';
+const bulgariaFlag = 'assets/images/flags/bg.png';
+const gujaratiFlag = 'assets/images/flags/gu.png';
+const georgiaFlag = 'assets/images/flags/ka.png';
+const kazakhFlag = 'assets/images/flags/kk.png';
+const cambodiaFlag = 'assets/images/flags/km.png';
+const kyrgyzFlag = 'assets/images/flags/ky.png';
+const slovakiaFlag = 'assets/images/flags/sk.png';
+const kenyaFlag = 'assets/images/flags/sw.png';
+const tagalogFlag = 'assets/images/flags/tl.png';
+const zuluFlag = 'assets/images/flags/zu.png';
 
 
 /// svg paths ///

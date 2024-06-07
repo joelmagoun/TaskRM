@@ -438,6 +438,26 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                               ? vietnamFlag
                               : profileState.language == 'zh'
                               ? chinaFlag
+                              : profileState.language == 'bg'
+                              ? bulgariaFlag
+                              : profileState.language == 'gu'
+                              ? gujaratiFlag
+                              : profileState.language == 'ka'
+                              ? georgiaFlag
+                              : profileState.language == 'kk'
+                              ? kazakhFlag
+                              : profileState.language == 'km'
+                              ? cambodiaFlag
+                              : profileState.language == 'ky'
+                              ? kyrgyzFlag
+                              : profileState.language == 'sk'
+                              ? slovakiaFlag
+                              : profileState.language == 'sw'
+                              ? kenyaFlag
+                              : profileState.language == 'tl'
+                              ? tagalogFlag
+                              : profileState.language == 'zu'
+                              ? zuluFlag
                               : norwegianFlag,
                   height: 32,
                   width: 32,
@@ -541,49 +561,77 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                                   ? Languages.vietnamese
                                   : profileState.language == 'zh'
                                   ? Languages.chineseSimplified
+                                  : profileState.language == 'bg'
+                                  ? Languages.bulgarian
+                                  : profileState.language == 'gu'
+                                  ? Languages.gujarati
+                                  : profileState.language == 'ka'
+                                  ? Languages.georgian
+                                  : profileState.language == 'kk'
+                                  ? Languages.kazakh
+                                  : profileState.language == 'km'
+                                  ? Languages.centralKhmer
+                                  : profileState.language == 'ky'
+                                  ? Languages.kirghiz
+                                  : profileState.language == 'sk'
+                                  ? Languages.slovak
+                                  : profileState.language == 'sw'
+                                  ? Languages.swahili
+                                  : profileState.language == 'tl'
+                                  ? Languages.tagalog
+                                  : profileState.language == 'zu'
+                                  ? Languages.zulu
                                   : Languages.english,
                       languages: [
-                        Languages.english,
-                        Languages.icelandic,
-                        Languages.german,
-                        Languages.norwegian,
-                        Languages.italian,
                         Languages.afrikaans,
-                        Languages.bengali,
-                        Languages.catalan,
-                        Languages.czech,
-                        Languages.welsh,
-                        Languages.danish,
-                        Languages.greek,
-                        Languages.spanish,
-                        Languages.estonian,
+                        Languages.armenian,
                         Languages.basque,
-                        Languages.persian,
+                        Languages.bengali,
+                        Languages.bulgarian,
+                        Languages.catalan,
+                        Languages.croatian,
+                        Languages.czech,
+                        Languages.danish,
+                        Languages.dutch,
+                        Languages.english,
+                        Languages.estonian,
                         Languages.finnish,
                         Languages.french,
+                        Languages.german,
                         Languages.galician,
+                        Languages.georgian,
+                        Languages.greek,
+                        Languages.gujarati,
+                        Languages.icelandic,
+                        Languages.italian,
                         Languages.hebrew,
                         Languages.hindi,
-                        Languages.croatian,
                         Languages.hungarian,
-                        Languages.armenian,
                         Languages.indonesian,
                         Languages.japanese,
                         Languages.kannada,
+                        Languages.kazakh,
+                        Languages.centralKhmer,
+                        Languages.kirghiz,
                         Languages.korean,
                         Languages.lao,
                         Languages.lithuanian,
                         Languages.latvian,
                         Languages.macedonian,
+                        Languages.norwegian,
                         Languages.nepali,
-                        Languages.dutch,
+                        Languages.persian,
                         Languages.panjabi,
                         Languages.polish,
                         Languages.portuguese,
                         Languages.romanian,
                         Languages.russian,
+                        Languages.spanish,
                         Languages.slovenian,
+                        Languages.slovak,
+                        Languages.swahili,
                         Languages.swedish,
+                        Languages.tagalog,
                         Languages.tamil,
                         Languages.telugu,
                         Languages.thai,
@@ -591,7 +639,11 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                         Languages.ukrainian,
                         Languages.urdu,
                         Languages.vietnamese,
-                        Languages.chineseSimplified
+                        Languages.slovak,
+                        Languages.swahili,
+                        Languages.tagalog,
+                        Languages.welsh,
+                        Languages.zulu
                       ],
                       onValuePicked: (language) {
                         profileState.changeLanguage(language.isoCode);
