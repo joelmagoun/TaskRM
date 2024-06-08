@@ -147,11 +147,11 @@ class _SubGoalDetailsScreenState extends State<SubGoalDetailsScreen> {
   Widget _goalsBody() {
     final goalState = Provider.of<GoalProvider>(context, listen: false);
     if (goalState.allSubGoalList.isEmpty) {
-      return EmptyWidget(
+      return const EmptyWidget(
           icon: goalIcon,
-          title: AppLocalizations.of(context)!.emptygoalstitle,
+          title: 'No sub-goals',
           subTitle:
-          AppLocalizations.of(context)!.emptygoalssubtitle);
+          'You can add sub-goals by editing other goals or adding new ones');
     } else {
       return ListView.separated(
           itemBuilder: (_, index) {
@@ -165,7 +165,6 @@ class _SubGoalDetailsScreenState extends State<SubGoalDetailsScreen> {
                     return null;
                   }else{
                     goalState.getAllGoalTaskList(widget.goal.id);
-
                     Navigator.pushNamed(context, Routes.goalDetails,
                         arguments: Goal(
                             id: item.id,

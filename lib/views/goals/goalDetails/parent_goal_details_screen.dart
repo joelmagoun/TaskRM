@@ -37,6 +37,7 @@ class _ParentGoalDetailsScreenState extends State<ParentGoalDetailsScreen> {
     final goalState = Provider.of<GoalProvider>(context, listen: false);
     goalState.getSubGoalList(widget.goal.id).then((value) {
       goalState.getAllGoalTaskList(widget.goal.id);
+      goalState.getAllGoalDetails(widget.goal.id);
     });
     super.initState();
   }
@@ -58,7 +59,7 @@ class _ParentGoalDetailsScreenState extends State<ParentGoalDetailsScreen> {
                   style: tTextStyle500.copyWith(fontSize: 14, color: iconColor),
                 ),
                 Text(
-                  widget.goal.title,
+                  goalState.title,
                   style: tTextStyle500.copyWith(
                       fontSize: 20, color: textPrimaryColor),
                 ),
@@ -151,11 +152,11 @@ class _ParentGoalDetailsScreenState extends State<ParentGoalDetailsScreen> {
   Widget _goalsBody() {
     final goalState = Provider.of<GoalProvider>(context, listen: false);
     if (goalState.allSubGoalList.isEmpty) {
-      return EmptyWidget(
+      return const EmptyWidget(
           icon: goalIcon,
-          title: AppLocalizations.of(context)!.emptygoalstitle,
+          title: 'No goals',
           subTitle:
-          AppLocalizations.of(context)!.emptygoalssubtitle);
+          'You can add goals by editing other goals or adding new ones');
     } else {
       return ListView.separated(
           itemBuilder: (_, index) {
@@ -164,15 +165,23 @@ class _ParentGoalDetailsScreenState extends State<ParentGoalDetailsScreen> {
               goalId: item.id,
               onLongPress: () {},
               onTap: () {
-                Navigator.pushNamed(context, Routes.subGoalDetailsScreen,
-                    arguments: Goal(
-                        id: item.id,
-                        title: item.title,
-                        type: item.type,
-                        description: item.description,
-                        parentGoal: item.parentGoal,
-                        isCompleted: item.isCompleted,
-                        userId: item.userId));
+
+                print('parent goal id ${widget.goal.id}');
+               // final goalState = Provider.of<GoalProvider>(context, listen: false);
+                goalState.getSubGoalList(item.id).then((value) {
+                  goalState.getAllGoalTaskList(item.id);
+                  goalState.getAllGoalDetails(item.id);
+                });
+
+                // Navigator.pushNamed(context, Routes.subGoalDetailsScreen,
+                //     arguments: Goal(
+                //         id: item.id,
+                //         title: item.title,
+                //         type: item.type,
+                //         description: item.description,
+                //         parentGoal: item.parentGoal,
+                //         isCompleted: item.isCompleted,
+                //         userId: item.userId));
               },
               title: item.title,
               isTimeTracking: false,
@@ -234,20 +243,21 @@ class _ParentGoalDetailsScreenState extends State<ParentGoalDetailsScreen> {
   }
 
   Widget _detailsBody() {
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
      return SingleChildScrollView(
       child: Column(
         children: [
           _infoTile(typeIcon, AppLocalizations.of(context)!.type,
-              AppConstant.convertType(context, widget.goal.type), false),
+              AppConstant.convertType(context, goalState.type), false),
           primaryVerticalSpace,
           //_infoTile(timeFrameIcon, AppLocalizations.of(context)!.timeframe,
           //    " widget.goal.timeFrame", false),
           //primaryVerticalSpace,
           _infoTile(descriptionIcon, AppLocalizations.of(context)!.description,
-              widget.goal.description, false),
+              goalState.description, false),
           primaryVerticalSpace,
           _infoTile(goalIcon, AppLocalizations.of(context)!.parentgoal,
-              AppConstant.convertParentGoal(widget.goal.parentGoal), true),
+               goalState.parentGoal, true),
           primaryVerticalSpace,
           _infoTile(
               taskIcon, AppLocalizations.of(context)!.tasks, 'None', true),
