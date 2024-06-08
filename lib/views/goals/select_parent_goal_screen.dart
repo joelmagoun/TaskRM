@@ -79,7 +79,7 @@ class _SelectParentGoalScreenState extends State<SelectParentGoalScreen> {
                           goalState.getSelectedParentGoal(
                               item.title, item.id, false, context);
                           goalState.getFilterType('');
-                          Navigator.pushNamed(context, Routes.selectSubGoalScreen,   arguments: {
+                          Navigator.pushNamed(context, Routes.selectSubGoalScreen, arguments: {
                             'goalTitle': selectedGoal,
                             'parentGoalId': selectedGoalId,
                             'type': widget.type,
