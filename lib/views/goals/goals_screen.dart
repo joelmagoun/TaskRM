@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/models/goal.dart';
-import 'package:TaskRM/models/task.dart';
 import 'package:TaskRM/providers/goals_provider.dart';
 import 'package:TaskRM/utils/assets_path.dart';
 import 'package:TaskRM/utils/color.dart';
@@ -13,9 +12,9 @@ import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/views/goals/add_new_goal_%20bottomsheet.dart';
 import 'package:TaskRM/views/goals/goal_filter_bottomsheet.dart';
 import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
-import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../routes/routes.dart';
 
 
 class GoalsScreen extends StatelessWidget {
@@ -33,7 +32,7 @@ class GoalsScreen extends StatelessWidget {
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
-            if (goalState.allGoalList.isNotEmpty ||
+            if (goalState.allParentGoalList.isNotEmpty ||
                 goalState.selectedFilterType != '')
               InkWell(
                   onTap: () {
@@ -43,7 +42,7 @@ class GoalsScreen extends StatelessWidget {
                   child: SvgPicture.asset(filterIcon))
             else
               const SizedBox.shrink(),
-            goalState.allGoalList.isNotEmpty
+            goalState.allParentGoalList.isNotEmpty
                 ? IconButton(
                     onPressed: () {
                       CustomDialog.bottomSheet(
@@ -76,7 +75,7 @@ class GoalsScreen extends StatelessWidget {
         color: primaryColor,
       ));
     } else {
-      if (goalState.allGoalList.isEmpty) {
+      if (goalState.allParentGoalList.isEmpty) {
         if (goalState.selectedFilterType == '') {
           return Center(
             child: Column(
@@ -121,7 +120,7 @@ class GoalsScreen extends StatelessWidget {
                       IconButton(
                           onPressed: () async {
                             goalState.getFilterType('');
-                            await goalState.getGoalList();
+                            await goalState.getParentGoalList();
                           },
                           icon: const Icon(
                             Icons.clear,
@@ -148,10 +147,21 @@ class GoalsScreen extends StatelessWidget {
         if (goalState.selectedFilterType == '') {
           return ListView.separated(
               itemBuilder: (_, index) {
-                var item = goalState.allGoalList[index];
+                var item = goalState.allParentGoalList[index];
                 return GoalTile(
                   goalId: item.id,
                   onLongPress: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.goalDetails,
+                        arguments: Goal(
+                            id: item.id,
+                            title: item.title,
+                            type: item.type,
+                            description: item.description,
+                            parentGoal: item.parentGoal,
+                            isCompleted: item.isCompleted,
+                            userId: item.userId));
+                  },
                   title: item.title,
                   isTimeTracking: false,
                   time: '00',
@@ -171,7 +181,7 @@ class GoalsScreen extends StatelessWidget {
                 );
               },
               separatorBuilder: (_, index) => eightVerticalSpace,
-              itemCount: goalState.allGoalList.length);
+              itemCount: goalState.allParentGoalList.length);
         } else {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +204,7 @@ class GoalsScreen extends StatelessWidget {
                       IconButton(
                           onPressed: () async {
                             goalState.getFilterType('');
-                            await goalState.getGoalList();
+                            await goalState.getParentGoalList();
                           },
                           icon: const Icon(
                             Icons.clear,
@@ -208,10 +218,21 @@ class GoalsScreen extends StatelessWidget {
               Expanded(
                 child: ListView.separated(
                     itemBuilder: (_, index) {
-                      var item = goalState.allGoalList[index];
+                      var item = goalState.allParentGoalList[index];
                       return GoalTile(
                         goalId: item.id,
                         onLongPress: () {},
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.goalDetails,
+                              arguments: Goal(
+                                  id: item.id,
+                                  title: item.title,
+                                  type: item.type,
+                                  description: item.description,
+                                  parentGoal: item.parentGoal,
+                                  isCompleted: item.isCompleted,
+                                  userId: item.userId));
+                        },
                         title: item.title,
                         isTimeTracking: false,
                         time: '00',
@@ -256,7 +277,7 @@ class GoalsScreen extends StatelessWidget {
                       // );
                     },
                     separatorBuilder: (_, index) => eightVerticalSpace,
-                    itemCount: goalState.allGoalList.length),
+                    itemCount: goalState.allParentGoalList.length),
               )
             ],
           );

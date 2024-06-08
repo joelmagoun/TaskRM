@@ -19,7 +19,7 @@ class SelectGoalBottomSheet extends StatefulWidget {
 }
 
 class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
-  late String selectedGoal = 'Select';
+  late String selectedGoal = '';
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +67,12 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: goalState.allGoalList.isEmpty
+                    child: goalState.allParentGoalList.isEmpty
                         ? EmptyWidget(
                             icon: goalIcon, title: AppLocalizations.of(context)!.sorry, subTitle: AppLocalizations.of(context)!.nomatchinggoalstt)
                         : ListView.separated(
                             itemBuilder: (_, index) {
-                              var item = goalState.allGoalList[index];
+                              var item = goalState.allParentGoalList[index];
                               return _optionTile(
                                   onTap: () {
 
@@ -82,7 +82,7 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                                     taskState.getSelectedGoal(
                                         item.title, item.id, context);
                                     goalState.getFilterType('');
-                                    goalState.getGoalList();
+                                    goalState.getParentGoalList();
                                     Navigator.pop(context);
 
                                   },
@@ -95,7 +95,7 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                                   title: item.title);
                             },
                             separatorBuilder: (_, index) => eightVerticalSpace,
-                            itemCount: goalState.allGoalList.length),
+                            itemCount: goalState.allParentGoalList.length),
                   ),
                 ),
               ],

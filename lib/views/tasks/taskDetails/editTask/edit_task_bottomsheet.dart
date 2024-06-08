@@ -415,7 +415,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
           onTap: () {
             if (selectedType != '') {
               goalState.getFilterType(selectedType);
-              goalState.getGoalList();
+              goalState.getParentGoalList();
               CustomDialog.bottomSheet(
                   context, SelectGoalBottomSheet(type: selectedType));
               taskState.getSelectedGoal( widget.task.goal, widget.task.goalId!, context);

@@ -26,7 +26,6 @@ class AppConstant{
 
 
   /// time frame list ///
-
   static final List<String> timeFrameList = [
     '0',
     '1',
@@ -39,7 +38,6 @@ class AppConstant{
   ];
 
   /// type list ///
-
   static final List<String> typeList = ['1', '2', '3'];
 
   /// convert type ///
@@ -110,7 +108,6 @@ class AppConstant{
 
 
   /// user image url ///
-
   static String userImageUrl = '';
 
  /// base url ///

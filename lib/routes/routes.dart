@@ -8,6 +8,9 @@ class Routes {
   static const String profile = "profile_screen";
   static const String jiraCollectionScreen = 'jira_collection_screen';
   static const String jiraInformationScreen = 'jira_information_screen';
+  static const String subGoalDetailsScreen = 'sub_goal_details_screen';
+  static const String selectParentGoalScreen = 'select_parent_goal_screen';
+  static const String selectSubGoalScreen = 'select_sub_goal_screen';
 
 
   static const String todayTasksList = "today_tasks_list";

@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import 'package:TaskRM/views/goals/select_parent_goal_bottomsheet.dart';
+import 'package:TaskRM/views/goals/select_parent_goal_screen.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../providers/goals_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../routes/routes.dart';
+import '../../utils/custom_snack.dart';
+import '../tasks/newTask/select_goal_bottom_sheet.dart';
 
 class AddNewGoalBottomSheet extends StatefulWidget {
   const AddNewGoalBottomSheet({
@@ -35,7 +39,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Consumer<GoalProvider>(builder: (_, _goalState, child) {
+          child: Consumer<GoalProvider>(builder: (_, goalState, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -235,44 +239,79 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         eightVerticalSpace,
-        InkWell(
-          onTap: () {
-            CustomDialog.bottomSheet(
-                context,
-                const SelectParentGoalBottomSheet(
-                  parentGoal: '',
-                ));
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: borderColor),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 1.4,
-                    child: Text(
-                      AppConstant.convertParentGoal(
-                          goalState.selectedParentGoal),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: tTextStyleRegular.copyWith(
-                          fontSize: 16, color: black),
-                    ),
-                  ),
-                  const Icon(
-                    Icons.keyboard_arrow_down_outlined,
-                    color: iconColor,
-                  )
-                ],
+        TextFormField(
+            controller: TextEditingController(text: goalState.selectedParentGoal),
+            readOnly: true,
+            onTap: () {
+              if (selectedType != '') {
+                Navigator.pushNamed(context, Routes.selectParentGoalScreen, arguments: selectedType);
+                // goalState.getFilterType(selectedType);
+                // goalState.getParentGoalList();
+                // CustomDialog.bottomSheet(
+                //     context, SelectParentGoalScreen(type: selectedType));
+               // taskState.getSelectedGoal('', '', context);
+              } else {
+                CustomSnack.warningSnack(AppLocalizations.of(context)!.selecttasktype, context);
+              }
+            },
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: white,
+              contentPadding: const EdgeInsets.all(12),
+              hintText: AppLocalizations.of(context)!.selectgoal,
+              hintStyle: hintTextStyle,
+              suffixIcon: const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: iconColor,
               ),
-            ),
-          ),
-        )
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide(color: borderColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide(color: borderColor),
+              ),
+              focusColor: primaryColor,
+            )),
+        // InkWell(
+        //   onTap: () {
+        //     // CustomDialog.bottomSheet(
+        //     //     context,
+        //     //     const SelectParentGoalBottomSheet(
+        //     //       parentGoal: '',
+        //     //     ));
+        //   },
+        //   child: Container(
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(12),
+        //       border: Border.all(color: borderColor),
+        //     ),
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(16.0),
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           SizedBox(
+        //             width: MediaQuery.of(context).size.width / 1.4,
+        //             child: Text(
+        //               AppConstant.convertParentGoal(
+        //                   goalState.selectedParentGoal),
+        //               maxLines: 2,
+        //               overflow: TextOverflow.ellipsis,
+        //               style: tTextStyleRegular.copyWith(
+        //                   fontSize: 16, color: black),
+        //             ),
+        //           ),
+        //           const Icon(
+        //             Icons.keyboard_arrow_down_outlined,
+        //             color: iconColor,
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // )
       ],
     );
   }

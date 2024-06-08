@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import 'package:TaskRM/views/goals/select_parent_goal_bottomsheet.dart';
+import 'package:TaskRM/views/goals/select_parent_goal_screen.dart';
 import '../../../../models/goal.dart';
 import '../../../../providers/goals_provider.dart';
 import '../../../../utils/color.dart';
@@ -32,7 +32,8 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
   @override
   void initState() {
     final goalState = Provider.of<GoalProvider>(context, listen: false);
-    goalState.getSelectedParentGoal(widget.goal.parentGoal, true, context);
+    goalState.getSelectedParentGoal(
+        widget.goal.parentGoal, widget.goal.id, true, context);
     super.initState();
   }
 
@@ -182,10 +183,8 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
                 selectedType = '2';
               });
             },
-            tileBorderColor:
-                selectedType == '2' ? borderColor : trans,
-            circleColor:
-                selectedType == '2' ? secondaryColor : trans,
+            tileBorderColor: selectedType == '2' ? borderColor : trans,
+            circleColor: selectedType == '2' ? secondaryColor : trans,
             title: AppLocalizations.of(context)!.personalproject),
         eightVerticalSpace,
         _optionTile(
@@ -220,8 +219,7 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
               filled: true,
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
-              hintText:
-                  AppLocalizations.of(context)!.descriptiontxt,
+              hintText: AppLocalizations.of(context)!.descriptiontxt,
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -254,8 +252,8 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
           onTap: () {
             CustomDialog.bottomSheet(
                 context,
-                SelectParentGoalBottomSheet(
-                  parentGoal: widget.goal.parentGoal,
+                SelectParentGoalScreen(
+                  type: widget.goal.type,
                 ));
           },
           child: Container(
@@ -271,7 +269,8 @@ class _EditGoalBottomSheetState extends State<EditGoalBottomSheet> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 1.4,
                     child: Text(
-                      AppConstant.convertParentGoal(goalState.selectedParentGoal),
+                      AppConstant.convertParentGoal(
+                          goalState.selectedParentGoal),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: tTextStyleRegular.copyWith(

@@ -11,6 +11,7 @@ import 'package:TaskRM/views/tasks/newTask/select_goal_bottom_sheet.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../routes/routes.dart';
 import '../../../utils/assets_path.dart';
 
 class AddNewTaskBottomSheet extends StatefulWidget {
@@ -28,6 +29,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
   late String selectedPriority = '';
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+
   //final TextEditingController _jiraIssueController = TextEditingController();
 
   @override
@@ -42,7 +44,8 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Consumer<TaskProvider>(builder: (_, taskState, child) {
+          child: Consumer2<TaskProvider, GoalProvider>(
+              builder: (_, taskState, goalState, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -75,6 +78,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
 
   Widget _header(BuildContext context) {
     final taskState = Provider.of<TaskProvider>(context, listen: false);
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -98,12 +102,11 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                   selectedPriority != null &&
                   selectedTime != null &&
                   _titleController.text.trim().isNotEmpty &&
-                  _descriptionController.text.trim().isNotEmpty &&
-                  taskState.selectedGoal.trim().isNotEmpty) {
+                  _descriptionController.text.trim().isNotEmpty) {
                 await taskState.addNewTask(
                     _titleController.text,
                     selectedType,
-                    taskState.selectedGoalId,
+                    goalState.selectedParentGoalId,
                     selectedPriority,
                     selectedTime,
                     _descriptionController.text,
@@ -195,10 +198,8 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 selectedType = '2';
               });
             },
-            tileBorderColor:
-                selectedType == '2' ? borderColor : trans,
-            circleColor:
-                selectedType == '2' ? secondaryColor : trans,
+            tileBorderColor: selectedType == '2' ? borderColor : trans,
+            circleColor: selectedType == '2' ? secondaryColor : trans,
             title: AppLocalizations.of(context)!.personalproject),
         eightVerticalSpace,
         _optionTile(
@@ -232,10 +233,8 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 selectedPriority = '1';
               });
             },
-            tileBorderColor:
-                selectedPriority == '1' ? borderColor : trans,
-            circleColor:
-                selectedPriority == '1' ? secondaryColor : trans,
+            tileBorderColor: selectedPriority == '1' ? borderColor : trans,
+            circleColor: selectedPriority == '1' ? secondaryColor : trans,
             title: AppLocalizations.of(context)!.needstobedone),
         eightVerticalSpace,
         _optionTile(
@@ -244,10 +243,8 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 selectedPriority = '2';
               });
             },
-            tileBorderColor:
-                selectedPriority == '2' ? borderColor : trans,
-            circleColor:
-                selectedPriority == '2' ? secondaryColor : trans,
+            tileBorderColor: selectedPriority == '2' ? borderColor : trans,
+            circleColor: selectedPriority == '2' ? secondaryColor : trans,
             title: AppLocalizations.of(context)!.nicetohave),
         eightVerticalSpace,
         _optionTile(
@@ -256,10 +253,8 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 selectedPriority = '3';
               });
             },
-            tileBorderColor:
-                selectedPriority == '3' ? borderColor : trans,
-            circleColor:
-                selectedPriority == '3' ? secondaryColor : trans,
+            tileBorderColor: selectedPriority == '3' ? borderColor : trans,
+            circleColor: selectedPriority == '3' ? secondaryColor : trans,
             title: AppLocalizations.of(context)!.niceidea),
       ],
     );
@@ -410,19 +405,23 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
         ),
         eightVerticalSpace,
         TextFormField(
-            controller: TextEditingController(text:  taskState.selectedGoal),
+            controller:
+                TextEditingController(text: goalState.selectedParentGoal),
             readOnly: true,
-              onTap: () {
-                if (selectedType != '') {
-                  goalState.getFilterType(selectedType);
-                  goalState.getGoalList();
-                  CustomDialog.bottomSheet(
-                      context, SelectGoalBottomSheet(type: selectedType));
-                  taskState.getSelectedGoal('', '', context);
-                } else {
-                  CustomSnack.warningSnack(AppLocalizations.of(context)!.selecttasktype, context);
-                }
-              },
+            onTap: () {
+              if (selectedType != '') {
+                // goalState.getFilterType(selectedType);
+                // goalState.getParentGoalList();
+                // CustomDialog.bottomSheet(
+                //     context, SelectGoalBottomSheet(type: selectedType));
+                // taskState.getSelectedGoal('', '', context);
+                Navigator.pushNamed(context, Routes.selectParentGoalScreen,
+                    arguments: selectedType);
+              } else {
+                CustomSnack.warningSnack(
+                    AppLocalizations.of(context)!.selecttasktype, context);
+              }
+            },
             decoration: InputDecoration(
               filled: true,
               fillColor: white,
@@ -443,47 +442,6 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               ),
               focusColor: primaryColor,
             )),
-        // InkWell(
-        //   onTap: () {
-        //     if (selectedType != '') {
-        //       goalState.getFilterType(selectedType);
-        //       goalState.getGoalList();
-        //       CustomDialog.bottomSheet(
-        //           context, SelectGoalBottomSheet(type: selectedType));
-        //       taskState.getSelectedGoal('Select', '', context);
-        //     } else {
-        //       CustomSnack.warningSnack('Please select task type.', context);
-        //     }
-        //   },
-        //   child: Container(
-        //     decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(12),
-        //       border: Border.all(color: borderColor),
-        //     ),
-        //     child: Padding(
-        //       padding: const EdgeInsets.all(16.0),
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           SizedBox(
-        //             width: MediaQuery.of(context).size.width / 1.4,
-        //             child: Text(
-        //               taskState.selectedGoal,
-        //               maxLines: 2,
-        //               overflow: TextOverflow.ellipsis,
-        //               style: tTextStyleRegular.copyWith(
-        //                   fontSize: 16, color: black),
-        //             ),
-        //           ),
-        //           const Icon(
-        //             Icons.keyboard_arrow_down_outlined,
-        //             color: iconColor,
-        //           )
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        // )
       ],
     );
   }
