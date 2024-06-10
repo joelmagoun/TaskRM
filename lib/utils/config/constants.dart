@@ -32,6 +32,7 @@ class AppWriteConstant {
   static const String taskCollectionId = 'tasks';
   static const String goalCollectionId = 'goals';
   static const String jiraConnectionCollectionId = 'jiraConnections';
+  static const String timeTrackingCollectionId = 'timeTracking';
 
 
 

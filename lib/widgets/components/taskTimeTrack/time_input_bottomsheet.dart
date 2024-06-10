@@ -1,17 +1,22 @@
-import 'package:TaskRM/utils/custom_snack.dart';
+import 'package:TaskRM/providers/task_goal_time_tracking_provider.dart';
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
-import '../../../utils/assets_path.dart';
 
 class TimeInputBottomSheet extends StatefulWidget {
+  final String docType;
+  final String taskId;
+  final String goalId;
+
   const TimeInputBottomSheet({
     Key? key,
+    required this.docType,
+    required this.taskId,
+    required this.goalId,
   }) : super(key: key);
 
   @override
@@ -22,6 +27,8 @@ class _TimeInputBottomSheetState extends State<TimeInputBottomSheet> {
   late bool isTimeTracking = false;
   late String _selectedHour = '';
   late String _selectedMinute = '';
+  late String _startTime = '';
+  late String _stopTime = '';
   final List<String> _hourList = [
     '0',
     '1',
@@ -51,7 +58,8 @@ class _TimeInputBottomSheetState extends State<TimeInputBottomSheet> {
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Consumer<TaskProvider>(builder: (_, taskState, child) {
+          child: Consumer<TaskGoalTimeTrackingProvider>(
+              builder: (_, taskGoalTimeTrackerState, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -65,12 +73,26 @@ class _TimeInputBottomSheetState extends State<TimeInputBottomSheet> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: PrimaryButton(
-                    onTap: () {},
+                    onTap: () {
+                      if (_selectedHour.isNotEmpty &&
+                          _selectedMinute.isNotEmpty) {
+                        taskGoalTimeTrackerState.addTimeSpent(
+                            widget.goalId,
+                            widget.taskId,
+                            _startTime,
+                            _stopTime,
+                            AppConstant.convertTimeToSeconds(
+                                int.parse(_selectedHour),
+                                int.parse(_selectedMinute)),
+                            context);
+                      }
+                    },
                     buttonTitle: 'Submit',
                     buttonColor:
                         _selectedHour.isNotEmpty && _selectedMinute.isNotEmpty
                             ? primaryColor
                             : primaryLight,
+                    isLoading: taskGoalTimeTrackerState.isTimeSpentAdding,
                   ),
                 ),
                 const SizedBox(
@@ -88,14 +110,14 @@ class _TimeInputBottomSheetState extends State<TimeInputBottomSheet> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: iconColor,
-            )),
+        // IconButton(
+        //     onPressed: () {
+        //       Navigator.pop(context);
+        //     },
+        //     icon: const Icon(
+        //       Icons.arrow_back_ios,
+        //       color: iconColor,
+        //     )),
         Column(
           children: [
             Text(
@@ -108,14 +130,14 @@ class _TimeInputBottomSheetState extends State<TimeInputBottomSheet> {
             ),
           ],
         ),
-        IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.clear,
-              color: iconColor,
-            )),
+        // IconButton(
+        //     onPressed: () {
+        //       Navigator.pop(context);
+        //     },
+        //     icon: const Icon(
+        //       Icons.clear,
+        //       color: iconColor,
+        //     )),
       ],
     );
   }

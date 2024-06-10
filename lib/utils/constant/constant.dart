@@ -107,6 +107,15 @@ class AppConstant{
   }
 
 
+  /// for time tracking ////
+  /// ///// //// //// ////
+
+  static String convertTimeToSeconds(int hours, int minutes) {
+    int totalSeconds = (hours * 3600) + (minutes * 60);
+    return totalSeconds.toString();
+  }
+
+
   /// user image url ///
   static String userImageUrl = '';
 

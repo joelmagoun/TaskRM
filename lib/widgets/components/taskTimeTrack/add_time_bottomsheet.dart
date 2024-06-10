@@ -11,8 +11,15 @@ import '../../../../utils/spacer.dart';
 import '../../../utils/assets_path.dart';
 
 class AddTimeBottomSheet extends StatefulWidget {
+  final String docType;
+  final String taskId;
+  final String goalId;
+
   const AddTimeBottomSheet({
     Key? key,
+    required this.docType,
+    required this.taskId,
+    required this.goalId,
   }) : super(key: key);
 
   @override
@@ -47,13 +54,17 @@ class _AddTimeBottomSheetState extends State<AddTimeBottomSheet> {
                       _optionTile(context, () {
                         CustomDialog.bottomSheet(
                             context, const TimeTrackerBottomSheet());
-                       // Navigator.push(context, MaterialPageRoute(builder: (_) => StopWatchPage()));
+                        // Navigator.push(context, MaterialPageRoute(builder: (_) => StopWatchPage()));
                       }, stopWatchIcon, 'Time tracker',
                           'Tap \'Start\' to begin your task and \'Stop\' when finished or pausing progress.'),
                       sixteenVerticalSpace,
                       _optionTile(context, () {
                         CustomDialog.bottomSheet(
-                            context, const TimeInputBottomSheet());
+                            context,
+                            TimeInputBottomSheet(
+                                docType: widget.docType,
+                                taskId: widget.taskId,
+                                goalId: widget.goalId));
                       }, editOutlineIcon, 'Time input',
                           'Enter the approximate amount of time you\'ve dedicated to your task.'),
                     ],

@@ -38,7 +38,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskProvider>(builder: (_, _taskState, child) {
+    return Consumer<TaskProvider>(builder: (_, taskState, child) {
       return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
@@ -221,7 +221,12 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             _bottomButton(() {}, clearIcon,
                 AppLocalizations.of(context)!.removefromtodaystasks, false),
             _bottomButton(() {
-              CustomDialog.bottomSheet(context, const AddTimeBottomSheet());
+              CustomDialog.bottomSheet(
+                  context,
+                  AddTimeBottomSheet(
+                      docType: 'Task',
+                      taskId: widget.task.id,
+                      goalId: widget.task.goalId));
             }, addTimeIcon, AppLocalizations.of(context)!.addtime, false),
             _bottomButton(() {}, checkIcon,
                 AppLocalizations.of(context)!.completetask, true),
