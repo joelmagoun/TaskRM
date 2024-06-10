@@ -111,6 +111,8 @@ const summaryIcon = 'assets/svgs/summary.svg';
 const flagIcon = 'assets/svgs/flag.svg';
 const updatedIcon = 'assets/svgs/updated.svg';
 const createdIcon = 'assets/svgs/created.svg';
+const stopWatchIcon = 'assets/svgs/stop_watch.svg';
+const editOutlineIcon = 'assets/svgs/edit_outline.svg';
 
 
 

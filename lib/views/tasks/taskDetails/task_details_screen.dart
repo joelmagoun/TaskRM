@@ -1,6 +1,7 @@
 import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/views/tasks/taskDetails/editTask/edit_task_bottomsheet.dart';
+import 'package:TaskRM/widgets/components/taskTimeTrack/add_time_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -116,26 +117,35 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, 'Type',
-                            AppConstant.convertType(context, widget.task.type), false),
+                        _infoTile(
+                            typeIcon,
+                            'Type',
+                            AppConstant.convertType(context, widget.task.type),
+                            false),
                         _jiraField(),
                         primaryVerticalSpace,
                         _infoTile(
                             priorityIcon,
                             'Priority',
-                            AppConstant.convertPriority(context, widget.task.priority),
+                            AppConstant.convertPriority(
+                                context, widget.task.priority),
                             false),
                         primaryVerticalSpace,
                         _infoTile(
                             timeFrameIcon,
                             'Timeframe',
-                            AppConstant.convertTimeFrame(context, widget.task.timeframe),
+                            AppConstant.convertTimeFrame(
+                                context, widget.task.timeframe),
                             false),
                         primaryVerticalSpace,
-                        _infoTile(descriptionIcon, AppLocalizations.of(context)!.description,
-                            widget.task.description, false),
+                        _infoTile(
+                            descriptionIcon,
+                            AppLocalizations.of(context)!.description,
+                            widget.task.description,
+                            false),
                         primaryVerticalSpace,
-                        _infoTile(goalIcon, AppLocalizations.of(context)!.goal, widget.task.goal, true),
+                        _infoTile(goalIcon, AppLocalizations.of(context)!.goal,
+                            widget.task.goal, true),
                       ],
                     ),
                   ),
@@ -208,26 +218,35 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _bottomButton(clearIcon, AppLocalizations.of(context)!.removefromtodaystasks, false),
-            _bottomButton(addTimeIcon, AppLocalizations.of(context)!.addtime, false),
-            _bottomButton(checkIcon, AppLocalizations.of(context)!.completetask, true),
+            _bottomButton(() {}, clearIcon,
+                AppLocalizations.of(context)!.removefromtodaystasks, false),
+            _bottomButton(() {
+              CustomDialog.bottomSheet(context, const AddTimeBottomSheet());
+            }, addTimeIcon, AppLocalizations.of(context)!.addtime, false),
+            _bottomButton(() {}, checkIcon,
+                AppLocalizations.of(context)!.completetask, true),
           ],
         ),
       ),
     );
   }
 
-  Widget _bottomButton(String icon, String title, bool isComplete) {
-    return Column(
-      children: [
-        SvgPicture.asset(icon),
-        eightVerticalSpace,
-        Text(
-          title,
-          style: tTextStyle500.copyWith(
-              fontSize: 14, color: isComplete ? primaryColor : secondaryColor),
-        )
-      ],
+  Widget _bottomButton(
+      VoidCallback onTap, String icon, String title, bool isComplete) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        children: [
+          SvgPicture.asset(icon),
+          eightVerticalSpace,
+          Text(
+            title,
+            style: tTextStyle500.copyWith(
+                fontSize: 14,
+                color: isComplete ? primaryColor : secondaryColor),
+          )
+        ],
+      ),
     );
   }
 
