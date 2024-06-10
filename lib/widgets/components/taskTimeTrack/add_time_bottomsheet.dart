@@ -1,18 +1,13 @@
 import 'package:TaskRM/utils/custom_dialog.dart';
+import 'package:TaskRM/widgets/components/taskTimeTrack/time_input_bottomsheet.dart';
 import 'package:TaskRM/widgets/components/taskTimeTrack/time_tracker_bottomsheet.dart';
-import 'package:TaskRM/widgets/components/taskTimeTrack/trial_tracker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/task_provider.dart';
-import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import 'package:TaskRM/views/tasks/taskQueue/widgets/filter_option_tile.dart';
-import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../../utils/assets_path.dart';
 
 class AddTimeBottomSheet extends StatefulWidget {
@@ -57,8 +52,8 @@ class _AddTimeBottomSheetState extends State<AddTimeBottomSheet> {
                           'Tap \'Start\' to begin your task and \'Stop\' when finished or pausing progress.'),
                       sixteenVerticalSpace,
                       _optionTile(context, () {
-                        // Navigator.pushNamed(context, Routes.taskDetails,
-                        //     arguments: widget.task);
+                        CustomDialog.bottomSheet(
+                            context, const TimeInputBottomSheet());
                       }, editOutlineIcon, 'Time input',
                           'Enter the approximate amount of time you\'ve dedicated to your task.'),
                     ],
