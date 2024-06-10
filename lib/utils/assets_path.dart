@@ -113,6 +113,9 @@ const updatedIcon = 'assets/svgs/updated.svg';
 const createdIcon = 'assets/svgs/created.svg';
 const stopWatchIcon = 'assets/svgs/stop_watch.svg';
 const editOutlineIcon = 'assets/svgs/edit_outline.svg';
+const startTrackingIcon = 'assets/svgs/start_tracking.svg';
+const stopTrackingIcon = 'assets/svgs/stop_tracking.svg';
+
 
 
 

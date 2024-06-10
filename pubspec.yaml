@@ -48,6 +48,7 @@ dependencies:
   timeago: ^3.6.1
   cached_network_image: any
   atlassian_apis: ^0.15.0
+  stop_watch_timer: ^3.1.1
   flutter_localizations:
     sdk: flutter
   intl: any

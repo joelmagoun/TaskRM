@@ -1,3 +1,6 @@
+import 'package:TaskRM/utils/custom_dialog.dart';
+import 'package:TaskRM/widgets/components/taskTimeTrack/time_tracker_bottomsheet.dart';
+import 'package:TaskRM/widgets/components/taskTimeTrack/trial_tracker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -44,21 +47,26 @@ class _AddTimeBottomSheetState extends State<AddTimeBottomSheet> {
                 const Divider(),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(children: [
-                    _optionTile(context, () {
-                      // Navigator.pushNamed(context, Routes.taskDetails,
-                      //     arguments: widget.task);
-                    }, stopWatchIcon, 'Time tracker',
-                        'Tap \'Start\' to begin your task and \'Stop\' when finished or pausing progress.'),
-                    sixteenVerticalSpace,
-                    _optionTile(context, () {
-                      // Navigator.pushNamed(context, Routes.taskDetails,
-                      //     arguments: widget.task);
-                    }, editOutlineIcon, 'Time input',
-                        'Enter the approximate amount of time you\'ve dedicated to your task.'),
-                  ],),
+                  child: Column(
+                    children: [
+                      _optionTile(context, () {
+                        CustomDialog.bottomSheet(
+                            context, const TimeTrackerBottomSheet());
+                       // Navigator.push(context, MaterialPageRoute(builder: (_) => StopWatchPage()));
+                      }, stopWatchIcon, 'Time tracker',
+                          'Tap \'Start\' to begin your task and \'Stop\' when finished or pausing progress.'),
+                      sixteenVerticalSpace,
+                      _optionTile(context, () {
+                        // Navigator.pushNamed(context, Routes.taskDetails,
+                        //     arguments: widget.task);
+                      }, editOutlineIcon, 'Time input',
+                          'Enter the approximate amount of time you\'ve dedicated to your task.'),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 32,),
+                const SizedBox(
+                  height: 32,
+                ),
               ],
             );
           }),
@@ -124,7 +132,7 @@ class _AddTimeBottomSheetState extends State<AddTimeBottomSheet> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 1.3,
                     child: Text(
-                     subTitle,
+                      subTitle,
                       style: tTextStyleRegular.copyWith(
                           color: const Color(0xFF555555)),
                     ),
