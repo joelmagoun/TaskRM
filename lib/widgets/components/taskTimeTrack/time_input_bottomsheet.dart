@@ -24,7 +24,6 @@ class TimeInputBottomSheet extends StatefulWidget {
 }
 
 class _TimeInputBottomSheetState extends State<TimeInputBottomSheet> {
-  late bool isTimeTracking = false;
   late String _selectedHour = '';
   late String _selectedMinute = '';
   late String _startTime = '';
@@ -110,14 +109,14 @@ class _TimeInputBottomSheetState extends State<TimeInputBottomSheet> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        // IconButton(
-        //     onPressed: () {
-        //       Navigator.pop(context);
-        //     },
-        //     icon: const Icon(
-        //       Icons.arrow_back_ios,
-        //       color: iconColor,
-        //     )),
+        IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: iconColor,
+            )),
         Column(
           children: [
             Text(
@@ -130,14 +129,14 @@ class _TimeInputBottomSheetState extends State<TimeInputBottomSheet> {
             ),
           ],
         ),
-        // IconButton(
-        //     onPressed: () {
-        //       Navigator.pop(context);
-        //     },
-        //     icon: const Icon(
-        //       Icons.clear,
-        //       color: iconColor,
-        //     )),
+        IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.clear,
+              color: iconColor,
+            )),
       ],
     );
   }

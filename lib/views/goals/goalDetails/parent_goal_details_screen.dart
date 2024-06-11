@@ -15,6 +15,7 @@ import '../../../routes/routes.dart';
 import '../../../utils/assets_path.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../utils/constant/constant.dart';
+import '../../../widgets/components/taskTimeTrack/add_time_bottomsheet.dart';
 import '../../../widgets/components/task_tile.dart';
 import '../widgets/goal_tile.dart';
 import 'editGoal/edit_goal_bottomsheet.dart';
@@ -33,7 +34,6 @@ class _ParentGoalDetailsScreenState extends State<ParentGoalDetailsScreen> {
 
   @override
   void initState() {
-    print('parent goal id ${widget.goal.id}');
     final goalState = Provider.of<GoalProvider>(context, listen: false);
     goalState.getSubGoalList(widget.goal.id).then((value) {
       goalState.getAllGoalTaskList(widget.goal.id);
@@ -331,8 +331,36 @@ class _ParentGoalDetailsScreenState extends State<ParentGoalDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _bottomButton(
-                addTimeIcon, AppLocalizations.of(context)!.addtime, false),
+            // _bottomButton(
+            //     addTimeIcon, AppLocalizations.of(context)!.addtime, false),
+            InkWell(
+              onTap: () {
+                CustomDialog.bottomSheet(
+                    context,
+                    AddTimeBottomSheet(
+                        docType: 'Goal',
+                        taskId: widget.goal.id,
+                        goalId: ''));
+              },
+              child: Column(
+                children: [
+                  Stack(children: [
+                    SvgPicture.asset(addTimeIcon),
+                    const Positioned(
+                        top: 28,
+                        left: 28,
+                        child: CircleAvatar(radius: 5, backgroundColor: Color(0xFF19E8C3),))
+                  ],),
+                  eightVerticalSpace,
+                  Text(
+                    AppLocalizations.of(context)!.addtime,
+                    style: tTextStyle500.copyWith(
+                        fontSize: 14,
+                        color: secondaryColor),
+                  )
+                ],
+              ),
+            ),
             _bottomButton(
                 checkIcon, AppLocalizations.of(context)!.completegoal, true),
           ],

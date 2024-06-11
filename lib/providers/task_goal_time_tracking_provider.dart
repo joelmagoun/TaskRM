@@ -22,8 +22,13 @@ class TaskGoalTimeTrackingProvider extends ChangeNotifier {
     db = Databases(client);
   }
 
+  late bool _isTimeTracking = false;
+  bool get isTimeTracking => _isTimeTracking;
 
-
+  getTimeTrackingStatus(bool value){
+    _isTimeTracking = value;
+    notifyListeners();
+  }
 
 
 

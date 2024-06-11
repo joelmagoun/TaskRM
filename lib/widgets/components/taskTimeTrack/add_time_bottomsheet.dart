@@ -4,10 +4,10 @@ import 'package:TaskRM/widgets/components/taskTimeTrack/time_tracker_bottomsheet
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
+import '../../../providers/task_goal_time_tracking_provider.dart';
 import '../../../utils/assets_path.dart';
 
 class AddTimeBottomSheet extends StatefulWidget {
@@ -39,7 +39,8 @@ class _AddTimeBottomSheetState extends State<AddTimeBottomSheet> {
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Consumer<TaskProvider>(builder: (_, taskState, child) {
+          child: Consumer<TaskGoalTimeTrackingProvider>(
+              builder: (_, taskGoalTimeTrackerState, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -53,10 +54,17 @@ class _AddTimeBottomSheetState extends State<AddTimeBottomSheet> {
                     children: [
                       _optionTile(context, () {
                         CustomDialog.bottomSheet(
-                            context, const TimeTrackerBottomSheet());
+                            context, TimeTrackerBottomSheet(
+                            docType: widget.docType,
+                            taskId: widget.taskId,
+                            goalId: widget.goalId
+                        ));
                         // Navigator.push(context, MaterialPageRoute(builder: (_) => StopWatchPage()));
-                      }, stopWatchIcon, 'Time tracker',
-                          'Tap \'Start\' to begin your task and \'Stop\' when finished or pausing progress.'),
+                      },
+                          stopWatchIcon,
+                          'Time tracker',
+                          'Tap \'Start\' to begin your task and \'Stop\' when finished or pausing progress.',
+                          true),
                       sixteenVerticalSpace,
                       _optionTile(context, () {
                         CustomDialog.bottomSheet(
@@ -65,8 +73,11 @@ class _AddTimeBottomSheetState extends State<AddTimeBottomSheet> {
                                 docType: widget.docType,
                                 taskId: widget.taskId,
                                 goalId: widget.goalId));
-                      }, editOutlineIcon, 'Time input',
-                          'Enter the approximate amount of time you\'ve dedicated to your task.'),
+                      },
+                          editOutlineIcon,
+                          'Time input',
+                          'Enter the approximate amount of time you\'ve dedicated to your task.',
+                          false),
                     ],
                   ),
                 ),
@@ -108,7 +119,9 @@ class _AddTimeBottomSheetState extends State<AddTimeBottomSheet> {
   }
 
   Widget _optionTile(BuildContext context, VoidCallback onTap, String icon,
-      String title, String subTitle) {
+      String title, String subTitle, bool isTimeTrack) {
+    final taskGoalTimeTrackerState =
+        Provider.of<TaskGoalTimeTrackingProvider>(context, listen: false);
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -125,7 +138,21 @@ class _AddTimeBottomSheetState extends State<AddTimeBottomSheet> {
                 children: [
                   Row(
                     children: [
-                      SvgPicture.asset(icon),
+                      isTimeTrack
+                          ? Stack(children: [
+                              SvgPicture.asset(stopWatchIcon),
+                        Positioned(
+                                  top: 20,
+                                  left: 20,
+                                  child: CircleAvatar(
+                                    radius: 5,
+                                    backgroundColor:
+                                    taskGoalTimeTrackerState.isTimeTracking
+                                            ? const Color(0xFF19E8C3)
+                                            : trans,
+                                  ))
+                            ])
+                          : SvgPicture.asset(editOutlineIcon),
                       eightHorizontalSpace,
                       Text(
                         title,

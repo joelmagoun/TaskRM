@@ -10,6 +10,7 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/task.dart';
+import '../../../providers/task_goal_time_tracking_provider.dart';
 import '../../../routes/routes.dart';
 import '../../../utils/assets_path.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -38,7 +39,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskProvider>(builder: (_, taskState, child) {
+    return Consumer2<TaskProvider, TaskGoalTimeTrackingProvider>(
+        builder: (_, taskState, taskGoalTimeTrackerState, child) {
       return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
@@ -205,6 +207,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   }
 
   Widget _bottomSheet() {
+    final taskGoalTimeTrackerState =
+        Provider.of<TaskGoalTimeTrackingProvider>(context, listen: false);
     return Container(
       height: 150,
       width: double.infinity,
@@ -220,14 +224,48 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           children: [
             _bottomButton(() {}, clearIcon,
                 AppLocalizations.of(context)!.removefromtodaystasks, false),
-            _bottomButton(() {
-              CustomDialog.bottomSheet(
-                  context,
-                  AddTimeBottomSheet(
-                      docType: 'Task',
-                      taskId: widget.task.id,
-                      goalId: widget.task.goalId));
-            }, addTimeIcon, AppLocalizations.of(context)!.addtime, false),
+            InkWell(
+              onTap: () {
+                CustomDialog.bottomSheet(
+                    context,
+                    AddTimeBottomSheet(
+                        docType: 'Task',
+                        taskId: widget.task.id,
+                        goalId: widget.task.goalId));
+              },
+              child: Column(
+                children: [
+                  taskGoalTimeTrackerState.isTimeTracking
+                      ? Stack(
+                          children: [
+                            SvgPicture.asset(addTimeIcon),
+                            const Positioned(
+                                top: 28,
+                                left: 28,
+                                child: CircleAvatar(
+                                  radius: 5,
+                                  backgroundColor: Color(0xFF19E8C3),
+                                ))
+                          ],
+                        )
+                      : SvgPicture.asset(addTimeIcon),
+                  eightVerticalSpace,
+                  Text(
+                    AppLocalizations.of(context)!.addtime,
+                    style: tTextStyle500.copyWith(
+                        fontSize: 14, color: secondaryColor),
+                  )
+                ],
+              ),
+            ),
+            // _bottomButton(() {
+            //   CustomDialog.bottomSheet(
+            //       context,
+            //       AddTimeBottomSheet(
+            //           docType: 'Task',
+            //           taskId: widget.task.id,
+            //           goalId: widget.task.goalId));
+            // }, addTimeIcon, AppLocalizations.of(context)!.addtime, false),
             _bottomButton(() {}, checkIcon,
                 AppLocalizations.of(context)!.completetask, true),
           ],

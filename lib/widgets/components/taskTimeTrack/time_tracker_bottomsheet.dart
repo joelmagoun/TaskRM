@@ -1,17 +1,25 @@
+import 'package:TaskRM/providers/task_goal_time_tracking_provider.dart';
 import 'package:TaskRM/utils/custom_snack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../utils/assets_path.dart';
+import '../../../utils/constant/constant.dart';
 
 class TimeTrackerBottomSheet extends StatefulWidget {
+  final String docType;
+  final String taskId;
+  final String goalId;
+
   const TimeTrackerBottomSheet({
     Key? key,
+    required this.docType,
+    required this.taskId,
+    required this.goalId,
   }) : super(key: key);
 
   @override
@@ -19,7 +27,10 @@ class TimeTrackerBottomSheet extends StatefulWidget {
 }
 
 class _TimeTrackerBottomSheetState extends State<TimeTrackerBottomSheet> {
-  late bool isTimeTracking = false;
+  late String _startTime = '';
+  late String _stopTime = '';
+  late String hours = '0';
+  late String minutes = '0';
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
     mode: StopWatchMode.countUp,
@@ -35,11 +46,11 @@ class _TimeTrackerBottomSheetState extends State<TimeTrackerBottomSheet> {
     return '$minutes';
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _stopWatchTimer.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _stopWatchTimer.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +64,8 @@ class _TimeTrackerBottomSheetState extends State<TimeTrackerBottomSheet> {
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
         child: SingleChildScrollView(
-          child: Consumer<TaskProvider>(builder: (_, taskState, child) {
+          child: Consumer<TaskGoalTimeTrackingProvider>(
+              builder: (_, taskGoalTimeTrackerState, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -68,8 +80,8 @@ class _TimeTrackerBottomSheetState extends State<TimeTrackerBottomSheet> {
                   builder: (context, snapshot) {
                     final value = snapshot.data!;
                     // final displayTime = StopWatchTimer.getDisplayTime(value);
-                    final hours = _formatHours(value);
-                    final minutes = _formatMinutes(value);
+                    hours = _formatHours(value);
+                    minutes = _formatMinutes(value);
                     return RichText(
                       text: TextSpan(
                         text: hours,
@@ -94,27 +106,40 @@ class _TimeTrackerBottomSheetState extends State<TimeTrackerBottomSheet> {
                   },
                 ),
                 primaryVerticalSpace,
-                isTimeTracking
+                taskGoalTimeTrackerState.isTimeTracking
                     ? InkWell(
                         onTap: () {
                           _stopWatchTimer.onStopTimer();
+                          taskGoalTimeTrackerState.getTimeTrackingStatus(false);
                           setState(() {
-                            isTimeTracking = false;
+                            _stopTime = DateTime.now().toString();
                           });
+                          taskGoalTimeTrackerState.addTimeSpent(
+                              widget.goalId,
+                              widget.taskId,
+                              _startTime,
+                              _stopTime,
+                              AppConstant.convertTimeToSeconds(
+                                  int.parse(hours), int.parse(minutes)),
+                              context);
                         },
                         child: SvgPicture.asset(stopTrackingIcon))
                     : InkWell(
                         onTap: () {
                           _stopWatchTimer.onStartTimer();
+                          taskGoalTimeTrackerState.getTimeTrackingStatus(true);
                           setState(() {
-                            isTimeTracking = true;
+                            _startTime = DateTime.now().toString();
                           });
-                          CustomSnack.successSnack('Time tracking started.', context);
+                          CustomSnack.successSnack(
+                              'Time tracking started.', context);
                         },
                         child: SvgPicture.asset(startTrackingIcon)),
                 eightVerticalSpace,
                 Text(
-                  isTimeTracking ? 'Stop Tracking' : 'Start Tracking',
+                  taskGoalTimeTrackerState.isTimeTracking
+                      ? 'Stop Tracking'
+                      : 'Start Tracking',
                   style: tTextStyle500.copyWith(
                       fontSize: 16, color: textPrimaryColor),
                 ),
@@ -130,6 +155,8 @@ class _TimeTrackerBottomSheetState extends State<TimeTrackerBottomSheet> {
   }
 
   Widget _header() {
+    final taskGoalTimeTrackerState =
+        Provider.of<TaskGoalTimeTrackingProvider>(context, listen: false);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -156,8 +183,9 @@ class _TimeTrackerBottomSheetState extends State<TimeTrackerBottomSheet> {
                 ),
                 CircleAvatar(
                   radius: 5,
-                  backgroundColor:
-                      isTimeTracking ? const Color(0xFF19E8C3) : trans,
+                  backgroundColor: taskGoalTimeTrackerState.isTimeTracking
+                      ? const Color(0xFF19E8C3)
+                      : trans,
                 )
               ],
             )
@@ -174,5 +202,4 @@ class _TimeTrackerBottomSheetState extends State<TimeTrackerBottomSheet> {
       ],
     );
   }
-
 }
