@@ -84,6 +84,7 @@ class _TimeInputBottomSheetState extends State<TimeInputBottomSheet> {
                                 int.parse(_selectedHour),
                                 int.parse(_selectedMinute)),
                             context);
+                        print('input goal id ${widget.goalId} task id ${widget.taskId} task task ');
                       }
                     },
                     buttonTitle: 'Submit',

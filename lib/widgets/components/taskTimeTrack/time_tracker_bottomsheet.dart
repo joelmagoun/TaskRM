@@ -122,6 +122,7 @@ class _TimeTrackerBottomSheetState extends State<TimeTrackerBottomSheet> {
                               AppConstant.convertTimeToSeconds(
                                   int.parse(hours), int.parse(minutes)),
                               context);
+                          print(' tracking goal id ${widget.goalId} task id ${widget.taskId} task task ');
                         },
                         child: SvgPicture.asset(stopTrackingIcon))
                     : InkWell(

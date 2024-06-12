@@ -339,8 +339,8 @@ class _ParentGoalDetailsScreenState extends State<ParentGoalDetailsScreen> {
                     context,
                     AddTimeBottomSheet(
                         docType: 'Goal',
-                        taskId: widget.goal.id,
-                        goalId: ''));
+                        taskId: '',
+                        goalId: widget.goal.id));
               },
               child: Column(
                 children: [
