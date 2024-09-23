@@ -57,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  boolean_selector:
-    dependency: transitive
-    description:
-      name: boolean_selector
-      sha256: "6cfb5af12253eaf2b368f07bacc5a80d1301a071c73360d746b7f2e32d762c66"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -201,14 +193,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
-  fake_async:
-    dependency: transitive
-    description:
-      name: fake_async
-      sha256: "511392330127add0b769b75a987850d136345d9227c6b94c96a04cf4a391bf78"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.3.1"
   fetch_api:
     dependency: transitive
     description:
@@ -303,7 +287,7 @@ packages:
     source: hosted
     version: "9.4.1"
   flutter_launcher_icons:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_launcher_icons
       sha256: "526faf84284b86a4cb36d20a5e45147747b7563d921373d4ee0559c54fcdbcea"
@@ -311,7 +295,7 @@ packages:
     source: hosted
     version: "0.13.1"
   flutter_lints:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_lints
       sha256: a25a15ebbdfc33ab1cd26c63a6ee519df92338a9c10f122adda92938253bef04
@@ -387,11 +371,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.10+1"
-  flutter_test:
-    dependency: "direct dev"
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -565,30 +544,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
-  leak_tracker:
-    dependency: transitive
-    description:
-      name: leak_tracker
-      sha256: "3f87a60e8c63aecc975dda1ceedbc8f24de75f09e4856ea27daf8958f2f0ce05"
-      url: "https://pub.dev"
-    source: hosted
-    version: "10.0.5"
-  leak_tracker_flutter_testing:
-    dependency: transitive
-    description:
-      name: leak_tracker_flutter_testing
-      sha256: "932549fb305594d82d7183ecd9fa93463e9914e1b67cacc34bc40906594a1806"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.5"
-  leak_tracker_testing:
-    dependency: transitive
-    description:
-      name: leak_tracker_testing
-      sha256: "6ba465d5d76e67ddf503e1161d1f4a6bc42306f9d66ca1e8f079a47290fb06d3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
   lints:
     dependency: transitive
     description:
@@ -605,14 +560,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  matcher:
-    dependency: transitive
-    description:
-      name: matcher
-      sha256: d2323aa2060500f906aa31a895b4030b6da3ebdcc5619d14ce1aada65cd161cb
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.12.16+1"
   material_color_utilities:
     dependency: transitive
     description:
@@ -954,14 +901,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.3"
-  stack_trace:
-    dependency: transitive
-    description:
-      name: stack_trace
-      sha256: "73713990125a6d93122541237550ee3352a2d84baad52d375a4cad2eb9b7ce0b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.11.1"
   storage_client:
     dependency: transitive
     description:
@@ -1026,14 +965,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
-  test_api:
-    dependency: transitive
-    description:
-      name: test_api
-      sha256: "5b8a98dafc4d5c4c9c72d8b31ab2b23fc13422348d2997120294d3bac86b4ddb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.2"
   timeago:
     dependency: "direct main"
     description:
@@ -1162,14 +1093,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  vm_service:
-    dependency: transitive
-    description:
-      name: vm_service
-      sha256: f652077d0bdf60abe4c1f6377448e8655008eef28f128bc023f7b5e8dfeb48fc
-      url: "https://pub.dev"
-    source: hosted
-    version: "14.2.4"
   web:
     dependency: transitive
     description:
