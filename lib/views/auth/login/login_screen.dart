@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       _loginFormKey.currentState!.save();
                     },
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: <Widget>[
                           const EmailInputField(

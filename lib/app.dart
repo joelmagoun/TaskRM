@@ -1,4 +1,4 @@
-import 'package:appwrite/appwrite.dart';
+//import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -11,9 +11,9 @@ import 'package:TaskRM/views/splash_screen.dart';
 
 
 class MyApp extends StatefulWidget {
-  final Client client;
-  final String sessionId;
-  const MyApp({Key? key, required this.client, required this.sessionId})
+
+  final bool isLoggedId;
+  const MyApp({Key? key,   required this.isLoggedId})
       : super(key: key);
 
   @override
@@ -21,12 +21,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late Databases db;
+ // late Databases db;
   // late TasksListProvider tasksListProvider;
   // late GoalsListProvider goalsListProvider;
   @override
   void initState() {
-    db = Databases(widget.client);
+    //db = Databases(widget.client);
     // tasksListProvider = TasksListProvider(db: db);
     // goalsListProvider = GoalsListProvider(db: db);
     super.initState();
@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
       //  theme: AppTheme.light,
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.generateRoute(),
-        home: SplashScreen(sessionId: widget.sessionId,),
+        home: SplashScreen(isLoggedIn: widget.isLoggedId,),
         //home: const LoginScreen(),
       ),
     );

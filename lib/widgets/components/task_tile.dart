@@ -18,7 +18,7 @@ class TaskTile extends StatefulWidget {
   final Color timeDateColor;
   final bool isSelected;
   final String createdAt;
-  final Task task;
+  final TaskModel task;
 
   const TaskTile(
       {Key? key,

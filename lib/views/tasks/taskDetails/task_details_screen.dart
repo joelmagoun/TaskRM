@@ -9,7 +9,7 @@ import '../../../models/task.dart';
 import '../../../utils/assets_path.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
-  final Task task;
+  final TaskModel task;
 
   const TaskDetailsScreen({Key? key, required this.task}) : super(key: key);
 
@@ -47,7 +47,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
                 ),
                 Text(
-                  widget.task.title,
+                  widget.task.title!,
                   maxLines: 2,
                   style: tTextStyleRegular.copyWith(fontSize: 14),
                 ),
@@ -65,18 +65,18 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, 'Type', widget.task.type, false),
+                        _infoTile(typeIcon, 'Type', widget.task.type!, false),
                         primaryVerticalSpace,
                         _infoTile(priorityIcon, 'Priority',
-                            widget.task.priority, false),
+                            widget.task.priority!, false),
                         primaryVerticalSpace,
                         _infoTile(timeFrameIcon, 'Timeframe',
-                            widget.task.timeframe, false),
+                            widget.task.timeframe!, false),
                         primaryVerticalSpace,
                         _infoTile(descriptionIcon, 'Description',
-                            widget.task.description, false),
+                            widget.task.description!, false),
                         primaryVerticalSpace,
-                        _infoTile(goalIcon, 'Goal', widget.task.goal, true),
+                        _infoTile(goalIcon, 'Goal', widget.task.goal!, true),
                       ],
                     ),
                   ),

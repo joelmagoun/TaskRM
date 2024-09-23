@@ -133,7 +133,7 @@ class _TaskQueueFilterBottomSheetState
               },
               separatorBuilder: (_, index) => sixteenVerticalSpace,
               itemCount: AppConstant.typeList.length),
-
+          sixteenVerticalSpace,
           PrimaryButton(
             onTap: () async {
               await taskState.getAllTaskList();

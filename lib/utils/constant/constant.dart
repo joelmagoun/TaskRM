@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../color.dart';
 
 
@@ -44,6 +45,10 @@ class AppConstant{
   /// user image url ///
 
   static String userImageUrl = '';
+
+  /// Supbase instance ///
+
+  static SupabaseClient supaClient = Supabase.instance.client;
 
  /// base url ///
 static const baseUrl = 'http://arabic.live.pwtech.pw:9001/';

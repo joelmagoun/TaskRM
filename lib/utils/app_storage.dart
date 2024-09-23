@@ -8,7 +8,7 @@ class AppStorage {
   //   await storage?.write(key: 'token', value: value);
   // }
 
-  static Future<String?> getSessionId() async {
+  static Future<String?> getAccessToken() async {
     String? sessionId = await storage.read(key: 'sessionId');
     return sessionId;
   }

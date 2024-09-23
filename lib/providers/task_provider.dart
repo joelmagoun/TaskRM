@@ -1,27 +1,26 @@
-import 'package:appwrite/appwrite.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:powersync/sqlite3.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:TaskRM/attachments/remote_storage_adapter.dart';
 import 'package:TaskRM/utils/app_storage.dart';
+import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/custom_snack.dart';
 import '../models/task.dart';
-import '../utils/config/constants.dart';
+import '../powersync.dart';
 
 class TaskProvider extends ChangeNotifier {
   TaskProvider() {
     _init();
   }
 
-  Client client = Client();
-  late Databases db;
-
   _init() {
-    client
-        .setEndpoint(AppWriteConstant.endPoint)
-        .setProject(AppWriteConstant.projectId);
-    db = Databases(client);
     getTodayTaskList();
     getAllTaskList();
   }
+
+  final SupabaseConnector _connector = SupabaseConnector(db);
 
   /// Jira ///
   late bool _isJiraIssueAdded = false;
@@ -60,16 +59,6 @@ class TaskProvider extends ChangeNotifier {
     //Navigator.pop(context);
   }
 
-  /// get today task list ///
-
-  late bool _isTaskLoading = false;
-
-  bool get isTaskLoading => _isTaskLoading;
-
-  late List<Task> _todayTaskList = [];
-
-  List<Task> get todayTaskList => _todayTaskList;
-
   /// for filter  ///
   late String _selectedFilterType = '';
 
@@ -80,6 +69,21 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// get today task list ///
+
+  late bool _isTaskLoading = false;
+
+  bool get isTaskLoading => _isTaskLoading;
+
+  // late Stream<List<TaskModel>> testTaskList;
+  late Stream<List<TaskModel>> taskStream;
+
+  late List<TaskModel> _todayTaskList = [];
+
+  List<TaskModel> get todayTaskList => _todayTaskList;
+
+  /// Get all list IDs
+
   Future<void> getTodayTaskList() async {
     try {
       _isTaskLoading = true;
@@ -87,60 +91,76 @@ class TaskProvider extends ChangeNotifier {
 
       final uid = await AppStorage.getUserId();
 
-      final res = await db.listDocuments(
-          databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.taskCollectionId,
-          queries: [Query.equal("userID", uid)]);
 
-      if (res.documents.isNotEmpty) {
-        _todayTaskList.clear();
-        notifyListeners();
-        
-        res.documents.forEach((e) {
-        //  String timeFrameResult = getTimeFrameFromExpectedDate(e.data['expectedCompletion']);
+      // taskStream = db
+      //     .watch("SELECT * FROM tasks Where is_marked_for_today = true and user_id = '$uid' ORDER BY created_at DESC")
+      //     .map((results) {
+      //   return results
+      //       .map((row) => TaskModel.fromRow(row, uid!))
+      //       .toList(growable: false);
+      // });
 
-          if (e.data['isMarkedForToday']) {
+
+      db
+          .watch(
+              "SELECT * FROM tasks Where is_marked_for_today = true and user_id = '$uid' ORDER BY created_at DESC")
+          .map((results) {
+        if (results.isNotEmpty) {
+          _todayTaskList.clear();
+          notifyListeners();
+          return results.map((e) {
             if (_selectedFilterType == '') {
-              _todayTaskList.add(Task(
-                  id: e.$id ?? '',
-                  title: e.data['title'] ?? '',
-                  type: e.data['type'] ?? '',
-                  priority: e.data['priority'] ?? '',
-                  timeframe: e.data['timeframe'] ?? '',
-                 // timeframe: timeFrameResult,
-                  description: e.data['description'] ?? '',
-                  createdAt: DateTime.parse(e.data['createdAt']),
-                  expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
-                  isMarkedForToday: e.data['isMarkedForToday'] ?? false,
-                  jiraID: e.data['jiraID'] ?? '',
-                  userID: e.data['userID'] ?? '',
-                  goal: e.data['goal'] ?? ''));
+              _todayTaskList.add(TaskModel(
+                id: e['id'] ?? 0,
+                createdAt: e['created_at'] ?? '',
+                updatedAt: e['updated_at'] ?? '',
+                timeframe: e['timeframe'] ?? '',
+                jiraId: e['jira_id'] ?? '',
+                title: e['title'] ?? '',
+                type: e['type'] ?? '',
+                isMarkedForToday: e['is_marked_for_today'] ?? false,
+                goalId: e['goal_id'] ?? '',
+                priority: e['priority'] ?? '',
+                description: e['description'] ?? '',
+                userId: e['user_id'] ?? '',
+                goal: e['goal'] ?? '',
+                expectedCompletion: e['expected_completion'] ?? '',
+                isCompleted: e['is_completed'] ?? false,
+                totalMinutesSpent: e['total_minutes_spent'] ?? 0,
+              ));
               notifyListeners();
             } else if (_selectedFilterType != '') {
-              if (e.data['type'] == _selectedFilterType) {
-                _todayTaskList.add(Task(
-                    id: e.$id ?? '',
-                    title: e.data['title'] ?? '',
-                    type: e.data['type'] ?? '',
-                    priority: e.data['priority'] ?? '',
-                    timeframe: e.data['timeframe'] ?? '',
-                    description: e.data['description'] ?? '',
-                    createdAt: DateTime.parse(e.data['createdAt']),
-                    expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
-                    isMarkedForToday: e.data['isMarkedForToday'] ?? false,
-                    jiraID: e.data['jiraID'] ?? '',
-                    userID: e.data['userID'] ?? '',
-                    goal: e.data['goal'] ?? ''));
+              if (e['type'] == _selectedFilterType) {
+                _todayTaskList.add(TaskModel(
+                  id: e['id'] ?? 0,
+                  createdAt: e['created_at'] ?? '',
+                  updatedAt: e['updated_at'] ?? '',
+                  timeframe: e['timeframe'] ?? '',
+                  jiraId: e['jira_id'] ?? '',
+                  title: e['title'] ?? '',
+                  type: e['type'] ?? '',
+                  isMarkedForToday: e['is_marked_for_today'] ?? false,
+                  goalId: e['goal_id'] ?? '',
+                  priority: e['priority'] ?? '',
+                  description: e['description'] ?? '',
+                  userId: e['user_id'] ?? '',
+                  goal: e['goal'] ?? '',
+                  expectedCompletion: e['expected_completion'] ?? '',
+                  isCompleted: e['is_completed'] ?? false,
+                  totalMinutesSpent: e['total_minutes_spent'] ?? 0,
+                ));
                 notifyListeners();
               }
             }
-          }
-        });
-      } else {
-        // CustomSnack.warningSnack('No task on your queue', context);
-      }
+
+            notifyListeners();
+          }).toList();
+        }
+      }).toList();
+
+
     } catch (e) {
-      // CustomSnack.warningSnack(e.toString(), context);
+      return;
     } finally {
       _isTaskLoading = false;
       notifyListeners();
@@ -153,9 +173,9 @@ class TaskProvider extends ChangeNotifier {
 
   bool get isAllTaskLoading => _isAllTaskLoading;
 
-  late List<Task> _allTaskList = [];
+  late List<TaskModel> _allTaskList = [];
 
-  List<Task> get allTaskList => _allTaskList;
+  List<TaskModel> get allTaskList => _allTaskList;
 
   late String _selectedQueueTimeFrame = '';
 
@@ -178,63 +198,71 @@ class TaskProvider extends ChangeNotifier {
 
       final uid = await AppStorage.getUserId();
 
-      final res = await db.listDocuments(
-          databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.taskCollectionId,
-          queries: [Query.equal("userID", uid)]);
+      db
+          .watch(
+              "SELECT * FROM tasks Where is_marked_for_today = false and user_id = '$uid' ORDER BY created_at DESC")
+          .map((results) {
+        if (results.isNotEmpty) {
+          _allTaskList.clear();
+          notifyListeners();
+          return results.map((e) {
+            // String timeFrameResult =
+            // getTimeFrameFromExpectedDate(e['expected_completion']);
 
-      if (res.documents.isNotEmpty) {
-        _allTaskList.clear();
-        notifyListeners();
-
-        res.documents.forEach((e) {
-
-          String timeFrameResult = getTimeFrameFromExpectedDate(e.data['expectedCompletion']);
-
-          if (e.data['isMarkedForToday'] == false) {
             if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
-              _allTaskList.add(Task(
-                  id: e.$id ?? '',
-                  title: e.data['title'] ?? '',
-                  type: e.data['type'] ?? '',
-                  priority: e.data['priority'] ?? '',
-                  timeframe: e.data['timeframe'] ?? '',
-                  //timeframe: timeFrameResult,
-                  description: e.data['description'] ?? '',
-                  createdAt: DateTime.parse(e.data['createdAt']),
-                  expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
-                  isMarkedForToday: false,
-                  jiraID: e.data['jiraID'] ?? '',
-                  userID: e.data['userID'] ?? '',
-                  goal: e.data['goal'] ?? ''));
+              _allTaskList.add(TaskModel(
+                id: e['id'] ?? 0,
+                createdAt: e['created_at'] ?? '',
+                updatedAt: e['updated_at'] ?? '',
+                timeframe: e['timeframe'] ?? '',
+                jiraId: e['jira_id'] ?? '',
+                title: e['title'] ?? '',
+                type: e['type'] ?? '',
+                isMarkedForToday: e['is_marked_for_today'] ?? false,
+                goalId: e['goal_id'] ?? '',
+                priority: e['priority'] ?? '',
+                description: e['description'] ?? '',
+                userId: e['user_id'] ?? '',
+                goal: e['goal'] ?? '',
+                expectedCompletion: e['expected_completion'] ?? '',
+                isCompleted: e['is_completed'] ?? false,
+                totalMinutesSpent: e['total_minutes_spent'] ?? 0,
+              ));
               notifyListeners();
             } else if (_selectedQueueTimeFrame != '' ||
                 _selectedQueueType != '') {
-              if (e.data['type'] == _selectedQueueType &&
-                  e.data['timeframe'] == _selectedQueueTimeFrame) {
-                _allTaskList.add(Task(
-                    id: e.$id ?? '',
-                    title: e.data['title'] ?? '',
-                    type: e.data['type'] ?? '',
-                    priority: e.data['priority'] ?? '',
-                    //timeframe: e.data['timeframe'] ?? '',
-                    timeframe: timeFrameResult,
-                    description: e.data['description'] ?? '',
-                    createdAt: DateTime.parse(e.data['createdAt']),
-                    expectedCompletion: DateTime.parse(e.data['expectedCompletion']),
-                    isMarkedForToday: false,
-                    jiraID: e.data['jiraID'] ?? '',
-                    userID: e.data['userID'] ?? '',
-                    goal: e.data['goal'] ?? ''));
+              if (e['type'] == _selectedQueueType &&
+                  e['timeframe'] == _selectedQueueTimeFrame) {
+                _allTaskList.add(TaskModel(
+                  id: e['id'] ?? 0,
+                  createdAt: e['created_at'] ?? '',
+                  updatedAt: e['updated_at'] ?? '',
+                  timeframe: e['timeframe'] ?? '',
+                  jiraId: e['jira_id'] ?? '',
+                  title: e['title'] ?? '',
+                  type: e['type'] ?? '',
+                  isMarkedForToday: e['is_marked_for_today'] ?? false,
+                  goalId: e['goal_id'] ?? '',
+                  priority: e['priority'] ?? '',
+                  description: e['description'] ?? '',
+                  userId: e['user_id'] ?? '',
+                  goal: e['goal'] ?? '',
+                  expectedCompletion: e['expected_completion'] ?? '',
+                  isCompleted: e['is_completed'] ?? false,
+                  totalMinutesSpent: e['total_minutes_spent'] ?? 0,
+                ));
                 notifyListeners();
               }
             }
-          }
-        });
-      } else {
-        //CustomSnack.warningSnack('No task on your queue', context);
-      }
+
+            notifyListeners();
+          }).toList();
+        }
+      }).toList();
+
+
     } catch (e) {
+      print('all task catch ${e.toString()}');
       // CustomSnack.warningSnack(e.toString(), context);
     } finally {
       _isAllTaskLoading = false;
@@ -244,55 +272,58 @@ class TaskProvider extends ChangeNotifier {
 
   /// add task state ///
 
+  final SupabaseConnector supabaseConnector = SupabaseConnector(db);
+
   Future<void> addNewTask(
-      String title,
-      String type,
-      String goalId,
-      String priority,
-      String timeFrame,
-      String description,
-      String goal,
-      BuildContext context) async {
+    String title,
+    String type,
+    String goalId,
+    String priority,
+    String timeFrame,
+    String description,
+    String goal,
+    BuildContext context,
+  ) async {
     try {
       _isTaskAdding = true;
       notifyListeners();
 
       final uid = await AppStorage.getUserId();
 
-      var res = await db.createDocument(
-          databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.taskCollectionId,
-          documentId: ID.unique(),
-          data: {
-            'timeframe': timeFrame,
-            'jiraID': '',
-            'title': title,
-            'type': type,
-            'isMarkedForToday': timeFrame == 'Today' ? true : false,
-            'goalId': goalId,
-            'priority': priority,
-            'description': description,
-            'userID': uid,
-            'goal': goal,
-            'createdAt': DateTime.now().toString(),
-            'expectedCompletion':
-                getExpectedDateFromTimeframe(timeFrame).toString(),
-          }).then((value) {
-        Navigator.pop(context);
-        CustomDialog.autoDialog(
-            context, Icons.check, 'Task is added successfully!');
-        getTodayTaskList();
-        getAllTaskList();
-      });
-      notifyListeners();
+      var docIdForPower = Random().nextInt(10000000);
 
-      // if (res.data.isNotEmpty) {
-      //   _allFeedList.clear();
-      //   notifyListeners();
-      //   getFeedList();
-      //   // Navigator.pushNamed(context, Routes.moments);
-      // }
+      var result = await db.writeTransaction((tx) async {
+        await tx.execute(
+            'INSERT INTO tasks( id, created_at, updated_at, timeframe, jira_id, title, type, is_marked_for_today, goal_id, priority, description, user_id, goal, expected_completion, is_completed, total_minutes_spent) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [
+              docIdForPower.toString(),
+              DateTime.now().toIso8601String(),
+              DateTime.now().toIso8601String(),
+              timeFrame,
+              '',
+              title,
+              type,
+              timeFrame == 'Today' ? 1 : 0,
+              goalId,
+              priority,
+              description,
+              uid,
+              goal,
+              //timeFrame,
+              getExpectedDateFromTimeframe(timeFrame).toIso8601String(),
+              0,
+              0,
+            ]);
+      });
+
+      Navigator.pop(context);
+      // await getTodayTaskList();
+      // await getAllTaskList();
+      //
+      CustomDialog.autoDialog(
+          context, Icons.check, 'Task is added successfully!');
     } catch (e) {
+      print('catch error ${e.toString()}');
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
       _isTaskAdding = false;
@@ -307,48 +338,32 @@ class TaskProvider extends ChangeNotifier {
   bool get isMoving => _isMoving;
 
   Future<void> moveToTodayTaskList(
-      String taskId,
-      String title,
-      String type,
-      String goalId,
-      String priority,
-      String description,
-      String goal,
-      String createdAt,
-      BuildContext context) async {
+      int taskId, String createdAt, BuildContext context) async {
     try {
       _isMoving = true;
       notifyListeners();
 
-      final uid = await AppStorage.getUserId();
+      final taskData = {
+        'created_at': createdAt,
+        'timeframe': 'Today',
+        'is_marked_for_today': 1,
+        'expected_completion':
+            getExpectedDateFromTimeframe('Today').toIso8601String(),
+      };
 
-      var res = await db.updateDocument(
-          databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.taskCollectionId,
-          documentId: taskId,
-          data: {
-            'timeframe': 'Today',
-            'jiraID': '',
-            'title': title,
-            'type': type,
-            'isMarkedForToday': true,
-            'goalId': goalId,
-            'priority': priority,
-            'description': description,
-            'userID': uid,
-            'goal': goal,
-            'createdAt': createdAt,
-            'expectedCompletion':
-            getExpectedDateFromTimeframe('Today').toString(),
-          }).then((value) {
+      final response = await Supabase.instance.client
+          .from('tasks')
+          .update(taskData)
+          .eq('id', taskId)
+          .then((onValue) {
         Navigator.pop(context);
         CustomSnack.successSnack(
             'Task is moved to today task list successfully!', context);
         getTodayTaskList();
         getAllTaskList();
       });
-      notifyListeners();
     } catch (e) {
+      print('catch error ${e.toString()}');
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
       _isMoving = false;

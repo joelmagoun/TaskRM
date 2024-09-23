@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:appwrite/appwrite.dart';
+//import 'package:appwrite/appwrite.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:TaskRM/models/jira_connection_model.dart';
@@ -12,9 +12,9 @@ import '../utils/config/constants.dart';
 import '../utils/custom_snack.dart';
 
 class ProfileProvider extends ChangeNotifier {
-  Client client = Client();
-  late Databases db;
-  late Storage _appWriteStorage;
+  // Client client = Client();
+  // late Databases db;
+  // late Storage _appWriteStorage;
   File? image;
   late String imageUrl = '';
   late UserData _user = UserData('', '', '', '');
@@ -47,11 +47,11 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   _init() {
-    client
-        .setEndpoint(AppWriteConstant.endPoint)
-        .setProject(AppWriteConstant.projectId);
-    db = Databases(client);
-    _appWriteStorage = Storage(client);
+    // client
+    //     .setEndpoint(AppWriteConstant.endPoint)
+    //     .setProject(AppWriteConstant.projectId);
+    // db = Databases(client);
+    // _appWriteStorage = Storage(client);
   }
 
   Future pickImage(ImageSource source, BuildContext context) async {
@@ -65,20 +65,20 @@ class ProfileProvider extends ChangeNotifier {
 
     try {
       if (image != null) {
-        final res = await _appWriteStorage
-            .createFile(
-                bucketId: AppWriteConstant.userImageBucketId,
-                fileId: ID.unique(),
-                file: InputFile.fromPath(path: image.path))
-            .then((value) {
-          final String newImageUrl =
-              "${AppWriteConstant.endPoint}/storage/buckets/${AppWriteConstant.userImageBucketId}/files/${value.$id}/view?project=${AppWriteConstant.projectId}";
-          updateProfile(newImageUrl, _profileName, _profileEncryption,
-              _profileJira, _profileJiraUserName, _profileJiraUrl, context);
-          storage.write(key: 'image_file_id', value: value.$id);
-          CustomSnack.successSnack(
-              'Image is saved, please hit confirm button to update', context);
-        });
+        // final res = await _appWriteStorage
+        //     .createFile(
+        //         bucketId: AppWriteConstant.userImageBucketId,
+        //         fileId: ID.unique(),
+        //         file: InputFile.fromPath(path: image.path))
+        //     .then((value) {
+        //   final String newImageUrl =
+        //       "${AppWriteConstant.endPoint}/storage/buckets/${AppWriteConstant.userImageBucketId}/files/${value.$id}/view?project=${AppWriteConstant.projectId}";
+        //   updateProfile(newImageUrl, _profileName, _profileEncryption,
+        //       _profileJira, _profileJiraUserName, _profileJiraUrl, context);
+        //   storage.write(key: 'image_file_id', value: value.$id);
+        //   CustomSnack.successSnack(
+        //       'Image is saved, please hit confirm button to update', context);
+        // });
       }
     } on PlatformException catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
@@ -101,27 +101,27 @@ class ProfileProvider extends ChangeNotifier {
     final String? image = await AppStorage.getImageUrl();
 
     try {
-      isProfileDataSaving = true;
-      notifyListeners();
-
-      var res = await db.createDocument(
-          databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.profileCollectionId,
-          documentId: uid!,
-          data: {
-            'image_url': image,
-            'name': name,
-            'encryption_key': encryption,
-            'language': language,
-            'jira_key': jiraApi,
-            'jira_user_name': jiraUserName,
-            'jira_url': jiraUrl,
-            'userId': uid
-          });
-
-      if (res.data.isNotEmpty) {
-        await storage.write(key: 'seriesEncryptedPassword', value: encryption);
-      }
+      // isProfileDataSaving = true;
+      // notifyListeners();
+      //
+      // var res = await db.createDocument(
+      //     databaseId: AppWriteConstant.primaryDBId,
+      //     collectionId: AppWriteConstant.profileCollectionId,
+      //     documentId: uid!,
+      //     data: {
+      //       'image_url': image,
+      //       'name': name,
+      //       'encryption_key': encryption,
+      //       'language': language,
+      //       'jira_key': jiraApi,
+      //       'jira_user_name': jiraUserName,
+      //       'jira_url': jiraUrl,
+      //       'userId': uid
+      //     });
+      //
+      // if (res.data.isNotEmpty) {
+      //   await storage.write(key: 'seriesEncryptedPassword', value: encryption);
+      // }
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -136,27 +136,27 @@ class ProfileProvider extends ChangeNotifier {
     try {
       isProfileDataLoading = true;
       notifyListeners();
-
-      final uid = await storage.read(key: 'userId');
-
-      final res = await db.listDocuments(
-          databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.profileCollectionId,
-          queries: [
-            Query.equal("userId", uid),
-          ]);
-
-      if (res.documents.isNotEmpty) {
-        res.documents.forEach((e) {
-          _profileImage = e.data['image_url'];
-          _profileName = e.data['name'];
-          _profileEncryption = e.data['encryption_key'];
-          _profileJira = e.data['jira_key'];
-          _profileJiraUserName = e.data['jira_user_name'];
-          _profileJiraUrl = e.data['jira_url'];
-          notifyListeners();
-        });
-      }
+      //
+      // final uid = await storage.read(key: 'userId');
+      //
+      // final res = await db.listDocuments(
+      //     databaseId: AppWriteConstant.primaryDBId,
+      //     collectionId: AppWriteConstant.profileCollectionId,
+      //     queries: [
+      //       Query.equal("userId", uid),
+      //     ]);
+      //
+      // if (res.documents.isNotEmpty) {
+      //   res.documents.forEach((e) {
+      //     _profileImage = e.data['image_url'];
+      //     _profileName = e.data['name'];
+      //     _profileEncryption = e.data['encryption_key'];
+      //     _profileJira = e.data['jira_key'];
+      //     _profileJiraUserName = e.data['jira_user_name'];
+      //     _profileJiraUrl = e.data['jira_url'];
+      //     notifyListeners();
+      //   });
+      // }
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -181,22 +181,22 @@ class ProfileProvider extends ChangeNotifier {
       isProfileUpdating = true;
       notifyListeners();
 
-      var res = await db.updateDocument(
-          databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.profileCollectionId,
-          documentId: uid,
-          data: {
-            'image_url': imageUrl,
-            'name': name,
-            'encryption_key': encryption,
-            'jira_key': jiraApi,
-            'jira_user_name': jiraUserName,
-            'jira_url': jiraUrl
-          }).then((value) {
-        Navigator.pop(context);
-        getProfileInfo(context);
-        CustomSnack.successSnack('Profile is updated successfully', context);
-      });
+      // var res = await db.updateDocument(
+      //     databaseId: AppWriteConstant.primaryDBId,
+      //     collectionId: AppWriteConstant.profileCollectionId,
+      //     documentId: uid,
+      //     data: {
+      //       'image_url': imageUrl,
+      //       'name': name,
+      //       'encryption_key': encryption,
+      //       'jira_key': jiraApi,
+      //       'jira_user_name': jiraUserName,
+      //       'jira_url': jiraUrl
+      //     }).then((value) {
+      //   Navigator.pop(context);
+      //   getProfileInfo(context);
+      //   CustomSnack.successSnack('Profile is updated successfully', context);
+      // });
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -218,15 +218,15 @@ class ProfileProvider extends ChangeNotifier {
       isImageDeleting = true;
       notifyListeners();
 
-      var res = _appWriteStorage
-          .deleteFile(
-              bucketId: AppWriteConstant.userImageBucketId, fileId: imageFileId)
-          .then((value) {
-        updateProfile('', _profileName, _profileEncryption, _profileJira,
-            _profileJiraUserName, _profileJiraUrl, context);
-        storage.delete(key: 'image_file_id');
-        CustomSnack.successSnack('Image is deleted successfully!', context);
-      });
+      // var res = _appWriteStorage
+      //     .deleteFile(
+      //         bucketId: AppWriteConstant.userImageBucketId, fileId: imageFileId)
+      //     .then((value) {
+      //   updateProfile('', _profileName, _profileEncryption, _profileJira,
+      //       _profileJiraUserName, _profileJiraUrl, context);
+      //   storage.delete(key: 'image_file_id');
+      //   CustomSnack.successSnack('Image is deleted successfully!', context);
+      // });
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     }finally{
@@ -249,47 +249,47 @@ class ProfileProvider extends ChangeNotifier {
 
       final uid = await storage.read(key: 'userId');
 
-      final res = await db.listDocuments(
-          databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.jiraConnectionCollectionId,
-          queries: [
-            Query.equal("userId", uid),
-          ]);
-
-      if (res.documents.isNotEmpty) {
-        res.documents.forEach((e) {
-          if (e.data['taskType'] == '1') {
-            workModel = JiraConnectionModel(
-                docId: e.$id ?? '',
-                userId: e.data['userId'] ?? '',
-                taskType: e.data['taskType'] ?? '',
-                userName: e.data['userName'] ?? '',
-                apiKey: e.data['apiKey'] ?? '',
-                url: e.data['url'] ?? '');
-            notifyListeners();
-          } else if (e.data['taskType'] == '2') {
-            personalModel = JiraConnectionModel(
-                docId: e.$id ?? '',
-                userId: e.data['userId'] ?? '',
-                taskType: e.data['taskType'] ?? '',
-                userName: e.data['userName'] ?? '',
-                apiKey: e.data['apiKey'] ?? '',
-                url: e.data['url'] ?? '');
-            notifyListeners();
-          } else if (e.data['taskType'] == '3') {
-            selfModel = JiraConnectionModel(
-                docId: e.$id ?? '',
-                userId: e.data['userId'] ?? '',
-                taskType: e.data['taskType'] ?? '',
-                userName: e.data['userName'] ?? '',
-                apiKey: e.data['apiKey'] ?? '',
-                url: e.data['url'] ?? '');
-            notifyListeners();
-          }
-
-        });
-        //notifyListeners();
-      }
+      // final res = await db.listDocuments(
+      //     databaseId: AppWriteConstant.primaryDBId,
+      //     collectionId: AppWriteConstant.jiraConnectionCollectionId,
+      //     queries: [
+      //       Query.equal("userId", uid),
+      //     ]);
+      //
+      // if (res.documents.isNotEmpty) {
+      //   res.documents.forEach((e) {
+      //     if (e.data['taskType'] == '1') {
+      //       workModel = JiraConnectionModel(
+      //           docId: e.$id ?? '',
+      //           userId: e.data['userId'] ?? '',
+      //           taskType: e.data['taskType'] ?? '',
+      //           userName: e.data['userName'] ?? '',
+      //           apiKey: e.data['apiKey'] ?? '',
+      //           url: e.data['url'] ?? '');
+      //       notifyListeners();
+      //     } else if (e.data['taskType'] == '2') {
+      //       personalModel = JiraConnectionModel(
+      //           docId: e.$id ?? '',
+      //           userId: e.data['userId'] ?? '',
+      //           taskType: e.data['taskType'] ?? '',
+      //           userName: e.data['userName'] ?? '',
+      //           apiKey: e.data['apiKey'] ?? '',
+      //           url: e.data['url'] ?? '');
+      //       notifyListeners();
+      //     } else if (e.data['taskType'] == '3') {
+      //       selfModel = JiraConnectionModel(
+      //           docId: e.$id ?? '',
+      //           userId: e.data['userId'] ?? '',
+      //           taskType: e.data['taskType'] ?? '',
+      //           userName: e.data['userName'] ?? '',
+      //           apiKey: e.data['apiKey'] ?? '',
+      //           url: e.data['url'] ?? '');
+      //       notifyListeners();
+      //     }
+      //
+      //   });
+      //   //notifyListeners();
+      // }
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -310,24 +310,24 @@ class ProfileProvider extends ChangeNotifier {
       isJiraAdding = true;
       notifyListeners();
 
-      var res = await db.createDocument(
-          databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.jiraConnectionCollectionId,
-          documentId: ID.unique(),
-          data: {
-            'userId': uid,
-            'taskType': taskType,
-            'userName': userName,
-            'apiKey': apiKey,
-            'url': url,
-          });
-
-      if (res.data.isNotEmpty) {
-        Navigator.pop(context);
-        getJiraConnections(context);
-        CustomSnack.successSnack(
-            'Jira connection is added successfully!', context);
-      }
+      // var res = await db.createDocument(
+      //     databaseId: AppWriteConstant.primaryDBId,
+      //     collectionId: AppWriteConstant.jiraConnectionCollectionId,
+      //     documentId: ID.unique(),
+      //     data: {
+      //       'userId': uid,
+      //       'taskType': taskType,
+      //       'userName': userName,
+      //       'apiKey': apiKey,
+      //       'url': url,
+      //     });
+      //
+      // if (res.data.isNotEmpty) {
+      //   Navigator.pop(context);
+      //   getJiraConnections(context);
+      //   CustomSnack.successSnack(
+      //       'Jira connection is added successfully!', context);
+      // }
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -353,22 +353,22 @@ class ProfileProvider extends ChangeNotifier {
       isJiraUpdating = true;
       notifyListeners();
 
-      var res = await db.updateDocument(
-          databaseId: AppWriteConstant.primaryDBId,
-          collectionId: AppWriteConstant.jiraConnectionCollectionId,
-          documentId: docId,
-          data: {
-            'userId': uid,
-            'taskType': taskType,
-            'userName': userName,
-            'apiKey': apiKey,
-            'url': jiraUrl,
-          }).then((value) {
-        Navigator.pop(context);
-        getJiraConnections(context);
-        CustomSnack.successSnack(
-            'Jira connection is updated successfully', context);
-      });
+      // var res = await db.updateDocument(
+      //     databaseId: AppWriteConstant.primaryDBId,
+      //     collectionId: AppWriteConstant.jiraConnectionCollectionId,
+      //     documentId: docId,
+      //     data: {
+      //       'userId': uid,
+      //       'taskType': taskType,
+      //       'userName': userName,
+      //       'apiKey': apiKey,
+      //       'url': jiraUrl,
+      //     }).then((value) {
+      //   Navigator.pop(context);
+      //   getJiraConnections(context);
+      //   CustomSnack.successSnack(
+      //       'Jira connection is updated successfully', context);
+      // });
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -385,17 +385,17 @@ class ProfileProvider extends ChangeNotifier {
 
     try {
 
-      var res = db
-          .deleteDocument(
-        databaseId: AppWriteConstant.primaryDBId,
-        collectionId: AppWriteConstant.jiraConnectionCollectionId,
-        documentId: docId,
-      ).then((value) {
-        Navigator.pop(context);
-        getJiraConnections(context);
-        CustomSnack.successSnack(
-            'Jira connection is deleted successfully', context);
-      });
+      // var res = db
+      //     .deleteDocument(
+      //   databaseId: AppWriteConstant.primaryDBId,
+      //   collectionId: AppWriteConstant.jiraConnectionCollectionId,
+      //   documentId: docId,
+      // ).then((value) {
+      //   Navigator.pop(context);
+      //   getJiraConnections(context);
+      //   CustomSnack.successSnack(
+      //       'Jira connection is deleted successfully', context);
+      // });
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     }

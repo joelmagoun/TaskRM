@@ -88,6 +88,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
           ),
           InkWell(
             onTap: () async {
+
               if (selectedType != null &&
                   selectedPriority != null &&
                   selectedTime != null &&

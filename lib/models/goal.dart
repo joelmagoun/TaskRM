@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:appwrite/models.dart';
+//import 'package:appwrite/models.dart';
 
 class Goal {
   final String id;
@@ -78,22 +78,22 @@ class Goal {
     );
   }
 
-  factory Goal.fromAppwriteDoc(Document doc) {
-    final data = doc.data;
-    return Goal(
-      id: doc.$id,
-      isCompleted: (data['isCompleted'] ?? false) as bool,
-      title: data['title'] as String,
-      type: data['type'] as String,
-      description: data['description'] as String,
-      totalMinutesSpent: data['totalMinutesSpent'],
-      createdAt:
-          data['createdAt'] == null ? null : DateTime.parse(data['createdAt']),
-      updatedAt:
-          data['updatedAt'] == null ? null : DateTime.parse(data['updatedAt']),
-      userId: data['userId'] as String,
-    );
-  }
+  // factory Goal.fromAppwriteDoc(Document doc) {
+  //   final data = doc.data;
+  //   return Goal(
+  //     id: doc.$id,
+  //     isCompleted: (data['isCompleted'] ?? false) as bool,
+  //     title: data['title'] as String,
+  //     type: data['type'] as String,
+  //     description: data['description'] as String,
+  //     totalMinutesSpent: data['totalMinutesSpent'],
+  //     createdAt:
+  //         data['createdAt'] == null ? null : DateTime.parse(data['createdAt']),
+  //     updatedAt:
+  //         data['updatedAt'] == null ? null : DateTime.parse(data['updatedAt']),
+  //     userId: data['userId'] as String,
+  //   );
+  // }
 
   String toJson() => json.encode(toMap());
 

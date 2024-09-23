@@ -1,20 +1,23 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:appwrite/appwrite.dart';
+
+//import 'package:appwrite/appwrite.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
+import '../powersync.dart';
 import '../routes/routes.dart';
 import '../utils/app_storage.dart';
 import '../utils/config/constants.dart';
 import '../utils/custom_snack.dart';
 
 class AuthProvider extends ChangeNotifier {
-  Client client = Client();
-  late Databases db;
-  late Account account;
-  late Storage _appWriteStorage;
+  // Client client = Client();
+  // late Databases db;
+  // late Account account;
+  // late Storage _appWriteStorage;
   File? image;
   late String imageUrl = '';
   late bool isImageUploading = false;
@@ -32,12 +35,12 @@ class AuthProvider extends ChangeNotifier {
   }
 
   _init() {
-    client
-        .setEndpoint(AppWriteConstant.endPoint)
-        .setProject(AppWriteConstant.projectId);
-    account = Account(client);
-    db = Databases(client);
-    _appWriteStorage = Storage(client);
+    // client
+    //     .setEndpoint(AppWriteConstant.endPoint)
+    //     .setProject(AppWriteConstant.projectId);
+    // account = Account(client);
+    // db = Databases(client);
+    // _appWriteStorage = Storage(client);
   }
 
   /// uplaod image ///
@@ -100,23 +103,23 @@ class AuthProvider extends ChangeNotifier {
         if (!isImageUploading) {
           print('image url 2 $imageUrl');
 
-          isImageUploading = true;
-          notifyListeners();
-
-          final res = await _appWriteStorage
-              .createFile(
-                  bucketId: AppWriteConstant.userImageBucketId,
-                  fileId: ID.unique(),
-                  //file: InputFile.fromPath(path: image!.path))
-                  file: InputFile.fromPath(path: hardImagePath))
-              .then((value) {
-            imageUrl =
-                "https://rest.is/v1/storage/buckets/${AppWriteConstant.userImageBucketId}/files/${value.$id}/view?project=${AppWriteConstant.projectId}";
-            notifyListeners();
-            print('image url $imageUrl');
-          });
-          await storage.write(key: 'imageUrl', value: imageUrl);
-          CustomSnack.successSnack('Image is Uploaded successfully!', context);
+          // isImageUploading = true;
+          // notifyListeners();
+          //
+          // final res = await _appWriteStorage
+          //     .createFile(
+          //         bucketId: AppWriteConstant.userImageBucketId,
+          //         fileId: ID.unique(),
+          //         //file: InputFile.fromPath(path: image!.path))
+          //         file: InputFile.fromPath(path: hardImagePath))
+          //     .then((value) {
+          //   imageUrl =
+          //       "https://rest.is/v1/storage/buckets/${AppWriteConstant.userImageBucketId}/files/${value.$id}/view?project=${AppWriteConstant.projectId}";
+          //   notifyListeners();
+          //   print('image url $imageUrl');
+          // });
+          // await storage.write(key: 'imageUrl', value: imageUrl);
+          // CustomSnack.successSnack('Image is Uploaded successfully!', context);
         }
       }
     } on PlatformException catch (e) {
@@ -138,20 +141,28 @@ class AuthProvider extends ChangeNotifier {
       isLogin = true;
       notifyListeners();
 
-      var result =
-          await account.createEmailSession(email: email, password: password);
+      var response = await Supabase.instance.client.auth
+          .signInWithPassword(email: email, password: password);
 
-      await storage.write(key: 'sessionId', value: result.$id);
-      await storage.write(key: 'userId', value: result.userId);
-
-      if (result.userId.isNotEmpty) {
-        final _profileState =
-            Provider.of<ProfileProvider>(context, listen: false);
-        _profileState.saveProfile(
-            _name, _encryption, _language, _jira, _jiraUserName, _jiraUrl, context);
+      if (response.session!.accessToken.isNotEmpty) {
+        await storage.write(
+            key: 'sessionId', value: response.session?.accessToken);
+        await storage.write(key: 'userId', value: response.user?.id);
+        Navigator.pushReplacementNamed(context, Routes.home);
       }
 
-      Navigator.pushReplacementNamed(context, Routes.home);
+      // var result =
+      //     await account.createEmailSession(email: email, password: password);
+      //
+      // await storage.write(key: 'sessionId', value: result.$id);
+      // await storage.write(key: 'userId', value: result.userId);
+      //
+      // if (result.userId.isNotEmpty) {
+      //   final _profileState =
+      //       Provider.of<ProfileProvider>(context, listen: false);
+      //   _profileState.saveProfile(
+      //       _name, _encryption, _language, _jira, _jiraUserName, _jiraUrl, context);
+      // }
     } catch (e) {
       print('error is $e');
     } finally {
@@ -178,32 +189,31 @@ class AuthProvider extends ChangeNotifier {
       isAccountCreating = true;
       notifyListeners();
 
-      var result = await account.create(
-        userId: ID.unique(),
-        email: email,
-        password: password,
-        name: name,
-      );
+      // var result = await account.create(
+      //   userId: ID.unique(),
+      //   email: email,
+      //   password: password,
+      //   name: name,
+      // );
+
+      final response = await Supabase.instance.client.auth
+          .signUp(email: email, password: password);
 
       _name = name;
-      notifyListeners();
-
       _encryption = encryption;
-      notifyListeners();
-
       _jira = jira;
-      notifyListeners();
-
       _language = language;
-      notifyListeners();
-
       _jiraUserName = jiraUserName;
-      notifyListeners();
-
       _jiraUrl = jiraUrl;
       notifyListeners();
 
-      return true;
+      if (response.session != null) {
+        return true;
+      } else {
+        return false;
+      }
+
+      //return true;
       // Navigator.pushReplacementNamed(context, Routes.login);
     } catch (e) {
       print('sign up error ${e.toString()}');
@@ -214,26 +224,27 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-
   /// logout ///
 
   late bool isLogOut = false;
 
   logout(BuildContext context) async {
     try {
-
       isLogOut = true;
       notifyListeners();
 
-      final sessionId = await storage.read(key: 'sessionId');
-      final res = await account.deleteSession(sessionId: sessionId!).then((value) async {
+      // final res = await account.deleteSession(sessionId: sessionId!).then((value) async {
+      //   await AppStorage.deleteStorageData();
+      //   Navigator.pushReplacementNamed(context, Routes.login);
+      // });
+      final res = await Supabase.instance.client.auth.signOut().then((value) async {
+        await db.disconnectAndClear();
         await AppStorage.deleteStorageData();
         Navigator.pushReplacementNamed(context, Routes.login);
       });
-
     } catch (e) {
-       CustomSnack.warningSnack(e.toString(), context);
-    }finally{
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
       isLogOut = false;
       notifyListeners();
     }

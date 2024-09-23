@@ -9,8 +9,10 @@ import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/views/tasks/add_task_bottom_sheet.dart';
 import 'package:TaskRM/views/tasks/newTask/today_filter_bottomsheet.dart';
+import 'package:TaskRM/widgets/components/custom_loader.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
+import '../../models/task.dart';
 
 class TodayTaskScreen extends StatefulWidget {
   const TodayTaskScreen({Key? key}) : super(key: key);
@@ -33,30 +35,70 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
           ),
           actions: [
             taskState.todayTaskList.isNotEmpty ||
-                    taskState.selectedFilterType != ''
+                taskState.selectedFilterType != ''
                 ? InkWell(
-                    onTap: () {
-                      CustomDialog.bottomSheet(
-                          context, const TodayFilterBottomSheet());
-                    },
-                    child: SvgPicture.asset(filterIcon))
+                onTap: () {
+                  CustomDialog.bottomSheet(
+                      context, const TodayFilterBottomSheet());
+                },
+                child: SvgPicture.asset(filterIcon))
                 : const SizedBox.shrink(),
             taskState.todayTaskList.isNotEmpty
                 ? IconButton(
-                    onPressed: () {
-                      CustomDialog.bottomSheet(
-                          context, const AddTaskBottomSheet());
-                    },
-                    icon: const Icon(
-                      Icons.add_circle_rounded,
-                    ),
-                    color: primaryColor,
-                    iconSize: 42,
-                  )
+              onPressed: () {
+                CustomDialog.bottomSheet(
+                    context, const AddTaskBottomSheet());
+              },
+              icon: const Icon(
+                Icons.add_circle_rounded,
+              ),
+              color: primaryColor,
+              iconSize: 42,
+            )
                 : const SizedBox.shrink(),
             sixteenHorizontalSpace,
           ],
         ),
+
+        /// streambuilder ///
+        // body: StreamBuilder<List<TaskModel>>(
+        //  // stream:  TaskModel.watchMessages('e4b7ee97-da40-482d-a649-ad637899a6fd'),
+        //   stream: taskState.taskStream,
+        //   builder: (context, snapshot) {
+        //
+        //     if(taskState.isTaskLoading){
+        //       return const CustomLoader();
+        //     }else{
+        //       if (snapshot.hasData) {
+        //         final taskList = snapshot.data!;
+        //         return taskList.isEmpty
+        //             ? const Center(
+        //           child: Text('Start your conversation now :)'),
+        //         )
+        //             : ListView.builder(
+        //           itemCount: taskList.length,
+        //           itemBuilder: (context, index) {
+        //             final task = taskList[index];
+        //
+        //             /// I know it's not good to include code that is not related
+        //             /// to rendering the widget inside build method, but for
+        //             /// creating an app quick and dirty, it's fine 😂
+        //             //_loadProfileCache(message.profileId);
+        //
+        //             return ListTile(
+        //               title: Text(task.title!),
+        //               subtitle: Text(task.description!),
+        //             );
+        //           },
+        //         );
+        //       } else {
+        //         return _emptyListWidget(context);
+        //       }
+        //     }
+        //
+        //   },
+        // ),
+        /// listview builder ///
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: _taskList(context),
@@ -75,7 +117,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
               icon: taskIcon,
               title: 'No tasks for today',
               subTitle:
-                  'Add tasks by creating new ones or selecting from the queue.'),
+              'Add tasks by creating new ones or selecting from the queue.'),
           sixteenVerticalSpace,
           IconButton(
             onPressed: () {
@@ -96,10 +138,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
     final taskState = Provider.of<TaskProvider>(context, listen: false);
 
     if (taskState.isTaskLoading) {
-      return const Center(
-          child: CircularProgressIndicator(
-        color: primaryColor,
-      ));
+      return const CustomLoader();
     } else {
       if (taskState.todayTaskList.isEmpty) {
         if (taskState.selectedFilterType == '') {
@@ -121,7 +160,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                       Text(
                         taskState.selectedFilterType,
                         style:
-                            tTextStyleBold.copyWith(color: white, fontSize: 16),
+                        tTextStyleBold.copyWith(color: white, fontSize: 16),
                       ),
                       IconButton(
                           onPressed: () async {
@@ -151,9 +190,9 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                 var item = taskState.todayTaskList[index];
                 return TaskTile(
                   onLongPress: () {},
-                  title: item.title,
+                  title: item.title!,
                   isTimeTracking: false,
-                  time: item.timeframe,
+                  time: item.timeframe!,
                   cardColor: const Color(0xFFF0F1F8),
                   titleColor: black,
                   timeDateColor: iconColor,
@@ -181,7 +220,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                       Text(
                         taskState.selectedFilterType,
                         style:
-                            tTextStyleBold.copyWith(color: white, fontSize: 16),
+                        tTextStyleBold.copyWith(color: white, fontSize: 16),
                       ),
                       IconButton(
                           onPressed: () async {
@@ -203,9 +242,9 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                       var item = taskState.todayTaskList[index];
                       return TaskTile(
                         onLongPress: () {},
-                        title: item.title,
+                        title: item.title!,
                         isTimeTracking: false,
-                        time: item.timeframe,
+                        time: item.timeframe!,
                         cardColor: const Color(0xFFF0F1F8),
                         titleColor: black,
                         timeDateColor: iconColor,

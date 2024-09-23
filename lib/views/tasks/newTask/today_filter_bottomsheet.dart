@@ -104,6 +104,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
               },
               separatorBuilder: (_, index) => sixteenVerticalSpace,
               itemCount: AppConstant.typeList.length),
+          sixteenVerticalSpace,
           PrimaryButton(
             onTap: () async {
               await taskState.getTodayTaskList();

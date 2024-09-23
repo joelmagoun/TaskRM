@@ -23,7 +23,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
   late bool isSelected = false;
 
   /// for move to today list ///
-  late String selectedTaskId = '';
+  late int selectedTaskId = 0;
   late String selectedTaskTitle = '';
   late String selectedTaskType = '';
   late String selectedGoalId = '';
@@ -31,6 +31,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
   late String selectedTaskDescription = '';
   late String selectedTaskGoal = '';
   late String selectedTaskCreatedAt = '';
+  late String selectedTaskUpdatedAt = '';
 
   @override
   Widget build(BuildContext context) {
@@ -201,19 +202,20 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             setState(() {
                               selectedTask = index;
                               isSelected = true;
-                              selectedTaskId = item.id;
-                              selectedTaskTitle = item.title;
-                              selectedTaskType = item.type;
+                              selectedTaskId = int.parse(item.id!);
+                              selectedTaskTitle = item.title!;
+                              selectedTaskType = item.type!;
                               selectedGoalId = item.goalId!;
-                              selectedTaskPriority = item.priority;
-                              selectedTaskDescription = item.description;
-                              selectedTaskGoal = item.goal;
+                              selectedTaskPriority = item.priority!;
+                              selectedTaskDescription = item.description!;
+                              selectedTaskGoal = item.goal!;
                               selectedTaskCreatedAt = item.createdAt.toString();
+                              selectedTaskUpdatedAt = item.updatedAt.toString();
                             });
                           },
-                          title: item.title,
+                          title: item.title!,
                           isTimeTracking: false,
-                          time: item.timeframe,
+                          time: item.timeframe!,
                           cardColor: selectedTask == index
                               ? secondaryColor
                               : const Color(0xFFF0F1F8),
@@ -313,19 +315,20 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                             setState(() {
                               selectedTask = index;
                               isSelected = true;
-                              selectedTaskId = item.id;
-                              selectedTaskTitle = item.title;
-                              selectedTaskType = item.type;
+                              selectedTaskId = int.parse(item.id!);
+                              selectedTaskTitle = item.title!;
+                              selectedTaskType = item.type!;
                               selectedGoalId = item.goalId!;
-                              selectedTaskPriority = item.priority;
-                              selectedTaskDescription = item.description;
-                              selectedTaskGoal = item.goal;
+                              selectedTaskPriority = item.priority!;
+                              selectedTaskDescription = item.description!;
+                              selectedTaskGoal = item.goal!;
                               selectedTaskCreatedAt = item.createdAt.toString();
+                              selectedTaskUpdatedAt = item.updatedAt.toString();
                             });
                           },
-                          title: item.title,
+                          title: item.title!,
                           isTimeTracking: false,
-                          time: item.timeframe,
+                          time: item.timeframe!,
                           cardColor: selectedTask == index
                               ? secondaryColor
                               : const Color(0xFFF0F1F8),
@@ -397,12 +400,6 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
 
                   await _taskState.moveToTodayTaskList(
                       selectedTaskId,
-                      selectedTaskTitle,
-                      selectedTaskType,
-                      selectedGoalId,
-                      selectedTaskPriority,
-                      selectedTaskDescription,
-                      selectedTaskGoal,
                       selectedTaskCreatedAt,
                       context);
 
