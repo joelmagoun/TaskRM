@@ -12,7 +12,6 @@ import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../routes/routes.dart';
 import '../../../utils/constant/constant.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditJiraConnectionBottomSheet extends StatefulWidget {
   final JiraConnectionModel jiraModel;
@@ -36,9 +35,10 @@ class _EditJiraConnectionBottomSheetState
 
   @override
   void initState() {
-     _userNameController = TextEditingController(text: widget.jiraModel.userName);
-     _urlController = TextEditingController(text: widget.jiraModel.url);
-     _apiController = TextEditingController(text: widget.jiraModel.apiKey);
+    _userNameController =
+        TextEditingController(text: widget.jiraModel.userName);
+    _urlController = TextEditingController(text: widget.jiraModel.url);
+    _apiController = TextEditingController(text: widget.jiraModel.apiKey);
     super.initState();
   }
 
@@ -93,7 +93,7 @@ class _EditJiraConnectionBottomSheetState
               ],
             ),
             Text(
-              AppLocalizations.of(context)!.editconnection,
+              'Edit connection',
               style:
                   tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
             ),
@@ -118,18 +118,18 @@ class _EditJiraConnectionBottomSheetState
       child: Column(
         children: [
           _buildField(
-              title: AppLocalizations.of(context)!.username,
+              title: 'Username',
               controller: _userNameController,
               hintText: 'ex. sarasmith5498'),
           primaryVerticalSpace,
           _buildField(
-              title: AppLocalizations.of(context)!.url,
+              title: 'URL',
               controller: _urlController,
               hintText:
-                  'ex. sarasmith.atlassian.net'),
+                  'ex. https://sarasmith.atlassian.net/browse/Personalprojectstasks9784'),
           primaryVerticalSpace,
           _buildField(
-              title: AppLocalizations.of(context)!.apikey,
+              title: 'API key',
               controller: _apiController,
               hintText: 'ex. B48N65'),
           const SizedBox(
@@ -145,7 +145,7 @@ class _EditJiraConnectionBottomSheetState
                   _urlController.text,
                   context);
             },
-            buttonTitle: AppLocalizations.of(context)!.save,
+            buttonTitle: 'Save',
             buttonColor: !isData ? primaryLight : primaryColor,
             isLoading: profileState.isJiraUpdating,
           ),

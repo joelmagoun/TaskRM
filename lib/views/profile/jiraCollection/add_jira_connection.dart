@@ -3,12 +3,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
 import 'package:TaskRM/utils/assets_path.dart';
+import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
+import 'package:TaskRM/views/tasks/newTask/add_new_task_bottomsheet.dart';
 import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
+import '../../../routes/routes.dart';
 import '../../../utils/constant/constant.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddJiraConnectionBottomSheet extends StatefulWidget {
   final String taskType;
@@ -81,9 +83,9 @@ class _AddJiraConnectionBottomSheetState
               ],
             ),
             Text(
-              AppLocalizations.of(context)!.addconnection,
+              'Add connection',
               style:
-              tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
+                  tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
             ),
           ],
         ),
@@ -106,18 +108,18 @@ class _AddJiraConnectionBottomSheetState
       child: Column(
         children: [
           _buildField(
-              title: AppLocalizations.of(context)!.username,
+              title: 'Username',
               controller: _userNameController,
               hintText: 'ex. sarasmith5498'),
           primaryVerticalSpace,
           _buildField(
-              title: AppLocalizations.of(context)!.url,
+              title: 'URL',
               controller: _urlController,
               hintText:
-              'ex. sarasmith.atlassian.net'),
+                  'ex. https://sarasmith.atlassian.net/browse/Personalprojectstasks9784'),
           primaryVerticalSpace,
           _buildField(
-              title: AppLocalizations.of(context)!.apikey,
+              title: 'API key',
               controller: _apiController,
               hintText: 'ex. B48N65'),
           const SizedBox(
@@ -126,27 +128,24 @@ class _AddJiraConnectionBottomSheetState
           PrimaryButton(
             onTap: () {
               late String taskType = '';
-              if(widget.taskType == 'Work'){
+              if (widget.taskType == 'Work') {
                 setState(() {
                   taskType = '1';
                 });
-              }else if(widget.taskType == 'Personal'){
+              } else if (widget.taskType == 'Personal') {
                 setState(() {
                   taskType = '2';
                 });
-              }else if(widget.taskType == 'Self'){
+              } else if (widget.taskType == 'Self') {
                 setState(() {
                   taskType = '3';
                 });
               }
-              profileState.addJiraConnection(
-                  taskType, _userNameController.text,
-                  _apiController.text, _urlController.text,
-                  context);
+              profileState.addJiraConnection(taskType, _userNameController.text,
+                  _apiController.text, _urlController.text, context);
             },
-            buttonTitle: AppLocalizations.of(context)!.add,
-            buttonColor:
-            !isData ? primaryLight : primaryColor,
+            buttonTitle: 'Add',
+            buttonColor: !isData ? primaryLight : primaryColor,
             isLoading: profileState.isJiraAdding,
           ),
           const SizedBox(
@@ -157,9 +156,10 @@ class _AddJiraConnectionBottomSheetState
     );
   }
 
-  Widget _buildField({required String title,
-    required TextEditingController controller,
-    required String hintText}) {
+  Widget _buildField(
+      {required String title,
+      required TextEditingController controller,
+      required String hintText}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -199,5 +199,4 @@ class _AddJiraConnectionBottomSheetState
       ],
     );
   }
-
 }

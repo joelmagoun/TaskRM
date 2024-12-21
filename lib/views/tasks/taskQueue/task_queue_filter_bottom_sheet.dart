@@ -7,8 +7,6 @@ import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../providers/task_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 
 class TaskQueueFilterBottomSheet extends StatefulWidget {
   const TaskQueueFilterBottomSheet({
@@ -22,7 +20,6 @@ class TaskQueueFilterBottomSheet extends StatefulWidget {
 
 class _TaskQueueFilterBottomSheetState
     extends State<TaskQueueFilterBottomSheet> {
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -63,7 +60,7 @@ class _TaskQueueFilterBottomSheetState
               color: trans,
             )),
         Text(
-          AppLocalizations.of(context)!.filters,
+          'Filters',
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         IconButton(
@@ -88,7 +85,7 @@ class _TaskQueueFilterBottomSheetState
         children: [
           /// time frame ///
           Text(
-            AppLocalizations.of(context)!.timeframe,
+            'Timeframe',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           ListView.separated(
@@ -100,7 +97,7 @@ class _TaskQueueFilterBottomSheetState
                       taskState.getQueueFilterTimeType(
                           taskState.selectedQueueType, time);
                     },
-                    title: AppConstant.convertTimeFrame(context, time),
+                    title: time,
                     checkBoxColor: taskState.selectedQueueTimeFrame == time
                         ? primaryColor
                         : white,
@@ -113,7 +110,7 @@ class _TaskQueueFilterBottomSheetState
 
           /// work type ///
           Text(
-            AppLocalizations.of(context)!.type,
+            'Type',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           ListView.separated(
@@ -125,7 +122,7 @@ class _TaskQueueFilterBottomSheetState
                       taskState.getQueueFilterTimeType(
                           type, taskState.selectedQueueTimeFrame);
                     },
-                    title: AppConstant.convertType(context, type),
+                    title: type,
                     checkBoxColor: taskState.selectedQueueType == type
                         ? primaryColor
                         : white,
@@ -135,13 +132,13 @@ class _TaskQueueFilterBottomSheetState
               },
               separatorBuilder: (_, index) => sixteenVerticalSpace,
               itemCount: AppConstant.typeList.length),
-
+          sixteenVerticalSpace,
           PrimaryButton(
             onTap: () async {
               await taskState.getAllTaskList();
               Navigator.pop(context);
             },
-            buttonTitle: AppLocalizations.of(context)!.apply,
+            buttonTitle: 'Apply',
             buttonColor: taskState.selectedQueueTimeFrame == '' &&
                     taskState.selectedQueueType == ''
                 ? primaryLight

@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/goals_provider.dart';
+import 'package:TaskRM/providers/task_provider.dart';
 import '../../../utils/color.dart';
 import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectParentGoalBottomSheet extends StatefulWidget {
-  final String parentGoal;
-
-  const SelectParentGoalBottomSheet({Key? key, required this.parentGoal})
-      : super(key: key);
+  const SelectParentGoalBottomSheet({Key? key}) : super(key: key);
 
   @override
   State<SelectParentGoalBottomSheet> createState() =>
@@ -19,7 +16,7 @@ class SelectParentGoalBottomSheet extends StatefulWidget {
 
 class _SelectParentGoalBottomSheetState
     extends State<SelectParentGoalBottomSheet> {
-  late String selectedParentGoal = widget.parentGoal;
+  late String selectedParentGoal = 'Select';
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +29,7 @@ class _SelectParentGoalBottomSheetState
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(24), topLeft: Radius.circular(24)),
               color: white),
-          child: Consumer<GoalProvider>(builder: (_, goalState, child) {
+          child: Consumer<GoalProvider>(builder: (_, _goalState, child) {
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -48,7 +45,7 @@ class _SelectParentGoalBottomSheetState
                               color: trans,
                             )),
                         Text(
-                          AppLocalizations.of(context)!.selectparentgoal,
+                          'Select Parent Goal',
                           style: tTextStyle500.copyWith(
                               fontSize: 20, color: black),
                         ),
@@ -71,15 +68,14 @@ class _SelectParentGoalBottomSheetState
                         _optionTile(
                           onTap: () {
                             setState(() {
-                              selectedParentGoal = '0';
+                              selectedParentGoal = 'None';
                             });
-                            goalState.getSelectedParentGoal(
-                                'None', false, context);
+                            _goalState.getSelectedParentGoal('None', context);
                           },
-                          tileBorderColor: selectedParentGoal == '0'
+                          tileBorderColor: selectedParentGoal == 'None'
                               ? secondaryColor
                               : borderColor,
-                          circleColor: selectedParentGoal == '0'
+                          circleColor: selectedParentGoal == 'None'
                               ? secondaryColor
                               : trans,
                           title: 'None',
@@ -89,20 +85,19 @@ class _SelectParentGoalBottomSheetState
                           onTap: () {
                             setState(() {
                               selectedParentGoal =
-                                  '1';
+                                  'Work towards obtaining certifications that are valuable...';
                             });
 
-                            goalState.getSelectedParentGoal(
-                                '1',
-                                false,
+                            _goalState.getSelectedParentGoal(
+                                'Work towards obtaining certifications that are valuable...',
                                 context);
                           },
                           tileBorderColor: selectedParentGoal ==
-                                  '1'
+                                  'Work towards obtaining certifications that are valuable...'
                               ? secondaryColor
                               : borderColor,
                           circleColor: selectedParentGoal ==
-                                  '1'
+                                  'Work towards obtaining certifications that are valuable...'
                               ? secondaryColor
                               : trans,
                           title:
@@ -113,19 +108,18 @@ class _SelectParentGoalBottomSheetState
                           onTap: () {
                             setState(() {
                               selectedParentGoal =
-                                  '2';
+                                  'Read 4 of self-improvement books within the next six mon...';
                             });
-                            goalState.getSelectedParentGoal(
-                                '2',
-                                false,
+                            _goalState.getSelectedParentGoal(
+                                'Read 4 of self-improvement books within the next six mon...',
                                 context);
                           },
                           tileBorderColor: selectedParentGoal ==
-                                  '2'
+                                  'Read 4 of self-improvement books within the next six mon...'
                               ? secondaryColor
                               : borderColor,
                           circleColor: selectedParentGoal ==
-                                  '2'
+                                  'Read 4 of self-improvement books within the next six mon...'
                               ? secondaryColor
                               : trans,
                           title:
@@ -136,19 +130,18 @@ class _SelectParentGoalBottomSheetState
                           onTap: () {
                             setState(() {
                               selectedParentGoal =
-                                  '3';
+                                  'Explore and participate in adventurous activities.';
                             });
-                            goalState.getSelectedParentGoal(
-                                '3',
-                                false,
+                            _goalState.getSelectedParentGoal(
+                                'Explore and participate in adventurous activities.',
                                 context);
                           },
                           tileBorderColor: selectedParentGoal ==
-                                  '3'
+                                  'Explore and participate in adventurous activities.'
                               ? secondaryColor
                               : borderColor,
                           circleColor: selectedParentGoal ==
-                                  '3'
+                                  'Explore and participate in adventurous activities.'
                               ? secondaryColor
                               : trans,
                           title:

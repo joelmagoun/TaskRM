@@ -1,5 +1,3 @@
-import 'package:TaskRM/utils/constant/constant.dart';
-import 'package:TaskRM/views/goals/goalDetails/editGoal/edit_goal_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -9,8 +7,6 @@ import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/goal.dart';
 import '../../../utils/assets_path.dart';
-import '../../../utils/custom_dialog.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GoalDetailsScreen extends StatefulWidget {
   final Goal goal;
@@ -47,7 +43,7 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.goal,
+                  'Goal',
                   style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
                 ),
                 Text(
@@ -57,50 +53,7 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                 ),
               ],
             ),
-            actions: [
-              PopupMenuButton(
-                icon: SvgPicture.asset(menuIcon),
-                color: white,
-                onSelected: (value) {
-                  // your logic
-                },
-                itemBuilder: (BuildContext bc) {
-                  return [
-                    PopupMenuItem(
-                      onTap: () {
-                        CustomDialog.bottomSheet(
-                            context, EditGoalBottomSheet(goal: widget.goal));
-                      },
-                      value: 'edit',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.edit_outlined),
-                          eightHorizontalSpace,
-                          Text(AppLocalizations.of(context)!.edit),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: '/hello',
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.delete_outline,
-                            color: red,
-                          ),
-                          eightHorizontalSpace,
-                          Text(
-                            AppLocalizations.of(context)!.delete,
-                            style: tTextStyle600.copyWith(color: red),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ];
-                },
-              ),
-              sixteenHorizontalSpace,
-            ],
+            actions: [SvgPicture.asset(menuIcon), sixteenHorizontalSpace],
           ),
         ),
         body: Column(
@@ -112,29 +65,23 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, AppLocalizations.of(context)!.type,
-                            AppConstant.convertType(context, widget.goal.type), false),
+                        _infoTile(typeIcon, 'Type', widget.goal.type, false),
                         primaryVerticalSpace,
-                        //_infoTile(timeFrameIcon, AppLocalizations.of(context)!.timeframe,
-                        //    " widget.goal.timeFrame", false),
-                        //primaryVerticalSpace,
-                        _infoTile(descriptionIcon, AppLocalizations.of(context)!.description,
+                        _infoTile(timeFrameIcon, 'Timeframe',
+                            " widget.goal.timeFrame", false),
+                        primaryVerticalSpace,
+                        _infoTile(descriptionIcon, 'Description',
                             widget.goal.description, false),
                         primaryVerticalSpace,
-                        _infoTile(
-                            goalIcon,
-                            AppLocalizations.of(context)!.parentgoal,
-                            AppConstant.convertParentGoal(
-                                widget.goal.parentGoal),
-                            true),
+                        _infoTile(goalIcon, 'Parent Goal', 'None', true),
                         primaryVerticalSpace,
-                        _infoTile(taskIcon, AppLocalizations.of(context)!.tasks, 'None', true),
+                        _infoTile(taskIcon, 'Tasks', 'None', true),
                         primaryVerticalSpace,
                         _infoTile(
-                            scheduleIcon, AppLocalizations.of(context)!.timespent, '1 hr 15 min', false),
+                            scheduleIcon, 'Time spent', '1 hr 15 min', false),
                         primaryVerticalSpace,
                         _infoTile(
-                            reloadIcon, AppLocalizations.of(context)!.lastactivity, '11 Mar, 2023', false),
+                            reloadIcon, 'Last activity', '11 Mar, 2023', false),
                       ],
                     ),
                   ),
@@ -207,8 +154,8 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _bottomButton(addTimeIcon, AppLocalizations.of(context)!.addtime, false),
-            _bottomButton(checkIcon, AppLocalizations.of(context)!.completegoal, true),
+            _bottomButton(addTimeIcon, 'Add Time', false),
+            _bottomButton(checkIcon, 'Complete Goal', true),
           ],
         ),
       ),

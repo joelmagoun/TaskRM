@@ -7,7 +7,6 @@ import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../providers/goals_provider.dart';
 import '../../utils/constant/constant.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GoalFilterBottomSheet extends StatefulWidget {
   const GoalFilterBottomSheet({
@@ -61,7 +60,7 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
               color: trans,
             )),
         Text(
-          AppLocalizations.of(context)!.filters,
+          'Filters',
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         IconButton(
@@ -77,7 +76,6 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
   }
 
   Widget _allInfo() {
-
     final goalState = Provider.of<GoalProvider>(context, listen: false);
 
     return Padding(
@@ -86,7 +84,7 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppLocalizations.of(context)!.type,
+            'Type',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           ListView.separated(
@@ -97,7 +95,7 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
                     onTap: () {
                       goalState.getFilterType(type);
                     },
-                    title: AppConstant.convertType(context, type),
+                    title: type,
                     checkBoxColor: goalState.selectedFilterType == type
                         ? primaryColor
                         : white,
@@ -112,7 +110,7 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
               await goalState.getGoalList();
               Navigator.pop(context);
             },
-            buttonTitle: AppLocalizations.of(context)!.apply,
+            buttonTitle: 'Apply',
             buttonColor: goalState.selectedFilterType == ''
                 ? primaryLight
                 : primaryColor,
@@ -122,5 +120,4 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
       ),
     );
   }
-
 }

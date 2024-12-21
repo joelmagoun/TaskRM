@@ -9,7 +9,6 @@ import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/widgets/components/custom_image_holder.dart';
 import '../../routes/routes.dart';
 import '../../utils/assets_path.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -34,14 +33,14 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.home,
+                  'Home',
                   style: tTextStyle500.copyWith(fontSize: 20),
                 ),
                 Image.asset(logo),
                 Row(
                   children: [
-                    //SvgPicture.asset(notificationIcon),
-                    //eightHorizontalSpace,
+                    SvgPicture.asset(notificationIcon),
+                    eightHorizontalSpace,
                     InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, Routes.profile);
@@ -74,27 +73,21 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _optionTile(task, taskIcon, AppLocalizations.of(context)!.tasks,
-                    () {
+                _optionTile(task, taskIcon, 'Tasks', () {
                   Navigator.pushNamed(context, Routes.todayTask);
                 }),
                 sixteenVerticalSpace,
-                _optionTile(goal, goalIcon, AppLocalizations.of(context)!.goals,
-                    () {
+                _optionTile(goal, goalIcon, 'Goals', () {
                   Navigator.pushNamed(context, Routes.goals);
                 }),
                 sixteenVerticalSpace,
-                _optionTile(moment, momentIcon,
-                    AppLocalizations.of(context)!.moments, () {}),
+                _optionTile(moment, momentIcon, 'Moments', () {}),
                 sixteenVerticalSpace,
-                _optionTile(journal, journalIcon,
-                    AppLocalizations.of(context)!.journal, () {}),
+                _optionTile(journal, journalIcon, 'Journal', () {}),
                 sixteenVerticalSpace,
-                _optionTile(review, reviewIcon,
-                    AppLocalizations.of(context)!.review, () {}),
+                _optionTile(review, reviewIcon, 'Review', () {}),
                 sixteenVerticalSpace,
-                _optionTile(
-                    feed, feedIcon, AppLocalizations.of(context)!.feed, () {}),
+                _optionTile(feed, feedIcon, 'Feed', () {}),
                 // sixteenVerticalSpace,
                 // _optionTile(feed, profileIcon, 'Profile', () {
                 //   Navigator.pushNamed(context, Routes.profile);

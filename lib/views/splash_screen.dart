@@ -7,9 +7,9 @@ import 'package:TaskRM/views/home/home_screen.dart';
 import '../utils/assets_path.dart';
 
 class SplashScreen extends StatefulWidget {
-  final String sessionId;
+  final bool isLoggedIn;
 
-  const SplashScreen({Key? key, required this.sessionId}) : super(key: key);
+  const SplashScreen({Key? key, required this.isLoggedIn}) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -27,10 +27,10 @@ class _SplashScreenState extends State<SplashScreen> {
     // bool docCompleted = PrefData.getDocumentCompleted();
     // const bool isAccessToken = false;
 
-    Timer(const Duration(seconds: 2), () {
-      if (widget.sessionId != '') {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (_) => const HomeScreen()));
+    Timer(const Duration(seconds: 1), () {
+      if (widget.isLoggedIn) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
       } else {
         Navigator.push(
             context, MaterialPageRoute(builder: (_) => const LoginScreen()));

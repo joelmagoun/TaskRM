@@ -13,7 +13,6 @@ import '../../providers/profile_provider.dart';
 import '../../routes/routes.dart';
 import '../../utils/color.dart';
 import '../../utils/typograpgy.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -40,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: false,
         shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
         title: Text(
-          AppLocalizations.of(context)!.profile,
+          'Profile',
           style: tTextStyle500.copyWith(fontSize: 20),
         ),
       ),
@@ -69,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           eightHorizontalSpace,
                           Text(
-                            AppLocalizations.of(context)!.jiraconns,
+                            'Jira connections',
                             style: tTextStyleRegular.copyWith(
                                 fontSize: 16, color: textPrimaryColor),
                           )
@@ -82,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         CustomDialog.dialogBuilder(
                             context, const LogoutDeleteDialog());
                       },
-                      buttonTitle: AppLocalizations.of(context)!.logout,
+                      buttonTitle: 'Log out',
                       borderColor: borderColor,
                       titleColor: iconColor,
                     ),

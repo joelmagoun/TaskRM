@@ -7,7 +7,6 @@ import 'package:TaskRM/views/tasks/taskQueue/widgets/filter_option_tile.dart';
 import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TodayFilterBottomSheet extends StatefulWidget {
   const TodayFilterBottomSheet({
@@ -19,7 +18,6 @@ class TodayFilterBottomSheet extends StatefulWidget {
 }
 
 class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -60,7 +58,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
               color: trans,
             )),
         Text(
-          AppLocalizations.of(context)!.filters,
+          'Filters',
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         IconButton(
@@ -84,7 +82,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppLocalizations.of(context)!.type,
+            'Type',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           ListView.separated(
@@ -95,7 +93,7 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
                     onTap: () {
                       taskState.getFilterType(type);
                     },
-                    title: AppConstant.convertType(context, type),
+                    title: type,
                     checkBoxColor: taskState.selectedFilterType == type
                         ? primaryColor
                         : white,
@@ -105,13 +103,16 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
               },
               separatorBuilder: (_, index) => sixteenVerticalSpace,
               itemCount: AppConstant.typeList.length),
+          sixteenVerticalSpace,
           PrimaryButton(
             onTap: () async {
               await taskState.getTodayTaskList();
               Navigator.pop(context);
             },
-            buttonTitle: AppLocalizations.of(context)!.apply,
-            buttonColor: taskState.selectedFilterType == '' ? primaryLight : primaryColor,
+            buttonTitle: 'Apply',
+            buttonColor: taskState.selectedFilterType == ''
+                ? primaryLight
+                : primaryColor,
           ),
           primaryVerticalSpace
         ],

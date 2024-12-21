@@ -1,4 +1,3 @@
-import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:TaskRM/models/task.dart';
@@ -8,7 +7,6 @@ import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../routes/routes.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskTile extends StatefulWidget {
   final VoidCallback onLongPress;
@@ -20,7 +18,7 @@ class TaskTile extends StatefulWidget {
   final Color timeDateColor;
   final bool isSelected;
   final String createdAt;
-  final Task task;
+  final TaskModel task;
 
   const TaskTile(
       {Key? key,
@@ -41,7 +39,6 @@ class TaskTile extends StatefulWidget {
 }
 
 class _TaskTileState extends State<TaskTile> {
-
   String getTimeAgo(String dateTime) {
     timeago.setLocaleMessages('en', timeago.EnMessages());
     dateTime = timeago.format(DateTime.parse(dateTime), locale: 'en');
@@ -91,7 +88,7 @@ class _TaskTileState extends State<TaskTile> {
                                       width: 4,
                                     ),
                                     Text(
-                                      AppLocalizations.of(context)!.timetracking,
+                                      'Time tracking',
                                       style: tTextStyleRegular.copyWith(
                                           fontSize: 14, color: iconColor),
                                     )
@@ -110,8 +107,7 @@ class _TaskTileState extends State<TaskTile> {
                                 width: 4,
                               ),
                               Text(
-                                AppConstant.convertTimeFrame(context, widget.time),
-                               // widget.time,
+                                widget.time,
                                 style: tTextStyleRegular.copyWith(
                                     fontSize: 14, color: widget.timeDateColor),
                               ),
@@ -155,7 +151,7 @@ class _TaskTileState extends State<TaskTile> {
                                 width: 4,
                               ),
                               Text(
-                                AppLocalizations.of(context)!.timetracking,
+                                'Time tracking',
                                 style: tTextStyleRegular.copyWith(
                                     fontSize: 14, color: iconColor),
                               )
@@ -174,8 +170,7 @@ class _TaskTileState extends State<TaskTile> {
                           width: 4,
                         ),
                         Text(
-                          AppConstant.convertTimeFrame(context, widget.time),
-                         // widget.time,
+                          widget.time,
                           style: tTextStyleRegular.copyWith(
                               fontSize: 14, color: widget.timeDateColor),
                         ),

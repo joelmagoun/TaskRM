@@ -1,4 +1,3 @@
-import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -15,8 +14,8 @@ import 'package:TaskRM/views/goals/goal_filter_bottomsheet.dart';
 import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../tasks/add_task_bottom_sheet.dart';
 
 class GoalsScreen extends StatelessWidget {
   const GoalsScreen({Key? key}) : super(key: key);
@@ -29,7 +28,7 @@ class GoalsScreen extends StatelessWidget {
           centerTitle: false,
           shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
           title: Text(
-            AppLocalizations.of(context)!.goals,
+            'Goals',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
@@ -80,24 +79,27 @@ class GoalsScreen extends StatelessWidget {
         if (goalState.selectedFilterType == '') {
           return Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,children: [
-              EmptyWidget(
-                  icon: goalIcon,
-                  title: AppLocalizations.of(context)!.emptygoalstitle,
-                  subTitle:
-                  AppLocalizations.of(context)!.emptygoalssubtitle),
-              sixteenVerticalSpace,
-              IconButton(
-                onPressed: () {
-                  CustomDialog.bottomSheet(context,  const AddNewGoalBottomSheet());
-                },
-                icon: const Icon(
-                  Icons.add_circle_rounded,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const EmptyWidget(
+                    icon: goalIcon,
+                    title: 'What do you aspire to achieve?',
+                    subTitle:
+                        'Add your personal and work goals to begin working on them.'),
+                sixteenVerticalSpace,
+                IconButton(
+                  onPressed: () {
+                    CustomDialog.bottomSheet(
+                        context, const AddNewGoalBottomSheet());
+                  },
+                  icon: const Icon(
+                    Icons.add_circle_rounded,
+                  ),
+                  color: primaryColor,
+                  iconSize: 64,
                 ),
-                color: primaryColor,
-                iconSize: 64,
-              ),
-            ],),
+              ],
+            ),
           );
         } else {
           return Column(
@@ -131,11 +133,11 @@ class GoalsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Center(
+              const Center(
                 child: EmptyWidget(
                     icon: goalIcon,
-                    title: AppLocalizations.of(context)!.sorry,
-                    subTitle: AppLocalizations.of(context)!.nomatchinggoals),
+                    title: 'Sorry!',
+                    subTitle: 'No matching goals'),
               ),
               const SizedBox(
                 height: 10,
@@ -165,7 +167,6 @@ class GoalsScreen extends StatelessWidget {
                       title: item.title,
                       type: item.type,
                       description: item.description,
-                      parentGoal: item.parentGoal,
                       isCompleted: item.isCompleted,
                       userId: item.userId),
                 );
@@ -187,7 +188,7 @@ class GoalsScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        AppConstant.convertType(context, goalState.selectedFilterType),
+                        goalState.selectedFilterType,
                         style:
                             tTextStyleBold.copyWith(color: white, fontSize: 16),
                       ),
@@ -209,8 +210,7 @@ class GoalsScreen extends StatelessWidget {
                 child: ListView.separated(
                     itemBuilder: (_, index) {
                       var item = goalState.allGoalList[index];
-                      return GoalTile(
-                        goalId: item.id,
+                      return TaskTile(
                         onLongPress: () {},
                         title: item.title,
                         isTimeTracking: false,
@@ -220,40 +220,8 @@ class GoalsScreen extends StatelessWidget {
                         timeDateColor: iconColor,
                         isSelected: false,
                         createdAt: item.createdAt.toString(),
-                        goal: Goal(
-                            id: item.id,
-                            title: item.title,
-                            type: item.type,
-                            description: item.description,
-                            parentGoal: item.parentGoal,
-                            isCompleted: item.isCompleted,
-                            userId: item.userId),
+                        task: TaskModel(),
                       );
-                      // return TaskTile(
-                      //   onLongPress: () {},
-                      //   title: item.title,
-                      //   isTimeTracking: false,
-                      //   time: '00',
-                      //   cardColor: const Color(0xFFF0F1F8),
-                      //   titleColor: black,
-                      //   timeDateColor: iconColor,
-                      //   isSelected: false,
-                      //   createdAt: item.createdAt.toString(),
-                      //   task: Task(
-                      //       id: '',
-                      //       title: '',
-                      //       type: '',
-                      //       priority: '',
-                      //       timeframe: '',
-                      //       description: '',
-                      //       createdAt: DateTime.now(),
-                      //       expectedCompletion: DateTime.now(),
-                      //       goalId: '',
-                      //       isMarkedForToday: false,
-                      //       jiraID: '',
-                      //       userID: '',
-                      //       goal: goal),
-                      // );
                     },
                     separatorBuilder: (_, index) => eightVerticalSpace,
                     itemCount: goalState.allGoalList.length),

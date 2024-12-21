@@ -1,6 +1,3 @@
-import 'package:TaskRM/utils/constant/constant.dart';
-import 'package:TaskRM/utils/custom_dialog.dart';
-import 'package:TaskRM/views/tasks/taskDetails/editTask/edit_task_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -9,12 +6,10 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/task.dart';
-import '../../../routes/routes.dart';
 import '../../../utils/assets_path.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
-  final Task task;
+  final TaskModel task;
 
   const TaskDetailsScreen({Key? key, required this.task}) : super(key: key);
 
@@ -48,63 +43,17 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.task,
+                  'Task',
                   style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
                 ),
                 Text(
-                  widget.task.title,
+                  widget.task.title!,
                   maxLines: 2,
                   style: tTextStyleRegular.copyWith(fontSize: 14),
                 ),
               ],
             ),
-            actions: [
-              PopupMenuButton(
-                icon: SvgPicture.asset(menuIcon),
-                color: white,
-                onSelected: (value) {
-                  // your logic
-                },
-                itemBuilder: (BuildContext bc) {
-                  return [
-                    PopupMenuItem(
-                      onTap: () {
-                        CustomDialog.bottomSheet(
-                            context,
-                            EditTaskBottomSheet(
-                              task: widget.task,
-                            ));
-                      },
-                      value: 'edit',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.edit_outlined),
-                          eightHorizontalSpace,
-                          Text(AppLocalizations.of(context)!.edit),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: '/hello',
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.delete_outline,
-                            color: red,
-                          ),
-                          eightHorizontalSpace,
-                          Text(
-                            AppLocalizations.of(context)!.delete,
-                            style: tTextStyle600.copyWith(color: red),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ];
-                },
-              ),
-              sixteenHorizontalSpace,
-            ],
+            actions: [SvgPicture.asset(menuIcon), sixteenHorizontalSpace],
           ),
         ),
         body: Column(
@@ -116,26 +65,18 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, 'Type',
-                            AppConstant.convertType(context, widget.task.type), false),
-                        _jiraField(),
+                        _infoTile(typeIcon, 'Type', widget.task.type!, false),
                         primaryVerticalSpace,
-                        _infoTile(
-                            priorityIcon,
-                            'Priority',
-                            AppConstant.convertPriority(context, widget.task.priority),
-                            false),
+                        _infoTile(priorityIcon, 'Priority',
+                            widget.task.priority!, false),
                         primaryVerticalSpace,
-                        _infoTile(
-                            timeFrameIcon,
-                            'Timeframe',
-                            AppConstant.convertTimeFrame(context, widget.task.timeframe),
-                            false),
+                        _infoTile(timeFrameIcon, 'Timeframe',
+                            widget.task.timeframe!, false),
                         primaryVerticalSpace,
-                        _infoTile(descriptionIcon, AppLocalizations.of(context)!.description,
-                            widget.task.description, false),
+                        _infoTile(descriptionIcon, 'Description',
+                            widget.task.description!, false),
                         primaryVerticalSpace,
-                        _infoTile(goalIcon, AppLocalizations.of(context)!.goal, widget.task.goal, true),
+                        _infoTile(goalIcon, 'Goal', widget.task.goal!, true),
                       ],
                     ),
                   ),
@@ -208,9 +149,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _bottomButton(clearIcon, AppLocalizations.of(context)!.removefromtodaystasks, false),
-            _bottomButton(addTimeIcon, AppLocalizations.of(context)!.addtime, false),
-            _bottomButton(checkIcon, AppLocalizations.of(context)!.completetask, true),
+            _bottomButton(clearIcon, 'Remove from\nToday’s Tasks', false),
+            _bottomButton(addTimeIcon, 'Add Time', false),
+            _bottomButton(checkIcon, 'Complete Task', true),
           ],
         ),
       ),
@@ -227,60 +168,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           style: tTextStyle500.copyWith(
               fontSize: 14, color: isComplete ? primaryColor : secondaryColor),
         )
-      ],
-    );
-  }
-
-  Widget _jiraField() {
-    final taskState = Provider.of<TaskProvider>(context, listen: false);
-    return Column(
-      children: [
-        primaryVerticalSpace,
-        Row(
-          children: [
-            SvgPicture.asset(jiraIcon),
-            eightHorizontalSpace,
-            Text(
-              'Jira Issue',
-              style:
-                  tTextStyle500.copyWith(fontSize: 20, color: secondaryColor),
-            )
-          ],
-        ),
-        eightVerticalSpace,
-        TextFormField(
-            controller: TextEditingController(text: widget.task.jiraID),
-            readOnly: true,
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                Routes.jiraInformationScreen,
-                arguments: {
-                  'jiraIssueId': widget.task.jiraID,
-                  'taskType': widget.task.type,
-                },
-              );
-            },
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: white,
-              contentPadding: const EdgeInsets.all(12),
-              hintText: 'View Jira\'s information',
-              hintStyle: hintTextStyle,
-              suffixIcon: const Icon(
-                Icons.keyboard_arrow_down_rounded,
-                color: iconColor,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.0),
-                borderSide: BorderSide(color: borderColor),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.0),
-                borderSide: BorderSide(color: borderColor),
-              ),
-              focusColor: primaryColor,
-            ))
       ],
     );
   }
