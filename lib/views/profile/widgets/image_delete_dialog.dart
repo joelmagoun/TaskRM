@@ -5,7 +5,6 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/widgets/components/buttons/custom_outline_button.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ImageDeleteDialog extends StatelessWidget {
   const ImageDeleteDialog({Key? key}) : super(key: key);
@@ -17,13 +16,13 @@ class ImageDeleteDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppLocalizations.of(context)!.deleteprofilephoto,
+            'Delete profile photo',
             style:
                 tTextStyle500.copyWith(fontSize: 18, color: textPrimaryColor),
           ),
           eightVerticalSpace,
           Text(
-            AppLocalizations.of(context)!.areyousure,
+            'Are you sure?',
             style: tTextStyleRegular.copyWith(
                 fontSize: 14, color: const Color(0xFF555555)),
           ),
@@ -32,7 +31,7 @@ class ImageDeleteDialog extends StatelessWidget {
             onTap: () {
               profileState.deleteImage(context);
             },
-            buttonTitle: AppLocalizations.of(context)!.yesdelete,
+            buttonTitle: 'Yes, delete',
             borderColor: borderColor,
             titleColor: red,
             isLoading: profileState.isImageDeleting,
@@ -42,7 +41,7 @@ class ImageDeleteDialog extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
               },
-              buttonTitle: AppLocalizations.of(context)!.cancel,
+              buttonTitle: 'Cancel',
               borderColor: borderColor,
               titleColor: iconColor),
         ],

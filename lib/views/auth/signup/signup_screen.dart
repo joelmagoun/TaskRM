@@ -1,9 +1,10 @@
+//import 'package:cached_network_image/cached_network_image.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:language_picker/language_picker_dropdown.dart';
-import 'package:language_picker/languages.g.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/auth_provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
@@ -18,7 +19,6 @@ import 'package:TaskRM/widgets/components/inputFields/common_textfield.dart';
 import '../../../utils/spacer.dart';
 import '../../../widgets/components/inputFields/email_inputfield.dart';
 import '../../../widgets/components/inputFields/password_inputfield.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -30,7 +30,8 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _signUpFormKey = GlobalKey<FormBuilderState>();
   late bool isLoading = false;
-  late String _selectedLanguage = 'en';
+  late String _selectedCountryFlag = '';
+  late String _selectedCountry = 'English';
   late String imageUrl = dummyProfileImage;
 
   @override
@@ -56,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 32,
                   ),
                   Text(
-                    AppLocalizations.of(context)!.createaccount,
+                    'Create Account',
                     style: tTextStyle500.copyWith(
                         fontSize: 24, color: textPrimaryColor),
                   ),
@@ -81,17 +82,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: <Widget>[
-                          CommonTextField(name: 'name', hintText: AppLocalizations.of(context)!.name),
+                          const CommonTextField(name: 'name', hintText: 'Name'),
                           sixteenVerticalSpace,
-                          EmailInputField(
+                          const EmailInputField(
                             name: 'email',
-                            hintText: AppLocalizations.of(context)!.email,
+                            hintText: 'Email',
                           ),
                           sixteenVerticalSpace,
-                          PasswordInputField(
-                            title: AppLocalizations.of(context)!.password,
+                          const PasswordInputField(
+                            title: 'Password',
                             name: 'password',
-                            hintText: AppLocalizations.of(context)!.password,
+                            hintText: 'Password',
                           ),
                           sixteenVerticalSpace,
                           _languageField(),
@@ -119,24 +120,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           password: _signUpFormKey.currentState
                                                   ?.value['password'] ??
                                               '',
-                                          language: _selectedLanguage ?? ''));
+                                          language: _selectedCountry ?? ''));
                                 } else {
                                   CustomSnack.warningSnack(
-                                      AppLocalizations.of(context)!.pleaseenterall, context);
+                                      'Please enter all information', context);
                                 }
                               },
-                              buttonTitle: AppLocalizations.of(context)!.signup),
+                              buttonTitle: 'Sign up'),
                           const SizedBox(
                             height: 36,
                           ),
                           Text(
-                            AppLocalizations.of(context)!.alreadyhaveacct,
+                            'Already have an account?',
                             style: tTextStyleRegular.copyWith(fontSize: 14),
                           ),
                           TextButton(
                               onPressed: () {},
                               child: Text(
-                                AppLocalizations.of(context)!.login,
+                                'Log in',
                                 style: tTextStyle500.copyWith(
                                     fontSize: 16, color: primaryColor),
                               )),
@@ -159,49 +160,58 @@ class _SignUpScreenState extends State<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.language,
+          'Language',
           style: tTextStyle500.copyWith(
               fontSize: 14, color: const Color(0xFF8085C2)),
         ),
         const SizedBox(
           height: 4,
         ),
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: textFieldFillColor),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: [
-                Image.asset(_selectedLanguage == 'en'
-                    ? usaFlag
-                    : _selectedLanguage == 'is'
-                        ? icelandFlag
-                        : _selectedLanguage == 'de'
-                            ? germanyFlag
-                            : norwegianFlag, height: 32, width: 32,),
-                sixteenHorizontalSpace,
-                Expanded(
-                  child: LanguagePickerDropdown(
-                      initialValue: Languages.english,
-                      languages: [
-                        Languages.english,
-                        Languages.icelandic,
-                        Languages.german,
-                        Languages.norwegian
-                      ],
-                      onValuePicked: (language) {
-                        setState(() {
-                          _selectedLanguage = language.isoCode;
-                        });
-                      }),
-                )
-              ],
+        InkWell(
+          onTap: () {
+            showCountryPicker(
+              context: context,
+              showPhoneCode: false,
+              onSelect: (Country country) {
+                setState(() {
+                  _selectedCountry = country.name;
+                  _selectedCountryFlag = country.flagEmoji;
+                });
+              },
+            );
+          },
+          child: Container(
+            height: 48,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: textFieldFillColor),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Row(
+                children: [
+                  _selectedCountryFlag.isEmpty
+                      ? Image.asset(usaFlag)
+                      : Text(
+                          _selectedCountryFlag,
+                          style: const TextStyle(fontSize: 28),
+                        ),
+                  eightHorizontalSpace,
+                  Text(
+                    _selectedCountry,
+                    style: tTextStyleRegular.copyWith(
+                        fontSize: 16, color: textPrimaryColor),
+                  ),
+                  const Spacer(),
+                  const Icon(
+                    Icons.keyboard_arrow_down_sharp,
+                    color: Color(0xFF555DAD),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
+        )
       ],
     );
   }
@@ -258,13 +268,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         builder: (context) {
           return CupertinoAlertDialog(
             title: Text(
-              AppLocalizations.of(context)!.selectimage,
+              'Select Image',
               style: subtitle2,
             ),
             actions: [
               CupertinoDialogAction(
                 child: Text(
-                  AppLocalizations.of(context)!.gallery,
+                  'Gallery',
                   style: subtitle2.copyWith(color: black),
                 ),
                 onPressed: galleryTap,
@@ -288,7 +298,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               CupertinoDialogAction(
                 child: Text(
-                  AppLocalizations.of(context)!.camera,
+                  'Camera',
                   style: subtitle2.copyWith(color: black),
                 ),
                 onPressed: cameraTap,
@@ -312,7 +322,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               CupertinoDialogAction(
                 child: Text(
-                  AppLocalizations.of(context)!.back,
+                  'Back',
                   style: subtitle2,
                 ),
                 onPressed: () {

@@ -7,7 +7,6 @@ import 'package:TaskRM/widgets/empty_widget.dart';
 import '../../../utils/color.dart';
 import '../../../utils/spacer.dart';
 import '../../../utils/typograpgy.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectGoalBottomSheet extends StatefulWidget {
   final String type;
@@ -19,7 +18,7 @@ class SelectGoalBottomSheet extends StatefulWidget {
 }
 
 class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
-  late String selectedGoal = '';
+  late String selectedGoal = 'Select';
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +47,7 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                             color: trans,
                           )),
                       Text(
-                        AppLocalizations.of(context)!.selectgoal,
+                        'Select Goal',
                         style:
                             tTextStyle500.copyWith(fontSize: 20, color: black),
                       ),
@@ -67,24 +66,24 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: goalState.allParentGoalList.isEmpty
-                        ? EmptyWidget(
-                            icon: goalIcon, title: AppLocalizations.of(context)!.sorry, subTitle: AppLocalizations.of(context)!.nomatchinggoalstt)
+                    child: goalState.allGoalList.isEmpty
+                        ? const EmptyWidget(
+                            icon: goalIcon,
+                            title: 'Sorry!',
+                            subTitle: 'No matching goals with task type')
                         : ListView.separated(
                             itemBuilder: (_, index) {
-                              var item = goalState.allParentGoalList[index];
+                              var item = goalState.allGoalList[index];
                               return _optionTile(
                                   onTap: () {
-
                                     setState(() {
                                       selectedGoal = item.title;
                                     });
                                     taskState.getSelectedGoal(
                                         item.title, item.id, context);
                                     goalState.getFilterType('');
-                                    goalState.getParentGoalList();
+                                    goalState.getGoalList();
                                     Navigator.pop(context);
-
                                   },
                                   tileBorderColor: selectedGoal == item.title
                                       ? secondaryColor
@@ -95,7 +94,7 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                                   title: item.title);
                             },
                             separatorBuilder: (_, index) => eightVerticalSpace,
-                            itemCount: goalState.allParentGoalList.length),
+                            itemCount: goalState.allGoalList.length),
                   ),
                 ),
               ],

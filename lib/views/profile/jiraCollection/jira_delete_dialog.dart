@@ -5,7 +5,6 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/widgets/components/buttons/custom_outline_button.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class JiraDeleteDialog extends StatelessWidget {
   final String docId;
@@ -19,7 +18,7 @@ class JiraDeleteDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppLocalizations.of(context)!.deleteconnection,
+            'Delete connection',
             style:
                 tTextStyle500.copyWith(fontSize: 18, color: textPrimaryColor),
           ),
@@ -28,17 +27,17 @@ class JiraDeleteDialog extends StatelessWidget {
             onTap: () {
               profileState.deleteJiraConnection(docId, context);
             },
-            buttonTitle: AppLocalizations.of(context)!.delete,
+            buttonTitle: 'Delete',
             borderColor: borderColor,
             titleColor: red,
-           // isLoading: profileState.isJiraDeleting,
+            // isLoading: profileState.isJiraDeleting,
           ),
           eightVerticalSpace,
           CustomOutlineButton(
               onTap: () {
                 Navigator.pop(context);
               },
-              buttonTitle: AppLocalizations.of(context)!.cancel,
+              buttonTitle: 'Cancel',
               borderColor: borderColor,
               titleColor: iconColor),
         ],

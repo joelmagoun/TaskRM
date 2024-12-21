@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
+import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/views/profile/jiraCollection/add_jira_connection.dart';
 import 'package:TaskRM/views/profile/jiraCollection/jira_connection_card.dart';
+import 'package:TaskRM/views/tasks/taskQueue/task_queue_filter_bottom_sheet.dart';
+import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 import '../../../utils/assets_path.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class JiraConnectionScreen extends StatefulWidget {
   const JiraConnectionScreen({Key? key}) : super(key: key);
@@ -53,7 +55,7 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
                   ],
                 ),
                 Text(
-                  AppLocalizations.of(context)!.connections,
+                  'Connections',
                   style: tTextStyle500.copyWith(
                       fontSize: 20, color: textPrimaryColor),
                 ),
@@ -65,15 +67,15 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
                     color: textPrimaryColor, fontSize: 16),
                 unselectedLabelStyle:
                     tTextStyle500.copyWith(color: iconColor, fontSize: 16),
-                tabs: [
+                tabs: const [
                   Tab(
-                    text: AppLocalizations.of(context)!.work,
+                    text: 'Work',
                   ),
                   Tab(
-                    text: AppLocalizations.of(context)!.personal,
+                    text: 'Personal',
                   ),
                   Tab(
-                    text: AppLocalizations.of(context)!.self,
+                    text: 'Self',
                   )
                 ]),
           ),
@@ -97,11 +99,11 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            EmptyWidget(
+            const EmptyWidget(
                 icon: emptyJira,
-                title: AppLocalizations.of(context)!.emptyjiratitle,
+                title: 'Add Jira link',
                 subTitle:
-                    AppLocalizations.of(context)!.emptyjirasubtitlework),
+                    'All tasks of the type “Work” will be linked to this Jira address.'),
             sixteenVerticalSpace,
             IconButton(
               onPressed: () {
@@ -124,13 +126,13 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
       return Column(
         children: [
           Text(
-            AppLocalizations.of(context)!.jirasubtitlework,
+            'All tasks of the type “Work” are linked to this Jira addresses.',
             style: tTextStyleRegular.copyWith(
                 fontSize: 14, color: textPrimaryColor),
           ),
           sixteenVerticalSpace,
           JiraConnectionCard(
-            docId: profileState.workModel.docId,
+              docId: profileState.workModel.docId,
               userId: profileState.workModel.userId,
               taskType: profileState.workModel.taskType,
               userName: profileState.workModel.userName,
@@ -149,11 +151,11 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            EmptyWidget(
+            const EmptyWidget(
                 icon: emptyJira,
-                title: AppLocalizations.of(context)!.emptyjiratitle,
+                title: 'Add Jira link',
                 subTitle:
-                    AppLocalizations.of(context)!.emptyjirasubtitlepersonal),
+                    'All tasks of the type “Personal” will be linked to this Jira address.'),
             sixteenVerticalSpace,
             IconButton(
               onPressed: () {
@@ -176,7 +178,7 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
       return Column(
         children: [
           Text(
-            AppLocalizations.of(context)!.jirasubtitlepersonal,
+            'All tasks of the type “Personal” are linked to this Jira addresses.',
             style: tTextStyleRegular.copyWith(
                 fontSize: 14, color: textPrimaryColor),
           ),
@@ -201,11 +203,11 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            EmptyWidget(
+            const EmptyWidget(
                 icon: emptyJira,
-                title: AppLocalizations.of(context)!.emptyjiratitle,
+                title: 'Add Jira link',
                 subTitle:
-                    AppLocalizations.of(context)!.emptyjirasubtitleself),
+                    'All tasks of the type “Self” will be linked to this Jira address.'),
             sixteenVerticalSpace,
             IconButton(
               onPressed: () {
@@ -228,7 +230,7 @@ class _JiraConnectionScreenState extends State<JiraConnectionScreen> {
       return Column(
         children: [
           Text(
-            AppLocalizations.of(context)!.jirasubtitleself,
+            'All tasks of the type “Self” are linked to this Jira addresses.',
             style: tTextStyleRegular.copyWith(
                 fontSize: 14, color: textPrimaryColor),
           ),

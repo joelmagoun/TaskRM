@@ -5,19 +5,19 @@ import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import '../../../models/task.dart';
+import '../../../models/goal.dart';
 import '../../../utils/assets_path.dart';
 
-class TaskDetailsScreen extends StatefulWidget {
-  final TaskModel task;
+class GoalDetailsScreen extends StatefulWidget {
+  final Goal goal;
 
-  const TaskDetailsScreen({Key? key, required this.task}) : super(key: key);
+  const GoalDetailsScreen({Key? key, required this.goal}) : super(key: key);
 
   @override
-  State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
+  State<GoalDetailsScreen> createState() => _GoalDetailsScreenState();
 }
 
-class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
+class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
   late int selectedTask = -1;
   late bool isSelected = false;
 
@@ -43,11 +43,11 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Task',
+                  'Goal',
                   style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
                 ),
                 Text(
-                  widget.task.title!,
+                  widget.goal.title,
                   maxLines: 2,
                   style: tTextStyleRegular.copyWith(fontSize: 14),
                 ),
@@ -65,18 +65,23 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _infoTile(typeIcon, 'Type', widget.task.type!, false),
-                        primaryVerticalSpace,
-                        _infoTile(priorityIcon, 'Priority',
-                            widget.task.priority!, false),
+                        _infoTile(typeIcon, 'Type', widget.goal.type, false),
                         primaryVerticalSpace,
                         _infoTile(timeFrameIcon, 'Timeframe',
-                            widget.task.timeframe!, false),
+                            " widget.goal.timeFrame", false),
                         primaryVerticalSpace,
                         _infoTile(descriptionIcon, 'Description',
-                            widget.task.description!, false),
+                            widget.goal.description, false),
                         primaryVerticalSpace,
-                        _infoTile(goalIcon, 'Goal', widget.task.goal!, true),
+                        _infoTile(goalIcon, 'Parent Goal', 'None', true),
+                        primaryVerticalSpace,
+                        _infoTile(taskIcon, 'Tasks', 'None', true),
+                        primaryVerticalSpace,
+                        _infoTile(
+                            scheduleIcon, 'Time spent', '1 hr 15 min', false),
+                        primaryVerticalSpace,
+                        _infoTile(
+                            reloadIcon, 'Last activity', '11 Mar, 2023', false),
                       ],
                     ),
                   ),
@@ -149,9 +154,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _bottomButton(clearIcon, 'Remove from\nToday’s Tasks', false),
             _bottomButton(addTimeIcon, 'Add Time', false),
-            _bottomButton(checkIcon, 'Complete Task', true),
+            _bottomButton(checkIcon, 'Complete Goal', true),
           ],
         ),
       ),

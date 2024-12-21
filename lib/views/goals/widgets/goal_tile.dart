@@ -8,12 +8,10 @@ import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../routes/routes.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GoalTile extends StatefulWidget {
   final String goalId;
   final VoidCallback onLongPress;
-  final VoidCallback onTap;
   final String title;
   final bool isTimeTracking;
   final String time;
@@ -28,7 +26,6 @@ class GoalTile extends StatefulWidget {
       {Key? key,
       required this.goalId,
       required this.onLongPress,
-      required this.onTap,
       required this.title,
       required this.isTimeTracking,
       required this.time,
@@ -61,7 +58,10 @@ class _GoalTileState extends State<GoalTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: widget.onLongPress,
-      onTap: widget.onTap,
+      onTap: () {
+        Navigator.pushNamed(context, Routes.goalDetails,
+            arguments: widget.goal);
+      },
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16), color: widget.cardColor
@@ -91,8 +91,7 @@ class _GoalTileState extends State<GoalTile> {
                                       width: 4,
                                     ),
                                     Text(
-                                      AppLocalizations.of(context)!
-                                          .timetracking,
+                                      'Time tracking',
                                       style: tTextStyleRegular.copyWith(
                                           fontSize: 14, color: iconColor),
                                     )
@@ -155,7 +154,7 @@ class _GoalTileState extends State<GoalTile> {
                                 width: 4,
                               ),
                               Text(
-                                AppLocalizations.of(context)!.timetracking,
+                                'Time tracking',
                                 style: tTextStyleRegular.copyWith(
                                     fontSize: 14, color: iconColor),
                               )

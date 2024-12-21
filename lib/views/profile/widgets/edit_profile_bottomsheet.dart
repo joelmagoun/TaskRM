@@ -1,10 +1,7 @@
-import 'package:TaskRM/providers/localization_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:language_picker/language_picker_dropdown.dart';
-import 'package:language_picker/languages.g.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
 import 'package:TaskRM/utils/assets_path.dart';
@@ -16,7 +13,6 @@ import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../utils/constant/constant.dart';
 import 'image_delete_dialog.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfileBottomSheet extends StatefulWidget {
   const EditProfileBottomSheet({
@@ -64,8 +60,6 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                     primaryVerticalSpace,
                     _buildNameField(),
                     primaryVerticalSpace,
-                    _languageField(),
-                    primaryVerticalSpace,
                     PrimaryButton(
                       onTap: () async {
                         await profileState.updateProfile(
@@ -75,10 +69,9 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                             profileState.profileJira,
                             profileState.profileJiraUserName,
                             profileState.profileJiraUrl,
-                            profileState.language,
                             context);
                       },
-                      buttonTitle: AppLocalizations.of(context)!.save,
+                      buttonTitle: 'Save',
                       buttonColor: _nameController.text.isEmpty
                           ? primaryLight
                           : primaryColor,
@@ -106,7 +99,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               color: trans,
             )),
         Text(
-          AppLocalizations.of(context)!.editprofiledetails,
+          'Edit profile details',
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         IconButton(
@@ -127,7 +120,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.profilephoto,
+          'Profile photo',
           style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
         ),
         const SizedBox(
@@ -171,7 +164,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.name,
+          'Name',
           style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
         ),
         TextFormField(
@@ -187,7 +180,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             filled: true,
             fillColor: white,
             contentPadding: const EdgeInsets.all(12),
-            hintText: AppLocalizations.of(context)!.username,
+            hintText: 'User name',
             hintStyle: hintTextStyle,
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),
@@ -226,7 +219,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             height: 4,
           ),
           Text(
-            AppLocalizations.of(context)!.add,
+            'Add',
             style: tTextStyle500.copyWith(fontSize: 16, color: secondaryColor),
           )
         ],
@@ -246,7 +239,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             children: [
               SvgPicture.asset(imageDeleteIcon),
               Text(
-                AppLocalizations.of(context)!.delete,
+                'Delete',
                 style: tTextStyle500.copyWith(color: red, fontSize: 16),
               )
             ],
@@ -261,7 +254,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             children: [
               SvgPicture.asset(imageEditIcon),
               Text(
-                AppLocalizations.of(context)!.change,
+                'Change',
                 style:
                     tTextStyle500.copyWith(color: secondaryColor, fontSize: 16),
               )
@@ -279,14 +272,14 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
         builder: (context) {
           return CupertinoAlertDialog(
             title: Text(
-              AppLocalizations.of(context)!.selectimage,
+              'Select Image',
               style:
                   tTextStyle500.copyWith(color: textPrimaryColor, fontSize: 18),
             ),
             actions: [
               CupertinoDialogAction(
                 child: Text(
-                  AppLocalizations.of(context)!.gallery,
+                  'Gallery',
                   style: tTextStyle500.copyWith(
                       color: secondaryColor, fontSize: 16),
                 ),
@@ -296,7 +289,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               ),
               CupertinoDialogAction(
                 child: Text(
-                  AppLocalizations.of(context)!.camera,
+                  'Camera',
                   style: tTextStyle500.copyWith(
                       color: secondaryColor, fontSize: 16),
                 ),
@@ -306,7 +299,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               ),
               CupertinoDialogAction(
                 child: Text(
-                  AppLocalizations.of(context)!.back,
+                  'Back',
                   style: tTextStyle500.copyWith(color: red, fontSize: 16),
                 ),
                 onPressed: () {
@@ -316,345 +309,5 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             ],
           );
         });
-  }
-
-  Column _languageField() {
-    final profileState = Provider.of<ProfileProvider>(context, listen: false);
-    final localizationState =
-        Provider.of<LocalizationProvider>(context, listen: true);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppLocalizations.of(context)!.language,
-          style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: textFieldFillColor),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: [
-                Image.asset(
-                  profileState.language == 'en'
-                      ? usaFlag
-                      : profileState.language == 'is'
-                          ? icelandFlag
-                          : profileState.language == 'de'
-                              ? germanyFlag
-                              : profileState.language == 'it'
-                              ? italyFlag
-                              : profileState.language == 'af'
-                              ? southafricaFlag
-                              : profileState.language == 'bn'
-                              ? bangladeshFlag
-                              : profileState.language == 'ca'
-                              ? cataloniaFlag
-                              : profileState.language == 'cs'
-                              ? czechFlag
-                              : profileState.language == 'cy'
-                              ? walesFlag
-                              : profileState.language == 'da'
-                              ? denmarkFlag
-                              : profileState.language == 'el'
-                              ? greeceFlag
-                              : profileState.language == 'es'
-                              ? spainFlag
-                              : profileState.language == 'et'
-                              ? estoniaFlag
-                              : profileState.language == 'eu'
-                              ? basqueFlag
-                              : profileState.language == 'fa'
-                              ? persiaFlag
-                              : profileState.language == 'fi'
-                              ? finlandFlag
-                              : profileState.language == 'fr'
-                              ? franceFlag
-                              : profileState.language == 'gl'
-                              ? galaciaFlag
-                              : profileState.language == 'he'
-                              ? israelFlag
-                              : profileState.language == 'hi'
-                              ? hindiFlag
-                              : profileState.language == 'hr'
-                              ? croatiaFlag
-                              : profileState.language == 'hu'
-                              ? hungaryFlag
-                              : profileState.language == 'hy'
-                              ? armeniaFlag
-                              : profileState.language == 'id'
-                              ? indonesiaFlag
-                              : profileState.language == 'ja'
-                              ? japanFlag
-                              : profileState.language == 'kn'
-                              ? kannadaFlag
-                              : profileState.language == 'ko'
-                              ? koreaFlag
-                              : profileState.language == 'lo'
-                              ? laosFlag
-                              : profileState.language == 'lt'
-                              ? lithuaniaFlag
-                              : profileState.language == 'lv'
-                              ? latviaFlag
-                              : profileState.language == 'mk'
-                              ? macedoniaFlag
-                              : profileState.language == 'ne'
-                              ? nepalFlag
-                              : profileState.language == 'nl'
-                              ? netherlandsFlag
-                              : profileState.language == 'pa'
-                              ? punjabFlag
-                              : profileState.language == 'pl'
-                              ? polandFlag
-                              : profileState.language == 'pt'
-                              ? portugalFlag
-                              : profileState.language == 'ro'
-                              ? romaniaFlag
-                              : profileState.language == 'ru'
-                              ? russiaFlag
-                              : profileState.language == 'sl'
-                              ? sloveniaFlag
-                              : profileState.language == 'sv'
-                              ? swedenFlag
-                              : profileState.language == 'ta'
-                              ? tamilFlag
-                              : profileState.language == 'te'
-                              ? teluguFlag
-                              : profileState.language == 'th'
-                              ? thailandFlag
-                              : profileState.language == 'tr'
-                              ? turkeyFlag
-                              : profileState.language == 'uk'
-                              ? ukraineFlag
-                              : profileState.language == 'ur'
-                              ? pakistanFlag
-                              : profileState.language == 'vi'
-                              ? vietnamFlag
-                              : profileState.language == 'zh'
-                              ? chinaFlag
-                              : profileState.language == 'bg'
-                              ? bulgariaFlag
-                              : profileState.language == 'gu'
-                              ? gujaratiFlag
-                              : profileState.language == 'ka'
-                              ? georgiaFlag
-                              : profileState.language == 'kk'
-                              ? kazakhFlag
-                              : profileState.language == 'km'
-                              ? cambodiaFlag
-                              : profileState.language == 'ky'
-                              ? kyrgyzFlag
-                              : profileState.language == 'sk'
-                              ? slovakiaFlag
-                              : profileState.language == 'sw'
-                              ? kenyaFlag
-                              : profileState.language == 'tl'
-                              ? tagalogFlag
-                              : profileState.language == 'zu'
-                              ? zuluFlag
-                              : norwegianFlag,
-                  height: 32,
-                  width: 32,
-                ),
-                sixteenHorizontalSpace,
-                Expanded(
-                  child: LanguagePickerDropdown(
-                      initialValue: profileState.language == 'is'
-                          ? Languages.icelandic
-                          : profileState.language == 'de'
-                              ? Languages.german
-                              : profileState.language == 'no'
-                                  ? Languages.norwegian
-                                  : profileState.language == 'it'
-                                  ? Languages.italian
-                                  : profileState.language == 'af'
-                                  ? Languages.afrikaans
-                                  : profileState.language == 'bn'
-                                  ? Languages.bengali
-                                  : profileState.language == 'ca'
-                                  ? Languages.catalan
-                                  : profileState.language == 'cs'
-                                  ? Languages.czech
-                                  : profileState.language == 'cy'
-                                  ? Languages.welsh
-                                  : profileState.language == 'da'
-                                  ? Languages.danish
-                                  : profileState.language == 'el'
-                                  ? Languages.greek
-                                  : profileState.language == 'es'
-                                  ? Languages.spanish
-                                  : profileState.language == 'et'
-                                  ? Languages.estonian
-                                  : profileState.language == 'eu'
-                                  ? Languages.basque
-                                  : profileState.language == 'fa'
-                                  ? Languages.persian
-                                  : profileState.language == 'fi'
-                                  ? Languages.finnish
-                                  : profileState.language == 'fr'
-                                  ? Languages.french
-                                  : profileState.language == 'gl'
-                                  ? Languages.galician
-                                  : profileState.language == 'he'
-                                  ? Languages.hebrew
-                                  : profileState.language == 'hi'
-                                  ? Languages.hindi
-                                  : profileState.language == 'hr'
-                                  ? Languages.croatian
-                                  : profileState.language == 'hu'
-                                  ? Languages.hungarian
-                                  : profileState.language == 'hy'
-                                  ? Languages.armenian
-                                  : profileState.language == 'id'
-                                  ? Languages.indonesian
-                                  : profileState.language == 'ja'
-                                  ? Languages.japanese
-                                  : profileState.language == 'kn'
-                                  ? Languages.kannada
-                                  : profileState.language == 'ko'
-                                  ? Languages.korean
-                                  : profileState.language == 'lo'
-                                  ? Languages.lao
-                                  : profileState.language == 'lt'
-                                  ? Languages.lithuanian
-                                  : profileState.language == 'lv'
-                                  ? Languages.latvian
-                                  : profileState.language == 'mk'
-                                  ? Languages.macedonian
-                                  : profileState.language == 'ne'
-                                  ? Languages.nepali
-                                  : profileState.language == 'nl'
-                                  ? Languages.dutch
-                                  : profileState.language == 'pa'
-                                  ? Languages.panjabi
-                                  : profileState.language == 'pl'
-                                  ? Languages.polish
-                                  : profileState.language == 'pt'
-                                  ? Languages.portuguese
-                                  : profileState.language == 'ro'
-                                  ? Languages.romanian
-                                  : profileState.language == 'ru'
-                                  ? Languages.russian
-                                  : profileState.language == 'sl'
-                                  ? Languages.slovenian
-                                  : profileState.language == 'sv'
-                                  ? Languages.swedish
-                                  : profileState.language == 'ta'
-                                  ? Languages.tamil
-                                  : profileState.language == 'te'
-                                  ? Languages.telugu
-                                  : profileState.language == 'th'
-                                  ? Languages.thai
-                                  : profileState.language == 'tr'
-                                  ? Languages.turkish
-                                  : profileState.language == 'uk'
-                                  ? Languages.ukrainian
-                                  : profileState.language == 'ur'
-                                  ? Languages.urdu
-                                  : profileState.language == 'vi'
-                                  ? Languages.vietnamese
-                                  : profileState.language == 'zh'
-                                  ? Languages.chineseSimplified
-                                  : profileState.language == 'bg'
-                                  ? Languages.bulgarian
-                                  : profileState.language == 'gu'
-                                  ? Languages.gujarati
-                                  : profileState.language == 'ka'
-                                  ? Languages.georgian
-                                  : profileState.language == 'kk'
-                                  ? Languages.kazakh
-                                  : profileState.language == 'km'
-                                  ? Languages.centralKhmer
-                                  : profileState.language == 'ky'
-                                  ? Languages.kirghiz
-                                  : profileState.language == 'sk'
-                                  ? Languages.slovak
-                                  : profileState.language == 'sw'
-                                  ? Languages.swahili
-                                  : profileState.language == 'tl'
-                                  ? Languages.tagalog
-                                  : profileState.language == 'zu'
-                                  ? Languages.zulu
-                                  : Languages.english,
-                      languages: [
-                        Languages.afrikaans,
-                        Languages.armenian,
-                        Languages.basque,
-                        Languages.bengali,
-                        Languages.bulgarian,
-                        Languages.catalan,
-                        Languages.croatian,
-                        Languages.czech,
-                        Languages.danish,
-                        Languages.dutch,
-                        Languages.english,
-                        Languages.estonian,
-                        Languages.finnish,
-                        Languages.french,
-                        Languages.german,
-                        Languages.galician,
-                        Languages.georgian,
-                        Languages.greek,
-                        Languages.gujarati,
-                        Languages.icelandic,
-                        Languages.italian,
-                        Languages.hebrew,
-                        Languages.hindi,
-                        Languages.hungarian,
-                        Languages.indonesian,
-                        Languages.japanese,
-                        Languages.kannada,
-                        Languages.kazakh,
-                        Languages.centralKhmer,
-                        Languages.kirghiz,
-                        Languages.korean,
-                        Languages.lao,
-                        Languages.lithuanian,
-                        Languages.latvian,
-                        Languages.macedonian,
-                        Languages.norwegian,
-                        Languages.nepali,
-                        Languages.persian,
-                        Languages.panjabi,
-                        Languages.polish,
-                        Languages.portuguese,
-                        Languages.romanian,
-                        Languages.russian,
-                        Languages.spanish,
-                        Languages.slovenian,
-                        Languages.slovak,
-                        Languages.swahili,
-                        Languages.swedish,
-                        Languages.tagalog,
-                        Languages.tamil,
-                        Languages.telugu,
-                        Languages.thai,
-                        Languages.turkish,
-                        Languages.ukrainian,
-                        Languages.urdu,
-                        Languages.vietnamese,
-                        Languages.slovak,
-                        Languages.swahili,
-                        Languages.tagalog,
-                        Languages.welsh,
-                        Languages.zulu
-                      ],
-                      onValuePicked: (language) {
-                        profileState.changeLanguage(language.isoCode);
-                        localizationState.setLocale(Locale(language.isoCode));
-                      }),
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }

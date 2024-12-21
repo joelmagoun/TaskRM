@@ -1,10 +1,6 @@
-import 'package:TaskRM/views/goals/goalDetails/sub_goal_details_screen.dart';
-import 'package:TaskRM/views/goals/select_parent_goal_screen.dart';
-import 'package:TaskRM/views/goals/select_sub_goal_screen.dart';
-import 'package:TaskRM/views/tasks/taskDetails/jira/jira_information_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:TaskRM/routes/routes.dart';
-import 'package:TaskRM/views/goals/goalDetails/parent_goal_details_screen.dart';
+import 'package:TaskRM/views/goals/goalDetails/goal_details_screen.dart';
 import 'package:TaskRM/views/goals/goals_screen.dart';
 import 'package:TaskRM/views/profile/jiraCollection/jira_connection_screen.dart';
 import 'package:TaskRM/views/tasks/taskDetails/task_details_screen.dart';
@@ -40,31 +36,13 @@ class AppRouter {
       case Routes.goals:
         return const GoalsScreen();
       case Routes.taskDetails:
-        return TaskDetailsScreen(task: settings.arguments as Task);
+        return TaskDetailsScreen(task: settings.arguments as TaskModel);
       case Routes.goalDetails:
-        return ParentGoalDetailsScreen(goal: settings.arguments as Goal);
+        return GoalDetailsScreen(goal: settings.arguments as Goal);
       case Routes.profile:
         return const ProfileScreen();
       case Routes.jiraCollectionScreen:
         return const JiraConnectionScreen();
-      case Routes.subGoalDetailsScreen:
-        return SubGoalDetailsScreen(goal: settings.arguments as Goal);
-      case Routes.selectParentGoalScreen:
-        return SelectParentGoalScreen(type: settings.arguments as String);
-      case Routes.selectSubGoalScreen:
-        //return SelectSubGoalScreen(goalTitle: settings.arguments as String);
-        final args = settings.arguments as Map<String, String>;
-        return SelectSubGoalScreen(
-            goalTitle: args['goalTitle']!,
-            parentGoalId: args['parentGoalId']!,
-            type: args['type']!);
-      case Routes.jiraInformationScreen:
-        final args = settings.arguments as Map<String, String>;
-        return JiraInformationBottomSheet(
-          jiraIssueId: args['jiraIssueId']!,
-          taskType: args['taskType']!,
-        );
-
       // case Routes.newGoal:
       //   return const NewGoalPage();
       // case Routes.taskDetails:

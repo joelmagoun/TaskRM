@@ -8,7 +8,6 @@ import '../../../../routes/routes.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/custom_snack.dart';
 import '../../../../utils/spacer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EncryptionBottomSheet extends StatefulWidget {
   final String name;
@@ -41,88 +40,89 @@ class _EncryptionBottomSheetState extends State<EncryptionBottomSheet> {
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
-        child: Consumer<AuthProvider>(builder: (_, _authState, child) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              eightVerticalSpace,
-              _header(),
-              eightVerticalSpace,
-              const Divider(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.encryptionintrotxt,
-                      textAlign: TextAlign.center,
-                      style: tTextStyleRegular.copyWith(fontSize: 14),
-                    ),
-                    primaryVerticalSpace,
-                    GesturePasswordWidget(
-                      normalItem: _normalItem(),
-                      selectedItem: _selectedItem(),
-                      lineColor: primaryColor,
-                      errorLineColor: Colors.red,
-                      singleLineCount: 3,
-                      identifySize: 80.0,
-                      minLength: 4,
-                      //answer: correctAnswerList,
-                      color: trans,
-                      onComplete: (data) {
-                        _patternResult = data.join('');
-                      },
-                    ),
-                    primaryVerticalSpace,
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _patternResult = '';
-                          });
+        child: Consumer<AuthProvider>(
+          builder: (_, _authState, child) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                eightVerticalSpace,
+                _header(),
+                eightVerticalSpace,
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'This pattern enables you to recall your encryption key in case of phone loss or data deletion.',
+                        textAlign: TextAlign.center,
+                        style: tTextStyleRegular.copyWith(fontSize: 14),
+                      ),
+                      primaryVerticalSpace,
+                      GesturePasswordWidget(
+                        normalItem: _normalItem(),
+                        selectedItem: _selectedItem(),
+                        lineColor: primaryColor,
+                        errorLineColor: Colors.red,
+                        singleLineCount: 3,
+                        identifySize: 80.0,
+                        minLength: 4,
+                        //answer: correctAnswerList,
+                        color: trans,
+                        onComplete: (data) {
+                          _patternResult = data.join('');
                         },
-                        child: Text(
-                          AppLocalizations.of(context)!.reset,
-                          style: tTextStyle600.copyWith(
-                              fontSize: 16,
-                              color: primaryColor),
-                        )),
-                    sixteenVerticalSpace,
-                    PrimaryButton(
-                      onTap: () async {
-                        if (_patternResult != '') {
-                          var response =  await _authState.signUp(
-                              widget.email,
-                              widget.password,
-                              widget.name,
-                              _patternResult,
-                              widget.language,
-                              '',
-                              '',
-                              '',
-                              context);
+                      ),
+                      primaryVerticalSpace,
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _patternResult = '';
+                            });
+                          },
+                          child: Text(
+                            'Reset',
+                            style: tTextStyle600.copyWith(
+                                fontSize: 16, color: primaryColor),
+                          )),
+                      sixteenVerticalSpace,
+                      PrimaryButton(
+                        onTap: () async {
+                          if (_patternResult != '') {
+                            var response = await _authState.signUp(
+                                widget.email,
+                                widget.password,
+                                widget.name,
+                                _patternResult,
+                                widget.language,
+                                '',
+                                '',
+                                '',
+                                context);
 
-                          if(response == true){
-                            Navigator.pop(context);
-                            Navigator.pushReplacementNamed(context, Routes.login);
+                            if (response == true) {
+                              Navigator.pop(context);
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.login);
+                            }
+                          } else {
+                            CustomSnack.warningSnack(
+                                'You must enter a pattern password!', context);
                           }
-
-                        }else{
-                          CustomSnack.warningSnack(AppLocalizations.of(context)!.mustenterpattern, context);
-                        }
-
-                      },
-                      buttonTitle: AppLocalizations.of(context)!.submit,
-                      buttonColor: primaryColor,
-                      isLoading: _authState.isAccountCreating,
-                    ),
-                    primaryVerticalSpace,
-                  ],
-                ),
-              )
-            ],
-          );
-        },),
+                        },
+                        buttonTitle: 'Submit',
+                        buttonColor: primaryColor,
+                        isLoading: _authState.isAccountCreating,
+                      ),
+                      primaryVerticalSpace,
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -140,11 +140,11 @@ class _EncryptionBottomSheetState extends State<EncryptionBottomSheet> {
         Column(
           children: [
             Text(
-              AppLocalizations.of(context)!.encryptionkey,
+              '“Encryption key”',
               style: tTextStyle500.copyWith(fontSize: 20, color: black),
             ),
             Text(
-              AppLocalizations.of(context)!.pattern,
+              'Pattern',
               style: tTextStyle500.copyWith(fontSize: 20, color: black),
             ),
           ],
@@ -186,5 +186,4 @@ class _EncryptionBottomSheetState extends State<EncryptionBottomSheet> {
       ),
     );
   }
-
 }
