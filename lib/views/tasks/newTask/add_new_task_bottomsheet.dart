@@ -68,7 +68,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
   }
 
   Widget _header(BuildContext context) {
-    final _taskState = Provider.of<TaskProvider>(context, listen: false);
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -93,15 +93,15 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                   selectedTime != null &&
                   _titleController.text.trim().isNotEmpty &&
                   _descriptionController.text.trim().isNotEmpty &&
-                  _taskState.selectedGoal.trim().isNotEmpty) {
-                await _taskState.addNewTask(
+                  taskState.selectedGoal.trim().isNotEmpty) {
+                await taskState.addNewTask(
                     _titleController.text,
                     selectedType,
-                    _taskState.selectedGoalId,
+                    taskState.selectedGoalId,
                     selectedPriority,
                     selectedTime,
                     _descriptionController.text,
-                    _taskState.selectedGoal,
+                    taskState.selectedGoal,
                     context);
               } else {
                 CustomDialog.autoDialog(context, Icons.warning,
@@ -116,7 +116,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 borderRadius: BorderRadius.circular(8),
                 color: primaryColor,
               ),
-              child: _taskState.isTaskAdding
+              child: taskState.isTaskAdding
                   ? const CircularProgressIndicator()
                   : Text(
                       'Add',

@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:TaskRM/models/goal.dart';
 import 'package:TaskRM/utils/app_storage.dart';
 import 'package:TaskRM/utils/custom_snack.dart';
+import '../powersync.dart';
 import '../utils/config/constants.dart';
+import '../utils/custom_dialog.dart';
 
 class GoalProvider extends ChangeNotifier {
   GoalProvider() {
@@ -31,6 +35,7 @@ class GoalProvider extends ChangeNotifier {
   List<Goal> get allGoalList => _allGoalList;
 
   late String _selectedFilterType = '';
+
   String get selectedFilterType => _selectedFilterType;
 
   void getFilterType(String workType) {
@@ -97,7 +102,7 @@ class GoalProvider extends ChangeNotifier {
     }
   }
 
-  /// add task state ///
+  /// add goal state ///
 
   late bool _isGoalAdding = false;
 
@@ -113,31 +118,37 @@ class GoalProvider extends ChangeNotifier {
     Navigator.pop(context);
   }
 
-  Future<void> addNewGoal(String title, String description, String type,
-      BuildContext context) async {
+  Future<void> addNewGoal(String title, String type, String description,
+      String parentGoal, BuildContext context) async {
     try {
-      // _isGoalAdding = true;
-      // notifyListeners();
+      _isGoalAdding = true;
+      notifyListeners();
+
+      final uid = await AppStorage.getUserId();
+
+      var docIdForPower = Random().nextInt(10000000);
+
+      var result = await db.writeTransaction((tx) async {
+        await tx.execute(
+            'INSERT INTO goals( id, created_at, updated_at, title, user_id, description, type, parent_goal) VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
+            [
+              docIdForPower.toString(),
+              DateTime.now().toIso8601String(),
+              DateTime.now().toIso8601String(),
+              title,
+              uid,
+              description,
+              type,
+              parentGoal,
+            ]);
+      });
+
+      Navigator.pop(context);
+      // await getTodayTaskList();
+      // await getAllTaskList();
       //
-      // final uid = await AppStorage.getUserId();
-      //
-      // var res = await db.createDocument(
-      //     databaseId: AppWriteConstant.primaryDBId,
-      //     collectionId: AppWriteConstant.goalCollectionId,
-      //     documentId: ID.unique(),
-      //     data: {
-      //       'title': title,
-      //       'userId': uid,
-      //       'description': description,
-      //       'type': type,
-      //       'parentGoal': _selectedParentGoal,
-      //       'createdAt': DateTime.now().toString()
-      //     }).then((value) {
-      //   Navigator.pop(context);
-      //   CustomSnack.successSnack('Goal added successfully.', context);
-      //   getGoalList();
-      // });
-      // notifyListeners();
+      CustomDialog.autoDialog(
+          context, Icons.check, 'Goal is added successfully!');
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {

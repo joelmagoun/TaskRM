@@ -268,7 +268,7 @@ class TaskProvider extends ChangeNotifier {
 
   final SupabaseConnector supabaseConnector = SupabaseConnector(db);
 
-  Future<void> addNewTask(
+  Future<void>  addNewTask(
     String title,
     String type,
     String goalId,

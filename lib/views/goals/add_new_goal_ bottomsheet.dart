@@ -29,7 +29,10 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
     return Material(
       color: Colors.transparent,
       child: Container(
-        height: MediaQuery.of(context).size.height / 1.2,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height / 1.2,
         width: double.infinity,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -65,7 +68,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
   }
 
   Widget _header(BuildContext context) {
-    final _goalState = Provider.of<GoalProvider>(context, listen: false);
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -85,8 +88,8 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
           ),
           InkWell(
             onTap: () async {
-              await _goalState.addNewGoal(_titleController.text,
-                  _descriptionController.text, selectedType, context);
+              await goalState.addNewGoal(_titleController.text, selectedType,
+                  _descriptionController.text, '', context);
             },
             child: Container(
               height: 40,
@@ -96,14 +99,14 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                 borderRadius: BorderRadius.circular(8),
                 color: primaryColor,
               ),
-              child: _goalState.isGoalAdding
+              child: goalState.isGoalAdding
                   ? const SizedBox(
-                      height: 16, width: 16, child: CircularProgressIndicator())
+                  height: 16, width: 16, child: CircularProgressIndicator())
                   : Text(
-                      'Add',
-                      style:
-                          tTextStyleBold.copyWith(color: white, fontSize: 16),
-                    ),
+                'Add',
+                style:
+                tTextStyleBold.copyWith(color: white, fontSize: 16),
+              ),
             ),
           )
         ],
@@ -171,9 +174,9 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
               });
             },
             tileBorderColor:
-                selectedType == 'Personal Project' ? borderColor : trans,
+            selectedType == 'Personal Project' ? borderColor : trans,
             circleColor:
-                selectedType == 'Personal Project' ? secondaryColor : trans,
+            selectedType == 'Personal Project' ? secondaryColor : trans,
             title: 'Personal Project'),
         eightVerticalSpace,
         _optionTile(
@@ -209,7 +212,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
               fillColor: white,
               contentPadding: const EdgeInsets.all(12),
               hintText:
-                  'Contribute insights, updates, and ideas crucial for team synergy ...',
+              'Contribute insights, updates, and ideas crucial for team synergy ...',
               hintStyle: hintTextStyle,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -226,7 +229,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
   }
 
   Widget _goalField() {
-    final _goalState = Provider.of<GoalProvider>(context, listen: false);
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -254,9 +257,12 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width / 1.4,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 1.4,
                     child: Text(
-                      _goalState.selectedParentGoal,
+                      goalState.selectedParentGoal,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: tTextStyleRegular.copyWith(
@@ -302,7 +308,10 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
               ),
               eightHorizontalSpace,
               SizedBox(
-                width: MediaQuery.of(context).size.width / 1.4,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 1.4,
                 child: Text(
                   title,
                   maxLines: 2,
