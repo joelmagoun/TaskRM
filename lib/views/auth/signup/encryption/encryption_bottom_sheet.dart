@@ -101,7 +101,7 @@ class _EncryptionBottomSheetState extends State<EncryptionBottomSheet> {
                                 '',
                                 context);
 
-                            if (response == true) {
+                            if (response) {
                               Navigator.pop(context);
                               Navigator.pushReplacementNamed(
                                   context, Routes.login);
