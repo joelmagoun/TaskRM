@@ -21,7 +21,7 @@ class GoalProvider extends ChangeNotifier {
     //     .setEndpoint(AppWriteConstant.endPoint)
     //     .setProject(AppWriteConstant.projectId);
     // db = Databases(client);
-    // getGoalList();
+    getGoalList();
   }
 
   /// get goal list ///
@@ -49,6 +49,96 @@ class GoalProvider extends ChangeNotifier {
       notifyListeners();
 
       final uid = await AppStorage.getUserId();
+
+      /// ******* /////
+
+      db
+          .watch(
+          "SELECT * FROM goals Where user_id = '$uid' ORDER BY created_at DESC")
+          .map((results) {
+        if (results.isNotEmpty) {
+          _allGoalList.clear();
+          notifyListeners();
+          return results.map((e) {
+
+            print('all goals kafiul ${e}');
+                if(_selectedFilterType == ''){
+                  _allGoalList.add(Goal(
+                      id: e['id'] ?? '',
+                      title: e['title'] ?? '',
+                      type: e['type'] ?? '',
+                      description: e['description'] ?? '',
+                      isCompleted: false,
+                      userId: e['user_id'] ?? '',
+                      createdAt: DateTime.parse(e['created_at'])));
+                  notifyListeners();
+                }else{
+                  if(e['type'] == _selectedFilterType){
+                    _allGoalList.add(Goal(
+                        id: e['id'] ?? '',
+                        title: e['title'] ?? '',
+                        type: e['type'] ?? '',
+                        description: e['description'] ?? '',
+                        isCompleted: false,
+                        userId: e['user_id'] ?? '',
+                        createdAt: DateTime.parse(e['created_at'])));
+                    notifyListeners();
+                  }}
+
+            /// ******* /////
+            // if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
+            //   _allTaskList.add(TaskModel(
+            //     id: e['id'] ?? 0,
+            //     createdAt: e['created_at'] ?? '',
+            //     updatedAt: e['updated_at'] ?? '',
+            //     timeframe: e['timeframe'] ?? '',
+            //     jiraId: e['jira_id'] ?? '',
+            //     title: e['title'] ?? '',
+            //     type: e['type'] ?? '',
+            //     isMarkedForToday: e['is_marked_for_today'] ?? false,
+            //     goalId: e['goal_id'] ?? '',
+            //     priority: e['priority'] ?? '',
+            //     description: e['description'] ?? '',
+            //     userId: e['user_id'] ?? '',
+            //     goal: e['goal'] ?? '',
+            //     expectedCompletion: e['expected_completion'] ?? '',
+            //     isCompleted: e['is_completed'] ?? false,
+            //     totalMinutesSpent: e['total_minutes_spent'] ?? 0,
+            //   ));
+            //   notifyListeners();
+            // } else if (_selectedQueueTimeFrame != '' ||
+            //     _selectedQueueType != '') {
+            //   if (e['type'] == _selectedQueueType &&
+            //       e['timeframe'] == _selectedQueueTimeFrame) {
+            //     _allTaskList.add(TaskModel(
+            //       id: e['id'] ?? 0,
+            //       createdAt: e['created_at'] ?? '',
+            //       updatedAt: e['updated_at'] ?? '',
+            //       timeframe: e['timeframe'] ?? '',
+            //       jiraId: e['jira_id'] ?? '',
+            //       title: e['title'] ?? '',
+            //       type: e['type'] ?? '',
+            //       isMarkedForToday: e['is_marked_for_today'] ?? false,
+            //       goalId: e['goal_id'] ?? '',
+            //       priority: e['priority'] ?? '',
+            //       description: e['description'] ?? '',
+            //       userId: e['user_id'] ?? '',
+            //       goal: e['goal'] ?? '',
+            //       expectedCompletion: e['expected_completion'] ?? '',
+            //       isCompleted: e['is_completed'] ?? false,
+            //       totalMinutesSpent: e['total_minutes_spent'] ?? 0,
+            //     ));
+            //     notifyListeners();
+            //   }
+            // }
+
+            /// ******* /////
+            notifyListeners();
+          }).toList();
+        }
+      }).toList();
+
+      /// ******* /////
 
       // final res = await db.listDocuments(
       //     databaseId: AppWriteConstant.primaryDBId,

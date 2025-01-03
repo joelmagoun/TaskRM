@@ -16,9 +16,14 @@ import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 
 
-class GoalsScreen extends StatelessWidget {
+class GoalsScreen extends StatefulWidget {
   const GoalsScreen({Key? key}) : super(key: key);
 
+  @override
+  State<GoalsScreen> createState() => _GoalsScreenState();
+}
+
+class _GoalsScreenState extends State<GoalsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<GoalProvider>(builder: (_, goalState, child) {
