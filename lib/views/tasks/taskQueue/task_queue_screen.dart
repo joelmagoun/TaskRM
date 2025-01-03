@@ -354,7 +354,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
   }
 
   Widget _bottomSheet(BuildContext context) {
-    final _taskState = Provider.of<TaskProvider>(context, listen: false);
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
 
     return Container(
       height: 120,
@@ -397,7 +397,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
             Expanded(
               child: InkWell(
                 onTap: () async {
-                  await _taskState.moveToTodayTaskList(
+                  await taskState.moveToTodayTaskList(
                       selectedTaskId, selectedTaskCreatedAt, context);
                 },
                 child: Container(
@@ -407,7 +407,7 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                     borderRadius: BorderRadius.circular(12),
                     color: primaryColor,
                   ),
-                  child: _taskState.isMoving
+                  child: taskState.isMoving
                       ? const Center(
                           child: CircularProgressIndicator(
                           color: white,

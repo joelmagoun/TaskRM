@@ -1,10 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:powersync/sqlite3.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:TaskRM/attachments/remote_storage_adapter.dart';
 import 'package:TaskRM/utils/app_storage.dart';
-import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/custom_snack.dart';
 import '../models/task.dart';
@@ -75,7 +72,6 @@ class TaskProvider extends ChangeNotifier {
 
   bool get isTaskLoading => _isTaskLoading;
 
-  // late Stream<List<TaskModel>> testTaskList;
   late Stream<List<TaskModel>> taskStream;
 
   late List<TaskModel> _todayTaskList = [];
@@ -91,17 +87,9 @@ class TaskProvider extends ChangeNotifier {
 
       final uid = await AppStorage.getUserId();
 
-      // taskStream = db
-      //     .watch("SELECT * FROM tasks Where is_marked_for_today = true and user_id = '$uid' ORDER BY created_at DESC")
-      //     .map((results) {
-      //   return results
-      //       .map((row) => TaskModel.fromRow(row, uid!))
-      //       .toList(growable: false);
-      // });
-
       db
           .watch(
-              "SELECT * FROM tasks Where is_marked_for_today = true and user_id = '$uid' ORDER BY created_at DESC")
+              "SELECT * FROM tasks Where expected_completion = CURRENT_DATE and is_completed = false and user_id = '$uid' ORDER BY created_at DESC")
           .map((results) {
         if (results.isNotEmpty) {
           _todayTaskList.clear();
@@ -155,6 +143,7 @@ class TaskProvider extends ChangeNotifier {
           }).toList();
         }
       }).toList();
+
     } catch (e) {
       return;
     } finally {
@@ -194,9 +183,10 @@ class TaskProvider extends ChangeNotifier {
 
       final uid = await AppStorage.getUserId();
 
+
       db
           .watch(
-              "SELECT * FROM tasks Where is_marked_for_today = false and user_id = '$uid' ORDER BY created_at DESC")
+              "SELECT * FROM tasks Where is_completed = false and expected_completion != CURRENT_DATE and user_id = '$uid' ORDER BY created_at DESC")
           .map((results) {
         if (results.isNotEmpty) {
           _allTaskList.clear();
@@ -256,7 +246,7 @@ class TaskProvider extends ChangeNotifier {
         }
       }).toList();
     } catch (e) {
-      print('all task catch ${e.toString()}');
+      print('catch error ${e.toString()}');
       // CustomSnack.warningSnack(e.toString(), context);
     } finally {
       _isAllTaskLoading = false;
