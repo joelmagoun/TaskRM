@@ -1,20 +1,16 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
-//import 'package:appwrite/appwrite.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:TaskRM/models/jira_connection_model.dart';
-import 'package:TaskRM/utils/assets_path.dart';
-import 'package:TaskRM/utils/constant/constant.dart';
 import '../models/user_data.dart';
+import '../powersync.dart';
 import '../utils/app_storage.dart';
-import '../utils/config/constants.dart';
 import '../utils/custom_snack.dart';
 
 class ProfileProvider extends ChangeNotifier {
-  // Client client = Client();
-  // late Databases db;
-  // late Storage _appWriteStorage;
+
   File? image;
   late String imageUrl = '';
   late UserData _user = UserData('', '', '', '');
@@ -47,11 +43,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   _init() {
-    // client
-    //     .setEndpoint(AppWriteConstant.endPoint)
-    //     .setProject(AppWriteConstant.projectId);
-    // db = Databases(client);
-    // _appWriteStorage = Storage(client);
+
   }
 
   Future pickImage(ImageSource source, BuildContext context) async {
@@ -303,31 +295,38 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<void> addJiraConnection(String taskType, String userName,
       String apiKey, String url, BuildContext context) async {
-    final String? uid = await AppStorage.getUserId();
 
     try {
       isJiraAdding = true;
       notifyListeners();
 
-      // var res = await db.createDocument(
-      //     databaseId: AppWriteConstant.primaryDBId,
-      //     collectionId: AppWriteConstant.jiraConnectionCollectionId,
-      //     documentId: ID.unique(),
-      //     data: {
-      //       'userId': uid,
-      //       'taskType': taskType,
-      //       'userName': userName,
-      //       'apiKey': apiKey,
-      //       'url': url,
-      //     });
-      //
-      // if (res.data.isNotEmpty) {
-      //   Navigator.pop(context);
-      //   getJiraConnections(context);
-      //   CustomSnack.successSnack(
-      //       'Jira connection is added successfully!', context);
-      // }
+      final uid = await AppStorage.getUserId();
+
+      var docIdForPower = Random().nextInt(10000000);
+      //print('all param task $taskType user name $userName api key $apiKey, url $url');
+
+      var result = await db.writeTransaction((tx) async {
+        await tx.execute(
+            'INSERT INTO jira_connections( id, user_id, task_type, user_name, api_key, url) VALUES(?, ?, ?, ?, ?, ?)',
+            [
+              docIdForPower.toString(),
+              // DateTime.now().toIso8601String(),
+              // DateTime.now().toIso8601String(),
+              uid,
+              taskType,
+              userName,
+              apiKey,
+              url
+            ]);
+      }).whenComplete((){
+        Navigator.pop(context);
+        // getJiraConnections(context);
+        CustomSnack.successSnack(
+            'Jira connection is added successfully!', context);
+      });
+
     } catch (e) {
+      print('catch error ${e.toString()}');
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
       isJiraAdding = false;

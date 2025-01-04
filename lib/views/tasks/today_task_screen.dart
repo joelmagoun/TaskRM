@@ -12,7 +12,6 @@ import 'package:TaskRM/views/tasks/newTask/today_filter_bottomsheet.dart';
 import 'package:TaskRM/widgets/components/custom_loader.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
-import '../../models/task.dart';
 
 class TodayTaskScreen extends StatefulWidget {
   const TodayTaskScreen({Key? key}) : super(key: key);

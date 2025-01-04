@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
-import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/views/profile/jiraCollection/add_jira_connection.dart';
 import 'package:TaskRM/views/profile/jiraCollection/jira_connection_card.dart';
-import 'package:TaskRM/views/tasks/taskQueue/task_queue_filter_bottom_sheet.dart';
-import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 import '../../../utils/assets_path.dart';
 
