@@ -61,7 +61,6 @@ class GoalProvider extends ChangeNotifier {
           notifyListeners();
           return results.map((e) {
 
-            print('all goals kafiul ${e}');
                 if(_selectedFilterType == ''){
                   _allGoalList.add(Goal(
                       id: e['id'] ?? '',
@@ -85,54 +84,6 @@ class GoalProvider extends ChangeNotifier {
                     notifyListeners();
                   }}
 
-            /// ******* /////
-            // if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
-            //   _allTaskList.add(TaskModel(
-            //     id: e['id'] ?? 0,
-            //     createdAt: e['created_at'] ?? '',
-            //     updatedAt: e['updated_at'] ?? '',
-            //     timeframe: e['timeframe'] ?? '',
-            //     jiraId: e['jira_id'] ?? '',
-            //     title: e['title'] ?? '',
-            //     type: e['type'] ?? '',
-            //     isMarkedForToday: e['is_marked_for_today'] ?? false,
-            //     goalId: e['goal_id'] ?? '',
-            //     priority: e['priority'] ?? '',
-            //     description: e['description'] ?? '',
-            //     userId: e['user_id'] ?? '',
-            //     goal: e['goal'] ?? '',
-            //     expectedCompletion: e['expected_completion'] ?? '',
-            //     isCompleted: e['is_completed'] ?? false,
-            //     totalMinutesSpent: e['total_minutes_spent'] ?? 0,
-            //   ));
-            //   notifyListeners();
-            // } else if (_selectedQueueTimeFrame != '' ||
-            //     _selectedQueueType != '') {
-            //   if (e['type'] == _selectedQueueType &&
-            //       e['timeframe'] == _selectedQueueTimeFrame) {
-            //     _allTaskList.add(TaskModel(
-            //       id: e['id'] ?? 0,
-            //       createdAt: e['created_at'] ?? '',
-            //       updatedAt: e['updated_at'] ?? '',
-            //       timeframe: e['timeframe'] ?? '',
-            //       jiraId: e['jira_id'] ?? '',
-            //       title: e['title'] ?? '',
-            //       type: e['type'] ?? '',
-            //       isMarkedForToday: e['is_marked_for_today'] ?? false,
-            //       goalId: e['goal_id'] ?? '',
-            //       priority: e['priority'] ?? '',
-            //       description: e['description'] ?? '',
-            //       userId: e['user_id'] ?? '',
-            //       goal: e['goal'] ?? '',
-            //       expectedCompletion: e['expected_completion'] ?? '',
-            //       isCompleted: e['is_completed'] ?? false,
-            //       totalMinutesSpent: e['total_minutes_spent'] ?? 0,
-            //     ));
-            //     notifyListeners();
-            //   }
-            // }
-
-            /// ******* /////
             notifyListeners();
           }).toList();
         }
