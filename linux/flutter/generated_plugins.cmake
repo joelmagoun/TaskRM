@@ -4,7 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_linux
-  flutter_secure_storage
+  flutter_secure_storage_linux
   gtk
   powersync_flutter_libs
   sqlite3_flutter_libs
