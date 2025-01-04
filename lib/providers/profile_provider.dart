@@ -240,47 +240,49 @@ class ProfileProvider extends ChangeNotifier {
 
       final uid = await storage.read(key: 'userId');
 
-      // final res = await db.listDocuments(
-      //     databaseId: AppWriteConstant.primaryDBId,
-      //     collectionId: AppWriteConstant.jiraConnectionCollectionId,
-      //     queries: [
-      //       Query.equal("userId", uid),
-      //     ]);
-      //
-      // if (res.documents.isNotEmpty) {
-      //   res.documents.forEach((e) {
-      //     if (e.data['taskType'] == '1') {
-      //       workModel = JiraConnectionModel(
-      //           docId: e.$id ?? '',
-      //           userId: e.data['userId'] ?? '',
-      //           taskType: e.data['taskType'] ?? '',
-      //           userName: e.data['userName'] ?? '',
-      //           apiKey: e.data['apiKey'] ?? '',
-      //           url: e.data['url'] ?? '');
-      //       notifyListeners();
-      //     } else if (e.data['taskType'] == '2') {
-      //       personalModel = JiraConnectionModel(
-      //           docId: e.$id ?? '',
-      //           userId: e.data['userId'] ?? '',
-      //           taskType: e.data['taskType'] ?? '',
-      //           userName: e.data['userName'] ?? '',
-      //           apiKey: e.data['apiKey'] ?? '',
-      //           url: e.data['url'] ?? '');
-      //       notifyListeners();
-      //     } else if (e.data['taskType'] == '3') {
-      //       selfModel = JiraConnectionModel(
-      //           docId: e.$id ?? '',
-      //           userId: e.data['userId'] ?? '',
-      //           taskType: e.data['taskType'] ?? '',
-      //           userName: e.data['userName'] ?? '',
-      //           apiKey: e.data['apiKey'] ?? '',
-      //           url: e.data['url'] ?? '');
-      //       notifyListeners();
-      //     }
-      //
-      //   });
-      //   //notifyListeners();
-      // }
+      db
+          .watch(
+          "SELECT * FROM jira_connections Where user_id = '$uid' ORDER BY created_at DESC")
+          .map((results) {
+
+        if (results.isNotEmpty) {
+
+          return results.map((e) {
+
+                if (e['task_type'] == '1') {
+                  workModel = JiraConnectionModel(
+                      docId: e['id'] ?? '',
+                      userId: e['user_id'] ?? '',
+                      taskType: e['task_type'] ?? '',
+                      userName: e['user_name'] ?? '',
+                      apiKey: e['api_key'] ?? '',
+                      url: e['url'] ?? '');
+                  notifyListeners();
+                } else if (e['task_type'] == '2') {
+                  personalModel = JiraConnectionModel(
+                      docId: e['id'] ?? '',
+                      userId: e['user_id'] ?? '',
+                      taskType: e['task_type'] ?? '',
+                      userName: e['user_name'] ?? '',
+                      apiKey: e['api_key'] ?? '',
+                      url: e['url'] ?? '');
+                  notifyListeners();
+                } else{
+                  selfModel = JiraConnectionModel(
+                      docId: e['id'] ?? '',
+                      userId: e['user_id'] ?? '',
+                      taskType: e['task_type'] ?? '',
+                      userName: e['user_name'] ?? '',
+                      apiKey: e['api_key'] ?? '',
+                      url: e['url'] ?? '');
+                  notifyListeners();
+                }
+
+          }).toList();
+        }
+
+      }).toList();
+
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -301,17 +303,13 @@ class ProfileProvider extends ChangeNotifier {
       notifyListeners();
 
       final uid = await AppStorage.getUserId();
-
       var docIdForPower = Random().nextInt(10000000);
-      //print('all param task $taskType user name $userName api key $apiKey, url $url');
 
-      var result = await db.writeTransaction((tx) async {
+      await db.writeTransaction((tx) async {
         await tx.execute(
             'INSERT INTO jira_connections( id, user_id, task_type, user_name, api_key, url) VALUES(?, ?, ?, ?, ?, ?)',
             [
               docIdForPower.toString(),
-              // DateTime.now().toIso8601String(),
-              // DateTime.now().toIso8601String(),
               uid,
               taskType,
               userName,
@@ -326,7 +324,6 @@ class ProfileProvider extends ChangeNotifier {
       });
 
     } catch (e) {
-      print('catch error ${e.toString()}');
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
       isJiraAdding = false;
