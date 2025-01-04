@@ -39,7 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 Image.asset(logo),
                 Row(
                   children: [
-                    SvgPicture.asset(notificationIcon),
+                    InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, Routes.notification);
+                        },
+                        child: SvgPicture.asset(notificationIcon)),
                     eightHorizontalSpace,
                     InkWell(
                       onTap: () {

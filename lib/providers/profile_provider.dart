@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:TaskRM/models/jira_connection_model.dart';
+import 'package:path/path.dart';
 import '../models/user_data.dart';
 import '../powersync.dart';
 import '../utils/app_storage.dart';
 import '../utils/custom_snack.dart';
 
 class ProfileProvider extends ChangeNotifier {
-
   File? image;
   late String imageUrl = '';
   late UserData _user = UserData('', '', '', '');
@@ -42,9 +42,7 @@ class ProfileProvider extends ChangeNotifier {
     _init();
   }
 
-  _init() {
-
-  }
+  _init() {}
 
   Future pickImage(ImageSource source, BuildContext context) async {
     final image = await ImagePicker().pickImage(source: source);
@@ -242,47 +240,41 @@ class ProfileProvider extends ChangeNotifier {
 
       db
           .watch(
-          "SELECT * FROM jira_connections Where user_id = '$uid' ORDER BY created_at DESC")
+              "SELECT * FROM jira_connections Where user_id = '$uid' ORDER BY created_at DESC")
           .map((results) {
-
         if (results.isNotEmpty) {
-
           return results.map((e) {
-
-                if (e['task_type'] == '1') {
-                  workModel = JiraConnectionModel(
-                      docId: e['id'] ?? '',
-                      userId: e['user_id'] ?? '',
-                      taskType: e['task_type'] ?? '',
-                      userName: e['user_name'] ?? '',
-                      apiKey: e['api_key'] ?? '',
-                      url: e['url'] ?? '');
-                  notifyListeners();
-                } else if (e['task_type'] == '2') {
-                  personalModel = JiraConnectionModel(
-                      docId: e['id'] ?? '',
-                      userId: e['user_id'] ?? '',
-                      taskType: e['task_type'] ?? '',
-                      userName: e['user_name'] ?? '',
-                      apiKey: e['api_key'] ?? '',
-                      url: e['url'] ?? '');
-                  notifyListeners();
-                } else{
-                  selfModel = JiraConnectionModel(
-                      docId: e['id'] ?? '',
-                      userId: e['user_id'] ?? '',
-                      taskType: e['task_type'] ?? '',
-                      userName: e['user_name'] ?? '',
-                      apiKey: e['api_key'] ?? '',
-                      url: e['url'] ?? '');
-                  notifyListeners();
-                }
-
+            if (e['task_type'] == '1') {
+              workModel = JiraConnectionModel(
+                  docId: e['id'] ?? '',
+                  userId: e['user_id'] ?? '',
+                  taskType: e['task_type'] ?? '',
+                  userName: e['user_name'] ?? '',
+                  apiKey: e['api_key'] ?? '',
+                  url: e['url'] ?? '');
+              notifyListeners();
+            } else if (e['task_type'] == '2') {
+              personalModel = JiraConnectionModel(
+                  docId: e['id'] ?? '',
+                  userId: e['user_id'] ?? '',
+                  taskType: e['task_type'] ?? '',
+                  userName: e['user_name'] ?? '',
+                  apiKey: e['api_key'] ?? '',
+                  url: e['url'] ?? '');
+              notifyListeners();
+            } else {
+              selfModel = JiraConnectionModel(
+                  docId: e['id'] ?? '',
+                  userId: e['user_id'] ?? '',
+                  taskType: e['task_type'] ?? '',
+                  userName: e['user_name'] ?? '',
+                  apiKey: e['api_key'] ?? '',
+                  url: e['url'] ?? '');
+              notifyListeners();
+            }
           }).toList();
         }
-
       }).toList();
-
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -297,7 +289,6 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<void> addJiraConnection(String taskType, String userName,
       String apiKey, String url, BuildContext context) async {
-
     try {
       isJiraAdding = true;
       notifyListeners();
@@ -308,21 +299,13 @@ class ProfileProvider extends ChangeNotifier {
       await db.writeTransaction((tx) async {
         await tx.execute(
             'INSERT INTO jira_connections( id, user_id, task_type, user_name, api_key, url) VALUES(?, ?, ?, ?, ?, ?)',
-            [
-              docIdForPower.toString(),
-              uid,
-              taskType,
-              userName,
-              apiKey,
-              url
-            ]);
-      }).whenComplete((){
+            [docIdForPower.toString(), uid, taskType, userName, apiKey, url]);
+      }).whenComplete(() {
         Navigator.pop(context);
         // getJiraConnections(context);
         CustomSnack.successSnack(
             'Jira connection is added successfully!', context);
       });
-
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -342,28 +325,20 @@ class ProfileProvider extends ChangeNotifier {
       String apiKey,
       String jiraUrl,
       BuildContext context) async {
-    final String uid = await storage.read(key: 'userId') ?? '';
-
     try {
       isJiraUpdating = true;
       notifyListeners();
 
-      // var res = await db.updateDocument(
-      //     databaseId: AppWriteConstant.primaryDBId,
-      //     collectionId: AppWriteConstant.jiraConnectionCollectionId,
-      //     documentId: docId,
-      //     data: {
-      //       'userId': uid,
-      //       'taskType': taskType,
-      //       'userName': userName,
-      //       'apiKey': apiKey,
-      //       'url': jiraUrl,
-      //     }).then((value) {
-      //   Navigator.pop(context);
-      //   getJiraConnections(context);
-      //   CustomSnack.successSnack(
-      //       'Jira connection is updated successfully', context);
-      // });
+      await db.writeTransaction((tx) async {
+        await tx.execute(
+            'UPDATE jira_connections set user_name = ?, api_key = ?, url = ? Where id = $docId',
+            [userName, apiKey, jiraUrl]);
+      }).whenComplete(() {
+        Navigator.pop(context);
+        CustomSnack.successSnack(
+            'Jira connection is updated successfully!', context);
+      });
+
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -376,17 +351,15 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<void> deleteJiraConnection(String docId, BuildContext context) async {
     try {
-      // var res = db
-      //     .deleteDocument(
-      //   databaseId: AppWriteConstant.primaryDBId,
-      //   collectionId: AppWriteConstant.jiraConnectionCollectionId,
-      //   documentId: docId,
-      // ).then((value) {
-      //   Navigator.pop(context);
-      //   getJiraConnections(context);
-      //   CustomSnack.successSnack(
-      //       'Jira connection is deleted successfully', context);
-      // });
+      await db.writeTransaction((tx) async {
+        await tx.execute('DELETE FROM jira_connections where id == $docId');
+      }).whenComplete(() {
+        Navigator.pop(context);
+        CustomSnack.successSnack(
+            'Jira connection is deleted successfully!', context);
+      });
+
+      notifyListeners();
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     }

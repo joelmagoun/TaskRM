@@ -23,4 +23,5 @@ class Routes {
   static const String feed = "feed_screen";
   static const String feedDetails = 'feed_details';
   static const String addMoment = "add_moment";
+  static const String notification = "notification";
 }
