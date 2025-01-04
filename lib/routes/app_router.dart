@@ -1,3 +1,4 @@
+import 'package:TaskRM/views/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:TaskRM/routes/routes.dart';
 import 'package:TaskRM/views/goals/goalDetails/goal_details_screen.dart';
@@ -43,6 +44,8 @@ class AppRouter {
         return const ProfileScreen();
       case Routes.jiraCollectionScreen:
         return const JiraConnectionScreen();
+      case Routes.notification:
+        return const NotificationScreen();
       // case Routes.newGoal:
       //   return const NewGoalPage();
       // case Routes.taskDetails:
