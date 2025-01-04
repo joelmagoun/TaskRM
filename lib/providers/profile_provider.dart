@@ -354,12 +354,19 @@ class ProfileProvider extends ChangeNotifier {
       await db.writeTransaction((tx) async {
         await tx.execute('DELETE FROM jira_connections where id == $docId');
       }).whenComplete(() {
+        // Clear the corresponding model based on which type was deleted
+        if (workModel.docId == docId) {
+          workModel = JiraConnectionModel();
+        } else if (personalModel.docId == docId) {
+          personalModel = JiraConnectionModel();
+        } else if (selfModel.docId == docId) {
+          selfModel = JiraConnectionModel();
+        }
+        notifyListeners();  // Notify listeners after updating the models
         Navigator.pop(context);
         CustomSnack.successSnack(
             'Jira connection is deleted successfully!', context);
       });
-
-      notifyListeners();
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     }
