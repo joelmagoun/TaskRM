@@ -40,8 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   children: [
                     InkWell(
-                        onTap: (){
-                          Navigator.pushNamed(context, Routes.notification);
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.debugPage);
                         },
                         child: SvgPicture.asset(notificationIcon)),
                     eightHorizontalSpace,

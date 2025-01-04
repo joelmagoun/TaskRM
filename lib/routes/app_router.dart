@@ -13,8 +13,16 @@ import '../views/auth/login/login_screen.dart';
 import '../views/auth/signup/signup_screen.dart';
 import '../views/home/home_screen.dart';
 import '../views/profile/profile_screen.dart';
+import 'package:powersync/powersync.dart' as powersync;
 
 class AppRouter {
+  static powersync.PowerSyncDatabase? _db;
+
+  // Initialize the router with the PowerSync database
+  static void initialize(powersync.PowerSyncDatabase db) {
+    _db = db;
+  }
+
   static generateRoute() {
     return (RouteSettings settings) {
       Widget route = _getRouteWidget(settings);
@@ -44,38 +52,12 @@ class AppRouter {
         return const ProfileScreen();
       case Routes.jiraCollectionScreen:
         return const JiraConnectionScreen();
-      case Routes.notification:
-        return const NotificationScreen();
-      // case Routes.newGoal:
-      //   return const NewGoalPage();
-      // case Routes.taskDetails:
-      //   return TaskDetailsPage(task: settings.arguments as Task);
-      // case Routes.goalsList:
-      //   return const GoalsListPage();
-
-      // //return GoalDetailPage(goal: settings.arguments as Goal);
-      // case Routes.todayTasksList:
-      //   return const TodayTaskListPage();
-      // case Routes.existingTasks:
-      //   return const ExistingTasksPage();
-      // case Routes.journal:
-      //   return const JournalScreen();
       case Routes.login:
         return const LoginScreen();
       case Routes.signUp:
         return const SignUpScreen();
-
-      // case Routes.editProfile:
-      //   return const EditProfileScreen();
-      // case Routes.moments:
-      //   return const MomentsScreen();
-      // case Routes.feed:
-      //   return const FeedScreen();
-      // // case Routes.feedDetails:
-      // //   return const FeedDetailsScreen();
-      // case Routes.addMoment:
-      //   return const AddMoment();
-
+      case Routes.debugPage:
+        return const PowerSyncDebugPage();
       default:
         return const LoginScreen();
     }
