@@ -159,16 +159,53 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   }
 
   Widget _bottomButton(String icon, String title, bool isComplete) {
-    return Column(
-      children: [
-        SvgPicture.asset(icon),
-        eightVerticalSpace,
-        Text(
-          title,
-          style: tTextStyle500.copyWith(
-              fontSize: 14, color: isComplete ? primaryColor : secondaryColor),
-        )
-      ],
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
+    
+    return InkWell(
+      onTap: () {
+        if (isComplete) {
+          // Show confirmation dialog
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Complete Task'),
+              content: Text('Are you sure you want to mark this task as complete?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close dialog
+                    taskState.toggleTaskComplete(
+                      widget.task.id.toString(),
+                      (widget.task.isCompleted as int?) == 1,
+                      context,
+                    );
+                    Navigator.pop(context); // Return to previous screen
+                  },
+                  child: Text('Complete'),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+      child: Column(
+        children: [
+          taskState.isCompletingTask && isComplete
+              ? const CircularProgressIndicator(color: primaryColor)
+              : SvgPicture.asset(icon),
+          eightVerticalSpace,
+          Text(
+            title,
+            style: tTextStyle500.copyWith(
+                fontSize: 14, 
+                color: isComplete ? primaryColor : secondaryColor),
+          )
+        ],
+      ),
     );
   }
 }

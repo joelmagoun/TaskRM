@@ -92,6 +92,7 @@ class TaskProvider extends ChangeNotifier {
         SELECT * FROM tasks 
         WHERE user_id = '$uid' 
         AND date(expected_completion) = '$today'
+        AND is_completed = 0
         ORDER BY created_at DESC
       """;
       
@@ -200,6 +201,7 @@ class TaskProvider extends ChangeNotifier {
         SELECT * FROM tasks 
         WHERE user_id = '$uid' 
         AND (date(expected_completion) > '$today' OR date(expected_completion) < '$today')
+        AND is_completed = 0
         ORDER BY created_at DESC
       """;
       
@@ -425,6 +427,34 @@ class TaskProvider extends ChangeNotifier {
         return now.add(const Duration(days: 365));
       default:
         return DateTime.now();
+    }
+  }
+
+  late bool _isCompletingTask = false;
+  bool get isCompletingTask => _isCompletingTask;
+
+  Future<void> toggleTaskComplete(String taskId, bool currentStatus, BuildContext context) async {
+    try {
+      _isCompletingTask = true;
+      notifyListeners();
+
+      await db.writeTransaction((tx) async {
+        await tx.execute(
+          'UPDATE tasks SET is_completed = ?, updated_at = ? WHERE id = ?',
+          [currentStatus ? 0 : 1, DateTime.now().toIso8601String(), taskId]
+        );
+      });
+
+      CustomSnack.successSnack(
+        'Task ${!currentStatus ? "completed" : "uncompleted"} successfully!',
+        context
+      );
+
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      _isCompletingTask = false;
+      notifyListeners();
     }
   }
 }
