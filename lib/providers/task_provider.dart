@@ -86,12 +86,24 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
 
       final uid = await AppStorage.getUserId();
+      final today = DateTime.now().toIso8601String().split('T')[0];
+      
+      final query = """
+        SELECT * FROM tasks 
+        WHERE user_id = '$uid' 
+        AND date(expected_completion) = '$today'
+        ORDER BY created_at DESC
+      """;
+      
+      print('Today Tasks Query: $query');
+      print('Today\'s date for comparison: $today');
 
-      db
-          .watch(
-              "SELECT * FROM tasks Where expected_completion = CURRENT_DATE and is_completed = false and user_id = '$uid' ORDER BY created_at DESC")
-          .map((results) {
+      db.watch(query).map((results) {
+        print('Today Tasks Results count: ${results.length}');
         if (results.isNotEmpty) {
+          results.forEach((row) {
+            print('Task date: ${row['expected_completion']}');
+          });
           _todayTaskList.clear();
           notifyListeners();
           return results.map((e) {
@@ -145,7 +157,7 @@ class TaskProvider extends ChangeNotifier {
       }).toList();
 
     } catch (e) {
-      return;
+      print('Error in getTodayTaskList: ${e.toString()}');
     } finally {
       _isTaskLoading = false;
       notifyListeners();
@@ -182,13 +194,24 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
 
       final uid = await AppStorage.getUserId();
+      final today = DateTime.now().toIso8601String().split('T')[0];
+      
+      final query = """
+        SELECT * FROM tasks 
+        WHERE user_id = '$uid' 
+        AND (date(expected_completion) > '$today' OR date(expected_completion) < '$today')
+        ORDER BY created_at DESC
+      """;
+      
+      print('Queue Tasks Query: $query');
+      print('Today\'s date for comparison: $today');
 
-
-      db
-          .watch(
-              "SELECT * FROM tasks Where is_completed = false and expected_completion != CURRENT_DATE and user_id = '$uid' ORDER BY created_at DESC")
-          .map((results) {
+      db.watch(query).map((results) {
+        print('Queue Tasks Results count: ${results.length}');
         if (results.isNotEmpty) {
+          results.forEach((row) {
+            print('Task date: ${row['expected_completion']}');
+          });
           _allTaskList.clear();
           notifyListeners();
           return results.map((e) {
@@ -246,8 +269,7 @@ class TaskProvider extends ChangeNotifier {
         }
       }).toList();
     } catch (e) {
-      print('catch error ${e.toString()}');
-      // CustomSnack.warningSnack(e.toString(), context);
+      print('Error in getAllTaskList: ${e.toString()}');
     } finally {
       _isAllTaskLoading = false;
       notifyListeners();
