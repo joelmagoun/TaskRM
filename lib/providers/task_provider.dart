@@ -412,7 +412,7 @@ class TaskProvider extends ChangeNotifier {
 
     switch (timeFrame) {
       case "Today":
-        return now.add(const Duration(days: 1));
+        return now.add(const Duration(days: 0));
       case "3 days":
         return now.add(const Duration(days: 3));
       case "Week":
