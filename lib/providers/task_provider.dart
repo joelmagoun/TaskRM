@@ -92,7 +92,7 @@ class TaskProvider extends ChangeNotifier {
         SELECT * FROM tasks 
         WHERE user_id = '$uid' 
         AND date(expected_completion) = '$today'
-        AND is_completed = 0
+        ${_showCompletedTasks ? '' : 'AND is_completed = 0'}
         ORDER BY created_at DESC
       """;
       
@@ -201,7 +201,7 @@ class TaskProvider extends ChangeNotifier {
         SELECT * FROM tasks 
         WHERE user_id = '$uid' 
         AND (date(expected_completion) > '$today' OR date(expected_completion) < '$today')
-        AND is_completed = 0
+        ${_showCompletedTasks ? '' : 'AND is_completed = 0'}
         ORDER BY created_at DESC
       """;
       
@@ -456,5 +456,15 @@ class TaskProvider extends ChangeNotifier {
       _isCompletingTask = false;
       notifyListeners();
     }
+  }
+
+  bool _showCompletedTasks = false;
+  bool get showCompletedTasks => _showCompletedTasks;
+
+  void toggleShowCompletedTasks() {
+    _showCompletedTasks = !_showCompletedTasks;
+    notifyListeners();
+    getTodayTaskList();  // Refresh lists with new filter
+    getAllTaskList();
   }
 }

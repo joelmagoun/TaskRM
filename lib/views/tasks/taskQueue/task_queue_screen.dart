@@ -63,19 +63,36 @@ class _TaskQueueScreenState extends State<TaskQueueScreen> {
                     ],
                   ),
             actions: [
-              _taskState.allTaskList.isNotEmpty ||
-                      _taskState.selectedQueueType != '' ||
-                      _taskState.selectedQueueTimeFrame != ''
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              if (_taskState.allTaskList.isNotEmpty ||
+                  _taskState.selectedQueueType != '' ||
+                  _taskState.selectedQueueTimeFrame != '')
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => _taskState.toggleShowCompletedTasks(),
+                      icon: Icon(
+                        _taskState.showCompletedTasks 
+                          ? Icons.visibility 
+                          : Icons.visibility_off,
+                        color: _taskState.showCompletedTasks 
+                          ? primaryColor 
+                          : secondaryColor,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
                       child: InkWell(
-                          onTap: () {
-                            CustomDialog.bottomSheet(
-                                context, const TaskQueueFilterBottomSheet());
-                          },
-                          child: SvgPicture.asset(filterIcon)),
-                    )
-                  : const SizedBox.shrink(),
+                        onTap: () {
+                          CustomDialog.bottomSheet(
+                            context, 
+                            const TaskQueueFilterBottomSheet()
+                          );
+                        },
+                        child: SvgPicture.asset(filterIcon)
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
