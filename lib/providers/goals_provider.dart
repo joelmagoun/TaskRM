@@ -105,7 +105,7 @@ class GoalProvider extends ChangeNotifier {
   }
 
   Future<void> addNewGoal(String title, String type, String description,
-      String parentGoal, BuildContext context) async {
+      BuildContext context) async {
     try {
       _isGoalAdding = true;
       notifyListeners();
@@ -124,8 +124,8 @@ class GoalProvider extends ChangeNotifier {
             uid,
             description,
             type,
-            parentGoal,
-            0  // Default to not completed
+            _selectedParentGoalId.isEmpty ? '0' : _selectedParentGoalId,
+            0
           ]
         );
       });
@@ -178,4 +178,56 @@ class GoalProvider extends ChangeNotifier {
 
   bool _isCompletingGoal = false;
   bool get isCompletingGoal => _isCompletingGoal;
+
+  List<Goal> _parentGoalsList = [];
+  List<Goal> get parentGoalsList => _parentGoalsList;
+  String _selectedParentGoalId = '';
+  String get selectedParentGoalId => _selectedParentGoalId;
+  String _selectedParentGoalTitle = 'Select';
+  String get selectedParentGoalTitle => _selectedParentGoalTitle;
+
+  Future<void> getParentGoalsList() async {
+    try {
+      final uid = await AppStorage.getUserId();
+      
+      final query = """
+        SELECT * FROM goals 
+        WHERE user_id = '$uid' 
+        AND (parent_goal = '0' OR parent_goal IS NULL OR parent_goal = '')
+        AND (is_completed = 0 OR is_completed IS NULL)
+        ORDER BY created_at DESC
+      """;
+
+      final results = await db.getAll(query);
+      
+      _parentGoalsList.clear();
+      results.forEach((e) {
+        _parentGoalsList.add(Goal(
+          id: e['id'] ?? '',
+          title: e['title'] ?? '',
+          type: e['type'] ?? '',
+          description: e['description'] ?? '',
+          isCompleted: e['is_completed'] ?? 0,
+          userId: e['user_id'] ?? '',
+          createdAt: DateTime.parse(e['created_at'])
+        ));
+      });
+      
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching parent goals: ${e.toString()}');
+    }
+  }
+
+  void setSelectedParentGoal(String goalId, String goalTitle) {
+    _selectedParentGoalId = goalId;
+    _selectedParentGoalTitle = goalTitle;
+    notifyListeners();
+  }
+
+  void clearSelectedParentGoal() {
+    _selectedParentGoalId = '';
+    _selectedParentGoalTitle = 'Select';
+    notifyListeners();
+  }
 }

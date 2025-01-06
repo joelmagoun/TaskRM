@@ -88,8 +88,12 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
           ),
           InkWell(
             onTap: () async {
-              await goalState.addNewGoal(_titleController.text, selectedType,
-                  _descriptionController.text, '', context);
+              await goalState.addNewGoal(
+                _titleController.text,
+                selectedType,
+                _descriptionController.text,
+                context
+              );
             },
             child: Container(
               height: 40,
