@@ -50,93 +50,34 @@ class GoalProvider extends ChangeNotifier {
 
       final uid = await AppStorage.getUserId();
 
-      /// ******* /////
-
-      db
-          .watch(
-          "SELECT * FROM goals Where user_id = '$uid' ORDER BY created_at DESC")
-          .map((results) {
+      db.watch("""
+        SELECT * FROM goals 
+        WHERE user_id = '$uid' 
+        ${_selectedFilterType.isNotEmpty ? "AND type = '$_selectedFilterType'" : ''}
+        ${_showCompletedGoals ? '' : 'AND (is_completed = 0 OR is_completed IS NULL)'}
+        ORDER BY created_at DESC
+      """).map((results) {
         if (results.isNotEmpty) {
           _allGoalList.clear();
           notifyListeners();
-          return results.map((e) {
-
-                if(_selectedFilterType == ''){
-                  _allGoalList.add(Goal(
-                      id: e['id'] ?? '',
-                      title: e['title'] ?? '',
-                      type: e['type'] ?? '',
-                      description: e['description'] ?? '',
-                      isCompleted: false,
-                      userId: e['user_id'] ?? '',
-                      createdAt: DateTime.parse(e['created_at'])));
-                  notifyListeners();
-                }else{
-                  if(e['type'] == _selectedFilterType){
-                    _allGoalList.add(Goal(
-                        id: e['id'] ?? '',
-                        title: e['title'] ?? '',
-                        type: e['type'] ?? '',
-                        description: e['description'] ?? '',
-                        isCompleted: false,
-                        userId: e['user_id'] ?? '',
-                        createdAt: DateTime.parse(e['created_at'])));
-                    notifyListeners();
-                  }}
-
-            notifyListeners();
-          }).toList();
+          
+          results.forEach((e) {
+            _allGoalList.add(Goal(
+              id: e['id'] ?? '',
+              title: e['title'] ?? '',
+              type: e['type'] ?? '',
+              description: e['description'] ?? '',
+              isCompleted: e['is_completed'] ?? 0,
+              userId: e['user_id'] ?? '',
+              createdAt: DateTime.parse(e['created_at'])
+            ));
+          });
+          notifyListeners();
         }
       }).toList();
 
-      /// ******* /////
-
-      // final res = await db.listDocuments(
-      //     databaseId: AppWriteConstant.primaryDBId,
-      //     collectionId: AppWriteConstant.goalCollectionId,
-      //     queries: [
-      //       Query.equal("userId", uid),
-      //     ]);
-
-      // if (res.documents.isNotEmpty) {
-      //   _allGoalList.clear();
-      //   notifyListeners();
-      //
-      //   res.documents.forEach((e) {
-      //
-      //     if(_selectedFilterType == ''){
-      //       _allGoalList.add(Goal(
-      //           id: e.$id ?? '',
-      //           title: e.data['title'] ?? '',
-      //           type: e.data['type'] ?? '',
-      //           description: e.data['description'] ?? '',
-      //           isCompleted: false,
-      //           userId: e.data['userId'] ?? '',
-      //           createdAt: DateTime.parse(e.data['createdAt'])));
-      //       notifyListeners();
-      //     }else if(_selectedFilterType != ''){
-      //       if(e.data['type'] == _selectedFilterType){
-      //         _allGoalList.add(Goal(
-      //             id: e.$id ?? '',
-      //             title: e.data['title'] ?? '',
-      //             type: e.data['type'] ?? '',
-      //             description: e.data['description'] ?? '',
-      //             isCompleted: false,
-      //             userId: e.data['userId'] ?? '',
-      //             createdAt: DateTime.parse(e.data['createdAt'])));
-      //         notifyListeners();
-      //       }
-      //
-      //     }
-      //
-      // //   });
-      // } else {
-      //   // CustomSnack.warningSnack('No task on your queue', context);
-      //   print('No task on your queue');
-      // }
     } catch (e) {
-      // CustomSnack.warningSnack(e.toString(), context);
-      print(e.toString());
+      print('Error in getGoalList: ${e.toString()}');
     } finally {
       _isGoalLoading = false;
       notifyListeners();
@@ -166,30 +107,27 @@ class GoalProvider extends ChangeNotifier {
       notifyListeners();
 
       final uid = await AppStorage.getUserId();
-
       var docIdForPower = Random().nextInt(10000000);
 
-      var result = await db.writeTransaction((tx) async {
+      await db.writeTransaction((tx) async {
         await tx.execute(
-            'INSERT INTO goals( id, created_at, updated_at, title, user_id, description, type, parent_goal) VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
-            [
-              docIdForPower.toString(),
-              DateTime.now().toIso8601String(),
-              DateTime.now().toIso8601String(),
-              title,
-              uid,
-              description,
-              type,
-              parentGoal,
-            ]);
+          'INSERT INTO goals(id, created_at, updated_at, title, user_id, description, type, parent_goal, is_completed) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          [
+            docIdForPower.toString(),
+            DateTime.now().toIso8601String(),
+            DateTime.now().toIso8601String(),
+            title,
+            uid,
+            description,
+            type,
+            parentGoal,
+            0  // Default to not completed
+          ]
+        );
       });
 
       Navigator.pop(context);
-      // await getTodayTaskList();
-      // await getAllTaskList();
-      //
-      CustomDialog.autoDialog(
-          context, Icons.check, 'Goal is added successfully!');
+      CustomDialog.autoDialog(context, Icons.check, 'Goal is added successfully!');
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -197,4 +135,40 @@ class GoalProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> toggleGoalComplete(String goalId, int currentStatus, BuildContext context) async {
+    try {
+      _isCompletingGoal = true;
+      notifyListeners();
+
+      await db.writeTransaction((tx) async {
+        await tx.execute(
+          'UPDATE goals SET is_completed = ?, updated_at = ? WHERE id = ?',
+          [currentStatus == 1 ? 0 : 1, DateTime.now().toIso8601String(), goalId]
+        );
+      });
+
+      CustomSnack.successSnack(
+        'Goal ${currentStatus == 1 ? "uncompleted" : "completed"} successfully!',
+        context
+      );
+
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      _isCompletingGoal = false;
+      notifyListeners();
+    }
+  }
+
+  bool _showCompletedGoals = false;
+  bool get showCompletedGoals => _showCompletedGoals;
+
+  void toggleShowCompletedGoals() {
+    _showCompletedGoals = !_showCompletedGoals;
+    notifyListeners();
+  }
+
+  bool _isCompletingGoal = false;
+  bool get isCompletingGoal => _isCompletingGoal;
 }

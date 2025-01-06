@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/task_provider.dart';
+import 'package:TaskRM/providers/goals_provider.dart';
 import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
@@ -163,16 +164,53 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
   }
 
   Widget _bottomButton(String icon, String title, bool isComplete) {
-    return Column(
-      children: [
-        SvgPicture.asset(icon),
-        eightVerticalSpace,
-        Text(
-          title,
-          style: tTextStyle500.copyWith(
-              fontSize: 14, color: isComplete ? primaryColor : secondaryColor),
-        )
-      ],
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
+    
+    return InkWell(
+      onTap: () {
+        if (isComplete) {
+          // Show confirmation dialog
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Complete Goal'),
+              content: Text('Are you sure you want to mark this goal as complete?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close dialog
+                    goalState.toggleGoalComplete(
+                      widget.goal.id,
+                      widget.goal.isCompleted,
+                      context,
+                    );
+                    Navigator.pop(context); // Return to previous screen
+                  },
+                  child: Text('Complete'),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+      child: Column(
+        children: [
+          goalState.isCompletingGoal && isComplete
+              ? const CircularProgressIndicator(color: primaryColor)
+              : SvgPicture.asset(icon),
+          eightVerticalSpace,
+          Text(
+            title,
+            style: tTextStyle500.copyWith(
+                fontSize: 14, 
+                color: isComplete ? primaryColor : secondaryColor),
+          )
+        ],
+      ),
     );
   }
 }
