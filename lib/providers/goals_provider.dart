@@ -50,31 +50,35 @@ class GoalProvider extends ChangeNotifier {
 
       final uid = await AppStorage.getUserId();
 
-      db.watch("""
+      final query = """
         SELECT * FROM goals 
         WHERE user_id = '$uid' 
         ${_selectedFilterType.isNotEmpty ? "AND type = '$_selectedFilterType'" : ''}
         ${_showCompletedGoals ? '' : 'AND (is_completed = 0 OR is_completed IS NULL)'}
         ORDER BY created_at DESC
-      """).map((results) {
-        if (results.isNotEmpty) {
-          _allGoalList.clear();
-          notifyListeners();
-          
-          results.forEach((e) {
-            _allGoalList.add(Goal(
-              id: e['id'] ?? '',
-              title: e['title'] ?? '',
-              type: e['type'] ?? '',
-              description: e['description'] ?? '',
-              isCompleted: e['is_completed'] ?? 0,
-              userId: e['user_id'] ?? '',
-              createdAt: DateTime.parse(e['created_at'])
-            ));
-          });
-          notifyListeners();
-        }
-      }).toList();
+      """;
+
+      print('Goals Query: $query'); // Debug
+      
+      final results = await db.getAll(query);
+      print('Query results: ${results.length} goals found'); // Debug
+      
+      _allGoalList.clear();
+      
+      results.forEach((e) {
+        print('Goal: ${e['title']}, is_completed: ${e['is_completed']}'); // Debug
+        _allGoalList.add(Goal(
+          id: e['id'] ?? '',
+          title: e['title'] ?? '',
+          type: e['type'] ?? '',
+          description: e['description'] ?? '',
+          isCompleted: e['is_completed'] ?? 0,
+          userId: e['user_id'] ?? '',
+          createdAt: DateTime.parse(e['created_at'])
+        ));
+      });
+      
+      notifyListeners();
 
     } catch (e) {
       print('Error in getGoalList: ${e.toString()}');
@@ -165,8 +169,11 @@ class GoalProvider extends ChangeNotifier {
   bool get showCompletedGoals => _showCompletedGoals;
 
   void toggleShowCompletedGoals() {
+    print('Toggling show completed goals. Before: $_showCompletedGoals'); // Debug
     _showCompletedGoals = !_showCompletedGoals;
+    print('After toggle: $_showCompletedGoals'); // Debug
     notifyListeners();
+    getGoalList();
   }
 
   bool _isCompletingGoal = false;

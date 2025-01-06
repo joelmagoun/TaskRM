@@ -36,21 +36,41 @@ class _GoalsScreenState extends State<GoalsScreen> {
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
-            if (goalState.allGoalList.isNotEmpty ||
-                goalState.selectedFilterType != '')
-              InkWell(
-                  onTap: () {
-                    CustomDialog.bottomSheet(
-                        context, const GoalFilterBottomSheet());
-                  },
-                  child: SvgPicture.asset(filterIcon))
-            else
-              const SizedBox.shrink(),
+            goalState.allGoalList.isNotEmpty ||
+                    goalState.selectedFilterType != ''
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () => goalState.toggleShowCompletedGoals(),
+                        icon: Icon(
+                          goalState.showCompletedGoals 
+                            ? Icons.visibility 
+                            : Icons.visibility_off,
+                          color: goalState.showCompletedGoals 
+                            ? primaryColor 
+                            : secondaryColor,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          CustomDialog.bottomSheet(
+                            context, 
+                            const GoalFilterBottomSheet()
+                          );
+                        },
+                        child: SvgPicture.asset(filterIcon)
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
             goalState.allGoalList.isNotEmpty
                 ? IconButton(
                     onPressed: () {
                       CustomDialog.bottomSheet(
-                          context, const AddNewGoalBottomSheet());
+                        context, 
+                        const AddNewGoalBottomSheet()
+                      );
                     },
                     icon: const Icon(
                       Icons.add_circle_rounded,

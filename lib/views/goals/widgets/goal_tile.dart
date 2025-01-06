@@ -56,6 +56,8 @@ class _GoalTileState extends State<GoalTile> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isCompleted = (widget.goal.isCompleted as int?) == 1;
+
     return GestureDetector(
       onLongPress: widget.onLongPress,
       onTap: () {
@@ -64,9 +66,9 @@ class _GoalTileState extends State<GoalTile> {
       },
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16), color: widget.cardColor
-            //color: const Color(0xFFF0F1F8),
-            ),
+          borderRadius: BorderRadius.circular(16),
+          color: isCompleted ? Colors.grey.withOpacity(0.1) : widget.cardColor,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: widget.isSelected
@@ -80,7 +82,10 @@ class _GoalTileState extends State<GoalTile> {
                           Text(
                             widget.title,
                             style: tTextStyleRegular.copyWith(
-                                fontSize: 16, color: widget.titleColor),
+                              fontSize: 16,
+                              color: widget.titleColor,
+                              decoration: isCompleted ? TextDecoration.lineThrough : null,
+                            ),
                           ),
                           eightVerticalSpace,
                           widget.isTimeTracking
@@ -143,7 +148,10 @@ class _GoalTileState extends State<GoalTile> {
                     Text(
                       widget.title,
                       style: tTextStyleRegular.copyWith(
-                          fontSize: 16, color: widget.titleColor),
+                        fontSize: 16,
+                        color: widget.titleColor,
+                        decoration: isCompleted ? TextDecoration.lineThrough : null,
+                      ),
                     ),
                     eightVerticalSpace,
                     widget.isTimeTracking
