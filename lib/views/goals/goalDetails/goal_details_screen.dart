@@ -11,6 +11,7 @@ import '../../../utils/assets_path.dart';
 import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
+import 'package:TaskRM/widgets/dialogs/add_time_dialog.dart';
 
 class GoalDetailsScreen extends StatefulWidget {
   final Goal goal;
@@ -279,19 +280,26 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
               ],
             ),
           );
+        } else {
+          // Show add time dialog
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (context) => const AddTimeDialog(isGoal: true),
+          );
         }
       },
       child: Column(
         children: [
-          goalState.isCompletingGoal && isComplete
-              ? const CircularProgressIndicator(color: primaryColor)
-              : SvgPicture.asset(icon),
+          SvgPicture.asset(icon),
           eightVerticalSpace,
           Text(
             title,
             style: tTextStyle500.copyWith(
-                fontSize: 14, 
-                color: isComplete ? primaryColor : secondaryColor),
+              fontSize: 14, 
+              color: isComplete ? primaryColor : secondaryColor
+            ),
           )
         ],
       ),
