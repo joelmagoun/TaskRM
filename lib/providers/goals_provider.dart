@@ -56,18 +56,16 @@ class GoalProvider extends ChangeNotifier {
         WHERE user_id = '$uid' 
         ${_selectedFilterType.isNotEmpty ? "AND type = '$_selectedFilterType'" : ''}
         ${_showCompletedGoals ? '' : 'AND (is_completed = 0 OR is_completed IS NULL)'}
+        AND (parent_goal = '0' OR parent_goal IS NULL OR parent_goal = '')
         ORDER BY created_at DESC
       """;
 
-      print('Goals Query: $query'); // Debug
+      print('Goals Query: $query'); // For debugging
       
       final results = await db.getAll(query);
-      print('Query results: ${results.length} goals found'); // Debug
       
       _allGoalList.clear();
-      
       results.forEach((e) {
-        print('Goal: ${e['title']}, is_completed: ${e['is_completed']}'); // Debug
         _allGoalList.add(Goal(
           id: e['id'] ?? '',
           title: e['title'] ?? '',
@@ -75,6 +73,7 @@ class GoalProvider extends ChangeNotifier {
           description: e['description'] ?? '',
           isCompleted: e['is_completed'] ?? 0,
           userId: e['user_id'] ?? '',
+          parentGoal: e['parent_goal'],
           createdAt: DateTime.parse(e['created_at'])
         ));
       });
