@@ -162,6 +162,8 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
   }
 
   Widget _detailsTab() {
+    final goalProvider = Provider.of<GoalProvider>(context, listen: false);
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -169,7 +171,17 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
           primaryVerticalSpace,
           _infoTile(descriptionIcon, 'Description', widget.goal.description, false),
           primaryVerticalSpace,
-          _infoTile(goalIcon, 'Parent Goal', widget.goal.parentGoal ?? 'None', true),
+          FutureBuilder<String>(
+            future: goalProvider.getParentGoalTitle(widget.goal.parentGoal),
+            builder: (context, snapshot) {
+              return _infoTile(
+                goalIcon, 
+                'Parent Goal', 
+                snapshot.data ?? 'Loading...', 
+                true
+              );
+            },
+          ),
           primaryVerticalSpace,
           _infoTile(taskIcon, 'Tasks', 'None', true),
           primaryVerticalSpace,

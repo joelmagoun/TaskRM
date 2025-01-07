@@ -309,4 +309,25 @@ class GoalProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<String> getParentGoalTitle(String? parentGoalId) async {
+    if (parentGoalId == null || parentGoalId == '0' || parentGoalId.isEmpty) {
+      return 'None';
+    }
+
+    try {
+      final results = await db.getAll(
+        'SELECT title FROM goals WHERE id = ?',
+        [parentGoalId],
+      );
+
+      if (results.isNotEmpty) {
+        return results.first['title'] ?? 'None';
+      }
+      return 'None';
+    } catch (e) {
+      print('Error fetching parent goal title: $e');
+      return 'None';
+    }
+  }
 }

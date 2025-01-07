@@ -186,7 +186,9 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       type: item.type,
                       description: item.description,
                       isCompleted: item.isCompleted,
-                      userId: item.userId),
+                      userId: item.userId,
+                      parentGoal: item.parentGoal,
+                      createdAt: item.createdAt),
                 );
               },
               separatorBuilder: (_, index) => eightVerticalSpace,
@@ -226,23 +228,34 @@ class _GoalsScreenState extends State<GoalsScreen> {
               sixteenVerticalSpace,
               Expanded(
                 child: ListView.separated(
-                    itemBuilder: (_, index) {
-                      var item = goalState.allGoalList[index];
-                      return TaskTile(
-                        onLongPress: () {},
+                  itemBuilder: (_, index) {
+                    var item = goalState.allGoalList[index];
+                    return GoalTile(
+                      goalId: item.id,
+                      onLongPress: () {},
+                      title: item.title,
+                      isTimeTracking: false,
+                      time: '00',
+                      cardColor: const Color(0xFFF0F1F8),
+                      titleColor: black,
+                      timeDateColor: iconColor,
+                      isSelected: false,
+                      createdAt: item.createdAt.toString(),
+                      goal: Goal(
+                        id: item.id,
                         title: item.title,
-                        isTimeTracking: false,
-                        time: '00',
-                        cardColor: const Color(0xFFF0F1F8),
-                        titleColor: black,
-                        timeDateColor: iconColor,
-                        isSelected: false,
-                        createdAt: item.createdAt.toString(),
-                        task: Task(),
-                      );
-                    },
-                    separatorBuilder: (_, index) => eightVerticalSpace,
-                    itemCount: goalState.allGoalList.length),
+                        type: item.type,
+                        description: item.description,
+                        isCompleted: item.isCompleted,
+                        userId: item.userId,
+                        parentGoal: item.parentGoal,
+                        createdAt: item.createdAt,
+                      ),
+                    );
+                  },
+                  separatorBuilder: (_, index) => eightVerticalSpace,
+                  itemCount: goalState.allGoalList.length,
+                ),
               )
             ],
           );
