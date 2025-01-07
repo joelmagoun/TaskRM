@@ -9,12 +9,11 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import 'package:TaskRM/views/goals/add_new_goal_%20bottomsheet.dart';
+import 'package:TaskRM/views/goals/add_new_goal_bottomsheet.dart';
 import 'package:TaskRM/views/goals/goal_filter_bottomsheet.dart';
 import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
-
 
 class GoalsScreen extends StatefulWidget {
   const GoalsScreen({Key? key}) : super(key: key);
@@ -44,23 +43,20 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       IconButton(
                         onPressed: () => goalState.toggleShowCompletedGoals(),
                         icon: Icon(
-                          goalState.showCompletedGoals 
-                            ? Icons.visibility 
-                            : Icons.visibility_off,
-                          color: goalState.showCompletedGoals 
-                            ? primaryColor 
-                            : secondaryColor,
+                          goalState.showCompletedGoals
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: goalState.showCompletedGoals
+                              ? primaryColor
+                              : secondaryColor,
                         ),
                       ),
                       InkWell(
-                        onTap: () {
-                          CustomDialog.bottomSheet(
-                            context, 
-                            const GoalFilterBottomSheet()
-                          );
-                        },
-                        child: SvgPicture.asset(filterIcon)
-                      ),
+                          onTap: () {
+                            CustomDialog.bottomSheet(
+                                context, const GoalFilterBottomSheet());
+                          },
+                          child: SvgPicture.asset(filterIcon)),
                     ],
                   )
                 : const SizedBox.shrink(),
@@ -68,9 +64,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 ? IconButton(
                     onPressed: () {
                       CustomDialog.bottomSheet(
-                        context, 
-                        const AddNewGoalBottomSheet()
-                      );
+                          context, const AddNewGoalBottomSheet());
                     },
                     icon: const Icon(
                       Icons.add_circle_rounded,

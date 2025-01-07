@@ -261,16 +261,21 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 1.4,
-                    child: Text(
-                      goalState.selectedParentGoal,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: tTextStyleRegular.copyWith(
-                          fontSize: 16, color: black),
+                    width: MediaQuery.of(context).size.width / 1.4,
+                    child: Consumer<GoalProvider>(
+                      builder: (context, goalState, child) {
+                        return Text(
+                          goalState.selectedParentGoalTitle,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: tTextStyleRegular.copyWith(
+                              fontSize: 16, 
+                              color: goalState.selectedParentGoalTitle == 'Select' 
+                                  ? hintTextColor 
+                                  : black
+                          ),
+                        );
+                      },
                     ),
                   ),
                   const Icon(

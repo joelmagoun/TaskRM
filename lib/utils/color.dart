@@ -35,5 +35,6 @@ const Color hintColor = Color(0xFF2F503F);
 const Color dividerColor = Color(0xFFD9D9D9);
 const Color redBold = Color(0xFFF55157);
 const Color chipColor = Color(0xFFF2F1FF);
+const Color hintTextColor = Color(0xFFAAAAAA);
 
 
