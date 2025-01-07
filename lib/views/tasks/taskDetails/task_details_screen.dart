@@ -7,6 +7,7 @@ import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/task.dart';
 import '../../../utils/assets_path.dart';
+import 'package:TaskRM/widgets/dialogs/add_time_dialog.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
   final Task task;
@@ -189,6 +190,14 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 ),
               ],
             ),
+          );
+        } else if (title.contains('Add Time')) { // Check if it's the Add Time button
+          // Show add time dialog
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (context) => const AddTimeDialog(isGoal: false),
           );
         }
       },
