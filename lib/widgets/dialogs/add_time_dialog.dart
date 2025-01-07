@@ -3,6 +3,7 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import 'package:TaskRM/widgets/dialogs/time_input_dialog.dart';
+import 'package:TaskRM/widgets/dialogs/time_tracker_dialog.dart';
 
 class AddTimeDialog extends StatelessWidget {
   final bool isGoal; // To differentiate between goal and task
@@ -53,8 +54,16 @@ class AddTimeDialog extends StatelessWidget {
               title: 'Time tracker',
               subtitle: 'Use timer to begin your task and "Stop" when finished or pausing progress',
               onTap: () {
-                // TODO: Implement timer functionality
                 Navigator.pop(context);
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) => TimeTrackerDialog(
+                    isGoal: isGoal,
+                    itemId: itemId,
+                  ),
+                );
               },
             ),
             const Divider(),
