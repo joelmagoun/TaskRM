@@ -194,6 +194,7 @@ class GoalProvider extends ChangeNotifier {
         SELECT * FROM goals 
         WHERE user_id = '$uid' 
         AND (parent_goal = '0' OR parent_goal IS NULL OR parent_goal = '')
+        ${_selectedFilterType.isNotEmpty ? "AND type = '$_selectedFilterType'" : ''}
         AND (is_completed = 0 OR is_completed IS NULL)
         ORDER BY created_at DESC
       """;
@@ -209,6 +210,7 @@ class GoalProvider extends ChangeNotifier {
           description: e['description'] ?? '',
           isCompleted: e['is_completed'] ?? 0,
           userId: e['user_id'] ?? '',
+          parentGoal: e['parent_goal'],
           createdAt: DateTime.parse(e['created_at'])
         ));
       });

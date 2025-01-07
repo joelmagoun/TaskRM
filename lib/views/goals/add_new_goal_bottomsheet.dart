@@ -9,6 +9,7 @@ import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../providers/goals_provider.dart';
+import 'package:TaskRM/utils/custom_snack.dart';
 
 class AddNewGoalBottomSheet extends StatefulWidget {
   const AddNewGoalBottomSheet({
@@ -247,8 +248,16 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
         eightVerticalSpace,
         InkWell(
           onTap: () {
-            CustomDialog.bottomSheet(
-                context, const SelectParentGoalBottomSheet());
+            if (selectedType.isNotEmpty) {
+              goalState.getFilterType(selectedType);
+              goalState.getParentGoalsList();  // This will now use the filtered type
+              CustomDialog.bottomSheet(
+                context, 
+                const SelectParentGoalBottomSheet()
+              );
+            } else {
+              CustomSnack.warningSnack('Please select goal type first.', context);
+            }
           },
           child: Container(
             decoration: BoxDecoration(
@@ -269,10 +278,10 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: tTextStyleRegular.copyWith(
-                              fontSize: 16, 
-                              color: goalState.selectedParentGoalTitle == 'Select' 
-                                  ? hintTextColor 
-                                  : black
+                            fontSize: 16, 
+                            color: goalState.selectedParentGoalTitle == 'Select' 
+                                ? hintTextColor 
+                                : black
                           ),
                         );
                       },
