@@ -197,7 +197,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             context: context,
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
-            builder: (context) => const AddTimeDialog(isGoal: false),
+            builder: (context) => AddTimeDialog(
+              isGoal: false,
+              itemId: widget.task.id.toString(),
+            ),
           );
         }
       },

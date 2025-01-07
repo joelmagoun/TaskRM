@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
+import 'package:TaskRM/widgets/dialogs/time_input_dialog.dart';
 
 class AddTimeDialog extends StatelessWidget {
   final bool isGoal; // To differentiate between goal and task
+  final String itemId; // You'll need to pass this through from the parent
 
   const AddTimeDialog({
     Key? key,
     required this.isGoal,
+    required this.itemId,
   }) : super(key: key);
 
   @override
@@ -61,8 +64,16 @@ class AddTimeDialog extends StatelessWidget {
               title: 'Time input',
               subtitle: 'Enter the approximate amount of time you have worked on this ${isGoal ? 'goal' : 'task'}',
               onTap: () {
-                // TODO: Implement manual time input
                 Navigator.pop(context);
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) => TimeInputDialog(
+                    isGoal: isGoal,
+                    itemId: itemId,
+                  ),
+                );
               },
             ),
             const SizedBox(height: 16),

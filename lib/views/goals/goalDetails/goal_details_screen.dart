@@ -286,7 +286,10 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
             context: context,
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
-            builder: (context) => const AddTimeDialog(isGoal: true),
+            builder: (context) => AddTimeDialog(
+              isGoal: true,
+              itemId: widget.goal.id,
+            ),
           );
         }
       },

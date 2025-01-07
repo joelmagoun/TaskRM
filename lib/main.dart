@@ -35,5 +35,8 @@ void main() async {
   final loggedIn = isLoggedIn();
 
   // final String sessionId = await AppStorage.getSessionId()  ?? '';
-  runApp(MyApp(isLoggedId: loggedIn));
+  runApp(MyApp(
+    isLoggedId: loggedIn,
+    db: db,
+  ));
 }
