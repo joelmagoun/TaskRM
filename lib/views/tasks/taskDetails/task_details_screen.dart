@@ -9,7 +9,7 @@ import '../../../models/task.dart';
 import '../../../utils/assets_path.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
-  final TaskModel task;
+  final Task task;
 
   const TaskDetailsScreen({Key? key, required this.task}) : super(key: key);
 

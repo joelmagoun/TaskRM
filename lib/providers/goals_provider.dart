@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:TaskRM/models/goal.dart';
+import 'package:TaskRM/models/task.dart';
 import 'package:TaskRM/utils/app_storage.dart';
 import 'package:TaskRM/utils/custom_snack.dart';
 import '../powersync.dart';
@@ -229,5 +230,82 @@ class GoalProvider extends ChangeNotifier {
     _selectedParentGoalId = '';
     _selectedParentGoalTitle = 'Select';
     notifyListeners();
+  }
+
+  List<Goal> _subGoals = [];
+  List<Goal> get subGoals => _subGoals;
+  
+  List<Task> _goalTasks = [];
+  List<Task> get goalTasks => _goalTasks;
+  
+  bool _isLoadingSubGoals = false;
+  bool get isLoadingSubGoals => _isLoadingSubGoals;
+  
+  bool _isLoadingGoalTasks = false;
+  bool get isLoadingGoalTasks => _isLoadingGoalTasks;
+
+  Future<void> getSubGoals(String parentGoalId) async {
+    try {
+      _isLoadingSubGoals = true;
+      notifyListeners();
+
+      final uid = await AppStorage.getUserId();
+      
+      final query = """
+        SELECT * FROM goals 
+        WHERE user_id = '$uid' 
+        AND parent_goal = '$parentGoalId'
+        AND (is_completed = 0 OR is_completed IS NULL)
+        ORDER BY created_at DESC
+      """;
+
+      final results = await db.getAll(query);
+      
+      _subGoals = results.map((e) => Goal(
+        id: e['id'] ?? '',
+        title: e['title'] ?? '',
+        type: e['type'] ?? '',
+        description: e['description'] ?? '',
+        isCompleted: e['is_completed'] ?? 0,
+        userId: e['user_id'] ?? '',
+        parentGoal: e['parent_goal'],
+        createdAt: DateTime.parse(e['created_at'])
+      )).toList();
+      
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching sub-goals: ${e.toString()}');
+    } finally {
+      _isLoadingSubGoals = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getGoalTasks(String goalId) async {
+    try {
+      _isLoadingGoalTasks = true;
+      notifyListeners();
+
+      final uid = await AppStorage.getUserId();
+      
+      final query = """
+        SELECT * FROM tasks 
+        WHERE user_id = '$uid' 
+        AND goal_id = '$goalId'
+        AND (is_completed = 0 OR is_completed IS NULL)
+        ORDER BY created_at DESC
+      """;
+
+      final results = await db.getAll(query);
+      
+      _goalTasks = results.map((e) => Task.fromJson(e)).toList();
+      
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching goal tasks: ${e.toString()}');
+    } finally {
+      _isLoadingGoalTasks = false;
+      notifyListeners();
+    }
   }
 }

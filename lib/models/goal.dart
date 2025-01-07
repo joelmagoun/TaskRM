@@ -13,6 +13,8 @@ class Goal {
   final DateTime? updatedAt;
   final DateTime? createdAt;
   final String userId;
+  final String? parentGoal;
+
   Goal({
     required this.id,
     required this.title,
@@ -22,7 +24,8 @@ class Goal {
     this.totalMinutesSpent,
     this.updatedAt,
     this.createdAt,
-    required this.userId
+    required this.userId,
+    this.parentGoal
   });
 
   Goal copyWith({

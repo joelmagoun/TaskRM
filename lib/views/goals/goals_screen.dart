@@ -238,7 +238,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                         timeDateColor: iconColor,
                         isSelected: false,
                         createdAt: item.createdAt.toString(),
-                        task: TaskModel(),
+                        task: Task(),
                       );
                     },
                     separatorBuilder: (_, index) => eightVerticalSpace,

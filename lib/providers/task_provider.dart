@@ -72,11 +72,11 @@ class TaskProvider extends ChangeNotifier {
 
   bool get isTaskLoading => _isTaskLoading;
 
-  late Stream<List<TaskModel>> taskStream;
+  late Stream<List<Task>> taskStream;
 
-  late List<TaskModel> _todayTaskList = [];
+  late List<Task> _todayTaskList = [];
 
-  List<TaskModel> get todayTaskList => _todayTaskList;
+  List<Task> get todayTaskList => _todayTaskList;
 
   /// Get all list IDs
 
@@ -109,7 +109,7 @@ class TaskProvider extends ChangeNotifier {
           notifyListeners();
           return results.map((e) {
             if (_selectedFilterType == '') {
-              _todayTaskList.add(TaskModel(
+              _todayTaskList.add(Task(
                 id: e['id'] ?? 0,
                 createdAt: e['created_at'] ?? '',
                 updatedAt: e['updated_at'] ?? '',
@@ -130,7 +130,7 @@ class TaskProvider extends ChangeNotifier {
               notifyListeners();
             } else if (_selectedFilterType != '') {
               if (e['type'] == _selectedFilterType) {
-                _todayTaskList.add(TaskModel(
+                _todayTaskList.add(Task(
                   id: e['id'] ?? 0,
                   createdAt: e['created_at'] ?? '',
                   updatedAt: e['updated_at'] ?? '',
@@ -171,9 +171,9 @@ class TaskProvider extends ChangeNotifier {
 
   bool get isAllTaskLoading => _isAllTaskLoading;
 
-  late List<TaskModel> _allTaskList = [];
+  late List<Task> _allTaskList = [];
 
-  List<TaskModel> get allTaskList => _allTaskList;
+  List<Task> get allTaskList => _allTaskList;
 
   late String _selectedQueueTimeFrame = '';
 
@@ -221,7 +221,7 @@ class TaskProvider extends ChangeNotifier {
             // getTimeFrameFromExpectedDate(e['expected_completion']);
 
             if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
-              _allTaskList.add(TaskModel(
+              _allTaskList.add(Task(
                 id: e['id'] ?? 0,
                 createdAt: e['created_at'] ?? '',
                 updatedAt: e['updated_at'] ?? '',
@@ -244,7 +244,7 @@ class TaskProvider extends ChangeNotifier {
                 _selectedQueueType != '') {
               if (e['type'] == _selectedQueueType &&
                   e['timeframe'] == _selectedQueueTimeFrame) {
-                _allTaskList.add(TaskModel(
+                _allTaskList.add(Task(
                   id: e['id'] ?? 0,
                   createdAt: e['created_at'] ?? '',
                   updatedAt: e['updated_at'] ?? '',

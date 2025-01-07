@@ -8,6 +8,9 @@ import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/goal.dart';
 import '../../../utils/assets_path.dart';
+import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
+import 'package:TaskRM/widgets/empty_widget.dart';
+import 'package:TaskRM/widgets/components/task_tile.dart';
 
 class GoalDetailsScreen extends StatefulWidget {
   final Goal goal;
@@ -19,81 +22,162 @@ class GoalDetailsScreen extends StatefulWidget {
 }
 
 class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
-  late int selectedTask = -1;
-  late bool isSelected = false;
-
-  /// for move to today list ///
-  late String selectedTaskId = '';
-  late String selectedTaskTitle = '';
-  late String selectedTaskType = '';
-  late String selectedTaskPriority = '';
-  late String selectedTaskDescription = '';
-  late String selectedTaskGoal = '';
-  late String selectedTaskCreatedAt = '';
+  @override
+  void initState() {
+    super.initState();
+    final goalState = Provider.of<GoalProvider>(context, listen: false);
+    goalState.getSubGoals(widget.goal.id);
+    goalState.getGoalTasks(widget.goal.id);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskProvider>(builder: (_, _taskState, child) {
-      return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(60.0),
-          child: AppBar(
-            centerTitle: false,
-            shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Goal',
-                  style: tTextStyleRegular.copyWith(fontSize: 16, color: black),
-                ),
-                Text(
-                  widget.goal.title,
-                  maxLines: 2,
-                  style: tTextStyleRegular.copyWith(fontSize: 14),
-                ),
-              ],
-            ),
-            actions: [SvgPicture.asset(menuIcon), sixteenHorizontalSpace],
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          shape: Border(bottom: BorderSide(color: borderColor, width: 1)),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Goal',
+                style: tTextStyle500.copyWith(fontSize: 14, color: iconColor),
+              ),
+              Text(
+                widget.goal.title,
+                style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
+              ),
+            ],
+          ),
+          actions: [
+            SvgPicture.asset(menuIcon),
+            sixteenHorizontalSpace,
+          ],
+          bottom: TabBar(
+            indicatorColor: primaryColor,
+            labelStyle: tTextStyle500.copyWith(color: textPrimaryColor, fontSize: 16),
+            unselectedLabelStyle: tTextStyle500.copyWith(color: iconColor, fontSize: 16),
+            tabs: const [
+              Tab(text: 'Goals'),
+              Tab(text: 'Tasks'),
+              Tab(text: 'Details'),
+            ],
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SingleChildScrollView(
-                    child: Column(
+        body: Consumer<GoalProvider>(
+          builder: (context, goalState, child) {
+            return Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TabBarView(
                       children: [
-                        _infoTile(typeIcon, 'Type', widget.goal.type, false),
-                        primaryVerticalSpace,
-                        _infoTile(timeFrameIcon, 'Timeframe',
-                            " widget.goal.timeFrame", false),
-                        primaryVerticalSpace,
-                        _infoTile(descriptionIcon, 'Description',
-                            widget.goal.description, false),
-                        primaryVerticalSpace,
-                        _infoTile(goalIcon, 'Parent Goal', 'None', true),
-                        primaryVerticalSpace,
-                        _infoTile(taskIcon, 'Tasks', 'None', true),
-                        primaryVerticalSpace,
-                        _infoTile(
-                            scheduleIcon, 'Time spent', '1 hr 15 min', false),
-                        primaryVerticalSpace,
-                        _infoTile(
-                            reloadIcon, 'Last activity', '11 Mar, 2023', false),
+                        _goalsTab(goalState),
+                        _tasksTab(goalState),
+                        _detailsTab(),
                       ],
                     ),
                   ),
                 ),
-              ),
-            ),
-            _bottomSheet()
-          ],
+                _bottomSheet(),
+              ],
+            );
+          },
         ),
+      ),
+    );
+  }
+
+  Widget _goalsTab(GoalProvider goalState) {
+    if (goalState.isLoadingSubGoals) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    
+    if (goalState.subGoals.isEmpty) {
+      return const EmptyWidget(
+        icon: goalIcon,
+        title: 'No sub-goals',
+        subTitle: 'You can add sub-goals by editing other goals or adding new ones',
       );
-    });
+    }
+
+    return ListView.separated(
+      itemCount: goalState.subGoals.length,
+      separatorBuilder: (_, __) => eightVerticalSpace,
+      itemBuilder: (context, index) {
+        final goal = goalState.subGoals[index];
+        return GoalTile(
+          goalId: goal.id,
+          onLongPress: () {},
+          title: goal.title,
+          isTimeTracking: false,
+          time: '0',
+          cardColor: const Color(0xFFF0F1F8),
+          titleColor: black,
+          timeDateColor: iconColor,
+          isSelected: false,
+          createdAt: goal.createdAt.toString(),
+          goal: goal,
+        );
+      },
+    );
+  }
+
+  Widget _tasksTab(GoalProvider goalState) {
+    if (goalState.isLoadingGoalTasks) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (goalState.goalTasks.isEmpty) {
+      return const EmptyWidget(
+        icon: taskIcon,
+        title: 'No tasks',
+        subTitle: 'No tasks are associated with this goal',
+      );
+    }
+
+    return ListView.separated(
+      itemCount: goalState.goalTasks.length,
+      separatorBuilder: (_, __) => eightVerticalSpace,
+      itemBuilder: (context, index) {
+        final task = goalState.goalTasks[index];
+        return TaskTile(
+          onLongPress: () {},
+          title: task.title ?? '',
+          isTimeTracking: false,
+          time: task.timeframe ?? '0',
+          cardColor: const Color(0xFFF0F1F8),
+          titleColor: black,
+          timeDateColor: iconColor,
+          isSelected: false,
+          createdAt: task.createdAt.toString(),
+          task: task,
+        );
+      },
+    );
+  }
+
+  Widget _detailsTab() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _infoTile(typeIcon, 'Type', widget.goal.type, false),
+          primaryVerticalSpace,
+          _infoTile(descriptionIcon, 'Description', widget.goal.description, false),
+          primaryVerticalSpace,
+          _infoTile(goalIcon, 'Parent Goal', widget.goal.parentGoal ?? 'None', true),
+          primaryVerticalSpace,
+          _infoTile(taskIcon, 'Tasks', 'None', true),
+          primaryVerticalSpace,
+          _infoTile(scheduleIcon, 'Time spent', '1 hr 15 min', false),
+          primaryVerticalSpace,
+          _infoTile(reloadIcon, 'Last activity', '11 Mar, 2023', false),
+        ],
+      ),
+    );
   }
 
   Widget _infoTile(String icon, String title, String content, bool isGoal) {
