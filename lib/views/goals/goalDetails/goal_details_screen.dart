@@ -53,7 +53,164 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
             ],
           ),
           actions: [
-            SvgPicture.asset(menuIcon),
+            PopupMenuButton<String>(
+              icon: SvgPicture.asset(menuIcon),
+              offset: const Offset(0, 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem<String>(
+                  value: 'edit',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.edit_outlined, color: textPrimaryColor, size: 20),
+                      sixteenHorizontalSpace,
+                      Text(
+                        'Edit',
+                        style: tTextStyle500.copyWith(
+                          fontSize: 14,
+                          color: textPrimaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.delete_outline, color: Colors.red, size: 20),
+                      sixteenHorizontalSpace,
+                      Text(
+                        'Delete',
+                        style: tTextStyle500.copyWith(
+                          fontSize: 14,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              onSelected: (value) {
+                switch (value) {
+                  case 'edit':
+                    // TODO: Implement edit functionality
+                    print('Edit selected');
+                    break;
+                  case 'delete':
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xFFF5F5F5),
+                                  ),
+                                  child: const Icon(
+                                    Icons.delete_outline,
+                                    color: textPrimaryColor,
+                                    size: 24,
+                                  ),
+                                ),
+                                sixteenVerticalSpace,
+                                Text(
+                                  'Delete goal',
+                                  style: tTextStyle500.copyWith(
+                                    fontSize: 20,
+                                    color: textPrimaryColor,
+                                  ),
+                                ),
+                                eightVerticalSpace,
+                                Text(
+                                  'Deleted items will be forever lost.\nAre you sure?',
+                                  textAlign: TextAlign.center,
+                                  style: tTextStyleRegular.copyWith(
+                                    fontSize: 14,
+                                    color: textSecondaryColor,
+                                  ),
+                                ),
+                                twentyFourVerticalSpace,
+                                InkWell(
+                                  onTap: () async {
+                                    final goalProvider = Provider.of<GoalProvider>(
+                                      context, 
+                                      listen: false
+                                    );
+                                    
+                                    try {
+                                      await goalProvider.deleteGoal(widget.goal.id);
+                                      if (mounted) {
+                                        Navigator.pop(context); // Close dialog
+                                        Navigator.pop(context); // Return to previous screen
+                                      }
+                                    } catch (e) {
+                                      if (mounted) {
+                                        Navigator.pop(context); // Close dialog
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Failed to delete goal'),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(color: borderColor),
+                                        bottom: BorderSide(color: borderColor),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Delete',
+                                      textAlign: TextAlign.center,
+                                      style: tTextStyle500.copyWith(
+                                        fontSize: 16,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () => Navigator.pop(context),
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    child: Text(
+                                      'Cancel',
+                                      textAlign: TextAlign.center,
+                                      style: tTextStyle500.copyWith(
+                                        fontSize: 16,
+                                        color: textPrimaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                    break;
+                }
+              },
+            ),
             sixteenHorizontalSpace,
           ],
           bottom: TabBar(

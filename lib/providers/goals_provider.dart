@@ -330,4 +330,18 @@ class GoalProvider extends ChangeNotifier {
       return 'None';
     }
   }
+
+  Future<void> deleteGoal(String goalId) async {
+    try {
+      await db.execute(
+        'DELETE FROM goals WHERE id = ?',
+        [goalId],
+      );
+      await getGoalList(); // Refresh the goals list
+      notifyListeners();
+    } catch (e) {
+      print('Error deleting goal: $e');
+      rethrow;
+    }
+  }
 }
