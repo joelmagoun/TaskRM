@@ -7,6 +7,7 @@ import 'package:TaskRM/views/tasks/newTask/add_new_task_bottomsheet.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../routes/routes.dart';
+import 'package:TaskRM/views/tasks/task_form_bottomsheet.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({
@@ -45,7 +46,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   }, queueIcon, 'Select from queue'),
                   _optionTile(() {
                     CustomDialog.bottomSheet(
-                        context, const AddNewTaskBottomSheet());
+                        context, const TaskFormBottomSheet());
                   }, newTaskIcon, 'New task'),
                 ],
               ),

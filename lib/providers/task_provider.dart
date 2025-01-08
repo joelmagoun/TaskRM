@@ -40,6 +40,10 @@ class TaskProvider extends ChangeNotifier {
   late bool _isTaskAdding = false;
 
   bool get isTaskAdding => _isTaskAdding;
+  set isTaskAdding(bool value) {
+    _isTaskAdding = value;
+    notifyListeners();
+  }
 
   late String _selectedGoal = 'Select';
 
@@ -494,6 +498,50 @@ class TaskProvider extends ChangeNotifier {
     } catch (e) {
       print('Error deleting task: $e');
       rethrow;
+    }
+  }
+
+  Future<void> updateTask({
+    required String taskId,
+    required String title,
+    required String type,
+    required String priority,
+    required String timeframe,
+    required String description,
+    required BuildContext context,
+  }) async {
+    try {
+      isTaskAdding = true;
+      notifyListeners();
+
+      final now = DateTime.now().toIso8601String();
+
+      await db.execute(
+        '''
+        UPDATE tasks 
+        SET 
+          title = ?,
+          type = ?,
+          priority = ?,
+          timeframe = ?,
+          description = ?,
+          updated_at = ?
+        WHERE id = ?
+        ''',
+        [title, type, priority, timeframe, description, now, taskId],
+      );
+
+      await getAllTaskList(); // Refresh the tasks list
+      
+      if (context.mounted) {
+        Navigator.pop(context);
+        CustomDialog.autoDialog(context, Icons.check, 'Task updated successfully!');
+      }
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      isTaskAdding = false;
+      notifyListeners();
     }
   }
 }

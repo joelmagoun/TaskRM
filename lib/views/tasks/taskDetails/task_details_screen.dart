@@ -8,6 +8,8 @@ import 'package:TaskRM/utils/typograpgy.dart';
 import '../../../models/task.dart';
 import '../../../utils/assets_path.dart';
 import 'package:TaskRM/widgets/dialogs/add_time_dialog.dart';
+import 'package:TaskRM/views/tasks/task_form_bottomsheet.dart';
+import 'package:TaskRM/utils/custom_dialog.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
   final Task task;
@@ -98,8 +100,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 onSelected: (value) {
                   switch (value) {
                     case 'edit':
-                      // TODO: Implement edit functionality
-                      print('Edit selected');
+                      CustomDialog.bottomSheet(
+                        context,
+                        TaskFormBottomSheet(task: widget.task),
+                      );
                       break;
                     case 'delete':
                       showDialog(
