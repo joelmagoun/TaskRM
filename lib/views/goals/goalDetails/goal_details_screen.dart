@@ -12,6 +12,8 @@ import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/dialogs/add_time_dialog.dart';
+import 'package:TaskRM/views/goals/goal_form_bottomsheet.dart';
+import 'package:TaskRM/utils/custom_dialog.dart';
 
 class GoalDetailsScreen extends StatefulWidget {
   final Goal goal;
@@ -96,8 +98,10 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
               onSelected: (value) {
                 switch (value) {
                   case 'edit':
-                    // TODO: Implement edit functionality
-                    print('Edit selected');
+                    CustomDialog.bottomSheet(
+                      context,
+                      GoalFormBottomSheet(goal: widget.goal),
+                    );
                     break;
                   case 'delete':
                     showDialog(

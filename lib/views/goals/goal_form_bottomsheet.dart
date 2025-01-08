@@ -1,29 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:TaskRM/providers/task_provider.dart';
-import 'package:TaskRM/utils/custom_dialog.dart';
+import 'package:TaskRM/models/goal.dart';
+import 'package:TaskRM/providers/goals_provider.dart';
+import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
+import 'package:TaskRM/utils/spacer.dart';
+import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/views/goals/select_parent_goal_bottomsheet.dart';
-import 'package:TaskRM/views/tasks/newTask/select_goal_bottom_sheet.dart';
-import 'package:TaskRM/widgets/components/buttons/primary_button.dart';
-import '../../../../utils/color.dart';
-import '../../../../utils/spacer.dart';
-import '../../providers/goals_provider.dart';
 import 'package:TaskRM/utils/custom_snack.dart';
+// ... other imports
 
-class AddNewGoalBottomSheet extends StatefulWidget {
-  const AddNewGoalBottomSheet({
+
+class GoalFormBottomSheet extends StatefulWidget {
+  final Goal? goal; // null for add, existing goal for edit
+
+  const GoalFormBottomSheet({
     Key? key,
+    this.goal,
   }) : super(key: key);
 
   @override
-  State<AddNewGoalBottomSheet> createState() => _AddNewGoalBottomSheetState();
+  State<GoalFormBottomSheet> createState() => _GoalFormBottomSheetState();
 }
 
-class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
-  late String selectedType = '';
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+class _GoalFormBottomSheetState extends State<GoalFormBottomSheet> {
+  late TextEditingController _titleController;
+  late TextEditingController _descriptionController;
+  late String selectedType;
+  bool get isEditing => widget.goal != null;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize with existing data for edit, empty for add
+    _titleController = TextEditingController(text: widget.goal?.title ?? '');
+    _descriptionController = TextEditingController(text: widget.goal?.description ?? '');
+    selectedType = widget.goal?.type ?? '';
+
+    if (isEditing) {
+      // Set parent goal for edit mode
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final goalProvider = Provider.of<GoalProvider>(context, listen: false);
+        if (widget.goal?.parentGoal != null && widget.goal?.parentGoal != '0') {
+          goalProvider.getParentGoalTitle(widget.goal?.parentGoal).then((title) {
+            goalProvider.setSelectedParentGoal(
+              widget.goal?.parentGoal ?? '',
+              title,
+            );
+          });
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +73,7 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
           ),
           child: SingleChildScrollView(
             child: Consumer<GoalProvider>(
-              builder: (_, _goalState, child) {
+              builder: (_, goalState, __) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -81,25 +109,32 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.clear,
-                color: iconColor,
-              )),
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.clear, color: iconColor),
+          ),
           Text(
-            'New Goal',
+            isEditing ? 'Edit Goal' : 'New Goal',
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           InkWell(
             onTap: () async {
-              await goalState.addNewGoal(
-                _titleController.text,
-                selectedType,
-                _descriptionController.text,
-                context
-              );
+              if (isEditing) {
+                await goalState.updateGoal(
+                  goalId: widget.goal!.id,
+                  title: _titleController.text,
+                  type: selectedType,
+                  description: _descriptionController.text,
+                  parentGoalId: goalState.selectedParentGoalId,
+                  context: context,
+                );
+              } else {
+                await goalState.addNewGoal(
+                  _titleController.text,
+                  selectedType,
+                  _descriptionController.text,
+                  context,
+                );
+              }
             },
             child: Container(
               height: 40,
@@ -111,14 +146,21 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
               ),
               child: goalState.isGoalAdding
                   ? const SizedBox(
-                  height: 16, width: 16, child: CircularProgressIndicator())
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(white),
+                      ),
+                    )
                   : Text(
-                'Add',
-                style:
-                tTextStyleBold.copyWith(color: white, fontSize: 16),
-              ),
+                      isEditing ? 'Save' : 'Add',
+                      style: tTextStyleBold.copyWith(
+                        color: white,
+                        fontSize: 16,
+                      ),
+                    ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -348,4 +390,5 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
       ),
     );
   }
-}
+  // ... Rest of the widget methods remain the same
+} 

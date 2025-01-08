@@ -9,7 +9,7 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import 'package:TaskRM/views/goals/add_new_goal_bottomsheet.dart';
+import 'package:TaskRM/views/goals/goal_form_bottomsheet.dart';
 import 'package:TaskRM/views/goals/goal_filter_bottomsheet.dart';
 import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
@@ -64,7 +64,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 ? IconButton(
                     onPressed: () {
                       CustomDialog.bottomSheet(
-                          context, const AddNewGoalBottomSheet());
+                          context, const GoalFormBottomSheet());
                     },
                     icon: const Icon(
                       Icons.add_circle_rounded,
@@ -108,7 +108,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 IconButton(
                   onPressed: () {
                     CustomDialog.bottomSheet(
-                        context, const AddNewGoalBottomSheet());
+                        context, const GoalFormBottomSheet());
                   },
                   icon: const Icon(
                     Icons.add_circle_rounded,

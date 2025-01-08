@@ -344,4 +344,46 @@ class GoalProvider extends ChangeNotifier {
       rethrow;
     }
   }
+
+  Future<void> updateGoal({
+    required String goalId,
+    required String title,
+    required String type,
+    required String description,
+    required String parentGoalId,
+    required BuildContext context,
+  }) async {
+    try {
+      _isGoalAdding = true;
+      notifyListeners();
+
+      final now = DateTime.now().toIso8601String();
+
+      await db.execute(
+        '''
+        UPDATE goals 
+        SET 
+          title = ?,
+          type = ?,
+          description = ?,
+          parent_goal = ?,
+          updated_at = ?
+        WHERE id = ?
+        ''',
+        [title, type, description, parentGoalId, now, goalId],
+      );
+
+      await getGoalList(); // Refresh the goals list
+      
+      if (context.mounted) {
+        Navigator.pop(context);
+        CustomDialog.autoDialog(context, Icons.check, 'Goal updated successfully!');
+      }
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      _isGoalAdding = false;
+      notifyListeners();
+    }
+  }
 }
