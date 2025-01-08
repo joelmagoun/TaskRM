@@ -482,4 +482,18 @@ class TaskProvider extends ChangeNotifier {
     getTodayTaskList(); // Refresh lists with new filter
     getAllTaskList();
   }
+
+  Future<void> deleteTask(String taskId) async {
+    try {
+      await db.execute(
+        'DELETE FROM tasks WHERE id = ?',
+        [taskId],
+      );
+      await getAllTaskList(); // Refresh the tasks list
+      notifyListeners();
+    } catch (e) {
+      print('Error deleting task: $e');
+      rethrow;
+    }
+  }
 }
