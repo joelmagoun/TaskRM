@@ -29,40 +29,45 @@ class _AddNewGoalBottomSheetState extends State<AddNewGoalBottomSheet> {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: Container(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height / 1.2,
-        width: double.infinity,
-        decoration: const BoxDecoration(
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Container(
+          height: MediaQuery.of(context).size.height / 1.2,
+          width: double.infinity,
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(24), topLeft: Radius.circular(24)),
-            color: white),
-        child: SingleChildScrollView(
-          child: Consumer<GoalProvider>(builder: (_, _goalState, child) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _header(context),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      _titleField(),
-                      _typeField(),
-                      _descriptionField(),
-                      _goalField(),
-                      const SizedBox(
-                        height: 48,
-                      )
-                    ],
-                  ),
-                )
-              ],
-            );
-          }),
+              topRight: Radius.circular(24),
+              topLeft: Radius.circular(24),
+            ),
+            color: white,
+          ),
+          child: SingleChildScrollView(
+            child: Consumer<GoalProvider>(
+              builder: (_, _goalState, child) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _header(context),
+                    const Divider(),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          _titleField(),
+                          _typeField(),
+                          _descriptionField(),
+                          _goalField(),
+                          const SizedBox(height: 48),
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
+          ),
         ),
       ),
     );

@@ -77,10 +77,12 @@ class CustomDialog {
         });
   }
 
-  static Future<void> bottomSheet(BuildContext context, Widget content) {
-    return showCupertinoModalPopup<void>(
+  static void bottomSheet(BuildContext context, Widget child) {
+    showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => content,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => child,
     );
   }
 }
