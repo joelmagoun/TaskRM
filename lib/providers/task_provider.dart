@@ -87,7 +87,7 @@ class TaskProvider extends ChangeNotifier {
 
       final uid = await AppStorage.getUserId();
       final today = DateTime.now().toIso8601String().split('T')[0];
-      
+
       final query = """
         SELECT * FROM tasks 
         WHERE user_id = '$uid' 
@@ -95,7 +95,7 @@ class TaskProvider extends ChangeNotifier {
         ${_showCompletedTasks ? '' : 'AND is_completed = 0'}
         ORDER BY created_at DESC
       """;
-      
+
       print('Today Tasks Query: $query');
       print('Today\'s date for comparison: $today');
 
@@ -156,7 +156,6 @@ class TaskProvider extends ChangeNotifier {
           }).toList();
         }
       }).toList();
-
     } catch (e) {
       print('Error in getTodayTaskList: ${e.toString()}');
     } finally {
@@ -196,7 +195,7 @@ class TaskProvider extends ChangeNotifier {
 
       final uid = await AppStorage.getUserId();
       final today = DateTime.now().toIso8601String().split('T')[0];
-      
+
       final query = """
         SELECT * FROM tasks 
         WHERE user_id = '$uid' 
@@ -204,7 +203,7 @@ class TaskProvider extends ChangeNotifier {
         ${_showCompletedTasks ? '' : 'AND is_completed = 0'}
         ORDER BY created_at DESC
       """;
-      
+
       print('Queue Tasks Query: $query');
       print('Today\'s date for comparison: $today');
 
@@ -282,7 +281,7 @@ class TaskProvider extends ChangeNotifier {
 
   final SupabaseConnector supabaseConnector = SupabaseConnector(db);
 
-  Future<void>  addNewTask(
+  Future<void> addNewTask(
     String title,
     String type,
     String goalId,
@@ -344,38 +343,56 @@ class TaskProvider extends ChangeNotifier {
   late bool _isMoving = false;
 
   bool get isMoving => _isMoving;
+  set isMoving(bool value) {
+    _isMoving = value;
+    notifyListeners();
+  }
 
   Future<void> moveToTodayTaskList(
-      int taskId, String createdAt, BuildContext context) async {
+    int taskId,
+    String createdAt,
+    BuildContext context,
+  ) async {
     try {
-      _isMoving = true;
+      isMoving = true;
       notifyListeners();
 
-      final taskData = {
-        'created_at': createdAt,
-        'timeframe': 'Today',
-        'is_marked_for_today': 1,
-        'expected_completion':
-            getExpectedDateFromTimeframe('Today').toIso8601String(),
-      };
+      final uid = await AppStorage.getUserId();
+      final now = DateTime.now().toIso8601String();
 
-      final response = await Supabase.instance.client
-          .from('tasks')
-          .update(taskData)
-          .eq('id', taskId)
-          .then((onValue) {
+      // Update the task's status directly in PowerSync
+      await db.execute(
+        '''
+        UPDATE tasks 
+        SET 
+          expected_completion = ?,
+          updated_at = ?
+        WHERE id = ? AND user_id = ?
+        ''',
+        [now, now, taskId.toString(), uid],
+      );
+
+      // Refresh both task lists
+      await getAllTaskList();
+      await getTodayTaskList();
+
+      isMoving = false;
+      notifyListeners();
+
+      if (context.mounted) {
         Navigator.pop(context);
-        CustomSnack.successSnack(
-            'Task is moved to today task list successfully!', context);
-        getTodayTaskList();
-        getAllTaskList();
-      });
+      }
     } catch (e) {
-      print('catch error ${e.toString()}');
-      CustomSnack.warningSnack(e.toString(), context);
-    } finally {
-      _isMoving = false;
+      isMoving = false;
       notifyListeners();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to move task to today\'s list'),
+          ),
+        );
+      }
+      print('Error moving task to today: $e');
     }
   }
 
@@ -433,23 +450,21 @@ class TaskProvider extends ChangeNotifier {
   late bool _isCompletingTask = false;
   bool get isCompletingTask => _isCompletingTask;
 
-  Future<void> toggleTaskComplete(String taskId, bool currentStatus, BuildContext context) async {
+  Future<void> toggleTaskComplete(
+      String taskId, bool currentStatus, BuildContext context) async {
     try {
       _isCompletingTask = true;
       notifyListeners();
 
       await db.writeTransaction((tx) async {
         await tx.execute(
-          'UPDATE tasks SET is_completed = ?, updated_at = ? WHERE id = ?',
-          [currentStatus ? 0 : 1, DateTime.now().toIso8601String(), taskId]
-        );
+            'UPDATE tasks SET is_completed = ?, updated_at = ? WHERE id = ?',
+            [currentStatus ? 0 : 1, DateTime.now().toIso8601String(), taskId]);
       });
 
       CustomSnack.successSnack(
-        'Task ${!currentStatus ? "completed" : "uncompleted"} successfully!',
-        context
-      );
-
+          'Task ${!currentStatus ? "completed" : "uncompleted"} successfully!',
+          context);
     } catch (e) {
       CustomSnack.warningSnack(e.toString(), context);
     } finally {
@@ -464,7 +479,7 @@ class TaskProvider extends ChangeNotifier {
   void toggleShowCompletedTasks() {
     _showCompletedTasks = !_showCompletedTasks;
     notifyListeners();
-    getTodayTaskList();  // Refresh lists with new filter
+    getTodayTaskList(); // Refresh lists with new filter
     getAllTaskList();
   }
 }
