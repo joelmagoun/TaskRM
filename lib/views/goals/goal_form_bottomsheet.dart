@@ -60,6 +60,7 @@ class _GoalFormBottomSheetState extends State<GoalFormBottomSheet> {
       child: Padding(
         padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
+          top: 40.0,
         ),
         child: Container(
           height: MediaQuery.of(context).size.height / 1.2,
