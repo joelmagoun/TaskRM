@@ -389,6 +389,29 @@ class GoalProvider extends ChangeNotifier {
 
   Future<String> getGoalTimeSpent(String goalId) async {
     try {
+      // Get total minutes for this goal and all its children
+      int totalMinutes = await _calculateTotalTimeForGoalAndChildren(goalId);
+      
+      // Convert to hours and minutes format
+      int hours = totalMinutes ~/ 60;
+      int minutes = totalMinutes % 60;
+      
+      if (hours > 0) {
+        return '$hours hr ${minutes > 0 ? '$minutes min' : ''}';
+      } else {
+        return '$minutes min';
+      }
+    } catch (e) {
+      print('Error getting goal time spent: $e');
+      return '0 min';
+    }
+  }
+
+  Future<int> _calculateTotalTimeForGoalAndChildren(String goalId) async {
+    int totalMinutes = 0;
+    
+    try {
+      // Get time spent directly on this goal
       final result = await db.execute(
         '''
         SELECT SUM(time_spent) as total_time
@@ -399,22 +422,29 @@ class GoalProvider extends ChangeNotifier {
       );
 
       if (result.isNotEmpty && result[0]['total_time'] != null) {
-        // Convert total minutes to hours and minutes
-        int totalMinutes = result[0]['total_time'] as int;
-        int hours = totalMinutes ~/ 60;
-        int minutes = totalMinutes % 60;
-        
-        if (hours > 0) {
-          return '$hours hr ${minutes > 0 ? '$minutes min' : ''}';
-        } else {
-          return '$minutes min';
-        }
+        totalMinutes += result[0]['total_time'] as int;
       }
-      
-      return '0 min';
+
+      // Find all child goals
+      final childGoals = await db.execute(
+        '''
+        SELECT id 
+        FROM goals 
+        WHERE parent_goal = ?
+        ''',
+        [goalId],
+      );
+
+      // Recursively calculate time for each child goal
+      for (var childGoal in childGoals) {
+        String childId = childGoal['id'].toString();
+        totalMinutes += await _calculateTotalTimeForGoalAndChildren(childId);
+      }
+
+      return totalMinutes;
     } catch (e) {
-      print('Error getting goal time spent: $e');
-      return '0 min';
+      print('Error calculating total time: $e');
+      return 0;
     }
   }
 }
