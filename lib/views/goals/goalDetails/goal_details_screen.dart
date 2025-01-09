@@ -346,7 +346,17 @@ class _GoalDetailsScreenState extends State<GoalDetailsScreen> {
           primaryVerticalSpace,
           _infoTile(taskIcon, 'Tasks', 'None', true),
           primaryVerticalSpace,
-          _infoTile(scheduleIcon, 'Time spent', '1 hr 15 min', false),
+          FutureBuilder<String>(
+            future: goalProvider.getGoalTimeSpent(widget.goal.id),
+            builder: (context, snapshot) {
+              return _infoTile(
+                scheduleIcon, 
+                'Time spent', 
+                snapshot.data ?? 'Loading...', 
+                false
+              );
+            },
+          ),
           primaryVerticalSpace,
           _infoTile(reloadIcon, 'Last activity', '11 Mar, 2023', false),
         ],
