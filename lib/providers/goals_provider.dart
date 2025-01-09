@@ -411,8 +411,8 @@ class GoalProvider extends ChangeNotifier {
     int totalMinutes = 0;
     
     try {
-      // Get time spent directly on this goal
-      final result = await db.execute(
+      // 1. Get time spent directly on this goal
+      final goalTimeResult = await db.execute(
         '''
         SELECT SUM(time_spent) as total_time
         FROM time_tracking
@@ -421,11 +421,37 @@ class GoalProvider extends ChangeNotifier {
         [goalId],
       );
 
-      if (result.isNotEmpty && result[0]['total_time'] != null) {
-        totalMinutes += result[0]['total_time'] as int;
+      if (goalTimeResult.isNotEmpty && goalTimeResult[0]['total_time'] != null) {
+        totalMinutes += goalTimeResult[0]['total_time'] as int;
       }
 
-      // Find all child goals
+      // 2. Get all tasks associated with this goal
+      final tasks = await db.execute(
+        '''
+        SELECT id 
+        FROM tasks 
+        WHERE goal_id = ?
+        ''',
+        [goalId],
+      );
+
+      // 3. Calculate time spent on all tasks of this goal
+      for (var task in tasks) {
+        final taskTimeResult = await db.execute(
+          '''
+          SELECT SUM(time_spent) as total_time
+          FROM time_tracking
+          WHERE task_id = ?
+          ''',
+          [task['id'].toString()],
+        );
+
+        if (taskTimeResult.isNotEmpty && taskTimeResult[0]['total_time'] != null) {
+          totalMinutes += taskTimeResult[0]['total_time'] as int;
+        }
+      }
+
+      // 4. Find all child goals
       final childGoals = await db.execute(
         '''
         SELECT id 
@@ -435,7 +461,7 @@ class GoalProvider extends ChangeNotifier {
         [goalId],
       );
 
-      // Recursively calculate time for each child goal
+      // 5. Recursively calculate time for each child goal (including their tasks)
       for (var childGoal in childGoals) {
         String childId = childGoal['id'].toString();
         totalMinutes += await _calculateTotalTimeForGoalAndChildren(childId);
