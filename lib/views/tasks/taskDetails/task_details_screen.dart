@@ -242,6 +242,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             widget.task.description!, false),
                         primaryVerticalSpace,
                         _infoTile(goalIcon, 'Goal', widget.task.goal!, true),
+                        primaryVerticalSpace,
+                        _infoTile(scheduleIcon, 'Time spent', '', false),
                       ],
                     ),
                   ),
@@ -256,6 +258,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   }
 
   Widget _infoTile(String icon, String title, String content, bool isGoal) {
+    final taskProvider = Provider.of<TaskProvider>(context, listen: false);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -264,14 +268,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SvgPicture.asset(icon),
-            const SizedBox(
-              width: 4,
-            ),
+            const SizedBox(width: 4),
             Text(
               title,
               style: tTextStyle500.copyWith(
-                  fontSize: 14,
-                  color: isGoal ? primaryColor : const Color(0xFFAAAAAA)),
+                fontSize: 14,
+                color: isGoal ? primaryColor : const Color(0xFFAAAAAA),
+              ),
             )
           ],
         ),
@@ -279,21 +282,35 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SvgPicture.asset(
-              icon,
-              color: trans,
-            ),
-            const SizedBox(
-              width: 4,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 1.2,
-              child: Text(
-                content,
-                style: tTextStyleRegular.copyWith(
-                    fontSize: 16, color: textColorBold),
+            SvgPicture.asset(icon, color: trans),
+            const SizedBox(width: 4),
+            if (title == 'Time spent')
+              FutureBuilder<String>(
+                future: taskProvider.getTaskTimeSpent(widget.task.id.toString()),
+                builder: (context, snapshot) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    child: Text(
+                      snapshot.data ?? 'Loading...',
+                      style: tTextStyleRegular.copyWith(
+                        fontSize: 16,
+                        color: textColorBold,
+                      ),
+                    ),
+                  );
+                },
+              )
+            else
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 1.2,
+                child: Text(
+                  content,
+                  style: tTextStyleRegular.copyWith(
+                    fontSize: 16,
+                    color: textColorBold,
+                  ),
+                ),
               ),
-            )
           ],
         ),
       ],

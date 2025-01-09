@@ -544,4 +544,35 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<String> getTaskTimeSpent(String taskId) async {
+    try {
+      final result = await db.execute(
+        '''
+        SELECT SUM(time_spent) as total_time
+        FROM time_tracking
+        WHERE task_id = ?
+        ''',
+        [taskId],
+      );
+
+      if (result.isNotEmpty && result[0]['total_time'] != null) {
+        // Convert total minutes to hours and minutes
+        int totalMinutes = result[0]['total_time'] as int;
+        int hours = totalMinutes ~/ 60;
+        int minutes = totalMinutes % 60;
+        
+        if (hours > 0) {
+          return '$hours hr ${minutes > 0 ? '$minutes min' : ''}';
+        } else {
+          return '$minutes min';
+        }
+      }
+      
+      return '0 min';
+    } catch (e) {
+      print('Error getting task time spent: $e');
+      return '0 min';
+    }
+  }
 }
