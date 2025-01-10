@@ -45,7 +45,7 @@ class AppRouter {
       case Routes.goals:
         return const GoalsScreen();
       case Routes.taskDetails:
-        return TaskDetailsScreen(task: settings.arguments as Task);
+        return TaskDetailsScreen(initialTask: settings.arguments as Task);
       case Routes.goalDetails:
         return GoalDetailsScreen(goal: settings.arguments as Goal);
       case Routes.profile:
