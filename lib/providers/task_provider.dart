@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:TaskRM/utils/app_storage.dart';
-import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/custom_snack.dart';
 import '../models/task.dart';
@@ -175,9 +174,9 @@ class TaskProvider extends ChangeNotifier {
 
   bool get isAllTaskLoading => _isAllTaskLoading;
 
-  late List<TaskModel> _allTaskList = [];
+  late List<Task> _allTaskList = [];
 
-  List<TaskModel> get allTaskList => _allTaskList;
+  List<Task> get allTaskList => _allTaskList;
 
   late String _selectedQueueTimeFrame = '';
 
