@@ -6,22 +6,27 @@ import 'package:TaskRM/providers/auth_provider.dart';
 import 'package:TaskRM/providers/goals_provider.dart';
 import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
+import 'package:TaskRM/providers/time_tracking_provider.dart';
 import 'package:TaskRM/routes/app_router.dart';
 import 'package:TaskRM/views/splash_screen.dart';
-
+import 'package:powersync/powersync.dart';
 
 class MyApp extends StatefulWidget {
-
   final bool isLoggedId;
-  const MyApp({Key? key,   required this.isLoggedId})
-      : super(key: key);
+  final PowerSyncDatabase db;
+  
+  const MyApp({
+    Key? key, 
+    required this.isLoggedId,
+    required this.db,
+  }) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
- // late Databases db;
+  // late Databases db;
   // late TasksListProvider tasksListProvider;
   // late GoalsListProvider goalsListProvider;
   @override
@@ -68,19 +73,24 @@ class _MyAppState extends State<MyApp> {
         // ChangeNotifierProvider(
         //     create: (context) => GoalDetailsProvider(db: db)),
         ChangeNotifierProvider(create: (context) => AuthProvider()),
-       // ChangeNotifierProvider(create: (context) => JournalProvider()),
+        // ChangeNotifierProvider(create: (context) => JournalProvider()),
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
-       // ChangeNotifierProvider(create: (context) => MomentsProvider()),
-       //  ChangeNotifierProvider(create: (context) => FeedProvider()),
-           ChangeNotifierProvider(create: (context) => TaskProvider()),
-       //  ChangeNotifierProvider(create: (context) => JiraProvider()),
+        // ChangeNotifierProvider(create: (context) => MomentsProvider()),
+        //  ChangeNotifierProvider(create: (context) => FeedProvider()),
+        ChangeNotifierProvider(create: (context) => TaskProvider()),
+        ChangeNotifierProvider(
+          create: (context) => TimeTrackingProvider(db: widget.db),
+        ),
+        //  ChangeNotifierProvider(create: (context) => JiraProvider()),
       ],
       child: MaterialApp(
         title: "TaskRM",
-      //  theme: AppTheme.light,
+        //  theme: AppTheme.light,
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.generateRoute(),
-        home: SplashScreen(isLoggedIn: widget.isLoggedId,),
+        home: SplashScreen(
+          isLoggedIn: widget.isLoggedId,
+        ),
         //home: const LoginScreen(),
       ),
     );

@@ -11,13 +11,14 @@ class LogoutDeleteDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(builder: (_, authState, child){
+    return Consumer<AuthProvider>(builder: (_, authState, child) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             'Log out',
-            style: tTextStyle500.copyWith(fontSize: 18, color: textPrimaryColor),
+            style:
+                tTextStyle500.copyWith(fontSize: 18, color: textPrimaryColor),
           ),
           eightVerticalSpace,
           Text(
@@ -27,13 +28,13 @@ class LogoutDeleteDialog extends StatelessWidget {
           ),
           primaryVerticalSpace,
           CustomOutlineButton(
-              onTap: () async {
-                await authState.logout(context);
-              },
-              buttonTitle: 'Log me out',
-              borderColor: borderColor,
-              titleColor: red,
-              isLoading: authState.isLogOut,
+            onTap: () async {
+              await authState.logout(context);
+            },
+            buttonTitle: 'Log me out',
+            borderColor: borderColor,
+            titleColor: red,
+            isLoading: authState.isLogOut,
           ),
           eightVerticalSpace,
           CustomOutlineButton(

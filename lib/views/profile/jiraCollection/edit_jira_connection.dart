@@ -35,9 +35,10 @@ class _EditJiraConnectionBottomSheetState
 
   @override
   void initState() {
-     _userNameController = TextEditingController(text: widget.jiraModel.userName);
-     _urlController = TextEditingController(text: widget.jiraModel.url);
-     _apiController = TextEditingController(text: widget.jiraModel.apiKey);
+    _userNameController =
+        TextEditingController(text: widget.jiraModel.userName);
+    _urlController = TextEditingController(text: widget.jiraModel.url);
+    _apiController = TextEditingController(text: widget.jiraModel.apiKey);
     super.initState();
   }
 

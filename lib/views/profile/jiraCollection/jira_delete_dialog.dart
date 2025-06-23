@@ -30,7 +30,7 @@ class JiraDeleteDialog extends StatelessWidget {
             buttonTitle: 'Delete',
             borderColor: borderColor,
             titleColor: red,
-           // isLoading: profileState.isJiraDeleting,
+            // isLoading: profileState.isJiraDeleting,
           ),
           eightVerticalSpace,
           CustomOutlineButton(

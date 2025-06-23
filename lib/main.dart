@@ -29,13 +29,14 @@ void main() async {
       .ensureInitialized(); //required to get sqlite filepath from path_provider before UI has initialized
   await openDatabase();
   if (AppConfig.supabaseStorageBucket.isNotEmpty) {
-  //  initializeAttachmentQueue(db);
+    //  initializeAttachmentQueue(db);
   }
 
   final loggedIn = isLoggedIn();
 
- // final String sessionId = await AppStorage.getSessionId()  ?? '';
-  runApp(MyApp(isLoggedId: loggedIn));
-
+  // final String sessionId = await AppStorage.getSessionId()  ?? '';
+  runApp(MyApp(
+    isLoggedId: loggedIn,
+    db: db,
+  ));
 }
-

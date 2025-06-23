@@ -15,3 +15,6 @@ const sixteenHorizontalSpace = SizedBox(width: 16,);
 
 const eightVerticalSpace = SizedBox(height: 8.0,);
 const eightHorizontalSpace = SizedBox(width: 8.0,);
+
+const SizedBox fourVerticalSpace = SizedBox(height: 4);
+const SizedBox twentyFourVerticalSpace = SizedBox(height: 24);

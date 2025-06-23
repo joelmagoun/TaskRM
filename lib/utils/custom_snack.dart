@@ -16,8 +16,8 @@ class CustomSnack {
   static void warningSnack(String message, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(milliseconds: 1500),
-        backgroundColor: white,
-        content: ContentCart(isSuccess: false, message: message),
+      backgroundColor: white,
+      content: ContentCart(isSuccess: false, message: message),
     ));
   }
 }
@@ -57,8 +57,8 @@ class ContentCart extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2,
               child: Text(
                 message,
-                style:
-                    tTextStyleRegular.copyWith(fontSize: 14, color: Colors.black),
+                style: tTextStyleRegular.copyWith(
+                    fontSize: 14, color: Colors.black),
               ),
             ),
             const Spacer(),

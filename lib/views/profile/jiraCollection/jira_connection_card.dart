@@ -17,13 +17,14 @@ class JiraConnectionCard extends StatelessWidget {
   final String url;
   final String apiKey;
 
-  const JiraConnectionCard({Key? key,
-    required this.docId,
-    required this.userId,
-    required this.taskType,
-    required this.userName,
-    required this.url,
-    required this.apiKey})
+  const JiraConnectionCard(
+      {Key? key,
+      required this.docId,
+      required this.userId,
+      required this.taskType,
+      required this.userName,
+      required this.url,
+      required this.apiKey})
       : super(key: key);
 
   @override
@@ -51,8 +52,8 @@ class JiraConnectionCard extends StatelessWidget {
     );
   }
 
-  Widget infoTile(IconData icon, String title, String info,
-      BuildContext context) {
+  Widget infoTile(
+      IconData icon, String title, String info, BuildContext context) {
     return Column(
       children: [
         Row(
@@ -78,10 +79,7 @@ class JiraConnectionCard extends StatelessWidget {
               width: 2,
             ),
             SizedBox(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width / 1.5,
+              width: MediaQuery.of(context).size.width / 1.5,
               child: Text(
                 info,
                 style: tTextStyle500.copyWith(
@@ -99,22 +97,29 @@ class JiraConnectionCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
-            onTap: (){
-              CustomDialog.dialogBuilder(context, JiraDeleteDialog(docId: docId,));
+            onTap: () {
+              CustomDialog.dialogBuilder(
+                  context,
+                  JiraDeleteDialog(
+                    docId: docId,
+                  ));
             },
             child: SvgPicture.asset(jiraDelete)),
         sixteenHorizontalSpace,
         InkWell(
             onTap: () {
               CustomDialog.bottomSheet(
-                  context, EditJiraConnectionBottomSheet(
-                jiraModel: JiraConnectionModel(
-                  docId: docId,
-                  userId: userId,
-                  taskType: taskType,
-                  userName: userName,
-                  apiKey: apiKey,
-                  url: url,),));
+                  context,
+                  EditJiraConnectionBottomSheet(
+                    jiraModel: JiraConnectionModel(
+                      docId: docId,
+                      userId: userId,
+                      taskType: taskType,
+                      userName: userName,
+                      apiKey: apiKey,
+                      url: url,
+                    ),
+                  ));
             },
             child: SvgPicture.asset(jiraEdit)),
       ],

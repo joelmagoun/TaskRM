@@ -20,7 +20,6 @@ class TaskQueueFilterBottomSheet extends StatefulWidget {
 
 class _TaskQueueFilterBottomSheetState
     extends State<TaskQueueFilterBottomSheet> {
-
   @override
   Widget build(BuildContext context) {
     return Material(

@@ -1,8 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:powersync/sqlite3.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:TaskRM/attachments/remote_storage_adapter.dart';
 import 'package:TaskRM/utils/app_storage.dart';
 import 'package:TaskRM/utils/constant/constant.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
@@ -43,6 +41,10 @@ class TaskProvider extends ChangeNotifier {
   late bool _isTaskAdding = false;
 
   bool get isTaskAdding => _isTaskAdding;
+  set isTaskAdding(bool value) {
+    _isTaskAdding = value;
+    notifyListeners();
+  }
 
   late String _selectedGoal = 'Select';
 
@@ -75,12 +77,11 @@ class TaskProvider extends ChangeNotifier {
 
   bool get isTaskLoading => _isTaskLoading;
 
-  // late Stream<List<TaskModel>> testTaskList;
-  late Stream<List<TaskModel>> taskStream;
+  late Stream<List<Task>> taskStream;
 
-  late List<TaskModel> _todayTaskList = [];
+  late List<Task> _todayTaskList = [];
 
-  List<TaskModel> get todayTaskList => _todayTaskList;
+  List<Task> get todayTaskList => _todayTaskList;
 
   /// Get all list IDs
 
@@ -90,27 +91,30 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
 
       final uid = await AppStorage.getUserId();
+      final today = DateTime.now().toIso8601String().split('T')[0];
 
+      final query = """
+        SELECT * FROM tasks 
+        WHERE user_id = '$uid' 
+        AND date(expected_completion) = '$today'
+        ${_showCompletedTasks ? '' : 'AND is_completed = 0'}
+        ORDER BY created_at DESC
+      """;
 
-      // taskStream = db
-      //     .watch("SELECT * FROM tasks Where is_marked_for_today = true and user_id = '$uid' ORDER BY created_at DESC")
-      //     .map((results) {
-      //   return results
-      //       .map((row) => TaskModel.fromRow(row, uid!))
-      //       .toList(growable: false);
-      // });
+      print('Today Tasks Query: $query');
+      print('Today\'s date for comparison: $today');
 
-
-      db
-          .watch(
-              "SELECT * FROM tasks Where is_marked_for_today = true and user_id = '$uid' ORDER BY created_at DESC")
-          .map((results) {
+      db.watch(query).map((results) {
+        print('Today Tasks Results count: ${results.length}');
         if (results.isNotEmpty) {
+          results.forEach((row) {
+            print('Task date: ${row['expected_completion']}');
+          });
           _todayTaskList.clear();
           notifyListeners();
           return results.map((e) {
             if (_selectedFilterType == '') {
-              _todayTaskList.add(TaskModel(
+              _todayTaskList.add(Task(
                 id: e['id'] ?? 0,
                 createdAt: e['created_at'] ?? '',
                 updatedAt: e['updated_at'] ?? '',
@@ -131,7 +135,7 @@ class TaskProvider extends ChangeNotifier {
               notifyListeners();
             } else if (_selectedFilterType != '') {
               if (e['type'] == _selectedFilterType) {
-                _todayTaskList.add(TaskModel(
+                _todayTaskList.add(Task(
                   id: e['id'] ?? 0,
                   createdAt: e['created_at'] ?? '',
                   updatedAt: e['updated_at'] ?? '',
@@ -157,10 +161,8 @@ class TaskProvider extends ChangeNotifier {
           }).toList();
         }
       }).toList();
-
-
     } catch (e) {
-      return;
+      print('Error in getTodayTaskList: ${e.toString()}');
     } finally {
       _isTaskLoading = false;
       notifyListeners();
@@ -197,12 +199,25 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
 
       final uid = await AppStorage.getUserId();
+      final today = DateTime.now().toIso8601String().split('T')[0];
 
-      db
-          .watch(
-              "SELECT * FROM tasks Where is_marked_for_today = false and user_id = '$uid' ORDER BY created_at DESC")
-          .map((results) {
+      final query = """
+        SELECT * FROM tasks 
+        WHERE user_id = '$uid' 
+        AND (date(expected_completion) > '$today' OR date(expected_completion) < '$today')
+        ${_showCompletedTasks ? '' : 'AND is_completed = 0'}
+        ORDER BY created_at DESC
+      """;
+
+      print('Queue Tasks Query: $query');
+      print('Today\'s date for comparison: $today');
+
+      db.watch(query).map((results) {
+        print('Queue Tasks Results count: ${results.length}');
         if (results.isNotEmpty) {
+          results.forEach((row) {
+            print('Task date: ${row['expected_completion']}');
+          });
           _allTaskList.clear();
           notifyListeners();
           return results.map((e) {
@@ -210,7 +225,7 @@ class TaskProvider extends ChangeNotifier {
             // getTimeFrameFromExpectedDate(e['expected_completion']);
 
             if (_selectedQueueTimeFrame == '' || _selectedQueueType == '') {
-              _allTaskList.add(TaskModel(
+              _allTaskList.add(Task(
                 id: e['id'] ?? 0,
                 createdAt: e['created_at'] ?? '',
                 updatedAt: e['updated_at'] ?? '',
@@ -233,7 +248,7 @@ class TaskProvider extends ChangeNotifier {
                 _selectedQueueType != '') {
               if (e['type'] == _selectedQueueType &&
                   e['timeframe'] == _selectedQueueTimeFrame) {
-                _allTaskList.add(TaskModel(
+                _allTaskList.add(Task(
                   id: e['id'] ?? 0,
                   createdAt: e['created_at'] ?? '',
                   updatedAt: e['updated_at'] ?? '',
@@ -259,11 +274,8 @@ class TaskProvider extends ChangeNotifier {
           }).toList();
         }
       }).toList();
-
-
     } catch (e) {
-      print('all task catch ${e.toString()}');
-      // CustomSnack.warningSnack(e.toString(), context);
+      print('Error in getAllTaskList: ${e.toString()}');
     } finally {
       _isAllTaskLoading = false;
       notifyListeners();
@@ -336,38 +348,56 @@ class TaskProvider extends ChangeNotifier {
   late bool _isMoving = false;
 
   bool get isMoving => _isMoving;
+  set isMoving(bool value) {
+    _isMoving = value;
+    notifyListeners();
+  }
 
   Future<void> moveToTodayTaskList(
-      int taskId, String createdAt, BuildContext context) async {
+    int taskId,
+    String createdAt,
+    BuildContext context,
+  ) async {
     try {
-      _isMoving = true;
+      isMoving = true;
       notifyListeners();
 
-      final taskData = {
-        'created_at': createdAt,
-        'timeframe': 'Today',
-        'is_marked_for_today': 1,
-        'expected_completion':
-            getExpectedDateFromTimeframe('Today').toIso8601String(),
-      };
+      final uid = await AppStorage.getUserId();
+      final now = DateTime.now().toIso8601String();
 
-      final response = await Supabase.instance.client
-          .from('tasks')
-          .update(taskData)
-          .eq('id', taskId)
-          .then((onValue) {
+      // Update the task's status directly in PowerSync
+      await db.execute(
+        '''
+        UPDATE tasks 
+        SET 
+          expected_completion = ?,
+          updated_at = ?
+        WHERE id = ? AND user_id = ?
+        ''',
+        [now, now, taskId.toString(), uid],
+      );
+
+      // Refresh both task lists
+      await getAllTaskList();
+      await getTodayTaskList();
+
+      isMoving = false;
+      notifyListeners();
+
+      if (context.mounted) {
         Navigator.pop(context);
-        CustomSnack.successSnack(
-            'Task is moved to today task list successfully!', context);
-        getTodayTaskList();
-        getAllTaskList();
-      });
+      }
     } catch (e) {
-      print('catch error ${e.toString()}');
-      CustomSnack.warningSnack(e.toString(), context);
-    } finally {
-      _isMoving = false;
+      isMoving = false;
       notifyListeners();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to move task to today\'s list'),
+          ),
+        );
+      }
+      print('Error moving task to today: $e');
     }
   }
 
@@ -404,7 +434,7 @@ class TaskProvider extends ChangeNotifier {
 
     switch (timeFrame) {
       case "Today":
-        return now.add(const Duration(days: 1));
+        return now.add(const Duration(days: 0));
       case "3 days":
         return now.add(const Duration(days: 3));
       case "Week":
@@ -419,6 +449,131 @@ class TaskProvider extends ChangeNotifier {
         return now.add(const Duration(days: 365));
       default:
         return DateTime.now();
+    }
+  }
+
+  late bool _isCompletingTask = false;
+  bool get isCompletingTask => _isCompletingTask;
+
+  Future<void> toggleTaskComplete(
+      String taskId, bool currentStatus, BuildContext context) async {
+    try {
+      _isCompletingTask = true;
+      notifyListeners();
+
+      await db.writeTransaction((tx) async {
+        await tx.execute(
+            'UPDATE tasks SET is_completed = ?, updated_at = ? WHERE id = ?',
+            [currentStatus ? 0 : 1, DateTime.now().toIso8601String(), taskId]);
+      });
+
+      CustomSnack.successSnack(
+          'Task ${!currentStatus ? "completed" : "uncompleted"} successfully!',
+          context);
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      _isCompletingTask = false;
+      notifyListeners();
+    }
+  }
+
+  bool _showCompletedTasks = false;
+  bool get showCompletedTasks => _showCompletedTasks;
+
+  void toggleShowCompletedTasks() {
+    _showCompletedTasks = !_showCompletedTasks;
+    notifyListeners();
+    getTodayTaskList(); // Refresh lists with new filter
+    getAllTaskList();
+  }
+
+  Future<void> deleteTask(String taskId) async {
+    try {
+      await db.execute(
+        'DELETE FROM tasks WHERE id = ?',
+        [taskId],
+      );
+      await getAllTaskList(); // Refresh the tasks list
+      notifyListeners();
+    } catch (e) {
+      print('Error deleting task: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> updateTask({
+    required String taskId,
+    required String title,
+    required String type,
+    required String priority,
+    required String timeframe,
+    required String description,
+    required BuildContext context,
+  }) async {
+    try {
+      isTaskAdding = true;
+      notifyListeners();
+
+      final now = DateTime.now().toIso8601String();
+
+      await db.execute(
+        '''
+        UPDATE tasks 
+        SET 
+          title = ?,
+          type = ?,
+          priority = ?,
+          timeframe = ?,
+          description = ?,
+          updated_at = ?
+        WHERE id = ?
+        ''',
+        [title, type, priority, timeframe, description, now, taskId],
+      );
+
+      await getAllTaskList(); // Refresh the tasks list
+      
+      if (context.mounted) {
+        Navigator.pop(context);
+        CustomDialog.autoDialog(context, Icons.check, 'Task updated successfully!');
+      }
+    } catch (e) {
+      CustomSnack.warningSnack(e.toString(), context);
+    } finally {
+      isTaskAdding = false;
+      notifyListeners();
+    }
+  }
+
+  Future<String> getTaskTimeSpent(String taskId) async {
+    try {
+      final result = await db.execute(
+        '''
+        SELECT SUM(time_spent) as total_time
+        FROM time_tracking
+        WHERE task_id = ?
+        ''',
+        [taskId],
+      );
+
+      if (result.isNotEmpty && result[0]['total_time'] != null) {
+        // Convert total minutes to hours and minutes
+        int totalMinutes = result[0]['total_time'] as int;
+        int hours = totalMinutes ~/ 60;
+        int minutes = totalMinutes % 60;
+        
+        if (hours > 0) {
+          return '$hours hr ${minutes > 0 ? '$minutes min' : ''}';
+        } else {
+          return '$minutes min';
+        }
+      }
+      
+      return '0 min';
+    } catch (e) {
+      print('Error getting task time spent: $e');
+      return '0 min';
     }
   }
 }

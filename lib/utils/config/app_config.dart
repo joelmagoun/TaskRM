@@ -10,5 +10,5 @@ class AppConfig {
   static const String powersyncUrl =
       'https://66cb80453580ad8d50979d1a.powersync.journeyapps.com';
   static const String supabaseStorageBucket = '';
-//static const String supabaseJwtSecret = 'PkR1mHKGc2f8XmA08J4PTfEjaouyQKSXGslEMBEXoGYN3O9+FJkVEH8p2jhan48v96PeHJyTguUcQSAZGgh45g==';
+  static const String supabaseJwtSecret = 'PkR1mHKGc2f8XmA08J4PTfEjaouyQKSXGslEMBEXoGYN3O9+FJkVEH8p2jhan48v96PeHJyTguUcQSAZGgh45g==';
 }

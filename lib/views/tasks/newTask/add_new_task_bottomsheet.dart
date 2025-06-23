@@ -29,46 +29,54 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: Container(
-        height: MediaQuery.of(context).size.height / 1.2,
-        width: double.infinity,
-        decoration: const BoxDecoration(
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Container(
+          height: MediaQuery.of(context).size.height / 1.2,
+          width: double.infinity,
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(24), topLeft: Radius.circular(24)),
-            color: white),
-        child: SingleChildScrollView(
-          child: Consumer<TaskProvider>(builder: (_, _taskState, child) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _header(context),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      _titleField(),
-                      _typeField(),
-                      _priorityField(),
-                      _timeFrameField(),
-                      _descriptionField(),
-                      _goalField(),
-                      const SizedBox(
-                        height: 48,
-                      )
-                    ],
-                  ),
-                )
-              ],
-            );
-          }),
+              topRight: Radius.circular(24),
+              topLeft: Radius.circular(24),
+            ),
+            color: white,
+          ),
+          child: SingleChildScrollView(
+            child: Consumer<TaskProvider>(
+              builder: (_, _taskState, child) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _header(context),
+                    const Divider(),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          _titleField(),
+                          _typeField(),
+                          _priorityField(),
+                          _timeFrameField(),
+                          _descriptionField(),
+                          _goalField(),
+                          const SizedBox(height: 48),
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget _header(BuildContext context) {
-    final _taskState = Provider.of<TaskProvider>(context, listen: false);
+    final taskState = Provider.of<TaskProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -94,15 +102,15 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                   selectedTime != null &&
                   _titleController.text.trim().isNotEmpty &&
                   _descriptionController.text.trim().isNotEmpty &&
-                  _taskState.selectedGoal.trim().isNotEmpty) {
-                await _taskState.addNewTask(
+                  taskState.selectedGoal.trim().isNotEmpty) {
+                await taskState.addNewTask(
                     _titleController.text,
                     selectedType,
-                    _taskState.selectedGoalId,
+                    taskState.selectedGoalId,
                     selectedPriority,
                     selectedTime,
                     _descriptionController.text,
-                    _taskState.selectedGoal,
+                    taskState.selectedGoal,
                     context);
               } else {
                 CustomDialog.autoDialog(context, Icons.warning,
@@ -117,7 +125,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
                 borderRadius: BorderRadius.circular(8),
                 color: primaryColor,
               ),
-              child: _taskState.isTaskAdding
+              child: taskState.isTaskAdding
                   ? const CircularProgressIndicator()
                   : Text(
                       'Add',

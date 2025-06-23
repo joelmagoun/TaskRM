@@ -29,8 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Timer(const Duration(seconds: 1), () {
       if (widget.isLoggedIn) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (_) => const HomeScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
       } else {
         Navigator.push(
             context, MaterialPageRoute(builder: (_) => const LoginScreen()));

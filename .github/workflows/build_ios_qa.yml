@@ -6,7 +6,7 @@ on:
 jobs: 
  deploy_ios:
    name: 🍏📦🚀 Build & deploy iOS QA
-   runs-on: macos-latest
+   runs-on: macos-15
    steps:
      - name: ⬇️ Checkout repository
        uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
      - name: ⚙️ Setup Flutter
        uses: subosito/flutter-action@v2
        with:
-         flutter-version: "3.16.7"
+         flutter-version: "3.27.0"
          channel: 'stable'
          cache: true
        id: flutter
