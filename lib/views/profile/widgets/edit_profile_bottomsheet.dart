@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:language_picker/language_picker_dropdown.dart';
+import 'package:language_picker/languages.g.dart';
+import 'package:TaskRM/providers/localization_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
 import 'package:TaskRM/utils/assets_path.dart';
@@ -13,6 +16,7 @@ import '../../../../utils/color.dart';
 import '../../../../utils/spacer.dart';
 import '../../../utils/constant/constant.dart';
 import 'image_delete_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfileBottomSheet extends StatefulWidget {
   const EditProfileBottomSheet({
@@ -60,6 +64,8 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                     primaryVerticalSpace,
                     _buildNameField(),
                     primaryVerticalSpace,
+                    _languageField(),
+                    primaryVerticalSpace,
                     PrimaryButton(
                       onTap: () async {
                         await profileState.updateProfile(
@@ -69,9 +75,10 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                             profileState.profileJira,
                             profileState.profileJiraUserName,
                             profileState.profileJiraUrl,
+                            profileState.language,
                             context);
                       },
-                      buttonTitle: 'Save',
+                      buttonTitle: AppLocalizations.of(context)!.save,
                       buttonColor: _nameController.text.isEmpty
                           ? primaryLight
                           : primaryColor,
@@ -99,7 +106,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               color: trans,
             )),
         Text(
-          'Edit profile details',
+          AppLocalizations.of(context)!.editprofiledetails,
           style: tTextStyle500.copyWith(fontSize: 20, color: black),
         ),
         IconButton(
@@ -120,7 +127,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Profile photo',
+          AppLocalizations.of(context)!.profilephoto,
           style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
         ),
         const SizedBox(
@@ -164,7 +171,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Name',
+          AppLocalizations.of(context)!.name,
           style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
         ),
         TextFormField(
@@ -200,6 +207,52 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
     );
   }
 
+  Column _languageField() {
+    final profileState = Provider.of<ProfileProvider>(context, listen: false);
+    final localizationState =
+        Provider.of<LocalizationProvider>(context, listen: true);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppLocalizations.of(context)!.language,
+          style: tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: textFieldFillColor),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Image.asset(
+                  'assets/images/flags/${profileState.language}.png',
+                  height: 32,
+                  width: 32,
+                ),
+                sixteenHorizontalSpace,
+                Expanded(
+                  child: LanguagePickerDropdown(
+                      initialValue: Languages.byIsoCode(profileState.language),
+                      languages: Languages.defaultLanguages,
+                      onValuePicked: (language) {
+                        profileState.changeLanguage(language.isoCode);
+                        localizationState.setLocale(Locale(language.isoCode));
+                      }),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _addIcon() {
     return InkWell(
       onTap: () {
@@ -219,7 +272,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             height: 4,
           ),
           Text(
-            'Add',
+            AppLocalizations.of(context)!.add,
             style: tTextStyle500.copyWith(fontSize: 16, color: secondaryColor),
           )
         ],
@@ -239,7 +292,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             children: [
               SvgPicture.asset(imageDeleteIcon),
               Text(
-                'Delete',
+                AppLocalizations.of(context)!.delete,
                 style: tTextStyle500.copyWith(color: red, fontSize: 16),
               )
             ],
@@ -254,7 +307,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             children: [
               SvgPicture.asset(imageEditIcon),
               Text(
-                'Change',
+                AppLocalizations.of(context)!.change,
                 style:
                     tTextStyle500.copyWith(color: secondaryColor, fontSize: 16),
               )
@@ -272,14 +325,14 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
         builder: (context) {
           return CupertinoAlertDialog(
             title: Text(
-              'Select Image',
+              AppLocalizations.of(context)!.selectimage,
               style:
                   tTextStyle500.copyWith(color: textPrimaryColor, fontSize: 18),
             ),
             actions: [
               CupertinoDialogAction(
                 child: Text(
-                  'Gallery',
+                  AppLocalizations.of(context)!.gallery,
                   style: tTextStyle500.copyWith(
                       color: secondaryColor, fontSize: 16),
                 ),
@@ -289,7 +342,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               ),
               CupertinoDialogAction(
                 child: Text(
-                  'Camera',
+                  AppLocalizations.of(context)!.camera,
                   style: tTextStyle500.copyWith(
                       color: secondaryColor, fontSize: 16),
                 ),
@@ -299,7 +352,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               ),
               CupertinoDialogAction(
                 child: Text(
-                  'Back',
+                  AppLocalizations.of(context)!.back,
                   style: tTextStyle500.copyWith(color: red, fontSize: 16),
                 ),
                 onPressed: () {
