@@ -480,7 +480,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                                                               : profileState
                                                                           .language ==
                                                                       'el'
-                                                                  ? Languages.greek
+                                              ? Languages.greekModern1453
                                                                   : profileState
                                                                               .language ==
                                                                           'es'
@@ -688,7 +688,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                         Languages.german,
                         Languages.galician,
                         Languages.georgian,
-                        Languages.greek,
+                        Languages.greekModern1453,
                         Languages.gujarati,
                         Languages.icelandic,
                         Languages.italian,
