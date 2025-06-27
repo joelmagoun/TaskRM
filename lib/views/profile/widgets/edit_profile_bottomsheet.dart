@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:language_picker/language_picker_dropdown.dart';
-import 'package:language_picker/languages.g.dart';
+import 'package:language_picker/languages.dart';
 import 'package:TaskRM/providers/localization_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
@@ -238,7 +238,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                 sixteenHorizontalSpace,
                 Expanded(
                   child: LanguagePickerDropdown(
-                      initialValue: Languages.byIsoCode(profileState.language),
+                      initialValue: Language.fromIsoCode(profileState.language),
                       languages: Languages.defaultLanguages,
                       onValuePicked: (language) {
                         profileState.changeLanguage(language.isoCode);
