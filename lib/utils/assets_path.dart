@@ -2,7 +2,6 @@
 
 const taskRMLogo = 'assets/images/taskRM.png';
 const topper = 'assets/images/topper.png';
-const usaFlag = 'assets/images/usa_flag.png';
 const logo = 'assets/images/logo.png';
 const task = 'assets/images/task.png';
 const feed = 'assets/images/feed.png';
@@ -10,6 +9,67 @@ const goal = 'assets/images/goal.png';
 const journal = 'assets/images/journal.png';
 const moment = 'assets/images/moment.png';
 const review = 'assets/images/review.png';
+
+
+const usaFlag = 'assets/images/flags/us.png';
+const icelandFlag = 'assets/images/flags/is.png';
+const germanyFlag = 'assets/images/flags/de.png';
+const norwegianFlag = 'assets/images/flags/no.png';
+const italyFlag = 'assets/images/flags/it.png';
+const southafricaFlag = 'assets/images/flags/af.png';
+const bangladeshFlag = 'assets/images/flags/bn.png';
+const cataloniaFlag = 'assets/images/flags/ca.png';
+const czechFlag = 'assets/images/flags/cs.png';
+const walesFlag = 'assets/images/flags/cy.png';
+const denmarkFlag = 'assets/images/flags/da.png';
+const greeceFlag = 'assets/images/flags/el.png';
+const spainFlag = 'assets/images/flags/es.png';
+const estoniaFlag = 'assets/images/flags/et.png';
+const basqueFlag = 'assets/images/flags/eu.png';
+const persiaFlag = 'assets/images/flags/fa.png';
+const finlandFlag = 'assets/images/flags/fi.png';
+const franceFlag = 'assets/images/flags/fr.png';
+const galaciaFlag = 'assets/images/flags/gl.png';
+const israelFlag = 'assets/images/flags/he.png';
+const hindiFlag = 'assets/images/flags/hi.png';
+const croatiaFlag = 'assets/images/flags/hr.png';
+const hungaryFlag = 'assets/images/flags/hu.png';
+const armeniaFlag = 'assets/images/flags/hy.png';
+const indonesiaFlag = 'assets/images/flags/id.png';
+const japanFlag = 'assets/images/flags/ja.png';
+const kannadaFlag = 'assets/images/flags/kn.png';
+const koreaFlag = 'assets/images/flags/ko.png';
+const laosFlag = 'assets/images/flags/lo.png';
+const lithuaniaFlag = 'assets/images/flags/lt.png';
+const latviaFlag = 'assets/images/flags/lv.png';
+const macedoniaFlag = 'assets/images/flags/mk.png';
+const nepalFlag = 'assets/images/flags/ne.png';
+const netherlandsFlag = 'assets/images/flags/nl.png';
+const punjabFlag = 'assets/images/flags/pa.png';
+const polandFlag = 'assets/images/flags/pl.png';
+const portugalFlag = 'assets/images/flags/pt.png';
+const romaniaFlag = 'assets/images/flags/ro.png';
+const russiaFlag = 'assets/images/flags/ru.png';
+const sloveniaFlag = 'assets/images/flags/sl.png';
+const swedenFlag = 'assets/images/flags/sv.png';
+const tamilFlag = 'assets/images/flags/ta.png';
+const teluguFlag = 'assets/images/flags/te.png';
+const thailandFlag = 'assets/images/flags/th.png';
+const turkeyFlag = 'assets/images/flags/tr.png';
+const ukraineFlag = 'assets/images/flags/uk.png';
+const pakistanFlag = 'assets/images/flags/ur.png';
+const vietnamFlag = 'assets/images/flags/vi.png';
+const chinaFlag = 'assets/images/flags/zh.png';
+const bulgariaFlag = 'assets/images/flags/bg.png';
+const gujaratiFlag = 'assets/images/flags/gu.png';
+const georgiaFlag = 'assets/images/flags/ka.png';
+const kazakhFlag = 'assets/images/flags/kk.png';
+const cambodiaFlag = 'assets/images/flags/km.png';
+const kyrgyzFlag = 'assets/images/flags/ky.png';
+const slovakiaFlag = 'assets/images/flags/sk.png';
+const kenyaFlag = 'assets/images/flags/sw.png';
+const tagalogFlag = 'assets/images/flags/tl.png';
+const zuluFlag = 'assets/images/flags/zu.png';
 
 
 /// svg paths ///
@@ -47,6 +107,10 @@ const imageEditIcon = 'assets/svgs/image_edit.svg';
 const emptyJira = 'assets/svgs/empty_jira.svg';
 const jiraDelete = 'assets/svgs/jira_delete.svg';
 const jiraEdit = 'assets/svgs/jira_edit.svg';
+const summaryIcon = 'assets/svgs/summary.svg';
+const flagIcon = 'assets/svgs/flag.svg';
+const updatedIcon = 'assets/svgs/updated.svg';
+const createdIcon = 'assets/svgs/created.svg';
 
 
 

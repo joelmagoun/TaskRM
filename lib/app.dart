@@ -6,6 +6,8 @@ import 'package:TaskRM/providers/auth_provider.dart';
 import 'package:TaskRM/providers/goals_provider.dart';
 import 'package:TaskRM/providers/task_provider.dart';
 import 'package:TaskRM/providers/profile_provider.dart';
+import 'package:TaskRM/providers/localization_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:TaskRM/providers/time_tracking_provider.dart';
 import 'package:TaskRM/routes/app_router.dart';
 import 'package:TaskRM/views/splash_screen.dart';
@@ -20,6 +22,7 @@ class MyApp extends StatefulWidget {
     required this.isLoggedId,
     required this.db,
   }) : super(key: key);
+
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -50,6 +53,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => GoalProvider()),
+        ChangeNotifierProvider(create: (context) => LocalizationProvider()),
         // ChangeNotifierProvider(create: (context) => tasksListProvider),
         // ChangeNotifierProvider(create: (context) => goalsListProvider),
         // ChangeNotifierProvider(
@@ -78,20 +82,22 @@ class _MyAppState extends State<MyApp> {
         // ChangeNotifierProvider(create: (context) => MomentsProvider()),
         //  ChangeNotifierProvider(create: (context) => FeedProvider()),
         ChangeNotifierProvider(create: (context) => TaskProvider()),
-        ChangeNotifierProvider(
-          create: (context) => TimeTrackingProvider(db: widget.db),
-        ),
         //  ChangeNotifierProvider(create: (context) => JiraProvider()),
       ],
-      child: MaterialApp(
-        title: "TaskRM",
-        //  theme: AppTheme.light,
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: AppRouter.generateRoute(),
-        home: SplashScreen(
-          isLoggedIn: widget.isLoggedId,
-        ),
-        //home: const LoginScreen(),
+      child: Consumer<LocalizationProvider>(
+        builder: (_, localizationState, child) {
+          return MaterialApp(
+            title: "TaskRM",
+            debugShowCheckedModeBanner: false,
+            onGenerateRoute: AppRouter.generateRoute(),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: localizationState.local,
+            home: SplashScreen(
+              isLoggedIn: widget.isLoggedId,
+            ),
+          );
+        },
       ),
     );
   }

@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.3.3+2
+version: 2.3.3+7
 
 environment:
   sdk: ^3.5.0
@@ -42,7 +42,7 @@ dependencies:
   language_picker: ^0.4.5
   flutter_svg: ^2.0.16
   gesture_password_widget: ^2.0.1
-  #appwrite: ^11.0.1
+  language_picker: ^0.4.3
   provider: ^6.1.2
   flutter_secure_storage: ^9.2.3
   image_picker: ^1.1.2
@@ -67,7 +67,6 @@ dependencies:
 # needed because flutter_secure_storage is using a lower version of js than powersync needs
 dependency_overrides:
   js: ^0.7.0
-
 
 #dev_dependencies:
 #  flutter_test:
