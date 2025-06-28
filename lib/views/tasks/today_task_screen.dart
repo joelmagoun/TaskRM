@@ -35,13 +35,29 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
           ),
           actions: [
             taskState.todayTaskList.isNotEmpty ||
-                taskState.selectedFilterType != ''
-                ? InkWell(
-                onTap: () {
-                  CustomDialog.bottomSheet(
-                      context, const TodayFilterBottomSheet());
-                },
-                child: SvgPicture.asset(filterIcon))
+                    taskState.selectedFilterType != ''
+                ? Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => taskState.toggleShowCompletedTasks(),
+                        icon: Icon(
+                          taskState.showCompletedTasks 
+                            ? Icons.visibility 
+                            : Icons.visibility_off,
+                          color: taskState.showCompletedTasks 
+                            ? primaryColor 
+                            : secondaryColor,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          CustomDialog.bottomSheet(
+                              context, const TodayFilterBottomSheet());
+                        },
+                        child: SvgPicture.asset(filterIcon)
+                      ),
+                    ],
+                  )
                 : const SizedBox.shrink(),
             taskState.todayTaskList.isNotEmpty
                 ? IconButton(

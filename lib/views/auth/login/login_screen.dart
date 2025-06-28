@@ -89,14 +89,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           _languageField(),
                           primaryVerticalSpace,
                           PrimaryButton(
-                              onTap: () async {
-                                await _authState.login(
-                                    _loginFormKey.currentState?.value['email'],
-                                    _loginFormKey
-                                        .currentState?.value['password'],
-                                    context);
-                              },
-                              buttonTitle: 'Log in', isLoading: _authState.isLogin,),
+                            onTap: () async {
+                              await _authState.login(
+                                  _loginFormKey.currentState?.value['email'],
+                                  _loginFormKey.currentState?.value['password'],
+                                  context);
+                            },
+                            buttonTitle: 'Log in',
+                            isLoading: _authState.isLogin,
+                          ),
                           const SizedBox(
                             height: 36,
                           ),

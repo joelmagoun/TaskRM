@@ -18,7 +18,7 @@ class TaskTile extends StatefulWidget {
   final Color timeDateColor;
   final bool isSelected;
   final String createdAt;
-  final TaskModel task;
+  final Task task;
 
   const TaskTile(
       {Key? key,
@@ -53,6 +53,8 @@ class _TaskTileState extends State<TaskTile> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isCompleted = (widget.task.isCompleted as int?) == 1;
+
     return GestureDetector(
       onLongPress: widget.onLongPress,
       onTap: () {
@@ -61,7 +63,8 @@ class _TaskTileState extends State<TaskTile> {
       },
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16), color: widget.cardColor
+            borderRadius: BorderRadius.circular(16),
+            color: isCompleted ? Colors.grey.withOpacity(0.1) : widget.cardColor
             //color: const Color(0xFFF0F1F8),
             ),
         child: Padding(
@@ -77,7 +80,11 @@ class _TaskTileState extends State<TaskTile> {
                           Text(
                             widget.title,
                             style: tTextStyleRegular.copyWith(
-                                fontSize: 16, color: widget.titleColor),
+                                fontSize: 16,
+                                color: widget.titleColor,
+                                decoration: isCompleted
+                                    ? TextDecoration.lineThrough
+                                    : null),
                           ),
                           eightVerticalSpace,
                           widget.isTimeTracking
@@ -140,7 +147,11 @@ class _TaskTileState extends State<TaskTile> {
                     Text(
                       widget.title,
                       style: tTextStyleRegular.copyWith(
-                          fontSize: 16, color: widget.titleColor),
+                          fontSize: 16,
+                          color: widget.titleColor,
+                          decoration: isCompleted
+                              ? TextDecoration.lineThrough
+                              : null),
                     ),
                     eightVerticalSpace,
                     widget.isTimeTracking

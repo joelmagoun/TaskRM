@@ -18,8 +18,6 @@ class GoalFilterBottomSheet extends StatefulWidget {
 }
 
 class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
-  late String selectedType = '';
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -28,22 +26,74 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
         height: MediaQuery.of(context).size.height / 2,
         width: double.infinity,
         decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(24), topLeft: Radius.circular(24)),
-            color: white),
-        child: SingleChildScrollView(
-          child: Consumer<GoalProvider>(builder: (_, goalState, child) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                eightVerticalSpace,
-                _header(),
-                eightVerticalSpace,
-                const Divider(),
-                _allInfo()
-              ],
-            );
-          }),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(24),
+            topLeft: Radius.circular(24),
+          ),
+          color: white,
+        ),
+        child: Column(
+          children: [
+            eightVerticalSpace,
+            _header(),
+            eightVerticalSpace,
+            const Divider(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Type',
+                        style: tTextStyle500.copyWith(fontSize: 20, color: black),
+                      ),
+                      sixteenVerticalSpace,
+                      Consumer<GoalProvider>(
+                        builder: (_, goalState, __) => ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (_, index) {
+                            var type = AppConstant.typeList[index];
+                            return FilterOptionTile(
+                              onTap: () {
+                                goalState.getFilterType(type);
+                              },
+                              title: type,
+                              checkBoxColor: goalState.selectedFilterType == type
+                                  ? primaryColor
+                                  : white,
+                              boxBorderColor: goalState.selectedFilterType == type
+                                  ? trans
+                                  : secondaryColor,
+                            );
+                          },
+                          separatorBuilder: (_, index) => sixteenVerticalSpace,
+                          itemCount: AppConstant.typeList.length,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Consumer<GoalProvider>(
+                builder: (_, goalState, __) => PrimaryButton(
+                  onTap: () async {
+                    await goalState.getGoalList();
+                    Navigator.pop(context);
+                  },
+                  buttonTitle: 'Apply',
+                  buttonColor: goalState.selectedFilterType == ''
+                      ? primaryLight
+                      : primaryColor,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -74,52 +124,4 @@ class _GoalFilterBottomSheetState extends State<GoalFilterBottomSheet> {
       ],
     );
   }
-
-  Widget _allInfo() {
-
-    final goalState = Provider.of<GoalProvider>(context, listen: false);
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Type',
-            style: tTextStyle500.copyWith(fontSize: 20, color: black),
-          ),
-          ListView.separated(
-              shrinkWrap: true,
-              itemBuilder: (_, index) {
-                var type = AppConstant.typeList[index];
-                return FilterOptionTile(
-                    onTap: () {
-                      goalState.getFilterType(type);
-                    },
-                    title: type,
-                    checkBoxColor: goalState.selectedFilterType == type
-                        ? primaryColor
-                        : white,
-                    boxBorderColor: goalState.selectedFilterType == type
-                        ? trans
-                        : secondaryColor);
-              },
-              separatorBuilder: (_, index) => sixteenVerticalSpace,
-              itemCount: AppConstant.typeList.length),
-          PrimaryButton(
-            onTap: () async {
-              await goalState.getGoalList();
-              Navigator.pop(context);
-            },
-            buttonTitle: 'Apply',
-            buttonColor: goalState.selectedFilterType == ''
-                ? primaryLight
-                : primaryColor,
-          ),
-          primaryVerticalSpace
-        ],
-      ),
-    );
-  }
-
 }

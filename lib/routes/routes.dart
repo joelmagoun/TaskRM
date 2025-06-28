@@ -8,7 +8,6 @@ class Routes {
   static const String profile = "profile_screen";
   static const String jiraCollectionScreen = 'jira_collection_screen';
 
-
   static const String todayTasksList = "today_tasks_list";
   static const String existingTasks = "existing_tasks";
   static const String goalsList = "goals_list";
@@ -23,4 +22,6 @@ class Routes {
   static const String feed = "feed_screen";
   static const String feedDetails = 'feed_details';
   static const String addMoment = "add_moment";
+  static const String notification = "notification";
+  static const String debugPage = "debug";
 }

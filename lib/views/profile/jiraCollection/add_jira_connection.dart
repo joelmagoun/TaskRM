@@ -85,7 +85,7 @@ class _AddJiraConnectionBottomSheetState
             Text(
               'Add connection',
               style:
-              tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
+                  tTextStyle500.copyWith(fontSize: 20, color: textPrimaryColor),
             ),
           ],
         ),
@@ -116,7 +116,7 @@ class _AddJiraConnectionBottomSheetState
               title: 'URL',
               controller: _urlController,
               hintText:
-              'ex. https://sarasmith.atlassian.net/browse/Personalprojectstasks9784'),
+                  'ex. https://sarasmith.atlassian.net/browse/Personalprojectstasks9784'),
           primaryVerticalSpace,
           _buildField(
               title: 'API key',
@@ -128,27 +128,24 @@ class _AddJiraConnectionBottomSheetState
           PrimaryButton(
             onTap: () {
               late String taskType = '';
-              if(widget.taskType == 'Work'){
+              if (widget.taskType == 'Work') {
                 setState(() {
                   taskType = '1';
                 });
-              }else if(widget.taskType == 'Personal'){
+              } else if (widget.taskType == 'Personal') {
                 setState(() {
                   taskType = '2';
                 });
-              }else if(widget.taskType == 'Self'){
+              } else if (widget.taskType == 'Self') {
                 setState(() {
                   taskType = '3';
                 });
               }
-              profileState.addJiraConnection(
-                  taskType, _userNameController.text,
-                  _apiController.text, _urlController.text,
-                  context);
+              profileState.addJiraConnection(taskType, _userNameController.text,
+                  _apiController.text, _urlController.text, context);
             },
             buttonTitle: 'Add',
-            buttonColor:
-            !isData ? primaryLight : primaryColor,
+            buttonColor: !isData ? primaryLight : primaryColor,
             isLoading: profileState.isJiraAdding,
           ),
           const SizedBox(
@@ -159,9 +156,10 @@ class _AddJiraConnectionBottomSheetState
     );
   }
 
-  Widget _buildField({required String title,
-    required TextEditingController controller,
-    required String hintText}) {
+  Widget _buildField(
+      {required String title,
+      required TextEditingController controller,
+      required String hintText}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -201,5 +199,4 @@ class _AddJiraConnectionBottomSheetState
       ],
     );
   }
-
 }

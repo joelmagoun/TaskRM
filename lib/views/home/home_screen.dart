@@ -18,10 +18,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
-    return Consumer2<AuthProvider, ProfileProvider>(builder: (_, authState, profileState, child) {
+    return Consumer2<AuthProvider, ProfileProvider>(
+        builder: (_, authState, profileState, child) {
       return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(65.0),
@@ -39,13 +39,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 Image.asset(logo),
                 Row(
                   children: [
-                    SvgPicture.asset(notificationIcon),
+                    InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.debugPage);
+                        },
+                        child: SvgPicture.asset(notificationIcon)),
                     eightHorizontalSpace,
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pushNamed(context, Routes.profile);
                       },
-                      child: CustomImageHolder(imageUrl: profileState.profileImage,
+                      child: CustomImageHolder(
+                          imageUrl: profileState.profileImage,
                           height: 40,
                           width: 40,
                           errorWidget: Container(
@@ -55,7 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 shape: BoxShape.circle,
                                 color: white,
                                 border: Border.all(color: borderColor)),
-                            child: const Icon(Icons.person_2_rounded, color: iconColor,),
+                            child: const Icon(
+                              Icons.person_2_rounded,
+                              color: iconColor,
+                            ),
                           )),
                     ),
                   ],
@@ -96,8 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Widget _optionTile(String image, String icon, String title,
-      VoidCallback onTap) {
+  Widget _optionTile(
+      String image, String icon, String title, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: Container(

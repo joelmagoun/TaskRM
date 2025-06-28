@@ -40,88 +40,89 @@ class _EncryptionBottomSheetState extends State<EncryptionBottomSheet> {
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: white),
-        child: Consumer<AuthProvider>(builder: (_, _authState, child) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              eightVerticalSpace,
-              _header(),
-              eightVerticalSpace,
-              const Divider(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'This pattern enables you to recall your encryption key in case of phone loss or data deletion.',
-                      textAlign: TextAlign.center,
-                      style: tTextStyleRegular.copyWith(fontSize: 14),
-                    ),
-                    primaryVerticalSpace,
-                    GesturePasswordWidget(
-                      normalItem: _normalItem(),
-                      selectedItem: _selectedItem(),
-                      lineColor: primaryColor,
-                      errorLineColor: Colors.red,
-                      singleLineCount: 3,
-                      identifySize: 80.0,
-                      minLength: 4,
-                      //answer: correctAnswerList,
-                      color: trans,
-                      onComplete: (data) {
-                        _patternResult = data.join('');
-                      },
-                    ),
-                    primaryVerticalSpace,
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _patternResult = '';
-                          });
+        child: Consumer<AuthProvider>(
+          builder: (_, _authState, child) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                eightVerticalSpace,
+                _header(),
+                eightVerticalSpace,
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'This pattern enables you to recall your encryption key in case of phone loss or data deletion.',
+                        textAlign: TextAlign.center,
+                        style: tTextStyleRegular.copyWith(fontSize: 14),
+                      ),
+                      primaryVerticalSpace,
+                      GesturePasswordWidget(
+                        normalItem: _normalItem(),
+                        selectedItem: _selectedItem(),
+                        lineColor: primaryColor,
+                        errorLineColor: Colors.red,
+                        singleLineCount: 3,
+                        identifySize: 80.0,
+                        minLength: 4,
+                        //answer: correctAnswerList,
+                        color: trans,
+                        onComplete: (data) {
+                          _patternResult = data.join('');
                         },
-                        child: Text(
-                          'Reset',
-                          style: tTextStyle600.copyWith(
-                              fontSize: 16,
-                              color: primaryColor),
-                        )),
-                    sixteenVerticalSpace,
-                    PrimaryButton(
-                      onTap: () async {
-                        if (_patternResult != '') {
-                          var response =  await _authState.signUp(
-                              widget.email,
-                              widget.password,
-                              widget.name,
-                              _patternResult,
-                              widget.language,
-                              '',
-                              '',
-                              '',
-                              context);
+                      ),
+                      primaryVerticalSpace,
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _patternResult = '';
+                            });
+                          },
+                          child: Text(
+                            'Reset',
+                            style: tTextStyle600.copyWith(
+                                fontSize: 16, color: primaryColor),
+                          )),
+                      sixteenVerticalSpace,
+                      PrimaryButton(
+                        onTap: () async {
+                          if (_patternResult != '') {
+                            var response = await _authState.signUp(
+                                widget.email,
+                                widget.password,
+                                widget.name,
+                                _patternResult,
+                                widget.language,
+                                '',
+                                '',
+                                '',
+                                context);
 
-                          if(response == true){
-                            Navigator.pop(context);
-                            Navigator.pushReplacementNamed(context, Routes.login);
+                            if (response) {
+                              Navigator.pop(context);
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.login);
+                            }
+                          } else {
+                            CustomSnack.warningSnack(
+                                'You must enter a pattern password!', context);
                           }
-
-                        }else{
-                          CustomSnack.warningSnack('You must enter a pattern password!', context);
-                        }
-
-                      },
-                      buttonTitle: 'Submit',
-                      buttonColor: primaryColor,
-                      isLoading: _authState.isAccountCreating,
-                    ),
-                    primaryVerticalSpace,
-                  ],
-                ),
-              )
-            ],
-          );
-        },),
+                        },
+                        buttonTitle: 'Submit',
+                        buttonColor: primaryColor,
+                        isLoading: _authState.isAccountCreating,
+                      ),
+                      primaryVerticalSpace,
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -185,5 +186,4 @@ class _EncryptionBottomSheetState extends State<EncryptionBottomSheet> {
       ),
     );
   }
-
 }

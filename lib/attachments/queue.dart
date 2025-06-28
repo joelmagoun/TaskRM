@@ -6,7 +6,6 @@ import 'package:TaskRM/attachments/remote_storage_adapter.dart';
 import '../models/schema.dart';
 import '../utils/config/app_config.dart';
 
-
 /// Global reference to the queue
 late final PhotoAttachmentQueue attachmentQueue;
 final remoteStorage = SupabaseStorageAdapter();
@@ -69,7 +68,7 @@ class PhotoAttachmentQueue extends AbstractAttachmentQueue {
 
   @override
   StreamSubscription<void> watchIds({String fileExtension = 'jpg'}) {
-   // log.info('Watching photos in $todosTable...');
+    // log.info('Watching photos in $todosTable...');
     return db.watch('''
 
       SELECT photo_id FROM todosTable

@@ -62,7 +62,6 @@ class SupabaseConnector extends PowerSyncBackendConnector {
 
   @override
   void invalidateCredentials() {
-
     _refreshFuture = Supabase.instance.client.auth
         .refreshSession()
         .timeout(const Duration(seconds: 5))
@@ -177,7 +176,7 @@ Future<void> openDatabase() async {
 
   // Demo using SQLite Full-Text Search with PowerSync.
   // See https://docs.powersync.com/usage-examples/full-text-search for more details
- // await configureFts(db);
+  // await configureFts(db);
 }
 
 /// Explicit sign out - clear database and log out.

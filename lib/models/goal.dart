@@ -8,11 +8,13 @@ class Goal {
   final String title;
   final String type;
   final String description;
-  final bool isCompleted;
+  final int isCompleted;
   final int? totalMinutesSpent;
   final DateTime? updatedAt;
   final DateTime? createdAt;
   final String userId;
+  final String? parentGoal;
+
   Goal({
     required this.id,
     required this.title,
@@ -22,7 +24,8 @@ class Goal {
     this.totalMinutesSpent,
     this.updatedAt,
     this.createdAt,
-    required this.userId
+    required this.userId,
+    this.parentGoal
   });
 
   Goal copyWith({
@@ -30,7 +33,7 @@ class Goal {
     String? title,
     String? type,
     String? description,
-    bool? isCompleted,
+    int? isCompleted,
     DateTime? createdAt,
     DateTime? updatedAt,
     int? totalMinutesSpent,
@@ -54,11 +57,11 @@ class Goal {
       'title': title,
       'type': type,
       'description': description,
-      'isCompleted': isCompleted,
-      'totalMinutesSpent': totalMinutesSpent,
-      'updatedAt': updatedAt?.toString(),
-      'createdAt': createdAt?.toString(),
-      'userId': userId
+      'is_completed': isCompleted,
+      'total_minutes_spent': totalMinutesSpent,
+      'updated_at': updatedAt?.toString(),
+      'created_at': createdAt?.toString(),
+      'user_id': userId
     };
   }
 
@@ -68,13 +71,11 @@ class Goal {
       title: map['title'] as String,
       type: map['type'] as String,
       description: map['description'] as String,
-      isCompleted: map['isCompleted'] as bool,
-      totalMinutesSpent: map['totalMinutesSpent'],
-      createdAt:
-          map['createdAt'] == null ? null : DateTime.parse(map['createdAt']),
-      updatedAt:
-          map['updatedAt'] == null ? null : DateTime.parse(map['updatedAt']),
-      userId: map['userId'] as String,
+      isCompleted: map['is_completed'] as int,
+      totalMinutesSpent: map['total_minutes_spent'] as int?,
+      createdAt: map['created_at'] == null ? null : DateTime.parse(map['created_at']),
+      updatedAt: map['updated_at'] == null ? null : DateTime.parse(map['updated_at']),
+      userId: map['user_id'] as String,
     );
   }
 

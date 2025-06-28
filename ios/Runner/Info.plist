@@ -59,5 +59,17 @@
             	<key>NSPhotoLibraryUsageDescription</key>
             	<string>To choose user profile image</string>
 
+
+    <!-- for localization -->
+
+                    <key>CFBundleLocalizations</key>
+                    <array>
+                      <string>ar</string>
+                      <string>en</string>
+                      <string>es</string>
+                    </array>
+
+
+
 </dict>
 </plist>

@@ -68,7 +68,8 @@ const schema = Schema([
     Column.text('user_id'),
     Column.text('description'),
     Column.text('type'),
-    Column.text('parent_goal')
+    Column.text('parent_goal'),
+    Column.integer('is_completed')
   ]),
   Table('jira_connections', [
     Column.text('created_at'),

@@ -18,7 +18,6 @@ class TodayFilterBottomSheet extends StatefulWidget {
 }
 
 class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -111,7 +110,9 @@ class _TodayFilterBottomSheetState extends State<TodayFilterBottomSheet> {
               Navigator.pop(context);
             },
             buttonTitle: 'Apply',
-            buttonColor: taskState.selectedFilterType == '' ? primaryLight : primaryColor,
+            buttonColor: taskState.selectedFilterType == ''
+                ? primaryLight
+                : primaryColor,
           ),
           primaryVerticalSpace
         ],

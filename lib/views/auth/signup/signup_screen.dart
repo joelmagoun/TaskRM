@@ -1,4 +1,4 @@
-  //import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -326,7 +326,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: subtitle2,
                 ),
                 onPressed: () {
-                 Navigator.pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ],

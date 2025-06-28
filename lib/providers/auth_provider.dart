@@ -189,13 +189,6 @@ class AuthProvider extends ChangeNotifier {
       isAccountCreating = true;
       notifyListeners();
 
-      // var result = await account.create(
-      //   userId: ID.unique(),
-      //   email: email,
-      //   password: password,
-      //   name: name,
-      // );
-
       final response = await Supabase.instance.client.auth
           .signUp(email: email, password: password);
 
@@ -207,7 +200,7 @@ class AuthProvider extends ChangeNotifier {
       _jiraUrl = jiraUrl;
       notifyListeners();
 
-      if (response.session != null) {
+      if (response.user!.id.isNotEmpty) {
         return true;
       } else {
         return false;
@@ -216,8 +209,8 @@ class AuthProvider extends ChangeNotifier {
       //return true;
       // Navigator.pushReplacementNamed(context, Routes.login);
     } catch (e) {
-      print('sign up error ${e.toString()}');
-      return false;
+      CustomSnack.warningSnack(e.toString(), context);
+       return false;
     } finally {
       isAccountCreating = false;
       notifyListeners();
@@ -237,7 +230,8 @@ class AuthProvider extends ChangeNotifier {
       //   await AppStorage.deleteStorageData();
       //   Navigator.pushReplacementNamed(context, Routes.login);
       // });
-      final res = await Supabase.instance.client.auth.signOut().then((value) async {
+      final res =
+          await Supabase.instance.client.auth.signOut().then((value) async {
         await db.disconnectAndClear();
         await AppStorage.deleteStorageData();
         Navigator.pushReplacementNamed(context, Routes.login);
@@ -249,5 +243,4 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

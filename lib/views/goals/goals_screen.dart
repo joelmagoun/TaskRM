@@ -9,17 +9,20 @@ import 'package:TaskRM/utils/color.dart';
 import 'package:TaskRM/utils/custom_dialog.dart';
 import 'package:TaskRM/utils/spacer.dart';
 import 'package:TaskRM/utils/typograpgy.dart';
-import 'package:TaskRM/views/goals/add_new_goal_%20bottomsheet.dart';
+import 'package:TaskRM/views/goals/goal_form_bottomsheet.dart';
 import 'package:TaskRM/views/goals/goal_filter_bottomsheet.dart';
 import 'package:TaskRM/views/goals/widgets/goal_tile.dart';
 import 'package:TaskRM/widgets/components/task_tile.dart';
 import 'package:TaskRM/widgets/empty_widget.dart';
 
-import '../tasks/add_task_bottom_sheet.dart';
-
-class GoalsScreen extends StatelessWidget {
+class GoalsScreen extends StatefulWidget {
   const GoalsScreen({Key? key}) : super(key: key);
 
+  @override
+  State<GoalsScreen> createState() => _GoalsScreenState();
+}
+
+class _GoalsScreenState extends State<GoalsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<GoalProvider>(builder: (_, goalState, child) {
@@ -32,21 +35,36 @@ class GoalsScreen extends StatelessWidget {
             style: tTextStyle500.copyWith(fontSize: 20, color: black),
           ),
           actions: [
-            if (goalState.allGoalList.isNotEmpty ||
-                goalState.selectedFilterType != '')
-              InkWell(
-                  onTap: () {
-                    CustomDialog.bottomSheet(
-                        context, const GoalFilterBottomSheet());
-                  },
-                  child: SvgPicture.asset(filterIcon))
-            else
-              const SizedBox.shrink(),
+            goalState.allGoalList.isNotEmpty ||
+                    goalState.selectedFilterType != ''
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () => goalState.toggleShowCompletedGoals(),
+                        icon: Icon(
+                          goalState.showCompletedGoals
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: goalState.showCompletedGoals
+                              ? primaryColor
+                              : secondaryColor,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            CustomDialog.bottomSheet(
+                                context, const GoalFilterBottomSheet());
+                          },
+                          child: SvgPicture.asset(filterIcon)),
+                    ],
+                  )
+                : const SizedBox.shrink(),
             goalState.allGoalList.isNotEmpty
                 ? IconButton(
                     onPressed: () {
                       CustomDialog.bottomSheet(
-                          context, const AddNewGoalBottomSheet());
+                          context, const GoalFormBottomSheet());
                     },
                     icon: const Icon(
                       Icons.add_circle_rounded,
@@ -79,24 +97,27 @@ class GoalsScreen extends StatelessWidget {
         if (goalState.selectedFilterType == '') {
           return Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,children: [
-              const EmptyWidget(
-                  icon: goalIcon,
-                  title: 'What do you aspire to achieve?',
-                  subTitle:
-                  'Add your personal and work goals to begin working on them.'),
-              sixteenVerticalSpace,
-              IconButton(
-                onPressed: () {
-                  CustomDialog.bottomSheet(context,  const AddNewGoalBottomSheet());
-                },
-                icon: const Icon(
-                  Icons.add_circle_rounded,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const EmptyWidget(
+                    icon: goalIcon,
+                    title: 'What do you aspire to achieve?',
+                    subTitle:
+                        'Add your personal and work goals to begin working on them.'),
+                sixteenVerticalSpace,
+                IconButton(
+                  onPressed: () {
+                    CustomDialog.bottomSheet(
+                        context, const GoalFormBottomSheet());
+                  },
+                  icon: const Icon(
+                    Icons.add_circle_rounded,
+                  ),
+                  color: primaryColor,
+                  iconSize: 64,
                 ),
-                color: primaryColor,
-                iconSize: 64,
-              ),
-            ],),
+              ],
+            ),
           );
         } else {
           return Column(
@@ -165,7 +186,9 @@ class GoalsScreen extends StatelessWidget {
                       type: item.type,
                       description: item.description,
                       isCompleted: item.isCompleted,
-                      userId: item.userId),
+                      userId: item.userId,
+                      parentGoal: item.parentGoal,
+                      createdAt: item.createdAt),
                 );
               },
               separatorBuilder: (_, index) => eightVerticalSpace,
@@ -205,23 +228,34 @@ class GoalsScreen extends StatelessWidget {
               sixteenVerticalSpace,
               Expanded(
                 child: ListView.separated(
-                    itemBuilder: (_, index) {
-                      var item = goalState.allGoalList[index];
-                      return TaskTile(
-                        onLongPress: () {},
+                  itemBuilder: (_, index) {
+                    var item = goalState.allGoalList[index];
+                    return GoalTile(
+                      goalId: item.id,
+                      onLongPress: () {},
+                      title: item.title,
+                      isTimeTracking: false,
+                      time: '00',
+                      cardColor: const Color(0xFFF0F1F8),
+                      titleColor: black,
+                      timeDateColor: iconColor,
+                      isSelected: false,
+                      createdAt: item.createdAt.toString(),
+                      goal: Goal(
+                        id: item.id,
                         title: item.title,
-                        isTimeTracking: false,
-                        time: '00',
-                        cardColor: const Color(0xFFF0F1F8),
-                        titleColor: black,
-                        timeDateColor: iconColor,
-                        isSelected: false,
-                        createdAt: item.createdAt.toString(),
-                        task: TaskModel(),
-                      );
-                    },
-                    separatorBuilder: (_, index) => eightVerticalSpace,
-                    itemCount: goalState.allGoalList.length),
+                        type: item.type,
+                        description: item.description,
+                        isCompleted: item.isCompleted,
+                        userId: item.userId,
+                        parentGoal: item.parentGoal,
+                        createdAt: item.createdAt,
+                      ),
+                    );
+                  },
+                  separatorBuilder: (_, index) => eightVerticalSpace,
+                  itemCount: goalState.allGoalList.length,
+                ),
               )
             ],
           );

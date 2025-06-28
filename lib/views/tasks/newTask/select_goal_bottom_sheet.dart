@@ -68,13 +68,14 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: goalState.allGoalList.isEmpty
                         ? const EmptyWidget(
-                            icon: goalIcon, title: 'Sorry!', subTitle: 'No matching goals with task type')
+                            icon: goalIcon,
+                            title: 'Sorry!',
+                            subTitle: 'No matching goals with task type')
                         : ListView.separated(
                             itemBuilder: (_, index) {
                               var item = goalState.allGoalList[index];
                               return _optionTile(
                                   onTap: () {
-
                                     setState(() {
                                       selectedGoal = item.title;
                                     });
@@ -83,7 +84,6 @@ class _SelectGoalBottomSheetState extends State<SelectGoalBottomSheet> {
                                     goalState.getFilterType('');
                                     goalState.getGoalList();
                                     Navigator.pop(context);
-
                                   },
                                   tileBorderColor: selectedGoal == item.title
                                       ? secondaryColor
